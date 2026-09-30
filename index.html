@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vuelva Usted Mañana — Room Escape</title>
+  <meta name="description" content="Un room escape satírico por las entrañas de la burocracia y la política española. 10 trámites, cada uno más difícil que el anterior.">
+  <meta name="theme-color" content="#1e1b18">
+  <meta property="og:title" content="Vuelva Usted Mañana — Room Escape">
+  <meta property="og:description" content="¿Serás capaz de renovar el DNI? Un room escape satírico sobre la burocracia española.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="topbar" class="topbar">
+    <div class="brand">📂 <span>Vuelva Usted Mañana</span></div>
+    <div class="game-info">
+      <span id="lvlInfo"></span>
+      <span class="timer">⏱ <span id="timer">00:00</span></span>
+    </div>
+    <nav class="game-actions">
+      <button class="tb" id="btnHint" title="Pedir pista">💡<span>Pista</span></button>
+      <button class="tb" id="btnSave" title="Guardar partida">💾<span>Guardar</span></button>
+      <button class="tb" id="btnHelp2" title="Cómo jugar">❔<span>Ayuda</span></button>
+      <button class="tb" id="btnMute" title="Sonido">🔊</button>
+      <button class="tb" id="btnMenu" title="Menú principal">☰<span>Menú</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- MENÚ -->
+    <section id="screen-menu" class="screen">
+      <div class="paper menu">
+        <div class="gov-strip"><span></span><span></span><span></span></div>
+        <p class="kicker">Gobierno de lo Imposible · Ministerio de Asuntos Pendientes</p>
+        <h1>Vuelva usted<br>mañana</h1>
+        <p class="tag">Un <i>room escape</i> por las entrañas de la burocracia española</p>
+        <div class="menu-actions">
+          <button class="btn primary big" id="btnContinue" hidden></button>
+          <button class="btn big" id="btnNew">📝 Nueva partida</button>
+          <button class="btn" id="btnCode">📂 Tengo un código de expediente</button>
+          <button class="btn" id="btnHelp">📘 Cómo jugar</button>
+        </div>
+        <h3 class="grid-title">Trámites desbloqueados</h3>
+        <div class="level-grid" id="levelGrid"></div>
+        <p class="disclaimer">Sátira. Todos los personajes, partidos y organismos son ficticios. Cualquier parecido con la realidad es pura coincidencia (o no).</p>
+      </div>
+    </section>
+
+    <!-- INTRO DE NIVEL -->
+    <section id="screen-intro" class="screen" hidden>
+      <div class="paper intro-card">
+        <div class="intro-num" id="introNum"></div>
+        <h2 id="introTitle"></h2>
+        <div class="intro-place" id="introPlace"></div>
+        <div class="stars" id="introStars"></div>
+        <div class="intro-text" id="introText"></div>
+        <div class="row-actions">
+          <button class="btn" id="btnIntroMenu">☰ Menú</button>
+          <button class="btn primary big" id="btnStart">Empezar trámite ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- JUEGO -->
+    <section id="screen-play" class="screen" hidden>
+      <div class="stage">
+        <div id="scene" class="scene"></div>
+        <div id="dialog" class="dialog" aria-live="polite"></div>
+        <div class="inv-wrap">
+          <div class="inv-title">🎒 Inventario</div>
+          <div id="inventory" class="inventory"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NIVEL COMPLETADO -->
+    <section id="screen-win" class="screen" hidden>
+      <div class="paper resolution">
+        <div class="res-head">MINISTERIO DE ASUNTOS PENDIENTES<br><small>Resolución nº <span id="resNum"></span></small></div>
+        <h2 id="winTitle"></h2>
+        <p id="winText"></p>
+        <div class="stamp">APROBADO</div>
+        <div class="code-box"><span class="small">Tu código de expediente:</span> <code id="winCode"></code><button class="btn" id="winCopy">📋 Copiar</button></div>
+        <p class="small">La partida se ha guardado automáticamente. Puedes salir y continuar cuando quieras.</p>
+        <div class="row-actions">
+          <button class="btn" id="btnWinMenu">☰ Menú</button>
+          <button class="btn primary big" id="btnNext">Siguiente trámite ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL -->
+    <section id="screen-end" class="screen" hidden>
+      <div class="paper resolution ending">
+        <div class="res-head">REINO DE LA BUROCRACIA<br><small>Documento Nacional de Identidad</small></div>
+        <div class="dni-card">
+          <div class="dni-photo">🙂</div>
+          <div class="dni-data">
+            <div><small>APELLIDOS</small><b>CIUDADANO/A PACIENTE</b></div>
+            <div><small>NOMBRE</small><b>SUFRIDO/A</b></div>
+            <div><small>VÁLIDO HASTA</small><b>01 10 2036</b></div>
+          </div>
+        </div>
+        <h2>¡Has escapado de la burocracia!</h2>
+        <p>Tras diez trámites, un gobierno, una comisión de investigación y un decreto publicado a las 23:59, tienes tu DNI nuevo.</p>
+        <p><b>Caduca en 2036.</b> Te recomendamos pedir cita previa ya.</p>
+        <div class="end-stats" id="endStats"></div>
+        <div class="stamp go">EXPEDIENTE CERRADO</div>
+        <div class="row-actions">
+          <button class="btn" id="btnEndMenu">☰ Menú</button>
+          <button class="btn primary" id="btnEndAgain">🔁 Volver a empezar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" hidden></div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="js/levels.js"></script>
+  <script src="js/engine.js"></script>
+</body>
+</html>
