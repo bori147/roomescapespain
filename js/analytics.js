@@ -8,6 +8,10 @@
 
   const cfg = (window.GAME_CONFIG || {}).analytics || {};
   let loaded = false;
+  // «Apertura del juego» de esta visita: si el jugador acepta la analítica después
+  // de abrir el juego, se envía en el momento de aceptar (nunca antes).
+  let appOpen = null;
+  let appOpenSent = false;
 
   function load() {
     if (loaded || !cfg.key) return;
@@ -21,13 +25,19 @@
       persistence: 'localStorage',        // sin cookies: identificador aleatorio en almacenamiento local
       person_profiles: 'identified_only', // nunca identificamos a nadie: todo es anónimo
       autocapture: false,                 // solo los eventos del juego, nada de clics genéricos
-      capture_pageview: true,
+      capture_pageview: false,            // la visita se registra a mano tras el consentimiento
       capture_pageleave: true,
       disable_session_recording: true,    // sin grabación de sesiones
+      capture_dead_clicks: false,         // sin captura de clics
+      capture_heatmaps: false,            // sin mapas de calor
+      capture_performance: false,         // sin métricas de rendimiento web
+      capture_exceptions: false,
       disable_surveys: true,
       respect_dnt: true,
     });
     window.posthog.register({ game: 'vuelva-usted-manana', game_version: '3.0' });
+    window.posthog.capture('$pageview');
+    if (appOpen && !appOpenSent) { appOpenSent = true; window.posthog.capture('app_open', appOpen); }
   }
 
   function unload() {
@@ -38,6 +48,11 @@
   }
 
   window.Track = function track(event, props) {
+    if (event === 'app_open') {
+      appOpen = props || {};
+      if (appOpenSent) return;
+      if (loaded) appOpenSent = true;
+    }
     if (!loaded || !window.posthog || !(window.Consent && window.Consent.analytics())) return;
     try { window.posthog.capture(event, props || {}); } catch (e) { /* nunca romper el juego */ }
   };
