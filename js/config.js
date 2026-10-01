@@ -17,7 +17,7 @@ window.GAME_CONFIG = {
   // Mientras `key` esté vacía no se carga nada y no se muestra el aviso de cookies
   // (el juego solo usa almacenamiento técnico, que no requiere consentimiento).
   analytics: {
-    key: '',                               // clave pública del proyecto: 'phc_...'
+    key: 'phc_m4Rw3Da7LtTCzUGSCrt5fpE58FQ4RYqhREaQ8HThdkqq', // clave pública del proyecto PostHog
     host: 'https://eu.i.posthog.com',      // región UE
   },
 
@@ -26,7 +26,7 @@ window.GAME_CONFIG = {
     titular: 'Gerard Bori',
     nif: '43457655Y',
     domicilio: 'Barcelona, 08013, España',
-    email: '',                             // correo de contacto (obligatorio por la LSSI)
+    email: '',                             // correo de contacto (obligatorio por la LSSI): pendiente del dominio propio
     web: 'https://bori147.github.io/roomescapespain/',
     actualizado: '1 de octubre de 2026',
   },

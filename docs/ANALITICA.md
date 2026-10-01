@@ -3,7 +3,10 @@
 El juego envía eventos anónimos a **PostHog** (servidores en la UE) **solo si el jugador acepta
 la analítica** en el aviso de cookies. Si la rechaza, no se carga nada.
 
-## Puesta en marcha (una vez)
+**Panel:** https://eu.posthog.com/project/290656/dashboard/989505 (proyecto «Vuelva usted mañana», región UE,
+IP descartada, hora de Madrid, sin grabación de sesiones ni captura automática).
+
+## Puesta en marcha (ya hecha)
 
 1. Crea una cuenta gratuita en https://eu.posthog.com (elige la **región UE**).
 2. Crea un proyecto «Vuelva usted mañana».
@@ -45,5 +48,4 @@ Todos llevan `season` (1-5), `level` (1-10) y `level_id` (`T2-N7`) cuando aplica
 | ¿De dónde vienen? | *Web analytics* (integrado en PostHog) |
 | ¿Funciona el café? | *Trends* · `donate_click` y desglose por `where` |
 
-Si se le da a Claude una *personal API key* de PostHog con permiso de escritura de insights,
-puede crear este panel automáticamente.
+Este panel ya está creado en PostHog (14 gráficos) con estos mismos nombres.
