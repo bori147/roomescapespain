@@ -6,6 +6,9 @@ la analítica** en el aviso de cookies. Si la rechaza, no se carga nada.
 **Panel:** https://eu.posthog.com/project/290656/dashboard/989505 (proyecto «Vuelva usted mañana», región UE,
 IP descartada, hora de Madrid, sin grabación de sesiones ni captura automática).
 
+**Para probar sin contaminar las estadísticas**, abre el juego con `?prueba=1` al final de la URL
+(https://bori147.github.io/roomescapespain/?prueba=1): esas visitas se excluyen del panel.
+
 ## Puesta en marcha (ya hecha)
 
 1. Crea una cuenta gratuita en https://eu.posthog.com (elige la **región UE**).
