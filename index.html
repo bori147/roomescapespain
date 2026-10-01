@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Vuelva Usted Mañana — Room Escape</title>
-  <meta name="description" content="Un room escape satírico por las entrañas de la burocracia y la política española. 10 trámites, cada uno más difícil que el anterior.">
+  <meta name="description" content="Un room escape satírico por las entrañas de la burocracia y la política española. 5 temporadas de 10 trámites, cada una más difícil que la anterior.">
   <meta name="theme-color" content="#1e1b18">
   <meta property="og:title" content="Vuelva Usted Mañana — Room Escape">
   <meta property="og:description" content="¿Serás capaz de renovar el DNI? Un room escape satírico sobre la burocracia española.">
@@ -28,6 +28,7 @@
       <button class="tb" id="btnMute" title="Sonido">🔊</button>
       <button class="tb" id="btnMenu" title="Menú principal">☰<span>Menú</span></button>
     </nav>
+    <button class="tb tb-donate" id="btnDonateTop" title="Apoya el juego">☕<span>Apoyar</span></button>
   </header>
 
   <main>
@@ -40,13 +41,32 @@
         <p class="tag">Un <i>room escape</i> por las entrañas de la burocracia española</p>
         <div class="menu-actions">
           <button class="btn primary big" id="btnContinue" hidden></button>
-          <button class="btn big" id="btnNew">📝 Nueva partida</button>
+        </div>
+        <h3 class="grid-title">Temporadas</h3>
+        <div class="season-list" id="seasonList"></div>
+        <div class="menu-actions secondary">
           <button class="btn" id="btnCode">📂 Tengo un código de expediente</button>
           <button class="btn" id="btnHelp">📘 Cómo jugar</button>
         </div>
-        <h3 class="grid-title">Trámites desbloqueados</h3>
-        <div class="level-grid" id="levelGrid"></div>
+        <div class="donate-box" id="menuDonate" hidden></div>
         <p class="disclaimer">Sátira. Todos los personajes, partidos y organismos son ficticios. Cualquier parecido con la realidad es pura coincidencia (o no).</p>
+      </div>
+    </section>
+
+    <!-- TEMPORADA -->
+    <section id="screen-season" class="screen" hidden>
+      <div class="paper intro-card">
+        <div class="intro-num" id="seaNum"></div>
+        <h2 id="seaTitle"></h2>
+        <div class="intro-text" id="seaIntro"></div>
+        <div class="menu-actions season-actions">
+          <button class="btn primary big" id="btnSeaPlay"></button>
+        </div>
+        <h3 class="grid-title">Trámites</h3>
+        <div class="level-grid" id="levelGrid"></div>
+        <div class="row-actions">
+          <button class="btn" id="btnSeaBack">◀ Temporadas</button>
+        </div>
       </div>
     </section>
 
@@ -86,6 +106,7 @@
         <div class="stamp">APROBADO</div>
         <div class="code-box"><span class="small">Tu código de expediente:</span> <code id="winCode"></code><button class="btn" id="winCopy">📋 Copiar</button></div>
         <p class="small">La partida se ha guardado automáticamente. Puedes salir y continuar cuando quieras.</p>
+        <div class="donate-box inline" id="winDonate" hidden></div>
         <div class="row-actions">
           <button class="btn" id="btnWinMenu">☰ Menú</button>
           <button class="btn primary big" id="btnNext">Siguiente trámite ▶</button>
@@ -93,26 +114,18 @@
       </div>
     </section>
 
-    <!-- FINAL -->
+    <!-- FINAL DE TEMPORADA -->
     <section id="screen-end" class="screen" hidden>
       <div class="paper resolution ending">
-        <div class="res-head">REINO DE LA BUROCRACIA<br><small>Documento Nacional de Identidad</small></div>
-        <div class="dni-card">
-          <div class="dni-photo">🙂</div>
-          <div class="dni-data">
-            <div><small>APELLIDOS</small><b>CIUDADANO/A PACIENTE</b></div>
-            <div><small>NOMBRE</small><b>SUFRIDO/A</b></div>
-            <div><small>VÁLIDO HASTA</small><b>01 10 2036</b></div>
-          </div>
-        </div>
-        <h2>¡Has escapado de la burocracia!</h2>
-        <p>Tras diez trámites, un gobierno, una comisión de investigación y un decreto publicado a las 23:59, tienes tu DNI nuevo.</p>
-        <p><b>Caduca en 2036.</b> Te recomendamos pedir cita previa ya.</p>
+        <div class="res-head" id="endHead"></div>
+        <h2 id="endTitle"></h2>
+        <div id="endBody"></div>
         <div class="end-stats" id="endStats"></div>
-        <div class="stamp go">EXPEDIENTE CERRADO</div>
+        <div class="stamp" id="endStamp"></div>
+        <div class="donate-box" id="endDonate" hidden></div>
         <div class="row-actions">
           <button class="btn" id="btnEndMenu">☰ Menú</button>
-          <button class="btn primary" id="btnEndAgain">🔁 Volver a empezar</button>
+          <button class="btn primary big" id="btnEndNext" hidden></button>
         </div>
       </div>
     </section>
@@ -121,7 +134,13 @@
   <div id="modal" class="modal" hidden></div>
   <div id="toast" class="toast" role="status"></div>
 
-  <script src="js/levels.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/seasons/s1.js"></script>
+  <script src="js/seasons/s2.js"></script>
+  <script src="js/seasons/s3.js"></script>
+  <script src="js/seasons/s4.js"></script>
+  <script src="js/seasons/s5.js"></script>
   <script src="js/engine.js"></script>
 </body>
 </html>

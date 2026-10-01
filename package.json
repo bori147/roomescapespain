@@ -1,0 +1,13 @@
+{
+  "name": "roomescapespain",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Vuelva Usted Mañana: room escape satírico sobre la burocracia española",
+  "scripts": {
+    "test": "node tests/run.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^24.1.3"
+  }
+}

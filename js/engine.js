@@ -1,13 +1,15 @@
 /* ==========================================================
-   VUELVA USTED MAÑANA — Motor del juego
+   VUELVA USTED MAÑANA — Motor del juego (con temporadas)
    ========================================================== */
 (function () {
   'use strict';
 
-  const LEVELS = window.LEVELS;
-  const ITEMS = window.ITEMS;
-  const SAVE_KEY = 'roomescapespain.save.v1';
-  const META_KEY = 'roomescapespain.meta.v1';
+  const SEASONS = window.SEASONS.filter(Boolean);
+  const CONFIG = window.GAME_CONFIG || {};
+  const SAVE_PREFIX = 'roomescapespain.save.s';   // + nº de temporada
+  const META_KEY = 'roomescapespain.meta.v2';
+  const OLD_SAVE_KEY = 'roomescapespain.save.v1';
+  const OLD_META_KEY = 'roomescapespain.meta.v1';
 
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -16,50 +18,86 @@
 
   function readLS(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   function writeLS(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  function removeLS(k) { try { localStorage.removeItem(k); } catch (e) { /* nada */ } }
+
+  const seasonById = (id) => SEASONS.find((s) => s.id === id);
 
   // ---------------- Estado ----------------
-  let S = null;          // estado de la partida
+  let S = null;          // estado de la partida (temporada actual)
+  let SEA = null;        // temporada actual
   let L = null;          // nivel actual
-  let selected = null;   // objeto de inventario seleccionado
-  let queue = [];        // cola de mensajes
-  let current = null;    // mensaje mostrado
+  let ITEMS = {};        // objetos de la temporada actual
+  let selected = null;
+  let queue = [];
+  let current = null;
   let pendingWin = false;
   let ctxWho = null;
   let screen = 'menu';
   let modalKey = null;
+  let viewSeason = null; // temporada mostrada en la pantalla de temporada
 
-  const meta = Object.assign({ maxLevel: 1, muted: false, finished: false }, readLS(META_KEY) || {});
+  // ---------------- Meta (progreso global) ----------------
+  const meta = Object.assign({ v: 2, progress: {}, done: {}, muted: false, last: null }, readLS(META_KEY) || {});
+  (function migrate() {
+    const oldMeta = readLS(OLD_META_KEY);
+    if (oldMeta) {
+      meta.progress[1] = Math.max(meta.progress[1] || 1, oldMeta.maxLevel || 1);
+      if (oldMeta.finished) meta.done[1] = true;
+      meta.muted = !!oldMeta.muted;
+      removeLS(OLD_META_KEY);
+    }
+    const oldSave = readLS(OLD_SAVE_KEY);
+    if (oldSave && oldSave.level) {
+      oldSave.season = 1; oldSave.v = 2;
+      if (!readLS(SAVE_PREFIX + 1)) writeLS(SAVE_PREFIX + 1, oldSave);
+      meta.last = meta.last || 1;
+      removeLS(OLD_SAVE_KEY);
+    }
+    writeLS(META_KEY, meta);
+  })();
 
-  function newState(level) {
-    return { v: 1, level, flags: {}, inv: [], hintIdx: 0, totalHints: 0, elapsed: 0, finished: false };
+  const progressOf = (sid) => meta.progress[sid] || 0;
+  const isUnlocked = (sid) => sid === 1 || !!meta.done[sid - 1] || progressOf(sid) > 0;
+
+  function newState(season, level) {
+    return { v: 2, season, level, flags: {}, inv: [], hintIdx: 0, totalHints: 0, elapsed: 0, finished: false };
   }
+  const saveKey = (sid) => SAVE_PREFIX + sid;
   function save() {
-    if (S) writeLS(SAVE_KEY, S);
+    if (S) writeLS(saveKey(S.season), S);
     writeLS(META_KEY, meta);
   }
+  const readSave = (sid) => {
+    const s = readLS(saveKey(sid));
+    return s && s.level && seasonById(sid) && s.level <= seasonById(sid).levels.length ? s : null;
+  };
 
   // ---------------- Código de expediente ----------------
-  // Codifica nivel + pistas usadas en un código tipo EXP-03T2-K
+  // Nuevo formato (5 cifras): temporada + nivel + pistas → EXP-XXXXX-X
+  // Formato antiguo (4 cifras): solo nivel + pistas de la temporada 1.
   function checksum(body) {
     let sum = 0;
     for (let i = 0; i < body.length; i++) sum += body.charCodeAt(i) * (i + 3);
     return String.fromCharCode(65 + (sum % 26));
   }
-  function makeCode(level, hints) {
-    const n = level * 100 + Math.min(hints, 99);
-    const body = (n * 37 + 1234).toString(36).toUpperCase().padStart(4, '0');
+  function makeCode(season, level, hints) {
+    const n = (season * 100 + level) * 100 + Math.min(hints, 99);
+    const body = (n * 37 + 1234).toString(36).toUpperCase().padStart(5, '0');
     return `EXP-${body}-${checksum(body)}`;
   }
   function readCode(code) {
     const c = String(code).toUpperCase().replace(/[^0-9A-Z]/g, '');
-    const m = c.match(/^(?:EXP)?([0-9A-Z]{4})([A-Z])$/);
+    const m = c.match(/^(?:EXP)?([0-9A-Z]{4,5})([A-Z])$/);
     if (!m || checksum(m[1]) !== m[2]) return null;
     const x = parseInt(m[1], 36) - 1234;
-    if (x % 37 !== 0) return null;
+    if (x < 0 || x % 37 !== 0) return null;
     const n = x / 37;
-    const level = Math.floor(n / 100);
-    if (level < 1 || level > LEVELS.length) return null;
-    return { level, hints: n % 100 };
+    let season; let level; const hints = n % 100;
+    if (m[1].length === 4) { season = 1; level = Math.floor(n / 100); }
+    else { season = Math.floor(n / 10000); level = Math.floor(n / 100) % 100; }
+    const sea = seasonById(season);
+    if (!sea || level < 1 || level > sea.levels.length) return null;
+    return { season, level, hints };
   }
 
   // ---------------- Audio ----------------
@@ -94,6 +132,7 @@
     set: (k, v = true) => { S.flags[k] = v; },
     has: (id) => S.inv.includes(id),
     give(id) {
+      if (!ITEMS[id]) throw new Error(`Objeto desconocido: ${id}`);
       if (S.inv.includes(id)) return;
       S.inv.push(id);
       toast(`${ITEMS[id].emoji} <b>${ITEMS[id].name}</b>`, 'Nuevo objeto');
@@ -105,15 +144,18 @@
     modal: (o) => modal(o),
     closeModal: () => closeModal(),
     input: (o) => input(o),
+    choice: (o) => choice(o),
     win() {
       if (pendingWin) return;
       pendingWin = true;
       sfx('win');
       renderDialog();
-      $('#scene').classList.add('won');
+      const sc = $('#scene'); if (sc) sc.classList.add('won');
     },
     sfx,
     refresh: () => refresh(),
+    get season() { return S.season; },
+    get level() { return S.level; },
   };
 
   // ---------------- Mensajes ----------------
@@ -129,13 +171,13 @@
   function clearQueue() { queue = []; current = null; renderDialog(); }
   function renderDialog() {
     const d = $('#dialog');
-    if (!d) return;
+    if (!d || !S) return;
     let html = '';
     if (current) {
       html += (current.who ? `<div class="dlg-who">${current.who}</div>` : '') + `<div class="dlg-text">${current.text}</div>`;
       if (queue.length) html += `<div class="dlg-more">▼ Continuar (${queue.length})</div>`;
     } else if (!pendingWin) {
-      html = `<div class="dlg-idle">${selected ? `Usando <b>${ITEMS[selected].emoji} ${ITEMS[selected].name}</b>: haz clic en algo de la sala o en otro objeto.` : 'Haz clic en los objetos de la sala para examinarlos. Selecciona un objeto de tu inventario y haz clic en algo para usarlo.'}</div>`;
+      html = `<div class="dlg-idle">${selected && ITEMS[selected] ? `Usando <b>${ITEMS[selected].emoji} ${ITEMS[selected].name}</b>: haz clic en algo de la sala o en otro objeto.` : 'Haz clic en los objetos de la sala para examinarlos. Selecciona un objeto de tu inventario y haz clic en algo para usarlo.'}</div>`;
     }
     if (pendingWin && !queue.length) html += '<button class="btn primary dlg-next" id="btnFinish">📨 Trámite completado — continuar ▶</button>';
     d.innerHTML = html;
@@ -175,14 +217,15 @@
       };
       foot.append(be);
     });
+    if (!btns.length) foot.remove();
     $('.modal-x', card).onclick = () => { closeModal(); };
     m.append(card);
     m.hidden = false;
     modalKey = onKey || null;
     m.onclick = (e) => { if (e.target === m) closeModal(); };
     if (onMount) onMount(body, closeModal);
-    const f = card.querySelector('input:not([type=checkbox]), select');
-    if (f && window.matchMedia('(pointer: fine)').matches) f.focus();
+    const f = card.querySelector('input:not([type=checkbox]):not([type=radio]), select');
+    if (f && window.matchMedia && window.matchMedia('(pointer: fine)').matches) f.focus();
     return card;
   }
   function closeModal() {
@@ -190,6 +233,27 @@
     if (m.hidden) return;
     m.hidden = true; m.innerHTML = ''; modalKey = null;
     if (screen === 'play') refresh();
+  }
+
+  // ---------------- Elección múltiple ----------------
+  // g.choice({ title, text, options: [{ label, onPick(g) -> false para mantener abierto }], cancel: true })
+  function choice(o) {
+    const card = modal({
+      title: o.title,
+      cls: 'choice-modal' + (o.cls ? ' ' + o.cls : ''),
+      buttons: o.cancel === false ? [] : [{ label: o.cancelLabel || 'Cancelar' }],
+      html: `${o.text ? `<div class="choice-text">${o.text}</div>` : ''}<div class="choice-list">${o.options.map((op, i) => `<button class="btn choice-opt" data-i="${i}">${op.label}</button>`).join('')}</div><div class="msg" id="choiceMsg"></div>`,
+    });
+    $$('.choice-opt', card).forEach((b) => {
+      b.onclick = () => {
+        sfx('click');
+        const op = o.options[+b.dataset.i];
+        const r = op.onPick ? op.onPick(g, (t, bad) => { const m = $('#choiceMsg', card); m.innerHTML = t; m.className = 'msg ' + (bad ? 'bad' : 'good'); }) : true;
+        if (r !== false) closeModal();
+        refresh();
+      };
+    });
+    return card;
   }
 
   // ---------------- Entrada de códigos ----------------
@@ -235,6 +299,7 @@
         sfx('bad');
         card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
         msg.textContent = (o.failText && o.failText(v)) || 'Incorrecto.';
+        if (o.fail) o.fail(v);
         val = ''; if (inp) inp.value = '';
         upd();
       }
@@ -265,13 +330,14 @@
     sc.className = 'scene floor-' + (L.scene.pattern || 'plain') + (pendingWin ? ' won' : '') + (selected ? ' using' : '');
     sc.style.setProperty('--wall', L.scene.wall);
     sc.style.setProperty('--floor', L.scene.floor);
-    sc.style.setProperty('--floorH', (L.scene.floorH || 32) + '%');
+    sc.style.setProperty('--floorH', (L.scene.floorH ?? 32) + '%');
     sc.append(el('div', 'wall'), el('div', 'floor'), el('div', 'baseboard'));
 
     for (const d of L.decor || []) {
       if (d.kind) {
         const e = el('div', 'deco deco-' + d.kind);
         if (d.l != null) Object.assign(e.style, { left: d.l + '%', top: d.t + '%', width: d.w + '%', height: d.h + '%' });
+        if (d.color) e.style.setProperty('--c', d.color);
         sc.append(e);
       } else {
         const e = el('span', 'deco deco-emoji', d.emoji);
@@ -296,7 +362,7 @@
         b.innerHTML = `<b>${val(hs.sign)}</b>${sub ? `<span class="${big ? 'sub-emoji' : ''}">${sub}</span>` : ''}`;
       } else {
         b.style.fontSize = (hs.s || 6) + 'cqw';
-        b.innerHTML = `<span class="hs-emoji">${val(hs.emoji)}</span>${hs.tag ? `<span class="hs-tag">${val(hs.tag)}</span>` : ""}`;
+        b.innerHTML = `<span class="hs-emoji">${val(hs.emoji)}</span>${hs.tag ? `<span class="hs-tag">${val(hs.tag)}</span>` : ''}`;
       }
       b.onclick = () => clickHotspot(hs);
       sc.append(b);
@@ -309,7 +375,7 @@
     const slots = Math.max(8, S.inv.length);
     for (let i = 0; i < slots; i++) {
       const id = S.inv[i];
-      if (!id) { inv.append(el('div', 'slot empty')); continue; }
+      if (!id || !ITEMS[id]) { inv.append(el('div', 'slot empty')); continue; }
       const it = ITEMS[id];
       const b = el('button', 'slot' + (selected === id ? ' sel' : ''), `<span class="slot-emoji">${it.emoji}</span><span class="slot-name">${it.name}</span>`);
       b.title = it.name;
@@ -319,7 +385,7 @@
   }
 
   function renderTop() {
-    $('#lvlInfo').innerHTML = `<b>${S.level}/10</b><span class="lvl-title"> · ${L.title}</span>`;
+    $('#lvlInfo').innerHTML = `<span class="season-chip">T${S.season}</span> <b>${S.level}/${SEA.levels.length}</b><span class="lvl-title"> · ${L.title}</span>`;
     $('#timer').textContent = fmtTime(S.elapsed);
     $('#btnMute').textContent = meta.muted ? '🔇' : '🔊';
   }
@@ -335,8 +401,8 @@
     const n = ITEMS[it].name.toLowerCase();
     return rand([
       `Usar ${n} ahí no parece buena idea.`,
-      `Eso no es competencia de este negociado. Diríjase a otra ventanilla.`,
-      `No. Rotundamente no. (Silencio administrativo negativo.)`,
+      'Eso no es competencia de este negociado. Diríjase a otra ventanilla.',
+      'No. Rotundamente no. (Silencio administrativo negativo.)',
       `Lo intentas con ${n}, pero no pasa nada. Como con las reclamaciones.`,
     ]);
   }
@@ -383,53 +449,70 @@
     screen = name;
     $$('.screen').forEach((s) => { s.hidden = s.id !== 'screen-' + name; });
     $('#topbar').classList.toggle('in-game', name === 'play');
-    window.scrollTo(0, 0);
+    if (window.scrollTo) try { window.scrollTo(0, 0); } catch (e) { /* jsdom */ }
+  }
+
+  function useSeason(sid) {
+    SEA = seasonById(sid);
+    ITEMS = SEA.items || {};
   }
 
   function setupLevel(n) {
-    L = LEVELS[n - 1];
+    useSeason(S.season);
+    L = SEA.levels[n - 1];
     S.level = n; S.flags = {}; S.inv = []; S.hintIdx = 0;
     selected = null; pendingWin = false; queue = []; current = null;
     if (L.init) L.init(g);
-    meta.maxLevel = Math.max(meta.maxLevel, n);
+    meta.progress[S.season] = Math.max(progressOf(S.season), n);
+    meta.last = S.season;
     save();
   }
 
+  function stars(n) {
+    return '<span class="st on">★</span>'.repeat(n) + '<span class="st">★</span>'.repeat(Math.max(0, 5 - n));
+  }
+
   function showIntro() {
-    L = LEVELS[S.level - 1];
-    $('#introNum').textContent = `TRÁMITE ${S.level} / ${LEVELS.length}`;
+    useSeason(S.season);
+    L = SEA.levels[S.level - 1];
+    $('#introNum').textContent = `TEMPORADA ${S.season} · TRÁMITE ${S.level} / ${SEA.levels.length}`;
     $('#introTitle').textContent = L.title;
     $('#introPlace').textContent = L.place;
-    $('#introStars').innerHTML = 'Dificultad: ' + '<span class="st on">★</span>'.repeat(L.stars) + '<span class="st">★</span>'.repeat(5 - L.stars);
+    $('#introStars').innerHTML = `Dificultad: ${stars(L.stars)} <span class="badge">${SEA.badge || ''}</span>`;
     $('#introText').innerHTML = L.intro;
     show('intro');
   }
 
   function enterPlay(resumed) {
-    L = LEVELS[S.level - 1];
+    useSeason(S.season);
+    L = SEA.levels[S.level - 1];
     selected = null; pendingWin = false; queue = []; current = null;
+    meta.last = S.season;
     show('play');
     refresh();
-    if (resumed) say(`Expediente recuperado. Continúas en el trámite ${S.level}: «${L.title}».`, '💾 Partida cargada');
+    if (resumed) say(`Expediente recuperado. Temporada ${S.season}, trámite ${S.level}: «${L.title}».`, '💾 Partida cargada');
   }
 
   function finishLevel() {
     if (!pendingWin) return;
     pendingWin = false;
     const done = S.level;
-    const doneL = LEVELS[done - 1];
+    const doneL = SEA.levels[done - 1];
     sfx('stamp');
-    if (done >= LEVELS.length) {
-      S.finished = true; meta.finished = true;
+    if (done >= SEA.levels.length) {
+      S.finished = true; meta.done[S.season] = true;
+      if (seasonById(S.season + 1)) meta.progress[S.season + 1] = Math.max(progressOf(S.season + 1), 1);
       save();
       showEnding();
       return;
     }
     setupLevel(done + 1);
-    $('#resNum').textContent = `${String(done).padStart(3, '0')}/2026`;
+    $('#resNum').textContent = `T${S.season}-${String(done).padStart(3, '0')}/2026`;
     $('#winTitle').textContent = `Trámite ${done} completado: «${doneL.title}»`;
     $('#winText').innerHTML = doneL.outro;
-    $('#winCode').textContent = makeCode(S.level, S.totalHints);
+    $('#winCode').textContent = makeCode(S.season, S.level, S.totalHints);
+    $('#winCopy').textContent = '📋 Copiar';
+    renderDonate($('#winDonate'), 'small');
     show('win');
     const st = $('#screen-win .stamp');
     st.classList.remove('go'); void st.offsetWidth; st.classList.add('go');
@@ -438,8 +521,20 @@
   function showEnding() {
     const h = S.totalHints;
     const rank = h === 0 ? 'Funcionario/a de carrera con plaza fija' : h <= 5 ? 'Gestor/a administrativo/a colegiado/a' : h <= 15 ? 'Ciudadano/a resiliente' : 'Ciudadano/a con cita previa para 2031';
-    $('#endStats').innerHTML = `<div><span>Tiempo total</span><b>${fmtTime(S.elapsed)}</b></div><div><span>Pistas pedidas</span><b>${h}</b></div><div><span>Categoría</span><b>${rank}</b></div>`;
+    const end = SEA.ending || {};
+    $('#endHead').innerHTML = end.head || `TEMPORADA ${S.season}<br><small>${SEA.title}</small>`;
+    $('#endTitle').textContent = end.title || `¡Temporada ${S.season} completada!`;
+    $('#endBody').innerHTML = end.html || '';
+    $('#endStamp').textContent = end.stamp || 'TEMPORADA SUPERADA';
+    $('#endStats').innerHTML = `<div><span>Tiempo</span><b>${fmtTime(S.elapsed)}</b></div><div><span>Pistas pedidas</span><b>${h}</b></div><div><span>Categoría</span><b>${rank}</b></div>`;
+    const nxt = seasonById(S.season + 1);
+    const bn = $('#btnEndNext');
+    bn.hidden = !nxt;
+    if (nxt) bn.innerHTML = `Temporada ${nxt.id}: ${nxt.title} ▶`;
+    renderDonate($('#endDonate'), 'big');
     show('end');
+    const st = $('#endStamp');
+    st.classList.remove('go'); void st.offsetWidth; st.classList.add('go');
     sfx('win');
   }
 
@@ -448,25 +543,85 @@
     return (hh ? hh + ':' : '') + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
   }
 
+  // ---------------- Apoyo (Stripe) ----------------
+  const donation = CONFIG.donation || {};
+  const fixedLinks = () => Object.entries(donation.fixed || {}).filter(([, u]) => u);
+  const donationEnabled = () => !!donation.url || fixedLinks().length > 0;
+
+  function renderDonate(box, size) {
+    if (!box) return;
+    if (!donationEnabled()) { box.hidden = true; return; }
+    box.hidden = false;
+    box.innerHTML = size === 'big'
+      ? `<p>¿Te has reído un rato? Este juego es gratuito y sin anuncios. Si quieres agradecerlo, puedes invitarme a un café.</p><button class="btn donate-btn">☕ Apoyar el juego</button>`
+      : '<button class="btn donate-btn small-donate">☕ ¿Te gusta el juego? Apóyalo</button>';
+    $('.donate-btn', box).onclick = () => { sfx('click'); donateModal(); };
+  }
+
+  function donateModal() {
+    const fixed = fixedLinks();
+    const link = (u, label, cls) => `<a class="btn ${cls || ''}" href="${u}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    modal({
+      title: '☕ Apoya «Vuelva usted mañana»',
+      html: `<p>Este juego es <b>gratuito, sin anuncios y sin registro</b>. Si te ha sacado alguna sonrisa, puedes agradecerlo con una aportación voluntaria. Cualquier importe ayuda a crear nuevas temporadas.</p>
+        ${fixed.length ? `<div class="donate-grid">${fixed.map(([amt, u]) => link(u, `${amt} €`)).join('')}</div>` : ''}
+        ${donation.url ? `<div class="donate-free">${link(donation.url, fixed.length ? '💶 Otro importe' : '💶 Elegir importe (desde 1 €)', 'primary big')}</div>` : ''}
+        <p class="small">El pago se realiza de forma segura en Stripe, en una ventana nueva. No se guarda ningún dato de pago en este juego. Sugerencia: entre 1 y 10 €… o lo que tú quieras.</p>`,
+      buttons: [{ label: 'Ahora no' }],
+    });
+  }
+
   // ---------------- Menú ----------------
   function renderMenu() {
-    const saved = readLS(SAVE_KEY);
     const cont = $('#btnContinue');
-    if (saved && saved.level && !saved.finished) {
+    const last = meta.last && readSave(meta.last);
+    if (last && !last.finished) {
+      const sea = seasonById(last.season || meta.last);
       cont.hidden = false;
-      cont.innerHTML = `▶ Continuar partida <small>Trámite ${saved.level}: ${LEVELS[saved.level - 1].title}</small>`;
+      cont.innerHTML = `▶ Continuar partida <small>Temporada ${sea.id} · Trámite ${last.level}: ${sea.levels[last.level - 1].title}</small>`;
     } else cont.hidden = true;
 
+    const list = $('#seasonList');
+    list.innerHTML = '';
+    SEASONS.forEach((sea) => {
+      const open = isUnlocked(sea.id);
+      const prog = meta.done[sea.id] ? sea.levels.length : Math.max(0, progressOf(sea.id) - 1);
+      const b = el('button', `season-card ${open ? 'open' : 'locked'} ${meta.done[sea.id] ? 'done' : ''}`,
+        `<span class="sc-emoji">${open ? sea.emoji || '📂' : '🔒'}</span>
+         <span class="sc-main"><span class="sc-num">TEMPORADA ${sea.id} · <i>${sea.badge || ''}</i></span>
+         <span class="sc-title">${sea.title}</span>
+         <span class="sc-sub">${open ? sea.subtitle || '' : `Supera la temporada ${sea.id - 1} para desbloquearla`}</span>
+         <span class="sc-bar"><span style="width:${(prog / sea.levels.length) * 100}%"></span></span></span>
+         <span class="sc-prog">${meta.done[sea.id] ? '✔' : `${prog}/${sea.levels.length}`}</span>`);
+      b.disabled = !open;
+      b.onclick = () => { sfx('click'); openSeason(sea.id); };
+      list.append(b);
+    });
+    renderDonate($('#menuDonate'), 'small');
+  }
+
+  function openSeason(sid) {
+    viewSeason = sid;
+    const sea = seasonById(sid);
+    $('#seaNum').textContent = `TEMPORADA ${sid} · ${sea.badge || ''}`;
+    $('#seaTitle').innerHTML = `${sea.emoji || ''} ${sea.title}`;
+    $('#seaIntro').innerHTML = sea.intro || '';
+    const saved = readSave(sid);
+    const play = $('#btnSeaPlay');
+    if (saved && !saved.finished) play.innerHTML = `▶ Continuar <small>Trámite ${saved.level}: ${sea.levels[saved.level - 1].title}</small>`;
+    else play.innerHTML = meta.done[sid] ? '🔁 Volver a jugar la temporada' : '▶ Empezar temporada';
     const grid = $('#levelGrid');
     grid.innerHTML = '';
-    LEVELS.forEach((lv, i) => {
+    const maxL = meta.done[sid] ? sea.levels.length : progressOf(sid);
+    sea.levels.forEach((lv, i) => {
       const n = i + 1;
-      const open = n <= meta.maxLevel;
+      const open = n <= maxL;
       const b = el('button', 'lvl ' + (open ? 'open' : 'locked'), `<span class="lvl-n">${n}</span><span class="lvl-t">${open ? lv.title : '🔒'}</span>`);
       b.disabled = !open;
-      b.onclick = () => startFromLevel(n);
+      b.onclick = () => startFromLevel(sid, n);
       grid.append(b);
     });
+    show('season');
   }
 
   function confirmModal(title, text, yes, onYes) {
@@ -476,32 +631,34 @@
     });
   }
 
-  function newGame() {
-    const saved = readLS(SAVE_KEY);
-    const go = () => { S = newState(1); setupLevel(1); showIntro(); };
-    if (saved && saved.level > 1 && !saved.finished) {
-      confirmModal('¿Empezar de cero?', `Tienes una partida guardada en el trámite ${saved.level}. Si empiezas de nuevo se sobrescribirá (los trámites desbloqueados se mantienen en el menú).`, 'Empezar de cero', go);
-    } else go();
+  function startSeasonLevel(sid, n, keepStats) {
+    const prev = readSave(sid);
+    S = newState(sid, n);
+    if (keepStats && prev) { S.totalHints = prev.totalHints || 0; S.elapsed = prev.elapsed || 0; }
+    setupLevel(n);
+    showIntro();
   }
 
-  function continueGame() {
-    const saved = readLS(SAVE_KEY);
+  function seasonPlay() {
+    const sid = viewSeason;
+    const saved = readSave(sid);
+    if (saved && !saved.finished) return continueGame(sid);
+    startSeasonLevel(sid, 1, false);
+  }
+
+  function continueGame(sid) {
+    const saved = readSave(sid || meta.last);
     if (!saved) return;
-    S = Object.assign(newState(saved.level), saved);
+    S = Object.assign(newState(saved.season || sid, saved.level), saved);
     enterPlay(true);
   }
 
-  function startFromLevel(n) {
-    const saved = readLS(SAVE_KEY);
-    const go = () => {
-      const hints = saved ? saved.totalHints || 0 : 0;
-      const el2 = saved ? saved.elapsed || 0 : 0;
-      S = newState(n); S.totalHints = hints; S.elapsed = el2;
-      setupLevel(n); showIntro();
-    };
-    if (saved && !saved.finished && saved.level === n) return continueGame();
+  function startFromLevel(sid, n) {
+    const saved = readSave(sid);
+    if (saved && !saved.finished && saved.level === n) return continueGame(sid);
+    const go = () => startSeasonLevel(sid, n, true);
     if (saved && !saved.finished && saved.level !== n) {
-      confirmModal('¿Cambiar de trámite?', `Tu partida guardada está en el trámite ${saved.level}. ¿Quieres empezar el trámite ${n} desde el principio? (Podrás volver a cualquier trámite desbloqueado desde el menú.)`, `Ir al trámite ${n}`, go);
+      confirmModal('¿Cambiar de trámite?', `Tu partida de esta temporada está en el trámite ${saved.level}. ¿Quieres empezar el trámite ${n} desde el principio? (Podrás volver a cualquier trámite desbloqueado.)`, `Ir al trámite ${n}`, go);
     } else go();
   }
 
@@ -509,13 +666,14 @@
     modal({
       title: '📂 Cargar expediente',
       html: `<p>Introduce tu <b>código de expediente</b> (lo obtienes con el botón 💾 Guardar durante la partida o al completar un trámite).</p>
-        <div class="kp-text"><input type="text" id="codeIn" placeholder="EXP-XXXX-X" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
+        <div class="kp-text"><input type="text" id="codeIn" placeholder="EXP-XXXXX-X" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
         <div class="kp-msg" id="codeMsg"></div>`,
       buttons: [{ label: 'Cancelar' }, { label: 'Cargar', cls: 'primary', onClick(close, body) {
         const r = readCode($('#codeIn', body).value);
         if (!r) { sfx('bad'); $('#codeMsg', body).textContent = 'Código no válido. Revíselo y preséntelo de nuevo (por triplicado).'; return false; }
         setTimeout(() => {
-          S = newState(r.level); S.totalHints = r.hints;
+          meta.progress[r.season] = Math.max(progressOf(r.season), r.level);
+          S = newState(r.season, r.level); S.totalHints = r.hints;
           setupLevel(r.level);
           showIntro();
         }, 0);
@@ -526,25 +684,22 @@
     i.onkeydown = (e) => { if (e.key === 'Enter') $('#modal .modal-foot .primary').click(); };
   }
 
+  function copyText(text, btn) {
+    const done = () => { btn.textContent = '✔ Copiado'; sfx('ok'); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => {});
+  }
+
   function saveModal() {
     save();
-    const code = makeCode(S.level, S.totalHints);
+    const code = makeCode(S.season, S.level, S.totalHints);
     modal({
       title: '💾 Partida guardada',
       html: `<p>✔ Tu partida se ha guardado <b>en este navegador</b>. Además se guarda sola con cada acción: puedes cerrar la pestaña cuando quieras y pulsar <b>Continuar</b> al volver.</p>
         <p>Para seguir en <b>otro dispositivo o navegador</b>, apunta tu código de expediente:</p>
         <div class="code-box"><code id="saveCode">${code}</code><button class="btn" id="copyCode">📋 Copiar</button></div>
-        <p class="small">El código te lleva al inicio del trámite ${S.level} («${L.title}»).</p>`,
+        <p class="small">El código te lleva al inicio del trámite ${S.level} de la temporada ${S.season} («${L.title}»).</p>`,
     });
-    $('#copyCode').onclick = () => {
-      const done = () => { $('#copyCode').textContent = '✔ Copiado'; sfx('ok'); };
-      if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, () => selectCode());
-      else selectCode();
-    };
-    function selectCode() {
-      const r = document.createRange(); r.selectNodeContents($('#saveCode'));
-      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-    }
+    $('#copyCode').onclick = () => copyText(code, $('#copyCode'));
   }
 
   function hintModal() {
@@ -570,35 +725,37 @@
           <li>🔍 <b>Haz clic</b> en los objetos y personajes de la sala para examinarlos o hablar con ellos.</li>
           <li>🎒 Lo que recojas aparece en tu <b>inventario</b>. Haz clic en un objeto para seleccionarlo (y leer su descripción).</li>
           <li>🤝 Con un objeto seleccionado, haz clic en algo de la sala para <b>usarlo ahí</b>, o en otro objeto del inventario para <b>combinarlos</b>. Vuelve a pulsarlo para soltarlo.</li>
-          <li>💡 Si te atascas, pide una <b>pista</b>. La tercera pista de cada trámite es la solución.</li>
+          <li>💡 Si te atascas, pide una <b>pista</b>. La última pista de cada trámite es la solución.</li>
+          <li>📚 El juego se divide en <b>temporadas</b> de 10 trámites. Cada temporada es más difícil que la anterior y se desbloquea al superar la previa.</li>
           <li>💾 La partida se <b>guarda sola</b> en este navegador. Con el botón Guardar obtienes un <b>código de expediente</b> para continuar en otro dispositivo.</li>
         </ul>
-        <p>Son 10 trámites, cada uno más difícil que el anterior. Buena suerte. La va a necesitar.</p></div>`,
+        <p>Buena suerte. La va a necesitar.</p></div>`,
     });
   }
 
   // ---------------- Arranque ----------------
   function bind() {
-    $('#btnNew').onclick = () => { sfx('click'); newGame(); };
-    $('#btnContinue').onclick = () => { sfx('click'); continueGame(); };
+    $('#btnContinue').onclick = () => { sfx('click'); continueGame(meta.last); };
     $('#btnCode').onclick = () => { sfx('click'); loadCodeModal(); };
     $('#btnHelp').onclick = () => { sfx('click'); helpModal(); };
+    $('#btnSeaPlay').onclick = () => { sfx('click'); seasonPlay(); };
+    $('#btnSeaBack').onclick = () => { sfx('click'); renderMenu(); show('menu'); };
     $('#btnStart').onclick = () => { sfx('click'); enterPlay(false); };
     $('#btnIntroMenu').onclick = () => { sfx('click'); renderMenu(); show('menu'); };
     $('#btnNext').onclick = () => { sfx('click'); showIntro(); };
     $('#btnWinMenu').onclick = () => { sfx('click'); renderMenu(); show('menu'); };
     $('#btnEndMenu').onclick = () => { renderMenu(); show('menu'); };
-    $('#btnEndAgain').onclick = () => { S = newState(1); setupLevel(1); showIntro(); };
+    $('#btnEndNext').onclick = () => { sfx('click'); startSeasonLevel(S.season + 1, 1, false); };
     $('#btnHint').onclick = () => { sfx('click'); hintModal(); };
     $('#btnSave').onclick = () => { sfx('click'); saveModal(); };
     $('#btnMenu').onclick = () => { sfx('click'); save(); renderMenu(); show('menu'); };
     $('#btnHelp2').onclick = () => { sfx('click'); helpModal(); };
     $('#btnMute').onclick = () => { meta.muted = !meta.muted; save(); renderTop(); sfx('click'); };
     $('#dialog').onclick = () => { if (queue.length) { sfx('click'); nextMsg(); } };
-    $('#winCopy').onclick = () => {
-      const c = $('#winCode').textContent;
-      if (navigator.clipboard) navigator.clipboard.writeText(c).then(() => { $('#winCopy').textContent = '✔ Copiado'; });
-    };
+    $('#winCopy').onclick = () => copyText($('#winCode').textContent, $('#winCopy'));
+    const td = $('#btnDonateTop');
+    if (donationEnabled()) td.onclick = () => { sfx('click'); donateModal(); };
+    else td.hidden = true;
 
     document.addEventListener('keydown', (e) => {
       const m = $('#modal');
@@ -629,10 +786,18 @@
 
   // Gancho de depuración / pruebas automáticas
   window.RoomEscape = {
-    g, state: () => S, level: () => L, makeCode, readCode,
-    click: (id) => { const hs = L.hotspots.find((h) => h.id === id); if (hs) clickHotspot(hs); },
-    item: (id) => clickItem(id),
+    g, state: () => S, level: () => L, season: () => SEA, items: () => ITEMS, makeCode, readCode, meta: () => meta,
+    start: (sid, n) => { S = newState(sid, n); setupLevel(n); enterPlay(false); },
+    click: (id) => {
+      const hs = L.hotspots.find((h) => h.id === id);
+      if (!hs) throw new Error(`Hotspot inexistente: ${id}`);
+      if (hs.show && !hs.show(g)) throw new Error(`Hotspot oculto: ${id}`);
+      clickHotspot(hs);
+    },
+    item: (id) => { if (!S.inv.includes(id)) throw new Error(`No tienes el objeto: ${id}`); clickItem(id); },
     finish: () => finishLevel(),
     pending: () => pendingWin,
+    screen: () => screen,
+    openSeason, renderMenu, show,
   };
 })();

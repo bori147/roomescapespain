@@ -1,5 +1,5 @@
 /* ==========================================================
-   VUELVA USTED MAÑANA — Definición de objetos y niveles
+   VUELVA USTED MAÑANA — Temporada 1: «El DNI»
    Sátira. Todos los personajes, partidos y organismos son ficticios.
    ========================================================== */
 (function () {
@@ -19,7 +19,7 @@
   // =========================================================
   //  OBJETOS
   // =========================================================
-  window.ITEMS = {
+  const ITEMS = {
     // Nivel 1
     justificante: { emoji: '🎫', name: 'Justificante de cita', desc: 'Justificante de cita previa: hoy, 8:02, mesa 3. Lo sostienes como si fuera un décimo premiado.' },
     // Nivel 2
@@ -460,7 +460,7 @@
   // =========================================================
   //  NIVELES
   // =========================================================
-  window.LEVELS = [
+  const LEVELS = [
     // ------------------------------------------------------ 1
     {
       title: 'Cita previa',
@@ -1163,6 +1163,29 @@
     g.say('—Declaración responsable... tasa pagada... solicitud... ¡PAM! Sellada. Ahora a Registro. Y no me mire así, que yo solo sello.', 'Sellos');
   }
 
-  // Utilidades expuestas para pruebas
-  window.__LEVEL_UTILS = { caesar, CIPHER, PLAIN, norm };
+  window.registerSeason({
+    id: 1,
+    title: 'El DNI',
+    subtitle: 'Renovar el carné. Qué podría salir mal.',
+    badge: 'Iniciación',
+    emoji: '🪪',
+    intro: 'Tu DNI caduca mañana. Solo tienes que renovarlo. Diez trámites te separan de la libertad.',
+    items: ITEMS,
+    levels: LEVELS,
+    ending: {
+      head: 'REINO DE LA BUROCRACIA<br><small>Documento Nacional de Identidad</small>',
+      title: '¡Has escapado de la burocracia!',
+      html: `<div class="dni-card">
+          <div class="dni-photo">🙂</div>
+          <div class="dni-data">
+            <div><small>APELLIDOS</small><b>CIUDADANO/A PACIENTE</b></div>
+            <div><small>NOMBRE</small><b>SUFRIDO/A</b></div>
+            <div><small>VÁLIDO HASTA</small><b>01 10 2036</b></div>
+          </div>
+        </div>
+        <p>Tras diez trámites, un gobierno, una comisión de investigación y un decreto publicado a las 23:59, tienes tu DNI nuevo.</p>
+        <p><b>Caduca en 2036.</b> Te recomendamos pedir cita previa ya.</p>`,
+      stamp: 'EXPEDIENTE CERRADO',
+    },
+  });
 })();
