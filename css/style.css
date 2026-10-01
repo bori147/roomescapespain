@@ -551,3 +551,29 @@ main { padding: 12px 16px 28px; }
 .deco-flag-eu { background: #1f3f9a; box-shadow: 0 .3cqw .6cqw rgba(0, 0, 0, .3); border-radius: .2cqw; }
 .deco-flag-eu::after { content: ''; position: absolute; inset: 18% 30%; border: .45cqw dotted var(--yellow); border-radius: 50%; }
 .deco-box { background: var(--c, #6d5238); border-radius: .4cqw; box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .3); }
+
+/* ---------------- Botón Ko-fi ---------------- */
+:root { --kofi: #72a4f2; }
+.kofi-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--kofi); color: #fff; text-decoration: none;
+  font: 700 15px/1 var(--ui); padding: 10px 16px; border-radius: 999px;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .25), 0 6px 16px rgba(0, 0, 0, .25);
+  transition: transform .12s, filter .12s; white-space: nowrap;
+}
+.kofi-btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.kofi-btn:active { transform: translateY(1px); }
+.kofi-btn.big { font-size: 18px; padding: 13px 22px; }
+.kofi-cup {
+  font-family: var(--emoji); font-size: 1.25em; line-height: 1;
+  background: #fff; border-radius: 50%; width: 1.7em; height: 1.7em; display: grid; place-items: center;
+}
+.kofi-float {
+  position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 40; animation: kofi-in .5s .6s both;
+}
+@keyframes kofi-in { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+main { padding-bottom: 84px; }
+@media (max-width: 560px) {
+  .kofi-float { font-size: 13px; padding: 8px 12px; gap: 6px; right: 12px; bottom: 12px; }
+}

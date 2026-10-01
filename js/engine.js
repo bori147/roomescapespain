@@ -512,7 +512,6 @@
     $('#winText').innerHTML = doneL.outro;
     $('#winCode').textContent = makeCode(S.season, S.level, S.totalHints);
     $('#winCopy').textContent = '📋 Copiar';
-    renderDonate($('#winDonate'), 'small');
     show('win');
     const st = $('#screen-win .stamp');
     st.classList.remove('go'); void st.offsetWidth; st.classList.add('go');
@@ -543,32 +542,22 @@
     return (hh ? hh + ':' : '') + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
   }
 
-  // ---------------- Apoyo (Stripe) ----------------
+  // ---------------- Apoyo (Ko-fi) ----------------
   const donation = CONFIG.donation || {};
-  const fixedLinks = () => Object.entries(donation.fixed || {}).filter(([, u]) => u);
-  const donationEnabled = () => !!donation.url || fixedLinks().length > 0;
+  const donationUrl = donation.url || (donation.kofi ? `https://ko-fi.com/${encodeURIComponent(donation.kofi)}` : '');
+  const donationText = donation.text || '¡Invítame a un café!';
+
+  function kofiLink(cls, label) {
+    return `<a class="kofi-btn ${cls || ''}" href="${donationUrl}" target="_blank" rel="noopener noreferrer"><span class="kofi-cup">☕</span><span class="kofi-label">${label || donationText}</span></a>`;
+  }
 
   function renderDonate(box, size) {
     if (!box) return;
-    if (!donationEnabled()) { box.hidden = true; return; }
+    if (!donationUrl) { box.hidden = true; return; }
     box.hidden = false;
     box.innerHTML = size === 'big'
-      ? `<p>¿Te has reído un rato? Este juego es gratuito y sin anuncios. Si quieres agradecerlo, puedes invitarme a un café.</p><button class="btn donate-btn">☕ Apoyar el juego</button>`
-      : '<button class="btn donate-btn small-donate">☕ ¿Te gusta el juego? Apóyalo</button>';
-    $('.donate-btn', box).onclick = () => { sfx('click'); donateModal(); };
-  }
-
-  function donateModal() {
-    const fixed = fixedLinks();
-    const link = (u, label, cls) => `<a class="btn ${cls || ''}" href="${u}" target="_blank" rel="noopener noreferrer">${label}</a>`;
-    modal({
-      title: '☕ Apoya «Vuelva usted mañana»',
-      html: `<p>Este juego es <b>gratuito, sin anuncios y sin registro</b>. Si te ha sacado alguna sonrisa, puedes agradecerlo con una aportación voluntaria. Cualquier importe ayuda a crear nuevas temporadas.</p>
-        ${fixed.length ? `<div class="donate-grid">${fixed.map(([amt, u]) => link(u, `${amt} €`)).join('')}</div>` : ''}
-        ${donation.url ? `<div class="donate-free">${link(donation.url, fixed.length ? '💶 Otro importe' : '💶 Elegir importe (desde 1 €)', 'primary big')}</div>` : ''}
-        <p class="small">El pago se realiza de forma segura en Stripe, en una ventana nueva. No se guarda ningún dato de pago en este juego. Sugerencia: entre 1 y 10 €… o lo que tú quieras.</p>`,
-      buttons: [{ label: 'Ahora no' }],
-    });
+      ? `<p>¿Te has reído un rato? Este juego es gratuito, sin anuncios y sin registro. Si quieres agradecerlo, puedes invitarme a un café (desde 1 €, o lo que tú quieras).</p>${kofiLink('big')}`
+      : kofiLink();
   }
 
   // ---------------- Menú ----------------
@@ -597,7 +586,6 @@
       b.onclick = () => { sfx('click'); openSeason(sea.id); };
       list.append(b);
     });
-    renderDonate($('#menuDonate'), 'small');
   }
 
   function openSeason(sid) {
@@ -753,9 +741,16 @@
     $('#btnMute').onclick = () => { meta.muted = !meta.muted; save(); renderTop(); sfx('click'); };
     $('#dialog').onclick = () => { if (queue.length) { sfx('click'); nextMsg(); } };
     $('#winCopy').onclick = () => copyText($('#winCode').textContent, $('#winCopy'));
-    const td = $('#btnDonateTop');
-    if (donationEnabled()) td.onclick = () => { sfx('click'); donateModal(); };
-    else td.hidden = true;
+    // Botón flotante de apoyo, visible en todas las pantallas
+    const kf = $('#kofiFloat');
+    if (donationUrl) {
+      kf.href = donationUrl;
+      kf.title = donationText;
+      kf.setAttribute('aria-label', donationText);
+      $('.kofi-label', kf).textContent = donationText;
+      if (donation.color) document.documentElement.style.setProperty('--kofi', donation.color);
+      kf.hidden = false;
+    }
 
     document.addEventListener('keydown', (e) => {
       const m = $('#modal');

@@ -28,7 +28,6 @@
       <button class="tb" id="btnMute" title="Sonido">🔊</button>
       <button class="tb" id="btnMenu" title="Menú principal">☰<span>Menú</span></button>
     </nav>
-    <button class="tb tb-donate" id="btnDonateTop" title="Apoya el juego">☕<span>Apoyar</span></button>
   </header>
 
   <main>
@@ -48,7 +47,6 @@
           <button class="btn" id="btnCode">📂 Tengo un código de expediente</button>
           <button class="btn" id="btnHelp">📘 Cómo jugar</button>
         </div>
-        <div class="donate-box" id="menuDonate" hidden></div>
         <p class="disclaimer">Sátira. Todos los personajes, partidos y organismos son ficticios. Cualquier parecido con la realidad es pura coincidencia (o no).</p>
       </div>
     </section>
@@ -106,7 +104,6 @@
         <div class="stamp">APROBADO</div>
         <div class="code-box"><span class="small">Tu código de expediente:</span> <code id="winCode"></code><button class="btn" id="winCopy">📋 Copiar</button></div>
         <p class="small">La partida se ha guardado automáticamente. Puedes salir y continuar cuando quieras.</p>
-        <div class="donate-box inline" id="winDonate" hidden></div>
         <div class="row-actions">
           <button class="btn" id="btnWinMenu">☰ Menú</button>
           <button class="btn primary big" id="btnNext">Siguiente trámite ▶</button>
@@ -130,6 +127,8 @@
       </div>
     </section>
   </main>
+
+  <a id="kofiFloat" class="kofi-btn kofi-float" href="#" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup">☕</span><span class="kofi-label"></span></a>
 
   <div id="modal" class="modal" hidden></div>
   <div id="toast" class="toast" role="status"></div>

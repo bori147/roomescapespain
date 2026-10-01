@@ -3,19 +3,12 @@
    ========================================================== */
 window.GAME_CONFIG = {
   donation: {
-    // Enlace de pago de Stripe (Payment Link) con «el cliente elige el importe».
-    // Pega aquí tu enlace, p. ej.: 'https://buy.stripe.com/xxxxxxxxxxxx'
-    // Mientras esté vacío, los botones de apoyo no se muestran.
+    // Usuario de Ko-fi: el botón enlaza a https://ko-fi.com/<kofi>
+    kofi: 'R7H627ZTOM',
+    // Texto y color del botón (los mismos que el widget oficial de Ko-fi)
+    text: '¡Invítame a un café!',
+    color: '#72a4f2',
+    // Opcional: cualquier otro enlace de pago (si se rellena, sustituye a Ko-fi)
     url: '',
-
-    // Opcional: enlaces de importe fijo. Si los rellenas, aparecerán como botones
-    // rápidos (1 €, 3 €, 5 €, 10 €). Si los dejas vacíos, solo se muestra el botón
-    // de «importe libre», que usa `url`.
-    fixed: {
-      1: '',
-      3: '',
-      5: '',
-      10: '',
-    },
   },
 };

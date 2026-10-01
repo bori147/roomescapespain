@@ -33,26 +33,22 @@ y se desbloquea al superar la previa.
 - Desde el menú puedes volver a **cualquier trámite ya desbloqueado** de cualquier temporada.
 - El botón **💾 Guardar** te da un **código de expediente** (p. ej. `EXP-0A1B2-C`) para continuar en otro dispositivo desde *«Tengo un código de expediente»*. Los códigos antiguos de 4 cifras siguen funcionando (temporada 1).
 
-## Botón de apoyo (Stripe)
+## Botón de apoyo (Ko-fi)
 
-El juego muestra un botón **☕ Apoyar** que abre un enlace de pago de Stripe con importe libre.
-Mientras no haya enlace configurado, el botón no aparece.
+Un botón flotante **☕ ¡Invítame a un café!** está siempre visible en la esquina inferior derecha
+y enlaza a [ko-fi.com/R7H627ZTOM](https://ko-fi.com/R7H627ZTOM), donde se paga con tarjeta (Stripe) o PayPal.
+Al terminar cada temporada aparece además un mensaje de agradecimiento con el mismo botón.
 
-1. En el panel de Stripe ve a **Enlaces de pago → Crear enlace de pago**.
-2. Crea un producto, por ejemplo «Apoyo a Vuelva usted mañana».
-3. En el precio elige **«Los clientes eligen el importe»** (*Customers choose what to pay*), en **EUR**,
-   con **importe mínimo 1 €**, importe sugerido 3 € y **sin máximo**.
-4. (Opcional) En *Después del pago*, redirige a `https://bori147.github.io/roomescapespain/`.
-5. Copia el enlace (`https://buy.stripe.com/...`) y pégalo en `js/config.js`:
+Se configura en `js/config.js`:
 
 ```js
 donation: {
-  url: 'https://buy.stripe.com/tu-enlace',
-  fixed: { 1: '', 3: '', 5: '', 10: '' },  // opcional: enlaces de importe fijo
+  kofi: 'R7H627ZTOM',            // usuario de Ko-fi
+  text: '¡Invítame a un café!',  // texto del botón
+  color: '#72a4f2',              // color del botón
+  url: '',                       // opcional: otro enlace de pago que sustituye a Ko-fi
 },
 ```
-
-Si además creas enlaces de importe fijo (1, 3, 5 y 10 €), aparecerán como botones rápidos junto al de importe libre.
 
 ## Desarrollo
 
@@ -61,7 +57,7 @@ HTML, CSS y JavaScript puros, sin proceso de compilación. Para jugar en local b
 ```
 index.html            pantallas
 css/style.css         estilos
-js/config.js          configuración editable (enlace de Stripe)
+js/config.js          configuración editable (botón de Ko-fi)
 js/core.js            registro de temporadas y utilidades
 js/seasons/sN.js      cada temporada (objetos, puzles y 10 niveles)
 js/engine.js          motor: escenas, inventario, diálogos, guardado, menús
