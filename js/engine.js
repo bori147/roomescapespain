@@ -462,10 +462,18 @@
     L = SEA.levels[n - 1];
     S.level = n; S.flags = {}; S.inv = []; S.hintIdx = 0;
     selected = null; pendingWin = false; queue = []; current = null;
+    // Objetos que el jugador trae de trámites anteriores
+    for (const id of L.carry || []) if (ITEMS[id] && !S.inv.includes(id)) S.inv.push(id);
     if (L.init) L.init(g);
     meta.progress[S.season] = Math.max(progressOf(S.season), n);
     meta.last = S.season;
     save();
+  }
+
+  function carryHtml(lv, title) {
+    const list = (lv.carry || []).filter((id) => ITEMS[id]);
+    if (!list.length) return '';
+    return `<div class="carry"><span class="carry-t">🎒 ${title}:</span> ${list.map((id) => `<span class="carry-i">${ITEMS[id].emoji} ${ITEMS[id].name}</span>`).join('')}</div>`;
   }
 
   function stars(n) {
@@ -480,6 +488,7 @@
     $('#introPlace').textContent = L.place;
     $('#introStars').innerHTML = `Dificultad: ${stars(L.stars)} <span class="badge">${SEA.badge || ''}</span>`;
     $('#introText').innerHTML = L.intro;
+    $('#introCarry').innerHTML = carryHtml(L, 'Traes contigo');
     show('intro');
   }
 
@@ -510,6 +519,7 @@
     $('#resNum').textContent = `T${S.season}-${String(done).padStart(3, '0')}/2026`;
     $('#winTitle').textContent = `Trámite ${done} completado: «${doneL.title}»`;
     $('#winText').innerHTML = doneL.outro;
+    $('#winCarry').innerHTML = carryHtml(L, 'Te llevas al siguiente trámite');
     $('#winCode').textContent = makeCode(S.season, S.level, S.totalHints);
     $('#winCopy').textContent = '📋 Copiar';
     show('win');

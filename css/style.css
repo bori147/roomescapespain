@@ -577,3 +577,8 @@ main { padding-bottom: 84px; }
 @media (max-width: 560px) {
   .kofi-float { font-size: 13px; padding: 8px 12px; gap: 6px; right: 12px; bottom: 12px; }
 }
+
+/* ---------------- Objetos que pasan de un trámite a otro ---------------- */
+.carry { margin-top: 16px; padding: 10px 12px; background: #fff; border: 2px dashed var(--ink); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; font-size: 14px; }
+.carry-t { font-weight: 800; }
+.carry-i { background: var(--paper2); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }

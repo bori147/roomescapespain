@@ -66,6 +66,8 @@ function staticChecks(sea, sid) {
       if (!h.sign && !h.emoji) errs.push(`${tag}: hotspot ${h.id} sin emoji ni sign`);
       for (const k of Object.keys(h.use || {})) if (k !== '*' && !items[k]) errs.push(`${tag}: hotspot ${h.id} usa objeto inexistente «${k}»`);
     }
+    for (const id of L.carry || []) if (!items[id]) errs.push(`${tag}: carry con objeto inexistente «${id}»`);
+    if (sid >= 2 && !(L.carry && L.carry.length)) errs.push(`${tag}: falta «carry» (objetos que trae del trámite anterior / temporada anterior)`);
     for (const k of Object.keys(L.combos || {})) {
       const parts = k.split('+');
       if (parts.length !== 2) { errs.push(`${tag}: combo mal formado «${k}»`); continue; }
@@ -107,8 +109,9 @@ function helpers(w, R) {
     flag: (k) => R.state().flags[k],
     dialog: () => ($('#dialog') ? $('#dialog').textContent.trim() : ''),
     click: (id) => { if (modalOpen()) throw new Error(`click(${id}): hay un modal abierto; ciérralo antes con h.close()`); R.click(id); },
-    use: (it, id) => { if (modalOpen()) throw new Error(`use(${it}, ${id}): hay un modal abierto`); R.item(it); R.click(id); },
-    combo: (a, b) => { if (modalOpen()) throw new Error(`combo(${a}, ${b}): hay un modal abierto`); R.item(a); R.item(b); },
+    used: new Set(),
+    use: (it, id) => { if (modalOpen()) throw new Error(`use(${it}, ${id}): hay un modal abierto`); h.used.add(it); R.item(it); R.click(id); },
+    combo: (a, b) => { if (modalOpen()) throw new Error(`combo(${a}, ${b}): hay un modal abierto`); h.used.add(a); h.used.add(b); R.item(a); R.item(b); },
     close: () => { const x = $('.modal-x'); if (x) x.click(); },
     clickSel: (sel) => { const e = $(sel); if (!e) throw new Error(`No existe el elemento «${sel}»`); e.click(); },
     setValue: (sel, v) => {
@@ -177,10 +180,21 @@ async function runSeason(sid) {
   }
 
   const h = helpers(w, R);
+  const givenBefore = new Set();
+  const origGive = R.g.give; const origTake = R.g.take;
+  let givenNow = new Set();
+  R.g.give = (id) => { givenNow.add(id); return origGive(id); };
+  R.g.take = (id) => { h.used.add(id); return origTake(id); };
   for (let i = 0; i < sea.levels.length; i++) {
     const n = i + 1;
     const title = sea.levels[i].title;
+    const carry = sea.levels[i].carry || [];
+    givenNow = new Set(); h.used = new Set();
     try {
+      if (sid >= 2 && n >= 2) {
+        const bad = carry.filter((id) => !givenBefore.has(id));
+        if (bad.length) throw new Error(`carry incluye objetos que no se consiguen en ningún trámite anterior de la temporada: ${bad.join(', ')}`);
+      }
       R.start(sid, n);
       if (sols[i]) {
         await Promise.race([sols[i](h), sleep(15000).then(() => { throw new Error('tiempo agotado (15 s)'); })]);
@@ -188,12 +202,14 @@ async function runSeason(sid) {
       await sleep(5);
       if (errors.length) throw new Error(errors.splice(0).join('\n'));
       if (!R.pending()) throw new Error(`la solución no completa el nivel. Último diálogo: «${h.dialog().slice(0, 300)}». Inventario: [${R.state().inv.join(', ')}]. Flags: ${JSON.stringify(R.state().flags).slice(0, 300)}`);
+      if (sid >= 2 && carry.length && !carry.some((id) => h.used.has(id))) throw new Error(`no se usa ninguno de los objetos traídos (carry: ${carry.join(', ')}). Al menos uno debe usarse en un hotspot, combinarse o entregarse.`);
       R.finish();
-      out.lines.push(`  ✓ Nivel ${n}: ${title}`);
+      out.lines.push(`  ✓ Nivel ${n}: ${title}${carry.length ? ` [trae: ${carry.join(', ')}]` : ''}`);
     } catch (e) {
       fail(`Nivel ${n} («${title}»): ${e && e.stack ? e.stack.split('\n').slice(0, 4).join('\n      ') : e}`);
       if (h.modalOpen()) h.close();
     }
+    givenNow.forEach((id) => givenBefore.add(id));
   }
   if (out.ok && R.screen() !== 'end') fail(`Al terminar el último nivel no se muestra la pantalla final (pantalla: ${R.screen()})`);
   if (errors.length) errors.forEach(fail);

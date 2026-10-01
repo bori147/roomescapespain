@@ -47,7 +47,15 @@ La referencia completa es `js/seasons/s1.js` (Temporada 1) y su solución `tests
 })();
 ```
 
-Los **ids de objetos** solo tienen que ser únicos dentro de la temporada. El inventario se vacía al empezar cada nivel.
+Los **ids de objetos** solo tienen que ser únicos dentro de la temporada. El inventario se vacía al empezar cada nivel,
+salvo los objetos indicados en `carry`, que el jugador trae de trámites anteriores (se muestran en la intro del nivel
+y en la resolución del nivel anterior).
+
+### Continuidad (obligatoria desde la temporada 2)
+Lee `docs/CANON.md`. El banco de pruebas exige que, en las temporadas 2 y siguientes:
+- **todos** los niveles tengan `carry` con al menos un objeto;
+- en los niveles 2-10, los objetos de `carry` se hayan conseguido (`g.give`) en algún nivel anterior de la misma temporada;
+- en cada nivel se **use** al menos uno de los objetos traídos (`h.use`, `h.combo` en la solución, o `g.take` en el código).
 
 ## 2. Nivel
 
@@ -59,6 +67,7 @@ Los **ids de objetos** solo tienen que ser únicos dentro de la temporada. El in
   intro: 'HTML. Situación + <b>Objetivo:</b> qué hay que conseguir.',
   outro: 'Texto de la resolución al completar el nivel (enlaza con el siguiente).',
   scene: { wall: '#dcd6c4', floor: '#8f8f86', floorH: 32, pattern: 'tiles' }, // pattern: tiles | wood | carpet | plain
+  carry: ['certificado'],           // objetos que el jugador TRAE de trámites anteriores (empieza con ellos)
   init(g) { g.set('x', 0); },       // opcional: estado inicial
   decor: [ ... ],                   // decorado no interactivo
   hotspots: [ ... ],                // elementos con los que se interactúa
