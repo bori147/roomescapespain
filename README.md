@@ -8,53 +8,79 @@ Tu DNI caduca mañana. Solo tienes que renovarlo. ¿Qué podría salir mal?
 > Sátira. Todos los personajes, partidos y organismos son ficticios.
 > Cualquier parecido con la realidad es pura coincidencia (o no).
 
-## Los 10 trámites
+## Temporadas
 
-| # | Trámite | Dónde | Dificultad |
-|---|---------|-------|:---:|
-| 1 | Cita previa | Oficina de Expedición del DNI | ★ |
-| 2 | Vuelva usted mañana | Registro General | ★ |
-| 3 | El padrón | Ayuntamiento | ★★ |
-| 4 | La ventanilla equivocada | Seguridad Social | ★★ |
-| 5 | Sede electrónica | Tu salón (Java, Autofirma, Cl@ve…) | ★★★ |
-| 6 | La renta | Agencia Tributaria | ★★★ |
-| 7 | La investidura | Congreso | ★★★★ |
-| 8 | No me consta | Comisión de investigación | ★★★★ |
-| 9 | El BOE de las 23:59 | Imprenta del BOE | ★★★★★ |
-| 10 | La ventanilla única | Ministerio de Asuntos Pendientes | ★★★★★ |
+El juego se divide en **temporadas de 10 trámites**. Cada temporada es más difícil que la anterior
+y se desbloquea al superar la previa.
+
+| # | Temporada | De qué va | Nivel |
+|---|-----------|-----------|-------|
+| 1 | 🪪 El DNI | Cita previa, fotocopias, padrón, sede electrónica, la renta, una investidura… | Iniciación |
+| 2 | 💼 Hazte autónomo | Modelo 036, cuota de autónomos, notaría, licencia de apertura, Verifactu, el 303, la inspección | Emprendedor |
+| 3 | 🏠 Mi casa es un expediente | Alquiler, hipoteca, Registro de la Propiedad, impuestos, Catastro, junta de vecinos, la ITE | Propietario |
+| 4 | 🗳️ Campaña electoral | Mesa electoral, voto por correo, mitin, encuestas, debate, escrutinio D'Hondt, pactos, moción de censura | Político |
+| 5 | 🏛️ Las altas esferas | Oposiciones, presupuestos prorrogados, fondos europeos, Bruselas, Senado, Constitucional, Consejo de Ministros | Alto funcionario |
 
 ## Cómo se juega
 
 - **Haz clic** en objetos y personajes para examinarlos o hablar con ellos.
 - Lo que recoges va al **inventario**. Selecciona un objeto y haz clic en algo de la sala para **usarlo**, o en otro objeto para **combinarlos**.
-- Si te atascas, pide una **💡 pista** (la tercera de cada nivel es la solución).
+- Si te atascas, pide una **💡 pista** (la última de cada nivel es la solución).
 
 ## Guardar partida
 
-- La partida se **guarda automáticamente** en el navegador con cada acción. Al volver, pulsa **Continuar**.
-- Desde el menú puedes volver a **cualquier trámite ya desbloqueado**.
-- El botón **💾 Guardar** te da un **código de expediente** (p. ej. `EXP-03T2-C`) para continuar en otro dispositivo desde *«Tengo un código de expediente»*.
+- La partida se **guarda automáticamente** en el navegador con cada acción (una partida por temporada). Al volver, pulsa **Continuar**.
+- Desde el menú puedes volver a **cualquier trámite ya desbloqueado** de cualquier temporada.
+- El botón **💾 Guardar** te da un **código de expediente** (p. ej. `EXP-0A1B2-C`) para continuar en otro dispositivo desde *«Tengo un código de expediente»*. Los códigos antiguos de 4 cifras siguen funcionando (temporada 1).
 
-## Tecnología
+## Botón de apoyo (Stripe)
 
-HTML, CSS y JavaScript puros, sin dependencias ni proceso de compilación. Para jugar en local basta con servir la carpeta:
+El juego muestra un botón **☕ Apoyar** que abre un enlace de pago de Stripe con importe libre.
+Mientras no haya enlace configurado, el botón no aparece.
+
+1. En el panel de Stripe ve a **Enlaces de pago → Crear enlace de pago**.
+2. Crea un producto, por ejemplo «Apoyo a Vuelva usted mañana».
+3. En el precio elige **«Los clientes eligen el importe»** (*Customers choose what to pay*), en **EUR**,
+   con **importe mínimo 1 €**, importe sugerido 3 € y **sin máximo**.
+4. (Opcional) En *Después del pago*, redirige a `https://bori147.github.io/roomescapespain/`.
+5. Copia el enlace (`https://buy.stripe.com/...`) y pégalo en `js/config.js`:
+
+```js
+donation: {
+  url: 'https://buy.stripe.com/tu-enlace',
+  fixed: { 1: '', 3: '', 5: '', 10: '' },  // opcional: enlaces de importe fijo
+},
+```
+
+Si además creas enlaces de importe fijo (1, 3, 5 y 10 €), aparecerán como botones rápidos junto al de importe libre.
+
+## Desarrollo
+
+HTML, CSS y JavaScript puros, sin proceso de compilación. Para jugar en local basta con servir la carpeta (`npx serve .`).
+
+```
+index.html            pantallas
+css/style.css         estilos
+js/config.js          configuración editable (enlace de Stripe)
+js/core.js            registro de temporadas y utilidades
+js/seasons/sN.js      cada temporada (objetos, puzles y 10 niveles)
+js/engine.js          motor: escenas, inventario, diálogos, guardado, menús
+tests/run.js          banco de pruebas: juega todas las temporadas automáticamente
+tests/solutions/sN.js solución automática de cada temporada
+docs/AUTORIA.md       guía para crear nuevas temporadas
+```
+
+### Pruebas
 
 ```bash
-npx serve .
+npm install
+npm test            # juega los 50 niveles en un navegador simulado (jsdom)
+node tests/run.js 3 # solo la temporada 3
 ```
 
-(o abrir `index.html` directamente en el navegador).
+### Añadir una temporada
 
-Estructura:
-
-```
-index.html        pantallas y estructura
-css/style.css     estilos
-js/levels.js      objetos, puzles y los 10 niveles
-js/engine.js      motor: escenas, inventario, diálogos, guardado
-```
-
-Para añadir o modificar niveles, edita `js/levels.js`: cada nivel define su escena, sus *hotspots* (con `look` y `use`), combinaciones de objetos y pistas.
+Lee `docs/AUTORIA.md`, crea `js/seasons/s6.js` y `tests/solutions/s6.js`, añade el `<script>` en `index.html` y ejecuta `node tests/run.js 6`.
 
 ## Licencia
 
