@@ -1,6 +1,10 @@
 /* ==========================================================
    VUELVA USTED MAÑANA — Estilos
    ========================================================== */
+/* Fuentes alojadas en el propio sitio (sin peticiones a terceros) */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(../fonts/inter-latin.woff2) format('woff2'); }
+@font-face { font-family: 'Special Elite'; font-style: normal; font-weight: 400; font-display: swap; src: url(../fonts/special-elite-latin.woff2) format('woff2'); }
+
 :root {
   --bg: #1e1b18;
   --bg2: #2a2622;
@@ -582,3 +586,4 @@ main { padding-bottom: 84px; }
 .carry { margin-top: 16px; padding: 10px 12px; background: #fff; border: 2px dashed var(--ink); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; font-size: 14px; }
 .carry-t { font-weight: 800; }
 .carry-i { background: var(--paper2); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+.linklike { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }

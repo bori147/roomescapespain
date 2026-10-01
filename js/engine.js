@@ -731,11 +731,24 @@
     });
   }
 
+  function privacyModal() {
+    modal({
+      title: '🔒 Privacidad',
+      cls: 'doc',
+      html: `<div class="doc-body">
+        <p>Este juego <b>no usa cookies</b>, no pide registro y no recoge datos personales. No hay publicidad ni herramientas de seguimiento.</p>
+        <p>Tu progreso se guarda <b>solo en tu navegador</b> (almacenamiento local). No se envía a ningún servidor. Puedes borrarlo cuando quieras borrando los datos de este sitio en tu navegador.</p>
+        <p>Las fuentes tipográficas se sirven desde esta misma web: tu navegador no contacta con terceros al jugar.</p>
+        <p>El botón «Invítame a un café» abre <b>Ko-fi</b>, un servicio externo. Si decides hacer una aportación, se aplica su propia política de privacidad; este juego no recibe ni guarda ningún dato de pago.</p></div>`,
+    });
+  }
+
   // ---------------- Arranque ----------------
   function bind() {
     $('#btnContinue').onclick = () => { sfx('click'); continueGame(meta.last); };
     $('#btnCode').onclick = () => { sfx('click'); loadCodeModal(); };
     $('#btnHelp').onclick = () => { sfx('click'); helpModal(); };
+    $('#btnPrivacy').onclick = () => { sfx('click'); privacyModal(); };
     $('#btnSeaPlay').onclick = () => { sfx('click'); seasonPlay(); };
     $('#btnSeaBack').onclick = () => { sfx('click'); renderMenu(); show('menu'); };
     $('#btnStart').onclick = () => { sfx('click'); enterPlay(false); };

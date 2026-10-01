@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expediente no encontrado — Vuelva Usted Mañana</title>
+  <meta name="robots" content="noindex">
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #1e1b18; font-family: system-ui, sans-serif; padding: 16px; }
+    .p { background: #f5eedc; color: #2b2622; max-width: 480px; padding: 28px; border-radius: 14px; text-align: center; }
+    h1 { font-family: 'Courier New', monospace; margin: 0 0 8px; }
+    a { display: inline-block; margin-top: 14px; background: #b3181f; color: #fff; padding: 10px 18px; border-radius: 10px; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="p">
+    <h1>Error 404</h1>
+    <p>El expediente que busca no consta. Puede que se haya traspapelado, o que nunca haya existido. Vuelva usted mañana.</p>
+    <a id="home" href="./">Volver al juego</a>
+  </div>
+  <script>
+    // Funciona tanto en bori147.github.io/roomescapespain/ como en un dominio propio
+    var base = location.pathname.indexOf('/roomescapespain') === 0 ? '/roomescapespain/' : '/';
+    document.getElementById('home').href = base;
+  </script>
+</body>
+</html>
