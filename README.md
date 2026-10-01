@@ -5,7 +5,8 @@ Tu DNI caduca mañana. Solo tienes que renovarlo. ¿Qué podría salir mal?
 
 **▶ Jugar:** https://bori147.github.io/roomescapespain/
 
-Gratis, sin anuncios, sin registro y sin cookies. Funciona en el navegador del ordenador o del móvil.
+Gratis, sin anuncios y sin registro. Funciona en el navegador del ordenador o del móvil.
+Páginas legales en `legal/` (aviso legal, privacidad, cookies y descargo); analítica opcional con consentimiento: [docs/ANALITICA.md](docs/ANALITICA.md).
 Cómo está publicado y cómo crecer sin costes: [docs/PUBLICAR.md](docs/PUBLICAR.md).
 
 > Sátira. Todos los personajes, partidos y organismos son ficticios.

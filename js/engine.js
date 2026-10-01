@@ -21,6 +21,9 @@
   function removeLS(k) { try { localStorage.removeItem(k); } catch (e) { /* nada */ } }
 
   const seasonById = (id) => SEASONS.find((s) => s.id === id);
+  // Analítica (solo si el jugador la ha aceptado; ver js/analytics.js)
+  const track = (event, props) => { try { if (window.Track) window.Track(event, props); } catch (e) { /* nada */ } };
+  const plainTitle = (t) => String(t || '').replace(/<[^>]+>/g, '').replace(/[🌀-🫿☀-➿️]/gu, '').trim();
 
   // ---------------- Estado ----------------
   let S = null;          // estado de la partida (temporada actual)
@@ -299,6 +302,7 @@
         sfx('bad');
         card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
         msg.textContent = (o.failText && o.failText(v)) || 'Incorrecto.';
+        if (S) track('wrong_answer', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, puzzle: plainTitle(o.title) });
         if (o.fail) o.fail(v);
         val = ''; if (inp) inp.value = '';
         upd();
@@ -460,7 +464,7 @@
   function setupLevel(n) {
     useSeason(S.season);
     L = SEA.levels[n - 1];
-    S.level = n; S.flags = {}; S.inv = []; S.hintIdx = 0;
+    S.level = n; S.flags = {}; S.inv = []; S.hintIdx = 0; S.levelStart = S.elapsed;
     selected = null; pendingWin = false; queue = []; current = null;
     // Objetos que el jugador trae de trámites anteriores
     for (const id of L.carry || []) if (ITEMS[id] && !S.inv.includes(id)) S.inv.push(id);
@@ -499,6 +503,7 @@
     meta.last = S.season;
     show('play');
     refresh();
+    track('level_start', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, title: L.title, resumed: !!resumed });
     if (resumed) say(`Expediente recuperado. Temporada ${S.season}, trámite ${S.level}: «${L.title}».`, '💾 Partida cargada');
   }
 
@@ -508,6 +513,8 @@
     const done = S.level;
     const doneL = SEA.levels[done - 1];
     sfx('stamp');
+    track('level_complete', { season: S.season, level: done, level_id: `T${S.season}-N${done}`, title: doneL.title, seconds: Math.max(0, S.elapsed - (S.levelStart || 0)), hints: S.hintIdx });
+    if (done >= SEA.levels.length) track('season_complete', { season: S.season, seconds: S.elapsed, hints: S.totalHints });
     if (done >= SEA.levels.length) {
       S.finished = true; meta.done[S.season] = true;
       if (seasonById(S.season + 1)) meta.progress[S.season + 1] = Math.max(progressOf(S.season + 1), 1);
@@ -568,6 +575,8 @@
     box.innerHTML = size === 'big'
       ? `<p>¿Te has reído un rato? Este juego es gratuito, sin anuncios y sin registro. Si quieres agradecerlo, puedes invitarme a un café (desde 1 €, o lo que tú quieras).</p>${kofiLink('big')}`
       : kofiLink();
+    const link = $('.kofi-btn', box);
+    if (link) link.addEventListener('click', () => track('donate_click', { where: 'season_end', season: S ? S.season : null }));
   }
 
   // ---------------- Menú ----------------
@@ -599,6 +608,7 @@
   }
 
   function openSeason(sid) {
+    track('season_open', { season: sid });
     viewSeason = sid;
     const sea = seasonById(sid);
     $('#seaNum').textContent = `TEMPORADA ${sid} · ${sea.badge || ''}`;
@@ -669,6 +679,7 @@
       buttons: [{ label: 'Cancelar' }, { label: 'Cargar', cls: 'primary', onClick(close, body) {
         const r = readCode($('#codeIn', body).value);
         if (!r) { sfx('bad'); $('#codeMsg', body).textContent = 'Código no válido. Revíselo y preséntelo de nuevo (por triplicado).'; return false; }
+        track('code_loaded', { season: r.season, level: r.level });
         setTimeout(() => {
           meta.progress[r.season] = Math.max(progressOf(r.season), r.level);
           S = newState(r.season, r.level); S.totalHints = r.hints;
@@ -689,6 +700,7 @@
 
   function saveModal() {
     save();
+    track('save_code_shown', { season: S.season, level: S.level });
     const code = makeCode(S.season, S.level, S.totalHints);
     modal({
       title: '💾 Partida guardada',
@@ -708,7 +720,7 @@
         ${shown.length ? `<ol class="hint-list">${shown.map((h) => `<li>${h}</li>`).join('')}</ol>` : '<p><i>Aún no has pedido ninguna pista en este trámite.</i></p>'}
         ${S.hintIdx < hs.length ? `<button class="btn primary" id="moreHint">${S.hintIdx === 0 ? 'Pedir una pista' : S.hintIdx === hs.length - 1 ? 'Pedir la solución' : 'Pedir otra pista'}</button>` : '<p class="small">No quedan más pistas. Ya le hemos contado todo, que no es poco.</p>'}`;
       const mh = $('#moreHint', body);
-      if (mh) mh.onclick = () => { S.hintIdx++; S.totalHints++; save(); sfx('pick'); render(body); };
+      if (mh) mh.onclick = () => { S.hintIdx++; S.totalHints++; save(); sfx('pick'); track('hint_request', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, hint: S.hintIdx, is_solution: S.hintIdx === hs.length }); render(body); };
     };
     modal({ title: '💡 Pistas', html: '<div id="hintBox"></div>', onMount: (body) => render($('#hintBox', body)) });
   }
@@ -731,24 +743,11 @@
     });
   }
 
-  function privacyModal() {
-    modal({
-      title: '🔒 Privacidad',
-      cls: 'doc',
-      html: `<div class="doc-body">
-        <p>Este juego <b>no usa cookies</b>, no pide registro y no recoge datos personales. No hay publicidad ni herramientas de seguimiento.</p>
-        <p>Tu progreso se guarda <b>solo en tu navegador</b> (almacenamiento local). No se envía a ningún servidor. Puedes borrarlo cuando quieras borrando los datos de este sitio en tu navegador.</p>
-        <p>Las fuentes tipográficas se sirven desde esta misma web: tu navegador no contacta con terceros al jugar.</p>
-        <p>El botón «Invítame a un café» abre <b>Ko-fi</b>, un servicio externo. Si decides hacer una aportación, se aplica su propia política de privacidad; este juego no recibe ni guarda ningún dato de pago.</p></div>`,
-    });
-  }
-
   // ---------------- Arranque ----------------
   function bind() {
     $('#btnContinue').onclick = () => { sfx('click'); continueGame(meta.last); };
     $('#btnCode').onclick = () => { sfx('click'); loadCodeModal(); };
     $('#btnHelp').onclick = () => { sfx('click'); helpModal(); };
-    $('#btnPrivacy').onclick = () => { sfx('click'); privacyModal(); };
     $('#btnSeaPlay').onclick = () => { sfx('click'); seasonPlay(); };
     $('#btnSeaBack').onclick = () => { sfx('click'); renderMenu(); show('menu'); };
     $('#btnStart').onclick = () => { sfx('click'); enterPlay(false); };
@@ -759,7 +758,11 @@
     $('#btnEndNext').onclick = () => { sfx('click'); startSeasonLevel(S.season + 1, 1, false); };
     $('#btnHint').onclick = () => { sfx('click'); hintModal(); };
     $('#btnSave').onclick = () => { sfx('click'); saveModal(); };
-    $('#btnMenu').onclick = () => { sfx('click'); save(); renderMenu(); show('menu'); };
+    $('#btnMenu').onclick = () => {
+      sfx('click'); save();
+      if (S && !pendingWin) track('back_to_menu', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, seconds_in_level: Math.max(0, S.elapsed - (S.levelStart || 0)) });
+      renderMenu(); show('menu');
+    };
     $('#btnHelp2').onclick = () => { sfx('click'); helpModal(); };
     $('#btnMute').onclick = () => { meta.muted = !meta.muted; save(); renderTop(); sfx('click'); };
     $('#dialog').onclick = () => { if (queue.length) { sfx('click'); nextMsg(); } };
@@ -773,6 +776,7 @@
       $('.kofi-label', kf).textContent = donationText;
       if (donation.color) document.documentElement.style.setProperty('--kofi', donation.color);
       kf.hidden = false;
+      kf.addEventListener('click', () => track('donate_click', { where: screen, season: S ? S.season : null, level: S ? S.level : null }));
     }
 
     document.addEventListener('keydown', (e) => {
@@ -801,6 +805,7 @@
   bind();
   renderMenu();
   show('menu');
+  track('app_open', { has_save: !!meta.last, seasons_done: Object.keys(meta.done).filter((k) => meta.done[k]).length });
 
   // Gancho de depuración / pruebas automáticas
   window.RoomEscape = {

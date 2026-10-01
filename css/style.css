@@ -587,3 +587,12 @@ main { padding-bottom: 84px; }
 .carry-t { font-weight: 800; }
 .carry-i { background: var(--paper2); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
 .linklike { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
+
+/* ---------------- Pie de página legal ---------------- */
+.site-footer {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px;
+  padding: 18px 16px 90px; font-size: 13px; color: #b9ae9a; text-align: center;
+}
+.site-footer a, .site-footer button { color: #d9cfbd; background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
+.site-footer a:hover, .site-footer button:hover { color: #fff; }
+main { padding-bottom: 12px; }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de cookies — Vuelva Usted Mañana</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
+  <link rel="stylesheet" href="legal.css">
+  <link rel="stylesheet" href="../css/consent.css">
+</head>
+<body>
+  <div class="wrap"><a class="back" href="../">← Volver al juego</a></div>
+  <main class="doc">
+    <h1>Política de cookies</h1>
+    <p class="upd">Última actualización: <span data-legal="actualizado"></span></p>
+
+    <h2>1. Qué son</h2>
+    <p>Las cookies y tecnologías similares (como el almacenamiento local del navegador, <i>localStorage</i>) permiten guardar información en tu dispositivo. Este juego <b>no instala cookies HTTP</b>: usa únicamente el almacenamiento local del navegador, al que la normativa (art. 22.2 LSSI-CE) aplica las mismas reglas.</p>
+
+    <h2>2. Qué utilizamos</h2>
+    <table>
+      <tr><th>Nombre</th><th>Titular</th><th>Tipo y finalidad</th><th>Duración</th></tr>
+      <tr><td><code>roomescapespain.save.s1</code> … <code>.s5</code></td><td>Propia</td><td><b>Técnica.</b> Guarda tu partida de cada temporada.</td><td>Hasta que la borres</td></tr>
+      <tr><td><code>roomescapespain.meta.v2</code></td><td>Propia</td><td><b>Técnica.</b> Temporadas desbloqueadas, última partida y preferencia de sonido.</td><td>Hasta que la borres</td></tr>
+      <tr><td><code>roomescapespain.consent.v1</code></td><td>Propia</td><td><b>Técnica.</b> Guarda tu elección sobre cookies.</td><td>12 meses</td></tr>
+      <tr data-if-analytics><td><code>ph_phc_…_posthog</code></td><td>PostHog (UE)</td><td><b>Analítica.</b> Identificador aleatorio y datos de sesión para medir el uso del juego. <b>Solo si la aceptas.</b></td><td>12 meses</td></tr>
+    </table>
+    <p>Las de tipo técnico son necesarias para que el juego funcione (por ejemplo, para recordar tu partida) y están exentas de consentimiento. <span data-if-analytics>La analítica solo se activa si la aceptas en el aviso de cookies.</span><span data-if-no-analytics>Actualmente el juego no usa ninguna cookie ni almacenamiento con fines analíticos o publicitarios.</span></p>
+    <p>El botón «Invítame a un café» es un enlace a Ko-fi: al pulsarlo sales del juego y Ko-fi aplica su propia política de cookies.</p>
+
+    <h2>3. Cómo cambiar tu elección</h2>
+    <p>Puedes aceptar o rechazar la analítica cuando quieras:</p>
+    <p><button class="btn" data-open-consent>Configurar cookies</button></p>
+    <p>También puedes borrar todo lo guardado desde la configuración de tu navegador («Borrar datos de sitios» o similar). Ten en cuenta que, si lo haces, <b>perderás tu partida</b> (salvo que hayas apuntado tu código de expediente).</p>
+  </main>
+  <nav class="legal"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="descargo.html">Descargo de responsabilidad</a> · <button data-open-consent>Configurar cookies</button></nav>
+  <script src="../js/config.js"></script>
+  <script src="legal.js"></script>
+  <script src="../js/consent.js"></script>
+</body>
+</html>

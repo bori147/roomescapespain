@@ -24,6 +24,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
   <link rel="preload" href="fonts/special-elite-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/consent.css">
 </head>
 <body>
   <header id="topbar" class="topbar">
@@ -58,7 +59,7 @@
           <button class="btn" id="btnCode">📂 Tengo un código de expediente</button>
           <button class="btn" id="btnHelp">📘 Cómo jugar</button>
         </div>
-        <p class="disclaimer">Sátira. Todos los personajes, partidos y organismos son ficticios. Cualquier parecido con la realidad es pura coincidencia (o no). · <button class="linklike" id="btnPrivacy">Privacidad</button></p>
+        <p class="disclaimer">Sátira. Todos los personajes, partidos y organismos son ficticios. Cualquier parecido con la realidad es pura coincidencia (o no).</p>
       </div>
     </section>
 
@@ -141,12 +142,23 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <span>© 2026 Gerard Bori</span>
+    <a href="legal/aviso-legal.html">Aviso legal</a>
+    <a href="legal/privacidad.html">Privacidad</a>
+    <a href="legal/cookies.html">Cookies</a>
+    <a href="legal/descargo.html">Descargo de responsabilidad</a>
+    <button data-open-consent>Configurar cookies</button>
+  </footer>
+
   <a id="kofiFloat" class="kofi-btn kofi-float" href="#" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup">☕</span><span class="kofi-label"></span></a>
 
   <div id="modal" class="modal" hidden></div>
   <div id="toast" class="toast" role="status"></div>
 
   <script src="js/config.js"></script>
+  <script src="js/consent.js"></script>
+  <script src="js/analytics.js"></script>
   <script src="js/core.js"></script>
   <script src="js/seasons/s1.js"></script>
   <script src="js/seasons/s2.js"></script>

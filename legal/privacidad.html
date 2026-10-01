@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de privacidad — Vuelva Usted Mañana</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
+  <link rel="stylesheet" href="legal.css">
+  <link rel="stylesheet" href="../css/consent.css">
+</head>
+<body>
+  <div class="wrap"><a class="back" href="../">← Volver al juego</a></div>
+  <main class="doc">
+    <h1>Política de privacidad</h1>
+    <p class="upd">Última actualización: <span data-legal="actualizado"></span></p>
+
+    <p>Esta política explica qué datos personales se tratan al usar «Vuelva usted mañana», conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD). En resumen: <b>el juego no pide registro ni datos de contacto, guarda tu partida solo en tu navegador y únicamente usa analítica si tú la aceptas</b>.</p>
+
+    <h2>1. Responsable del tratamiento</h2>
+    <div class="box">
+      <b>Responsable:</b> <span data-legal="titular"></span> · <b>NIF:</b> <span data-legal="nif"></span><br>
+      <b>Domicilio:</b> <span data-legal="domicilio"></span><br>
+      <b>Contacto:</b> <span data-legal="email"></span>
+    </div>
+
+    <h2>2. Qué datos se tratan, para qué y con qué base</h2>
+    <table>
+      <tr><th>Tratamiento</th><th>Datos</th><th>Finalidad</th><th>Base jurídica</th></tr>
+      <tr><td>Tu partida</td><td>Progreso, objetos, tiempo y pistas de cada temporada</td><td>Que puedas continuar donde lo dejaste</td><td>Se guarda <b>solo en tu navegador</b>; no llega al titular ni a terceros</td></tr>
+      <tr><td>Alojamiento web</td><td>Dirección IP y datos técnicos de la conexión (registros del servidor)</td><td>Servir la web y garantizar su seguridad</td><td>Interés legítimo (art. 6.1.f RGPD)</td></tr>
+      <tr data-if-analytics><td>Analítica de uso (solo si la aceptas)</td><td>Identificador aleatorio, eventos de juego (trámites empezados y completados, tiempo, pistas, respuestas erróneas), tipo de navegador y dispositivo, país aproximado y web de procedencia</td><td>Entender cómo se juega para mejorar la dificultad y el contenido</td><td>Consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento</td></tr>
+      <tr><td>Aportaciones voluntarias</td><td>Los datos que facilites en Ko-fi; el titular puede recibir tu nombre, importe y mensaje</td><td>Gestionar y agradecer la aportación y cumplir obligaciones fiscales</td><td>Ejecución de la relación solicitada y obligación legal (art. 6.1.b y c)</td></tr>
+      <tr><td>Contacto</td><td>Tu correo y lo que escribas si contactas</td><td>Responder a tu consulta</td><td>Consentimiento / interés legítimo</td></tr>
+    </table>
+    <p>No se toman decisiones automatizadas ni se elaboran perfiles. No se usan los datos con fines publicitarios.</p>
+
+    <h2>3. Destinatarios y proveedores</h2>
+    <ul>
+      <li><b>GitHub Pages</b> (GitHub, Inc., EE. UU.): alojamiento de la web. Transferencia internacional amparada en el Marco de Privacidad de Datos UE-EE. UU. y cláusulas contractuales tipo.</li>
+      <li data-if-analytics><b>PostHog</b> (PostHog Inc.): analítica, con los datos alojados en servidores de la Unión Europea (Fráncfort). Solo se activa con tu consentimiento.</li>
+      <li><b>Ko-fi</b> (Ko-fi Labs Limited, Reino Unido, país con decisión de adecuación de la UE): plataforma de aportaciones, que actúa como responsable independiente de los pagos que realices en ella.</li>
+    </ul>
+    <p>No se ceden datos a otros terceros salvo obligación legal.</p>
+
+    <h2>4. Conservación</h2>
+    <ul>
+      <li>Partida: en tu navegador hasta que la borres.</li>
+      <li data-if-analytics>Analítica: como máximo 12 meses.</li>
+      <li>Aportaciones: durante los plazos exigidos por la normativa fiscal.</li>
+      <li>Consultas: el tiempo necesario para atenderlas.</li>
+    </ul>
+
+    <h2>5. Tus derechos</h2>
+    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad escribiendo a <span data-legal="email"></span>, indicando el derecho que ejerces. Si consideras que no se han atendido correctamente, puedes presentar una reclamación ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos</a>.</p>
+    <p data-if-analytics>Puedes retirar el consentimiento para la analítica en cualquier momento desde «Configurar cookies», al pie de cualquier página del juego.</p>
+
+    <h2>6. Menores</h2>
+    <p>El juego no pide datos identificativos a nadie. Si tienes menos de 14 años, pide a tu madre, padre o tutor que decida por ti sobre la analítica en el aviso de cookies.</p>
+
+    <h2>7. Cambios</h2>
+    <p>Esta política puede actualizarse. La fecha de la última versión figura al principio.</p>
+  </main>
+  <nav class="legal"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="descargo.html">Descargo de responsabilidad</a> · <button data-open-consent>Configurar cookies</button></nav>
+  <script src="../js/config.js"></script>
+  <script src="legal.js"></script>
+  <script src="../js/consent.js"></script>
+</body>
+</html>
