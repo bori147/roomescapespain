@@ -80,6 +80,10 @@ tests/solutions/sN.js solución automática de cada temporada
 docs/AUTORIA.md       guía para crear nuevas temporadas
 ```
 
+### Publicar una versión nueva
+
+Tras cambiar CSS o JS, sube el número `?v=` de los `<link>` y `<script>` de `index.html` (p. ej. de `?v=4` a `?v=5`) para que los jugadores reciban la versión nueva al momento y no la de la caché.
+
 ### Pruebas
 
 ```bash
