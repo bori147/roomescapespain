@@ -50,10 +50,10 @@
   const J_OWN = [
     { id: 'tu', name: 'Tú (3ºB), presidente/a', c: 9 },
     { id: 'fondo', name: 'Ladrillo Feliz Capital (2ºA)', c: 12 },
-    { id: 'rem', name: 'Doña Remedios (1ºA)', c: 11 },
-    { id: 'pel', name: 'Matrimonio Peláez (2ºB), delegado en Doña Remedios', c: 10 },
+    { id: 'rem', name: 'Doña Engracia (1ºA)', c: 11 },
+    { id: 'pel', name: 'Matrimonio Peláez (2ºB), delegado en Doña Engracia', c: 10 },
     { id: 'ful', name: 'Don Fulgencio (1ºB)', c: 11 },
-    { id: 'paco', name: 'Bar «El Recurso» (local)', c: 16 },
+    { id: 'paco', name: 'Bar «El Recurso» de Fermín (local)', c: 16 },
     { id: 'ber', name: 'Sr. Bermejo (3ºA)', c: 10 },
     { id: 'pura', name: 'Doña Pura (4ºA)', c: 11 },
     { id: 'yer', name: 'Yeray (4ºB), por videollamada', c: 10 },
@@ -165,45 +165,54 @@
   // =========================================================
   //  OBJETOS
   // =========================================================
-  const NOTA_SIMPLE = `<b>Nota simple — Finca 4478</b> (C/ del Olvido 14, esc. dcha., 3ºB). Titular: <b>Anselmo Prisas Prisas</b>. Fecha de la nota: 1/10/2026.<br>
-    <small>Inscr. 3ª (2005): hipoteca, Caja del Ocaso, 120.000 € · Anot. A (03/02/2012): embargo Ayuntamiento, 3.200 € · Inscr. 4ª (2015): cancelación de la hipoteca de la inscr. 3ª · Anot. B (11/06/2019): embargo Agencia Tributaria, 4.400 € · Anot. D (08/01/2020): embargo Gimnasio Siempre Fuerte, 600 € · Nota marginal (05/06/2023): prórroga de la anot. B por 4 años · Inscr. 5ª (2021): hipoteca, Banco Ibérico de Ahorros Perpetuos, 90.000 € · Anot. C (17/10/2023): embargo Comunidad de Propietarios, 1.850 €.<br>
+  const NOTA_SIMPLE = `<b>Nota simple — Finca 4478</b> (C/ del Olvido 14, esc. dcha., 3ºB). Titular: <b>Anselmo Prisas Prisas</b>. Fecha de la nota: 2/10/2028.<br>
+    <small>Inscr. 3ª (2005): hipoteca, Caja del Ocaso, 120.000 € · Anot. A (03/02/2014): embargo Ayuntamiento, 3.200 € · Inscr. 4ª (2017): cancelación de la hipoteca de la inscr. 3ª · Inscr. 5ª (2021): hipoteca, Banco Ibérico de Ahorros Perpetuos, 90.000 € · Anot. B (11/06/2021): embargo Agencia Tributaria, 4.400 € · Anot. D (08/01/2022): embargo Gimnasio Siempre Fuerte, 600 € · Nota marginal (05/06/2025): prórroga de la anot. B por 4 años · Anot. C (17/10/2025): embargo Comunidad de Propietarios, 1.850 €.<br>
     Las anotaciones de embargo caducan a los 4 años de su fecha, salvo prórroga anotada. Las hipotecas siguen vigentes mientras no se inscriba su cancelación.</small>`;
 
+  // Lo que va entrando en la carpeta del nivel 1
+  const CARPETA_PARTES = {
+    nomina: 'la nómina',
+    extracto: 'el extracto bancario impreso',
+    certificadoAEAT: 'el certificado de estar al corriente de la S.L.',
+  };
+
   const ITEMS = {
+    // Traídos de la temporada 2 (y de la 1)
+    nomina: { emoji: '📃', name: 'Nómina de la churrería', desc: '<b>Nómina de abril de 2028.</b> Empresa: <b>Porras del Trámite, S.L.</b> (Calle del Trámite 12, Villatrámite). Trabajador/a: tú, administrador/a. Firma por la empresa: tú. Firma el/la trabajador/a: tú también. Neto a percibir: <b>2.400 €</b> al mes. Bruto: más. Ilusión: menos.' },
+    certificadoAEAT: { emoji: '✅', name: 'Certificado de estar al corriente', desc: '<b>CERTIFICADO</b>: «PORRAS DEL TRÁMITE, S.L.» se encuentra al corriente de sus obligaciones tributarias. Expedido en marzo de 2028, al salir de la inspección. Válido 12 meses o hasta la próxima ocurrencia normativa, lo que llegue antes. Lo llevas encima desde entonces, como un amuleto.' },
+    dni: { emoji: '🪪', name: 'DNI', desc: 'Tu DNI nº <b>07345189-R</b>, válido hasta el 01/10/2036. <b>Fecha de nacimiento: 20/10/1993.</b> Lo renovaste en 2026 con sangre, sudor y cita previa. Desde entonces lo enseñas con orgullo.' },
     // Nivel 1
-    nomina: { emoji: '📃', name: 'Nómina', desc: '<b>Nómina de septiembre.</b> Neto a percibir: <b>2.400 €</b> al mes. Bruto: más. Ilusión: menos.' },
-    movil: { emoji: '📱', name: 'Tu móvil', desc: `💬 <b>Tu pareja:</b> «Repaso lo que hablamos: 1) Entre alquiler y comunidad (si no va incluida), <b>máximo 1.000 € al mes</b>. 2) Michi viene con nosotros: <b>tienen que admitir gatos</b>. 3) <b>Bajos no</b>, que Michi se escapa. 4) Si es un <b>tercero o más alto, con ascensor</b>, que tu espalda ya no está para subir la compra. 5) Para la entrada <b>solo tenemos lo que hay en la cuenta</b>, ni un euro más. ¡Suerte! 😘»<br>🏦 <b>App del banco:</b> saldo disponible <b>4.000,00 €</b>. <i>(La agencia lo quiere impreso. En papel. Como en 1995.)</i>` },
-    carpeta: { emoji: '📁', name: 'Carpeta azul vacía', desc: 'Una carpeta azul con la etiqueta «DOSSIER DEL INQUILINO PERFECTO». Está vacía, como la nevera de un inquilino perfecto.' },
+    movil: { emoji: '📱', name: 'Tu móvil', desc: `💬 <b>Tu pareja:</b> «Repaso lo que hablamos: 1) Entre alquiler y comunidad (si no va incluida), <b>máximo 1.000 € al mes</b>. 2) Michi viene con nosotros: <b>tienen que admitir gatos</b>. 3) <b>Bajos no</b>, que Michi se escapa. 4) Si es un <b>tercero o más alto, con ascensor</b>, que tu espalda ya no está para subir la compra. 5) Para la entrada <b>solo tenemos lo que hay en la cuenta</b>, ni un euro más. ¡Suerte! Y trae porras, que dice Lucía que hoy le han salido de concurso 😘»<br>🏦 <b>App del banco:</b> saldo disponible <b>4.000,00 €</b>. <i>(La agencia lo quiere impreso. En papel. Como en 1995.)</i>` },
+    carpeta: { emoji: '📁', name: 'Carpeta azul', desc: (g) => {
+      const dentro = (g.flag('carpIn') || []).map((k) => CARPETA_PARTES[k]);
+      return `Una carpeta azul con la etiqueta «DOSSIER DEL INQUILINO PERFECTO». ${dentro.length ? `Dentro: ${dentro.join(', ')}.` : 'Está vacía, como la nevera de un inquilino perfecto.'}`;
+    } },
     extracto: { emoji: '🧾', name: 'Extracto bancario', desc: 'Extracto impreso: saldo disponible <b>4.000,00 €</b>. Es todo lo que tienes. La impresora lo ha sacado con cierto desprecio.' },
-    dossier1: { emoji: '📂', name: 'Dossier (a medias)', desc: 'Carpeta con tu nómina. Le falta el extracto bancario para ser un dossier como Dios manda.' },
-    dossier: { emoji: '📘', name: 'Dossier del inquilino', desc: 'Dossier completo: nómina y extracto bancario. Lo has grapado con mimo. Es lo más ordenado que has hecho en tu vida.' },
+    dossier: { emoji: '📘', name: 'Dossier del inquilino', desc: 'Dossier completo: nómina de Porras del Trámite, S.L., extracto bancario y certificado de estar al corriente. Lo has grapado con mimo. Es lo más ordenado que has hecho desde la inspección de Hacienda.' },
     solicitudAlq: { emoji: '📝', name: 'Solicitud de alquiler', desc: 'Solicitud para el piso <b>R-03</b> (Ronda del Sello, 3), con el pago de entrada calculado. Hay que entregársela al casero.' },
+    anuncio: { emoji: '🏷️', name: 'Anuncio del piso en venta', desc: '«SE VENDE precioso <b>3ºB con ascensor</b> en C/ del Olvido, 14 (Villatrámite). 72 m², trastero, «libre de cargas». 225.000 €. Vendedor: Anselmo Prisas.» (Lo de «libre de cargas» lo ha escrito él.)' },
     // Nivel 2
     solicitudHip: { emoji: '📄', name: 'Solicitud de hipoteca', desc: 'Solicitud de financiación en blanco. Siete páginas para pedir dinero y treinta para explicar por qué te lo van a negar. Hay que firmarla.' },
     boli: { emoji: '🖊️', name: 'Bolígrafo del banco', desc: 'Bolígrafo con el logo del Banco Ibérico de Ahorros Perpetuos. Es lo único que el banco regala.' },
     solicitudFirmada: { emoji: '✍️', name: 'Solicitud firmada', desc: 'Tu solicitud de hipoteca, firmada. Has firmado en 14 sitios. En uno decías que renunciabas a algo. No sabes a qué.' },
     fein: { emoji: '📑', name: 'FEIN (tres ofertas)', desc: 'La Ficha Europea de Información Normalizada con las tres ofertas del banco. El gestor te la puede volver a enseñar.' },
-    ofertaVinc: { emoji: '📜', name: 'Oferta vinculante', desc: 'Oferta vinculante de la hipoteca variable «Euríbor Feliz» con vida, hogar, Cuenta Premium y tarjeta. Coste del primer año: 5.320 €. Vinculante para ti; para el banco, ya veremos.' },
+    ofertaVinc: { emoji: '📜', name: 'Oferta vinculante', desc: 'Oferta vinculante de la hipoteca variable «Euríbor Feliz», firmada por el director: <b>180.000 €</b> a 30 años para comprar el <b>3ºB de la C/ del Olvido 14</b>, con vida, hogar, Cuenta Premium y tarjeta. Coste del primer año: 5.320 €. Condición: que el Registro certifique las cargas de la finca. Vinculante para ti; para el banco, ya veremos.' },
     // Nivel 3
-    dni: { emoji: '🪪', name: 'DNI', desc: 'Tu DNI. <b>Fecha de nacimiento: 20/10/1991.</b> Renovado en la temporada pasada, con sangre, sudor y cita previa.' },
-    anuncio: { emoji: '🏷️', name: 'Anuncio del piso', desc: '«SE VENDE precioso <b>3ºB con ascensor</b> en C/ del Olvido, 14. 72 m², trastero, «libre de cargas». 225.000 €. Vendedor: Anselmo Prisas.» (Lo de «libre de cargas» lo ha escrito él.)' },
     notaSimple: { emoji: '📋', name: 'Nota simple (finca 4478)', desc: NOTA_SIMPLE },
-    certCargas: { emoji: '📜', name: 'Certificación de cargas', desc: 'Certificación registral: cargas vigentes de la finca 4478 por un total de 96.250 €.' },
+    certCargas: { emoji: '📜', name: 'Certificación de cargas', desc: 'Certificación registral: cargas vigentes de la finca 4478 por un total de 96.250 €. La notaría la necesitará para preparar la escritura.' },
     // Nivel 4
     arras: { emoji: '🤝', name: 'Contrato de arras', desc: '<b>Contrato de arras penitenciales.</b> Precio de la vivienda: <b>225.000 €</b>. Entregados en concepto de arras: <b>22.500 €</b> (el 10 %). Si te echas atrás, los pierdes. Si se echa atrás él, te devuelve el doble. Él no se va a echar atrás.' },
     borrador: { emoji: '📄', name: 'Borrador de la escritura', desc: `<b>Borrador de escritura de compraventa.</b> Comparecen: el vendedor, su cónyuge, el comprador, y los apoderados de los dos bancos. <i>(Nadie más.)</i><br>
       <b>Precio:</b> 225.000 €. <b>Forma de pago:</b> del precio se descuentan (1) las arras ya entregadas; (2) el <b>saldo pendiente real</b> de la hipoteca que grava la finca, que se paga con cheque al banco acreedor según su certificado (no el importe inscrito en el Registro); y (3) el importe de los <b>embargos vigentes</b> según la nota simple, que se retiene para pagarlos. El resto se entrega al vendedor en cheque bancario.` },
     certSaldo: { emoji: '🏦', name: 'Certificado de saldo pendiente', desc: 'Certificado del banco del vendedor: saldo pendiente real de su hipoteca a día de hoy: <b>61.420 €</b>. (Lo inscrito eran 90.000 €, pero el señor Anselmo ha ido pagando. Algo.)' },
-    certComunidad: { emoji: '🏢', name: 'Certificado de la comunidad', desc: 'Certificado del administrador: el 3ºB debe <b>1.850 €</b> de cuotas (los mismos del embargo). «Estar al corriente» es un concepto que el señor Anselmo desconoce.' },
-    reciboIBI: { emoji: '🧾', name: 'Recibo del IBI', desc: 'Último recibo del IBI del 3ºB. Pagado. Milagrosamente.' },
+    certComunidad: { emoji: '🏢', name: 'Certificado de la comunidad', desc: 'Certificado del administrador: el 3ºB debe <b>1.850 €</b> de cuotas (los mismos del embargo). «Estar al corriente» es un concepto que el señor Anselmo desconoce. Tú, en cambio, tienes certificado.' },
+    reciboIBI: { emoji: '🧾', name: 'Recibo del IBI', desc: 'Último recibo del IBI del 3ºB. Pagado. Milagrosamente. Referencia catastral (versión corta): <b>4821103</b>. La versión larga tiene 20 caracteres y no cabe en ningún formulario.' },
     cheque: { emoji: '💶', name: 'Cheque al vendedor', desc: 'Cheque bancario a favor de Anselmo Prisas por <b>134.830 €</b>. Nunca habías tenido tantos euros en la mano. Y tampoco ahora: son del señor Anselmo.' },
+    escritura: { emoji: '📘', name: 'Escritura del piso', desc: '<b>Escritura de compraventa</b>, otorgada el <b>16 de octubre de 2028</b> ante la notaria Doña Leocadia Fe-Pública. Finca 4478: vivienda 3ºB, esc. dcha., C/ del Olvido 14, Villatrámite. Precio: <b>225.000 €</b>. Superficie construida: <b>72 m²</b>. Destino: vivienda habitual. <b>Anejo: trastero en planta sótano</b>, que linda: al <b>Norte</b>, con el cuarto de contadores; al <b>Sur</b>, con el pasillo; al <b>Este</b>, con otro trastero; y al <b>Oeste</b>, con el muro de fachada.' },
     // Nivel 5
-    escritura: { emoji: '📘', name: 'Copia de la escritura', desc: '<b>Escritura de compraventa</b>, firmada el <b>15 de octubre de 2026</b>. Vivienda 3ºB, esc. dcha., C/ del Olvido 14. Precio: <b>225.000 €</b>. Superficie construida: <b>72 m²</b>. Destino: vivienda habitual.' },
-    reciboIBI5: { emoji: '🧾', name: 'Recibo del IBI', desc: 'Recibo del IBI. Referencia catastral (versión corta): <b>4821103</b>. La versión larga tiene 20 caracteres y no cabe en ningún formulario.' },
     certVR: { emoji: '📊', name: 'Certificado de valor de referencia', desc: 'Certificado del Catastro: valor de referencia de tu vivienda: <b>241.000 €</b>. Más de lo que pagaste. El Catastro tiene mucha fe en tu barrio.' },
     noSujecion: { emoji: '✅', name: 'Diligencia de no sujeción', desc: 'Diligencia de la ventanilla de plusvalía: «el comprador no es sujeto pasivo en esta compraventa». Firmada a regañadientes.' },
     // Nivel 6
-    escritura6: { emoji: '📘', name: 'Escritura (trastero)', desc: 'Escritura del 3ºB. <b>Anejo: trastero en planta sótano</b>, que linda: al <b>Norte</b>, con el cuarto de contadores; al <b>Sur</b>, con el pasillo; al <b>Este</b>, con otro trastero; y al <b>Oeste</b>, con el muro de fachada.' },
     notificacion: { emoji: '✉️', name: 'Notificación del Catastro', desc: '«Mediante dron, este Centro ha detectado que su vivienda mide <b>96 m²</b> y que su trastero es el <b>3871</b>. Si no está conforme, presente el modelo 902 con la referencia correcta de su trastero y la superficie útil real.» El trastero 3871 es del vecino. Y lo de los 96 m², de los sueños del dron.' },
     cinta: { emoji: '📏', name: 'Cinta métrica', desc: 'Cinta métrica de 5 metros. Combínala con algo que haya que medir.' },
     plano: { emoji: '🗺️', name: 'Plano de tu vivienda (sin cotas)', desc: 'El plano de tu piso que tiene el Catastro: dibujado a mano, sin una sola medida. Con una cinta métrica lo arreglas.' },
@@ -211,20 +220,21 @@
     // Nivel 7
     delegacion: { emoji: '✉️', name: 'Delegación de voto', desc: '«Ladrillo Feliz Capital, propietaria del 2ºA, delega su voto en <b>el/la presidente/a</b> de la comunidad, que votará lo mismo que vote él/ella.» Firmado: un fondo con sede en un buzón de otro país.' },
     acta: { emoji: '📜', name: 'Acta de la junta', desc: 'Acta de la junta: <b>aprobada la obra del 3ºB</b> (cerramiento de terraza). Falta la firma del administrador.' },
+    actaFirmada: { emoji: '📜', name: 'Acta de la junta (firmada)', desc: 'El acta de la junta, firmada por el administrador. Autoriza tu obra. Te costó tres puntos del orden del día y una vecina enfadada. Huele a pipas.' },
     // Nivel 8
-    actaFirmada: { emoji: '📜', name: 'Acta de la junta (firmada)', desc: 'El acta de la junta, firmada por el administrador. Autoriza tu obra. Te costó tres puntos del orden del día y una vecina enfadada.' },
-    licencia: { emoji: '🏗️', name: 'Licencia de obra menor', desc: 'LICENCIA DE OBRA MENOR. Concedida. Horario de obra: de lunes a viernes de 9:00 a 14:00, salvo agosto, fiestas patronales, y cuando el vecino de abajo esté de siesta.' },
+    licencia: { emoji: '🏗️', name: 'Licencia de obra menor', desc: 'LICENCIA DE OBRA MENOR para el cerramiento de la terraza del 3ºB. Concedida. Horario de obra: de lunes a viernes de 9:00 a 14:00, salvo agosto, fiestas patronales, y cuando el vecino de abajo esté de siesta.' },
     // Nivel 9
     mechero: { emoji: '🔥', name: 'Mechero', desc: 'Un mechero de la cocina. Para encender los fuegos... o para cierto truco de técnico certificador.' },
     destornillador: { emoji: '🪛', name: 'Destornillador', desc: 'Destornillador plano. Sirve para quitar tapas. Y para comprobar lo que hay detrás de ellas.' },
     certEnergetico: { emoji: '🟩', name: 'Certificado energético (D)', desc: 'Certificado de eficiencia energética: letra <b>D</b> (65 puntos) tras las mejoras previstas. Ni verde ni rojo: amarillito. Como el BOE.' },
+    cedula: { emoji: '🏡', name: 'Cédula de habitabilidad', desc: '<b>CÉDULA DE HABITABILIDAD</b> — C/ del Olvido 14, 3ºB. La vivienda es apta para ser habitada. Incluye un vestidor de 5 m² que tu pareja sigue llamando «el cuarto de invitados».' },
     // Nivel 10
     casco: { emoji: '⛑️', name: 'Casco de obra', desc: 'Un casco blanco de obra. Te queda grande, pero te da un aire de autoridad.' },
     llaveAndamio: { emoji: '🔑', name: 'Llave del andamio', desc: 'La llave del candado del andamio. Lleva un llavero de «Reformas Tomás: si no hay grietas, las hacemos».' },
     certFachada: { emoji: '🧱', name: 'Certificado de reparación', desc: 'Certificado de reparación de la fachada: cero grietas. Por primera vez desde 1974.' },
     informeITE: { emoji: '📗', name: 'Informe de ITE válido', desc: 'Informes de ITE de Carmen Cimiento y Diego Dintel, registrados. Los únicos veraces.' },
     justDerrama: { emoji: '💸', name: 'Justificante de la derrama', desc: 'Justificante de pago de tu parte de la derrama: 7.020 €. Te ha dolido más que la hipoteca.' },
-    llaves: { emoji: '🗝️', name: 'Llaves de casa', desc: 'Las llaves de TU casa. Tres llaves, un mando del garaje (no tienes garaje) y un llavero con forma de expediente.' },
+    llaves: { emoji: '🗝️', name: 'Llaves de casa', desc: 'Las llaves de TU casa: C/ del Olvido 14, 3ºB. Tres llaves, un mando del garaje (no tienes garaje) y un llavero con forma de expediente.' },
   };
 
   // =========================================================
@@ -237,6 +247,16 @@
       <tr><th>Ref.</th><th>Dirección</th><th>Renta</th><th>Comunidad</th><th>Ascensor</th><th>Mascotas</th><th>Ingresos exigidos</th><th>Garantía adicional</th></tr>
       ${PISOS.map((p) => `<tr><td><b>${p.ref}</b></td><td>${p.dir}<br><i class="tiny">${p.nota}</i></td><td>${p.renta} €</td><td>${p.com}</td><td>${p.asc}</td><td>${p.masc}</td><td>${fmtMult(p.mult)} × renta</td><td>${p.gar === 0 ? 'ninguna' : `${p.gar} mes${p.gar > 1 ? 'es' : ''}`}</td></tr>`).join('')}
       </table><p class="small">Todos los precios son mensuales. Fotos hechas con gran angular de 360°.</p>`);
+  }
+
+  /** Mete un papel en la carpeta del dossier; con los tres, se convierte en el dossier. */
+  function carpetaAdd(g, id, txt) {
+    const dentro = (g.flag('carpIn') || []).concat(id);
+    g.take(id); g.set('carpIn', dentro);
+    const falta = Object.keys(CARPETA_PARTES).filter((k) => !dentro.includes(k)).map((k) => CARPETA_PARTES[k]);
+    if (falta.length) return g.say(`${txt} Falta: ${falta.join(' y ')}.`);
+    g.take('carpeta'); g.give('dossier');
+    g.say(`${txt} Grapas todo. Dossier completo. Lo miras con orgullo de padre.`);
   }
 
   function ordenadorL1(g) {
@@ -282,6 +302,16 @@
       <p><b>Opción 3 — Hipoteca Mixta «Ni Fu Ni Fa».</b> TIN: <b>2,10 %</b> (¡el más bajo!). Comisión de apertura: <b>1.000 €</b>.<br>
       Productos <b>obligatorios</b> (no bonifican): seguro de vida, seguro de hogar y alarma. Bonificaciones opcionales: Cuenta Nómina Premium −0,10 · tarjeta de crédito −0,10 · protección de pagos −0,10.</p>
       <p class="tiny">Puntos porcentuales. El precio de los productos figura en el folleto comercial. La FEIN no es vinculante; la oferta vinculante, tampoco mucho.</p>`);
+  }
+
+  /** Nivel 2: con solicitud firmada y dossier, el gestor entrega la FEIN. */
+  function hipFein(g, txt) {
+    if (!(g.flag('solOK') && g.flag('dosOK'))) {
+      return g.say(`—${txt} Me falta ${g.flag('solOK') ? 'el dossier con sus ingresos' : 'la solicitud de hipoteca firmada'}.`, 'Íñigo (gestor)');
+    }
+    g.give('fein');
+    g.say(`—${txt} Con esto ya puedo estudiarle. Aquí tiene la FEIN con nuestras tres opciones. Cuando sepa cuál le sale más barata, métalo en el simulador. Yo le recomendaría la mixta, que tiene el TIN más bajo... y la mejor comisión. Para mí.`, 'Íñigo (gestor)');
+    feinDoc(g);
   }
 
   // ---- Nivel 4: mesa de firmas ----
@@ -441,12 +471,12 @@
               if (!d.req(s2.have, g)) {
                 s2.days += 1; g.sfx('bad');
                 const dead = s2.days > T8_LIMIT; s2.dead = dead; g.set('tram', s2);
-                return render(dead ? `Solicitud denegada... y se acabó el plazo (día ${s2.days}). El albañil se ha ido a otra obra hasta 2028. Desista y empiece de nuevo.` : `«${d.name}»: SOLICITUD DENEGADA. Falta documentación. Cuál, no se lo podemos decir: protección de datos.`, true);
+                return render(dead ? `Solicitud denegada... y se acabó el plazo (día ${s2.days}). El albañil se ha ido a otra obra hasta 2031. Desista y empiece de nuevo.` : `«${d.name}»: SOLICITUD DENEGADA. Falta documentación. Cuál, no se lo podemos decir: protección de datos.`, true);
               }
               s2.days += d.d; s2.have[d.id] = true;
               if (s2.days > T8_LIMIT) {
                 s2.dead = true; g.set('tram', s2); g.sfx('bad');
-                return render(`Concedido «${d.name}», pero ya es el día ${s2.days}. El albañil se ha ido a otra obra hasta 2028. Desista y empiece de nuevo.`, true);
+                return render(`Concedido «${d.name}», pero ya es el día ${s2.days}. El albañil se ha ido a otra obra hasta 2031. Desista y empiece de nuevo.`, true);
               }
               g.set('tram', s2); g.sfx('ok');
               if (d.id === 'licencia') {
@@ -579,8 +609,9 @@
       title: 'Se alquila (con condiciones)',
       place: 'Inmobiliaria «Pisos Ya (o Nunca)»',
       stars: 2,
-      intro: 'Necesitas un piso. Tú, tu pareja y Michi, el gato. En la inmobiliaria hay 47 candidatos por anuncio, y el casero elige como quien elige melones.<br><br>Los pisos tienen sus requisitos, tu pareja tiene los suyos y tu cuenta corriente tiene los de la física.<br><br><b>Objetivo:</b> prepara un dossier impecable, elige el único piso que os vale a todos, calcula lo que pagarás el día de la firma y entrega la solicitud al casero.',
-      outro: 'El casero acepta tu solicitud... para dentro de dos años, cuando acabe la lista de espera. Mientras tanto, haces cuentas: lo que te piden de alquiler cada mes es más que una cuota de hipoteca. Rumbo al banco.',
+      intro: 'Primavera de 2028. <b>Porras del Trámite, S.L.</b> sobrevivió a la inspección de Hacienda y sigue friendo en la Calle del Trámite 12. Como administrador/a, cobras por fin una <b>nómina</b> de tu propia churrería. Y con nómina, uno se viene arriba: necesitas un piso. Tú, tu pareja y Michi, el gato.<br><br>En la inmobiliaria hay 47 candidatos por anuncio, y el casero elige como quien elige melones. Los pisos tienen sus requisitos, tu pareja tiene los suyos y tu cuenta corriente tiene los de la física.<br><br><b>Objetivo:</b> prepara un dossier impecable, elige el único piso que os vale a todos, calcula lo que pagarás el día de la firma y entrega la solicitud al casero.',
+      outro: 'El casero acepta tu solicitud... para dentro de dos años, cuando acabe la lista de espera. Eso sí, te da el anuncio de un piso en venta: un 3ºB con ascensor en la C/ del Olvido 14. Haces cuentas: lo que te piden de alquiler cada mes es más que una cuota de hipoteca. Con tu dossier bajo el brazo, rumbo al banco.',
+      carry: ['nomina', 'certificadoAEAT', 'dni'],
       scene: { wall: '#e6dfcf', floor: '#9c8a74', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'board', l: 9, t: 12, w: 22, h: 22 },
@@ -615,28 +646,43 @@
           look(g) { g.say('Una impresora con un cartel: «Solo para clientes. Imprimir cuesta 2 €. Mirarla, 1 €».'); },
           use: {
             movil(g) {
-              if (g.has('extracto') || g.flag('dossierOK') || g.has('dossier')) return g.say('Ya tienes el extracto. Imprimir otro sería despilfarrar papel (y 2 €).');
+              if (g.has('extracto') || g.has('dossier') || (g.flag('carpIn') || []).includes('extracto')) return g.say('Ya tienes el extracto. Imprimir otro sería despilfarrar papel (y 2 €).');
               g.give('extracto');
               g.say('Mandas el extracto desde la app. La impresora se lo piensa, carraspea y lo escupe. Saldo: 4.000 €. Hasta la impresora parece decepcionada.');
             },
           } },
         { id: 'agente', x: 63, y: 47, emoji: '🕴️', s: 8, label: 'Borja, agente inmobiliario',
           look(g) {
-            if (g.flag('dossierOK')) return g.say('—Ya tengo su dossier. Elija piso en el ordenador. Solo uno, que esto no es un buffet.', 'Borja (agente)');
-            g.say('—Sin dossier no le enseño ni el ascensor. Quiero una carpeta con su <b>nómina</b> y un <b>extracto bancario impreso</b>. Impreso, ¿eh? Las pantallas mienten.', 'Borja (agente)');
+            if (g.flag('dossierOK') && g.flag('dniOK')) return g.say('—Ya tengo su dossier y la fotocopia del DNI. Elija piso en el ordenador. Solo uno, que esto no es un buffet.', 'Borja (agente)');
+            const falta = [];
+            if (!g.flag('dossierOK')) falta.push('una carpeta con su <b>nómina</b>, un <b>extracto bancario impreso</b> (impreso, ¿eh?, las pantallas mienten) y, como cobra usted de su propia empresa, el <b>certificado de que su S.L. está al corriente con Hacienda</b>. Una nómina que se firma uno mismo, para un casero, es como cobrar del Monopoly');
+            if (!g.flag('dniOK')) falta.push('su <b>DNI</b>, que se lo fotocopio yo (2 €)');
+            g.say(`—¿Churrero/a? ¿Con S.L.? Uy. Sin papeles no le enseño ni el ascensor. Quiero ${falta.join('. Y también ')}.`, 'Borja (agente)');
           },
           use: {
             dossier(g) {
-              g.take('dossier'); g.set('dossierOK');
-              g.say('—Nómina, extracto... Perfecto. Es usted un candidato de categoría B-más. Ahora elija piso en el ordenador. Y calcule bien, que luego vienen los lloros.', 'Borja (agente)');
+              if (g.flag('dossierOK')) return g.say('—Ya lo he fotocopiado. Guárdeselo, que en el banco se lo van a pedir igual.', 'Borja (agente)');
+              g.set('dossierOK');
+              g.say(`—Nómina de Porras del Trámite, extracto, certificado de Hacienda... Perfecto. Lo fotocopio y se lo devuelvo, que le hará falta. Es usted un candidato de categoría B-más.${g.flag('dniOK') ? ' Ahora elija piso en el ordenador. Y calcule bien, que luego vienen los lloros.' : ' Ahora, el DNI.'}`, 'Borja (agente)');
             },
-            dossier1(g) { g.say('—Le falta el extracto bancario. Impreso.', 'Borja (agente)'); },
+            dni(g) {
+              if (g.flag('dniOK')) return g.say('—Ya tengo la fotocopia. Una. Con dos me sentiría un ladrón. Bueno, con dos le cobraría 4 €.', 'Borja (agente)');
+              g.take('dni'); g.set('dniOK'); g.give('dni');
+              g.say(`—07345189-R... válido hasta 2036. Qué DNI más bonito, se nota que costó lo suyo. Fotocopia: 2 €. Tenga, se lo devuelvo.${g.flag('dossierOK') ? ' Ya puede elegir piso en el ordenador.' : ''}`, 'Borja (agente)');
+            },
+            carpeta(g) {
+              const falta = Object.keys(CARPETA_PARTES).filter((k) => !(g.flag('carpIn') || []).includes(k)).map((k) => CARPETA_PARTES[k]);
+              g.say(`—Esa carpeta está a medias. Le falta: ${falta.join(', ')}.`, 'Borja (agente)');
+            },
             nomina(g) { g.say('—Suelta no. En carpeta. Aquí las cosas se hacen con estilo.', 'Borja (agente)'); },
+            extracto(g) { g.say('—Suelto no. En la carpeta, con lo demás.', 'Borja (agente)'); },
+            certificadoAEAT(g) { g.say('—Muy bonito el certificado. En la carpeta, por favor, con la nómina y el extracto.', 'Borja (agente)'); },
             movil(g) { g.say('—No miro móviles ajenos. Imprímalo.', 'Borja (agente)'); },
           } },
         { id: 'ordenador', x: 77, y: 51, emoji: '💻', s: 6, label: 'Ordenador de la agencia',
           look(g) {
             if (!g.flag('dossierOK')) return g.say('Borja tapa la pantalla con la mano: —Primero el dossier.', 'Borja (agente)');
+            if (!g.flag('dniOK')) return g.say('Borja tapa la pantalla con la mano: —Sin fotocopia del DNI, el sistema no sabe quién es usted. Y yo tampoco.', 'Borja (agente)');
             if (g.has('solicitudAlq')) return g.say('La solicitud ya está impresa. Entrégasela al casero.');
             ordenadorL1(g);
           } },
@@ -650,17 +696,17 @@
           },
           use: {
             solicitudAlq(g) {
-              g.take('solicitudAlq');
-              g.say('—R-03, 3.647 € a la firma, nómina, extracto... ¿y un gato? Bueno, si es un gato serio... Queda usted aceptado/a. ¡Enhorabuena! Pasa usted a la lista de espera. Es el número 1. De la lista de espera.', 'Don Ulpiano (casero)');
+              g.take('solicitudAlq'); g.give('anuncio');
+              g.say('—R-03, 3.647 € a la firma, nómina de una churrería, certificado de Hacienda... ¿y un gato? Bueno, si es un gato serio... Queda usted aceptado/a. ¡Enhorabuena! Pasa usted a la lista de espera. Es el número 1. De la lista de espera. ...Aunque, oiga, con lo que va a pagar de alquiler, ¿por qué no compra? Tenga: un conocido mío vende un 3ºB con ascensor. «Libre de cargas», dice él.', 'Don Ulpiano (casero)');
               g.win();
             },
             dossier(g) { g.say('—El dossier se lo da a Borja, que para eso le pago... digo, le paga usted.', 'Don Ulpiano (casero)'); },
           } },
         { id: 'mochila', x: 11, y: 83, emoji: '🎒', s: 5, label: 'Tu mochila',
           look(g) {
-            if (g.flag('moch')) return g.say('Quedan unas llaves de un piso compartido en el que ya no vives y un táper vacío.');
-            g.set('moch'); g.give('nomina'); g.give('movil');
-            g.say('En la mochila: tu última nómina y el móvil, con un mensaje de tu pareja sin leer. Léelo (selecciónalo en el inventario).');
+            if (g.flag('moch')) return g.say('Quedan unas llaves de un piso compartido en el que ya no vives, un táper vacío y una servilleta de Porras del Trámite con restos de azúcar.');
+            g.set('moch'); g.give('movil');
+            g.say('En la mochila: el móvil, con un mensaje de tu pareja sin leer. Léelo (selecciónalo en el inventario). La nómina y el certificado de Hacienda ya los traías en la mano, que no te fías ni de la mochila.');
           } },
         { id: 'candidatos', x: 30, y: 62, emoji: '👔', s: 5, label: 'Otros candidatos',
           look(g) {
@@ -676,13 +722,14 @@
           look(g) { g.say('Una planta de plástico. Es lo único de la agencia que no tiene precio por metro cuadrado.'); } },
       ],
       combos: {
-        'carpeta+nomina'(g) { g.take('carpeta'); g.take('nomina'); g.give('dossier1'); g.say('Metes la nómina en la carpeta. Ya tienes medio dossier. Falta el extracto.'); },
-        'dossier1+extracto'(g) { g.take('dossier1'); g.take('extracto'); g.give('dossier'); g.say('Grapas el extracto. Dossier completo. Lo miras con orgullo de padre.'); },
+        'carpeta+nomina'(g) { carpetaAdd(g, 'nomina', 'Metes la nómina de Porras del Trámite en la carpeta.'); },
+        'carpeta+extracto'(g) { carpetaAdd(g, 'extracto', 'Metes el extracto bancario en la carpeta.'); },
+        'carpeta+certificadoAEAT'(g) { carpetaAdd(g, 'certificadoAEAT', 'Metes el certificado de estar al corriente en la carpeta. Te cuesta soltarlo: te costó 2.121 €.'); },
       },
       hints: [
-        'Registra la mochila y la estantería. Borja quiere una carpeta con la nómina y un extracto bancario impreso: la impresora acepta cosas desde el móvil.',
-        'Combina carpeta + nómina y luego el extracto. Tras entregar el dossier, lee el móvil (mensaje de tu pareja), el tablón y las condiciones: descarta cada piso que incumpla algo, incluida la solvencia (nómina) y el dinero que tienes (4.000 €).',
-        'Usa el móvil en la impresora; combina carpeta + nómina + extracto; dale el dossier a Borja. En el ordenador elige R-03 (Ronda del Sello): 700 + 700 + 2 × 700 + 847 (700 + 21 %) = 3.647. Entrega la solicitud al casero.',
+        'Habla con Borja: quiere una carpeta con tu nómina, un extracto bancario impreso y el certificado de Hacienda de tu S.L., y además tu DNI. La carpeta está en la estantería; el móvil, en la mochila; la impresora acepta cosas desde el móvil.',
+        'Mete en la carpeta la nómina, el extracto y el certificado de estar al corriente. Luego lee el móvil (mensaje de tu pareja), el tablón y las condiciones: descarta cada piso que incumpla algo, incluida la solvencia (2.400 € de nómina) y el dinero que tienes (4.000 €).',
+        'Usa el móvil en la impresora; combina la carpeta con la nómina, el extracto y el certificado; dale el dossier y el DNI a Borja. En el ordenador elige R-03 (Ronda del Sello): 700 + 700 + 2 × 700 + 847 (700 + 21 %) = 3.647. Entrega la solicitud al casero.',
       ],
     },
 
@@ -691,8 +738,9 @@
       title: 'La hipoteca',
       place: 'Banco Ibérico de Ahorros Perpetuos — Oficina 0001',
       stars: 2,
-      intro: 'Has encontrado un piso para comprar: un 3ºB con ascensor, «libre de cargas». Solo necesitas que el banco te preste <b>180.000 €</b>. Durante 30 años. A cambio de tu alma, en cómodos plazos.<br><br>El banco ofrece tres hipotecas, cada una con su ristra de «productos vinculados». El cartel grande promete un 0,99 %. Los carteles grandes siempre prometen.<br><br><b>Objetivo:</b> averigua el coste real del primer año de la opción más barata, consigue la oferta vinculante y preséntasela al director.',
-      outro: 'Oferta vinculante concedida. El banco te presta el dinero... siempre que la tasación y el Registro confirmen que el piso existe y no debe nada. El vendedor dice que está «libre de cargas». Lo dice él.',
+      intro: 'El anuncio que te dio el casero te ha enamorado: un 3ºB con ascensor en la C/ del Olvido 14, «libre de cargas». Solo necesitas que el banco te preste <b>180.000 €</b>. Durante 30 años. A cambio de tu alma, en cómodos plazos. Por suerte, traes el dossier de la inmobiliaria: los bancos también adoran el papel.<br><br>El banco ofrece tres hipotecas, cada una con su ristra de «productos vinculados». El cartel grande promete un 0,99 %. Los carteles grandes siempre prometen.<br><br><b>Objetivo:</b> averigua el coste real del primer año de la opción más barata, consigue la oferta vinculante y que el director la firme.',
+      outro: 'Oferta vinculante firmada. El banco te presta el dinero... siempre que el Registro certifique que el piso existe y qué debe. El vendedor dice que está «libre de cargas». Lo dice él. Te guardas la oferta como oro en paño y te vas al Registro con el DNI y el anuncio.',
+      carry: ['dossier', 'anuncio'],
       scene: { wall: '#d9e1e6', floor: '#8a8f94', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'screen', l: 42, t: 8, w: 18, h: 16 },
@@ -722,14 +770,14 @@
         { id: 'gestor', x: 40, y: 49, emoji: '🤵', s: 8, label: 'Íñigo, gestor de hipotecas',
           look(g) {
             if (g.has('fein') || g.has('ofertaVinc')) { feinDoc(g); return; }
-            g.say('—Para estudiar su operación necesito su <b>solicitud de hipoteca firmada</b>. Los impresos están en la mesa. ¿Bolígrafo? Los bolígrafos del banco no son para los clientes. Bueno, los del bol sí.', 'Íñigo (gestor)');
+            const falta = [];
+            if (!g.flag('solOK')) falta.push('su <b>solicitud de hipoteca firmada</b> (los impresos están en la mesa; ¿bolígrafo? Los bolígrafos del banco no son para los clientes. Bueno, los del bol sí)');
+            if (!g.flag('dosOK')) falta.push('un <b>dossier con sus ingresos</b>: nómina, extracto... lo de siempre');
+            g.say(`—Para estudiar su operación necesito ${falta.join(' y ')}.`, 'Íñigo (gestor)');
           },
           use: {
-            solicitudFirmada(g) {
-              g.take('solicitudFirmada'); g.give('fein');
-              g.say('—Perfecto. Aquí tiene la FEIN con nuestras tres opciones. Cuando sepa cuál le sale más barata, métalo en el simulador. Yo le recomendaría la mixta, que tiene el TIN más bajo... y la mejor comisión. Para mí.', 'Íñigo (gestor)');
-              feinDoc(g);
-            },
+            solicitudFirmada(g) { g.take('solicitudFirmada'); g.set('solOK'); hipFein(g, 'Solicitud firmada recibida.'); },
+            dossier(g) { g.take('dossier'); g.set('dosOK'); hipFein(g, 'Nómina de Porras del Trámite, S.L.... ¿Es usted administrador/a de una churrería? Mire, los autónomos nos dan un poco de miedo, pero con certificado de Hacienda y todo... Me quedo el dossier para el expediente.'); },
             solicitudHip(g) { g.say('—Sin firmar no vale. Firme aquí, aquí, aquí y en las otras once páginas.', 'Íñigo (gestor)'); },
           } },
         { id: 'mesa', x: 56, y: 52, emoji: '🗃️', s: 6, label: 'Mesa de impresos',
@@ -772,8 +820,7 @@
           look(g) { g.say('Una puerta con placa dorada: «DIRECTOR. Llame antes de entrar. O mejor, no llame». Dentro se oye un campo de golf en la tele.'); },
           use: {
             ofertaVinc(g) {
-              g.take('ofertaVinc');
-              g.say('El director lee la oferta, suspira y la firma: —Euríbor más 0,60 con cuatro productos... Usted ha leído la letra pequeña. Eso no se hace. Bienvenido/a a la familia del Banco Ibérico. Para siempre.', 'Director');
+              g.say('El director lee la oferta, suspira, la firma y te la devuelve: —Euríbor más 0,60 con cuatro productos... Usted ha leído la letra pequeña. Eso no se hace. Guárdela: la notaria se la pedirá el día de la firma. Y antes, tráiganos la certificación de cargas del Registro. Bienvenido/a a la familia del Banco Ibérico. Para siempre.', 'Director');
               g.win();
             },
             fein(g) { g.say('—Eso es la FEIN, no una oferta. Pase por el simulador.', 'Director (desde dentro)'); },
@@ -789,9 +836,9 @@
         'boli+solicitudHip'(g) { g.take('solicitudHip'); g.give('solicitudFirmada'); g.say('Firmas en catorce sitios. En el último te tiembla un poco la mano. Es normal.'); },
       },
       hints: [
-        'Consigue la FEIN: coge una solicitud en la mesa, el bolígrafo del bol de caramelos, combínalos y entrega la solicitud firmada al gestor. El cartel del 0,99 % es humo.',
+        'Consigue la FEIN: coge una solicitud en la mesa y el bolígrafo del bol de caramelos, combínalos y entrega al gestor la solicitud firmada y el dossier que traes de la inmobiliaria. El cartel del 0,99 % es humo.',
         'Calcula el coste del 1.er año de cada opción con la guía: capital × TIN final + productos del primer año + apertura. El Euríbor está en la pantalla; los precios, en el folleto (pasa los mensuales a anuales; la tarjeta es gratis el primer año). Un producto solo compensa si ahorra más de lo que cuesta.',
-        'La más barata es la Opción 2 (Euríbor 2,40 + 0,60 = 3,00 %) con vida, hogar, Cuenta Premium y tarjeta: TIN 2,20 % → 3.960 + 540 + 250 + 120 + 0 + 450 (apertura) = 5.320. Mete 5320 en el simulador y entrega la oferta al despacho del director.',
+        'La más barata es la Opción 2 (Euríbor 2,40 + 0,60 = 3,00 %) con vida, hogar, Cuenta Premium y tarjeta: TIN 2,20 % → 3.960 + 540 + 250 + 120 + 0 + 450 (apertura) = 5.320. Da al gestor la solicitud firmada y el dossier, mete 5320 en el simulador y lleva la oferta al despacho del director.',
       ],
     },
 
@@ -800,8 +847,9 @@
       title: 'Libre de cargas',
       place: 'Registro de la Propiedad n.º 3 de Villatrámite',
       stars: 3,
-      intro: 'El piso que vas a comprar es un precioso <b>3ºB con ascensor</b>. El vendedor jura que está «libre de cargas». El banco, que no se fía ni de su madre, exige una certificación del Registro.<br><br>Para pedirla hay que saber el número de finca. Y para entenderla, hay que saber leer una nota simple, que de simple solo tiene el nombre.<br><br><b>Objetivo:</b> encuentra la finca correcta, pide su nota simple y di a la registradora el importe total de las cargas que <b>siguen vigentes</b>.',
-      outro: 'Certificación expedida: el piso «libre de cargas» arrastra 96.250 € en cargas vigentes. El vendedor dice que «eso se arregla en la notaría». Y, sorprendentemente, tiene razón: se arregla en la notaría. Con tu dinero.',
+      intro: 'Octubre de 2028. El piso que vas a comprar es el del anuncio: un precioso <b>3ºB con ascensor</b>. El vendedor jura que está «libre de cargas». El banco, que no se fía ni de su madre, ha condicionado la oferta vinculante a una certificación del Registro.<br><br>Para pedirla hay que identificarse (menos mal que tu DNI está en vigor hasta 2036) y saber el número de finca. Y para entenderla, hay que saber leer una nota simple, que de simple solo tiene el nombre.<br><br><b>Objetivo:</b> encuentra la finca correcta, pide su nota simple y di a la registradora el importe total de las cargas que <b>siguen vigentes</b>.',
+      outro: 'Certificación expedida: el piso «libre de cargas» arrastra 96.250 € en cargas vigentes. El vendedor dice que «eso se arregla en la notaría». Y, sorprendentemente, tiene razón: se arregla en la notaría. Con tu dinero. Te llevas la nota simple y la certificación a la firma.',
+      carry: ['dni', 'anuncio'],
       scene: { wall: '#e9e2cf', floor: '#6f5a46', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'shelf', l: 4, t: 22, w: 16, h: 2 }, { kind: 'shelf', l: 4, t: 38, w: 16, h: 2 },
@@ -853,18 +901,18 @@
                   return;
                 }
                 g.give('notaSimple');
-                g.doc('📋 Nota simple — Finca 4478', `<p>C/ del Olvido 14, escalera derecha, 3ºB. 72 m². <b>Titular:</b> Anselmo Prisas Prisas (compraventa, 2005). Fecha de la nota: <b>1 de octubre de 2026</b>.</p>
+                g.doc('📋 Nota simple — Finca 4478', `<p>C/ del Olvido 14, escalera derecha, 3ºB. 72 m². <b>Titular:</b> Anselmo Prisas Prisas (compraventa, 2005). Fecha de la nota: <b>2 de octubre de 2028</b>.</p>
                   <table class="tbl s3-tbl">
                   <tr><td>Inscripción 1ª (2001)</td><td>Obra nueva y división horizontal.</td></tr>
                   <tr><td>Inscripción 2ª (14/05/2005)</td><td>Compraventa a favor de Anselmo Prisas.</td></tr>
                   <tr><td>Inscripción 3ª (14/05/2005)</td><td>Hipoteca a favor de Caja de Ahorros del Ocaso: 120.000 €.</td></tr>
-                  <tr><td>Anotación letra A (03/02/2012)</td><td>Embargo a favor del Ayuntamiento (IBI): 3.200 €.</td></tr>
-                  <tr><td>Inscripción 4ª (20/09/2015)</td><td>Cancelación total de la hipoteca de la inscripción 3ª.</td></tr>
-                  <tr><td>Anotación letra B (11/06/2019)</td><td>Embargo a favor de la Agencia Tributaria: 4.400 €.</td></tr>
-                  <tr><td>Anotación letra D (08/01/2020)</td><td>Embargo a favor de Gimnasio Siempre Fuerte S.L. (cuotas): 600 €.</td></tr>
+                  <tr><td>Anotación letra A (03/02/2014)</td><td>Embargo a favor del Ayuntamiento (IBI): 3.200 €.</td></tr>
+                  <tr><td>Inscripción 4ª (20/09/2017)</td><td>Cancelación total de la hipoteca de la inscripción 3ª.</td></tr>
                   <tr><td>Inscripción 5ª (02/03/2021)</td><td>Hipoteca a favor de Banco Ibérico de Ahorros Perpetuos: 90.000 €.</td></tr>
-                  <tr><td>Nota marginal (05/06/2023)</td><td>Prórroga de la anotación letra B por cuatro años más.</td></tr>
-                  <tr><td>Anotación letra C (17/10/2023)</td><td>Embargo a favor de la Comunidad de Propietarios: 1.850 €.</td></tr></table>
+                  <tr><td>Anotación letra B (11/06/2021)</td><td>Embargo a favor de la Agencia Tributaria: 4.400 €.</td></tr>
+                  <tr><td>Anotación letra D (08/01/2022)</td><td>Embargo a favor de Gimnasio Siempre Fuerte S.L. (cuotas): 600 €.</td></tr>
+                  <tr><td>Nota marginal (05/06/2025)</td><td>Prórroga de la anotación letra B por cuatro años más.</td></tr>
+                  <tr><td>Anotación letra C (17/10/2025)</td><td>Embargo a favor de la Comunidad de Propietarios: 1.850 €.</td></tr></table>
                   <p class="tiny">Las anotaciones de embargo <b>caducan a los 4 años</b> de su fecha, salvo que conste su prórroga. Las hipotecas siguen vigentes mientras no se inscriba su cancelación. Esta nota tiene valor meramente informativo, como casi todo.</p>`);
               },
             });
@@ -894,9 +942,7 @@
           } },
         { id: 'bolso', x: 16, y: 72, emoji: '👜', s: 6, label: 'Tu bolsa',
           look(g) {
-            if (g.flag('bolso')) return g.say('Pañuelos, un caramelo del banco (no) y la llave del piso de alquiler que no conseguiste.');
-            g.set('bolso'); g.give('dni'); g.give('anuncio');
-            g.say('En la bolsa llevas tu DNI y el anuncio del piso que quieres comprar.');
+            g.say('Pañuelos, un caramelo del banco (no), la oferta vinculante bien doblada y una porra de la churrería envuelta en servilleta, por si la registradora se ablanda. A las 13:58 no se ablanda nadie.');
           } },
         { id: 'archivo', x: 86, y: 62, emoji: '🗄️', s: 8, label: 'Archivo de legajos',
           look(g) { g.say('Legajos desde 1861. Huele a papel antiguo, a humedad y a herencias mal repartidas.'); } },
@@ -906,9 +952,9 @@
           look(g) { g.say('«Se ruega no confundir la nota simple con una nota sencilla. La nota simple es complicada. La nota sencilla no existe.»'); } },
       ],
       hints: [
-        'Mira tu bolsa. El anuncio habla de un 3ºB con ascensor; en el libro índice hay dos 3ºB. El plano del edificio te dirá cuál es. Identifícate en el terminal con el DNI.',
-        'Es la finca 4478 (escalera derecha, la del ascensor). En la nota simple, descarta la hipoteca cancelada y las anotaciones caducadas (4 años desde su fecha, salvo prórroga). Fecha de la nota: 1/10/2026.',
-        'Usa el DNI en el terminal y pide la finca 4478. Vigentes: hipoteca de la inscripción 5ª (90.000) + letra B prorrogada en 2023 (4.400) + letra C de 2023 (1.850) = 96.250. Díselo a la registradora.',
+        'Relee el anuncio que traes: habla de un 3ºB con ascensor; en el libro índice hay dos 3ºB. El plano del edificio te dirá cuál es. Identifícate en el terminal con tu DNI.',
+        'Es la finca 4478 (escalera derecha, la del ascensor). En la nota simple, descarta la hipoteca cancelada y las anotaciones caducadas (4 años desde su fecha, salvo prórroga). Fecha de la nota: 2/10/2028.',
+        'Usa el DNI en el terminal y pide la finca 4478. Vigentes: hipoteca de la inscripción 5ª (90.000) + letra B prorrogada en 2025 (4.400) + letra C de 2025 (1.850) = 96.250. Díselo a la registradora.',
       ],
     },
 
@@ -917,8 +963,9 @@
       title: 'Firme aquí, aquí y aquí',
       place: 'Notaría de Doña Leocadia Fe-Pública',
       stars: 3,
-      intro: 'Día de la firma. En la notaría: el vendedor, su mujer, dos apoderados de banco, una agente inmobiliaria que pasaba por aquí a cobrar, la notaria... y tú, con más papeles que una papelería.<br><br>Faltan documentos, falta calcular el cheque y, sobre todo, falta que cada uno firme en el orden que exige.<br><br><b>Objetivo:</b> reúne la documentación, extiende el cheque correcto al vendedor y organiza el orden de firma.',
-      outro: 'Escritura firmada. Eres propietario/a de un piso y de una deuda de 30 años. Pero la fiesta dura poco: a la salida, un señor muy amable te recuerda que tienes 30 días hábiles para pagar los impuestos.',
+      intro: 'Lunes 16 de octubre de 2028: día de la firma. En la notaría: el vendedor, su mujer, dos apoderados de banco, una agente inmobiliaria que pasaba por aquí a cobrar, la notaria... y tú, con la nota simple, la certificación de cargas y la oferta vinculante. Más papeles que una papelería.<br><br>Faltan documentos, falta calcular el cheque y, sobre todo, falta que cada uno firme en el orden que exige.<br><br><b>Objetivo:</b> reúne la documentación, extiende el cheque correcto al vendedor y organiza el orden de firma.',
+      outro: 'Escritura firmada. Eres propietario/a de un piso y de una deuda de 30 años. La notaria te da tu copia de la escritura y te devuelve el recibo del IBI. Pero la fiesta dura poco: a la salida, un señor muy amable te recuerda que tienes 30 días hábiles para pagar los impuestos.',
+      carry: ['notaSimple', 'certCargas', 'ofertaVinc'],
       scene: { wall: '#d8c8a8', floor: '#5a4232', floorH: 34, pattern: 'carpet' },
       decor: [
         { kind: 'counter', l: 18, t: 60, w: 62, h: 8 },
@@ -933,7 +980,8 @@
             if (!g.flag('docsOK')) return g.say('—No firmamos nada hasta que mi oficial tenga toda la documentación. Y yo firmo la última, como siempre. Es lo único que me gusta de este oficio.', 'Notaria');
             if (!g.flag('chequeOK')) return g.say('—Falta el cheque al vendedor. Calcúlelo bien: aquí todo el mundo cuenta, y el señor Anselmo, dos veces.', 'Notaria');
             if (!g.flag('firmado')) { firmaModal(g); return; }
-            g.say('—Queda autorizada la escritura. Enhorabuena: es usted propietario/a. Y deudor/a. Las dos cosas a la vez, como casi todo el mundo.', 'Notaria');
+            g.give('escritura'); g.give('reciboIBI');
+            g.say('—Queda autorizada la escritura. Tenga su copia. Y el recibo del IBI: a partir de ahora, el IBI es suyo. Enhorabuena: es usted propietario/a. Y deudor/a. Las dos cosas a la vez, como casi todo el mundo.', 'Notaria');
             g.win();
           } },
         { id: 'recepcion', x: 8, y: 50, emoji: '💁', s: 6, label: 'Recepcionista',
@@ -945,15 +993,15 @@
         { id: 'oficial', x: 21, y: 44, emoji: '🧑‍💻', s: 6, label: 'Oficial de la notaría',
           look(g) {
             if (g.flag('docsOK')) return g.say('—Documentación completa. Ahora el cheque al vendedor, en el talonario de la mesa.', 'Oficial');
-            const need = { certSaldo: 'el certificado de saldo pendiente de la hipoteca del vendedor (se lo da su banco)', certComunidad: 'el certificado de deudas con la comunidad (llame al administrador)', reciboIBI: 'el último recibo del IBI (lo tendrá el vendedor... o quien mande en casa)' };
+            const need = { certCargas: 'la certificación de cargas del Registro', ofertaVinc: 'la oferta vinculante de su hipoteca (la notaria tiene que hacer el acta de transparencia)', certSaldo: 'el certificado de saldo pendiente de la hipoteca del vendedor (se lo da su banco)', certComunidad: 'el certificado de deudas con la comunidad (llame al administrador)', reciboIBI: 'el último recibo del IBI (lo tendrá el vendedor... o quien mande en casa)' };
             const miss = Object.keys(need).filter((k) => !(g.flag('dlv') || []).includes(k));
             g.say(`—Para preparar la escritura me falta: ${miss.map((k) => need[k]).join('; ')}.`, 'Oficial');
           },
-          use: Object.fromEntries(['certSaldo', 'certComunidad', 'reciboIBI'].map((k) => [k, (g) => {
+          use: Object.fromEntries(['certCargas', 'ofertaVinc', 'certSaldo', 'certComunidad', 'reciboIBI'].map((k) => [k, (g) => {
             const d = g.flag('dlv') || [];
             g.take(k); d.push(k); g.set('dlv', d);
-            if (d.length === 3) { g.set('docsOK'); g.sfx('stamp'); g.say('—¡Completo! Ahora extienda el cheque al vendedor en el talonario. Y lea bien la forma de pago del borrador.', 'Oficial'); }
-            else g.say(`—Recibido. Van ${d.length} de 3.`, 'Oficial');
+            if (d.length === 5) { g.set('docsOK'); g.sfx('stamp'); g.say('—¡Completo! Ahora extienda el cheque al vendedor en el talonario. Lea bien la forma de pago del borrador... y su nota simple, que para eso la trae.', 'Oficial'); }
+            else g.say(`—Recibido. Van ${d.length} de 5.`, 'Oficial');
           }])) },
         { id: 'b1', x: 27, y: 52, emoji: '🧔', s: 6, label: 'Apoderado del banco del vendedor',
           look(g) {
@@ -970,7 +1018,8 @@
             g.say('—Yo firmo <b>pegadita a mi marido: justo antes o justo después</b>. Y <b>nunca justo después de un banco</b>, que me da alergia.', 'Doña Visitación');
           } },
         { id: 'b2', x: 64, y: 52, emoji: '👩‍💼', s: 6, label: 'Apoderada de tu banco',
-          look(g) { g.say('—Yo firmo la hipoteca <b>justo después del comprador</b>. Ni antes, ni dos puestos después: justo después. Es lo que dice el protocolo, y el protocolo soy yo.', 'Apoderada (tu banco)'); } },
+          look(g) { g.say('—Yo firmo la hipoteca <b>justo después del comprador</b>. Ni antes, ni dos puestos después: justo después. Es lo que dice el protocolo, y el protocolo soy yo. ¿La oferta vinculante? Désela al oficial: la notaria tiene que levantar el acta de transparencia. Se llama así, pero es opaca.', 'Apoderada (tu banco)'); },
+          use: { ofertaVinc(g) { g.say('—A mí no, al oficial. Yo solo firmo. Y cobro.', 'Apoderada (tu banco)'); } } },
         { id: 'agente', x: 77, y: 52, emoji: '💃', s: 6, label: 'Agente inmobiliaria',
           look(g) { g.say('—Yo también firmo, ¿eh? Por si acaso. Para que quede claro que esta venta es mía y que mi factura del 3 % + IVA también.', 'Agente inmobiliaria'); } },
         { id: 'tarjetas', x: 88, y: 19, emoji: '📇', s: 5, label: 'Corcho con tarjetas',
@@ -999,16 +1048,16 @@
         { id: 'carpeta', x: 14, y: 82, emoji: '💼', s: 6, label: 'Tu cartera de documentos',
           look(g) {
             if (g.flag('carp')) return g.say('Solo te queda un folleto del banco y la esperanza.');
-            g.set('carp'); g.give('notaSimple'); g.give('arras');
-            g.say('Sacas la nota simple del Registro y el contrato de arras. Los traes sudados de tanto apretarlos.');
+            g.set('carp'); g.give('arras');
+            g.say('Sacas el contrato de arras que firmasteis la semana pasada. Lo traes sudado de tanto apretarlo.');
           } },
         { id: 'cuadro', x: 75, y: 18, emoji: '🖼️', s: 4, label: 'Cuadro',
           look(g) { g.say('Óleo de un notario del siglo XIX dando fe de algo. Tiene cara de no fiarse del pintor.'); } },
       ],
       hints: [
-        'Pide el borrador en recepción y saca tus papeles de la cartera. El oficial necesita tres documentos: el apoderado del banco del vendedor tiene uno, Doña Visitación otro, y el del administrador se pide por teléfono (el número está en el corcho).',
+        'Pide el borrador en recepción y saca las arras de tu cartera. El oficial necesita cinco documentos: dos los traes tú (certificación de cargas y oferta vinculante), el apoderado del banco del vendedor tiene otro, Doña Visitación otro, y el del administrador se pide por teléfono (el número está en el corcho).',
         'Cheque = precio − arras − saldo REAL de la hipoteca (certificado, no lo inscrito) − embargos vigentes de la nota simple (los mismos que en el Registro). Para el orden de firma, escucha a cada firmante; la agente inmobiliaria no comparece.',
-        'Teléfono 5550147. Cheque: 225.000 − 22.500 − 61.420 − 4.400 − 1.850 = 134.830. Orden: apoderado del banco del vendedor, Don Anselmo, Doña Visitación, tú, apoderada de tu banco. Luego habla con la notaria.',
+        'Entrega al oficial la certificación de cargas, la oferta vinculante, el certificado de saldo, el de la comunidad y el recibo del IBI (teléfono 5550147). Cheque: 225.000 − 22.500 − 61.420 − 4.400 − 1.850 = 134.830. Orden: apoderado del banco del vendedor, Don Anselmo, Doña Visitación, tú, apoderada de tu banco. Luego habla con la notaria.',
       ],
     },
 
@@ -1017,8 +1066,9 @@
       title: 'Hacienda somos todos (tú más)',
       place: 'Oficina Liquidadora y Ayuntamiento — Ventanillas compartidas',
       stars: 3,
-      intro: 'Comprar un piso usado tributa por el <b>ITP</b>. Y en la ventanilla de al lado, el Ayuntamiento quiere cobrarte la <b>plusvalía municipal</b>, «que total, alguien la tiene que pagar».<br><br>Tramos, valores de referencia, tipos reducidos con letra pequeña y una ordenanza que nadie ha leído.<br><br><b>Objetivo:</b> presenta el modelo 600 con la base imponible, la cuota de ITP y la plusvalía que te corresponde pagar a ti (si es que te corresponde algo).',
-      outro: 'Impuestos pagados. Ya eres propietario/a a todos los efectos... salvo a efectos catastrales: una carta del Catastro asegura que tu piso mide 96 m² y que tu trastero es el del vecino.',
+      intro: 'Comprar un piso usado tributa por el <b>ITP</b>. Traes la escritura recién firmada, el recibo del IBI y tu DNI. Y en la ventanilla de al lado, el Ayuntamiento quiere cobrarte la <b>plusvalía municipal</b>, «que total, alguien la tiene que pagar».<br><br>Tramos, valores de referencia, tipos reducidos con letra pequeña y una ordenanza que nadie ha leído. Después de la inspección de la churrería, Hacienda ya no te da miedo. Te da pereza.<br><br><b>Objetivo:</b> presenta el modelo 600 con la base imponible, la cuota de ITP y la plusvalía que te corresponde pagar a ti (si es que te corresponde algo).',
+      outro: 'Impuestos pagados. Ya eres propietario/a a todos los efectos... salvo a efectos catastrales: meses después, ya en 2029, una carta del Catastro asegura que tu piso mide 96 m² y que tu trastero es el del vecino. Coges la escritura y vas a llevarle la contraria.',
+      carry: ['dni', 'escritura', 'reciboIBI'],
       scene: { wall: '#cfd8cc', floor: '#7d8378', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'counter', l: 30, t: 56, w: 44, h: 9 },
@@ -1047,7 +1097,7 @@
               title: '🏧 Consulta de valor de referencia', text: 'Introduzca la <b>referencia catastral</b> (versión corta, 7 cifras).', numeric: true, maxLen: 7,
               check: (v) => v === '4821103',
               failText: () => 'Referencia inexistente. O existe, pero en otro municipio, en otra dimensión.',
-              ok: () => { g.give('certVR'); g.say('El quiosco imprime: «Valor de referencia 2026 de su inmueble: 241.000 €». Más de lo que pagaste. El Catastro cree mucho en ti.', 'Quiosco del Catastro'); },
+              ok: () => { g.give('certVR'); g.say('El quiosco imprime: «Valor de referencia 2028 de su inmueble: 241.000 €». Más de lo que pagaste. El Catastro cree mucho en ti.', 'Quiosco del Catastro'); },
             });
           } },
         { id: 'ordenanza', x: 60, y: 22, emoji: '📖', s: 5, label: 'Ordenanza fiscal (en un atril)',
@@ -1075,29 +1125,34 @@
           } },
         { id: 'funcionaria', x: 62, y: 47, emoji: '👩‍💼', s: 7, label: 'Funcionaria de la Oficina Liquidadora',
           look(g) {
+            if (!g.flag('escrOK')) return g.say('—Sin la copia de la escritura no le liquido nada. Tráigamela: precio, fecha, metros... Lo quiero todo. Y antes de liquidar el ITP, resuelva lo de la plusvalía en la ventanilla de al lado.', 'Funcionaria');
             if (!g.has('noSujecion')) return g.say('—Antes de liquidar el ITP, resuelva lo de la plusvalía en la ventanilla de al lado. Si no, el sistema se lía y me lía a mí.', 'Funcionaria');
             g.say('—Ya puede presentar el modelo 600 en el terminal. Identifíquese con el DNI, eso sí.', 'Funcionaria');
+          },
+          use: {
+            escritura(g) {
+              if (g.flag('escrOK')) return g.say('—Ya la he fotocopiado. Por las dos caras. Y la contraportada, por si acaso.', 'Funcionaria');
+              g.set('escrOK');
+              g.say('—16 de octubre de 2028, 225.000 €, 72 m² construidos, vivienda habitual... Fotocopiada. Tenga, no la pierda, que el Catastro se la va a pedir. Cuando aclare la plusvalía, presente el 600 en el terminal.', 'Funcionaria');
+            },
           } },
         { id: 'terminal', x: 80, y: 50, emoji: '🖥️', s: 6, label: 'Terminal del modelo 600',
           look(g) {
             if (!g.flag('ident')) return g.say('«Identifíquese con su documento de identidad.»', 'Terminal');
+            if (!g.flag('escrOK')) return g.say('«Error 600-E: falta la copia de la escritura. Entréguela a la funcionaria de la Oficina Liquidadora.»', 'Terminal');
             if (!g.has('noSujecion')) return g.say('«Error 600-P: plusvalía pendiente de aclarar. Diríjase a la ventanilla de plusvalía.»', 'Terminal');
             m600Modal(g);
           },
           use: {
-            dni(g) { g.set('ident'); g.say('«Identificado/a. Fecha de nacimiento: 20/10/1991. Bienvenido/a, contribuyente.»', 'Terminal'); },
+            dni(g) { g.set('ident'); g.say('«Identificado/a: 07345189-R. Fecha de nacimiento: 20/10/1993. Le consta una inspección en 2028. Bienvenido/a otra vez, contribuyente.»', 'Terminal'); },
           } },
         { id: 'cartera', x: 12, y: 80, emoji: '👛', s: 5, label: 'Tu cartera',
           look(g) {
-            if (g.flag('cart')) return g.say('Una tarjeta del videoclub. Hace tiempo que no existe el videoclub. Ni tu saldo.');
-            g.set('cart'); g.give('dni');
-            g.say('Sacas el DNI. Fecha de nacimiento: 20/10/1991.');
+            g.say('Una tarjeta del videoclub (ya no existe el videoclub, ni tu saldo) y la tarjeta de fidelización de la churrería: «a la décima porra, la undécima gratis». La sellas tú mismo/a.');
           } },
         { id: 'carpeta', x: 24, y: 82, emoji: '🗂️', s: 5, label: 'Tu carpeta de la compra',
           look(g) {
-            if (g.flag('carpT')) return g.say('Fotocopias de fotocopias. Y el folleto del 0,99 % TAE, que guardas como recordatorio.');
-            g.set('carpT'); g.give('escritura'); g.give('reciboIBI5');
-            g.say('Sacas la copia de la escritura y el recibo del IBI que te dio Doña Visitación.');
+            g.say('Fotocopias de fotocopias. Y el folleto del 0,99 % TAE, que guardas como recordatorio. Lo importante (escritura, recibo del IBI y DNI) ya lo llevas en la mano.');
           } },
         { id: 'cola', x: 52, y: 82, emoji: '🧍', s: 5, label: 'Contribuyente en la cola',
           look(g) { g.say('—Yo pagué la plusvalía de la vendedora sin darme cuenta. Ahora ella me manda postales desde Benidorm.', 'Contribuyente'); } },
@@ -1105,9 +1160,9 @@
           look(g) { g.say('Faltan 29 días hábiles para que acabe el plazo. Aquí eso es mañana.'); } },
       ],
       hints: [
-        'Saca tus papeles (cartera y carpeta). El valor de referencia lo da el quiosco del Catastro con la referencia del recibo del IBI. En la plusvalía, lee la ordenanza antes de pagar nada.',
-        'La base es el MAYOR entre precio (225.000) y valor de referencia (241.000). ¿Tipo reducido? Tienes 34 años el día de la escritura... pero mira el límite de la base. La bonificación del 20 % exige menos de 70 m² (la escritura dice 72). La plusvalía la paga quien vende (art. 3).',
-        'Quiosco: 4821103. Plusvalía: «Según el artículo 3». Usa el DNI en el terminal. Modelo 600: base 241000; cuota 200.000 × 6 % + 41.000 × 8 % = 12.000 + 3.280 = 15280; plusvalía 0.',
+        'Entrega la escritura a la funcionaria de la Oficina Liquidadora. El valor de referencia lo da el quiosco del Catastro con la referencia del recibo del IBI que traes. En la plusvalía, lee la ordenanza antes de pagar nada.',
+        'La base es el MAYOR entre precio (225.000) y valor de referencia (241.000). ¿Tipo reducido? Según tu DNI y la escritura, tienes 34 años el día de la firma... pero mira el límite de la base. La bonificación del 20 % exige menos de 70 m² (la escritura dice 72). La plusvalía la paga quien vende (art. 3).',
+        'Escritura a la funcionaria. Quiosco: 4821103. Plusvalía: «Según el artículo 3». Usa el DNI en el terminal. Modelo 600: base 241000; cuota 200.000 × 6 % + 41.000 × 8 % = 12.000 + 3.280 = 15280; plusvalía 0.',
       ],
     },
 
@@ -1116,8 +1171,9 @@
       title: 'El dron del Catastro',
       place: 'Gerencia del Catastro — Atención al público',
       stars: 4,
-      intro: 'Un dron del Catastro ha sobrevolado tu edificio y ha llegado a dos conclusiones: que tu piso mide <b>96 m²</b> (contando el patio de luces, «que tiene mucha luz») y que tu trastero es el <b>3871</b>, que casualmente es el del vecino.<br><br>Toca medir, leer planos y llevar la contraria al dron.<br><br><b>Objetivo:</b> presenta el modelo 902 con la referencia correcta de tu trastero y la superficie útil real de tu vivienda.',
-      outro: 'Catastro rectificado. Tu piso mide lo que mide, tu trastero es tuyo y tu IBI sube igual. Ahora quieres cerrar la terraza para ganar un poco de espacio. Para eso, primero, la comunidad de vecinos.',
+      intro: 'Un dron del Catastro ha sobrevolado tu edificio y ha llegado a dos conclusiones: que tu piso mide <b>96 m²</b> (contando el patio de luces, «que tiene mucha luz») y que tu trastero es el <b>3871</b>, que casualmente es el del vecino.<br><br>Toca medir, leer planos y llevar la contraria al dron. Por suerte, traes la escritura: lo que dice la escritura no lo tumba ni un dron.<br><br><b>Objetivo:</b> presenta el modelo 902 con la referencia correcta de tu trastero y la superficie útil real de tu vivienda.',
+      outro: 'Catastro rectificado. Tu piso mide lo que mide, tu trastero es tuyo y tu IBI sube igual. Mirando tu plano acotado, se te ocurre cerrar la terraza (4,00 × 1,50) para ganar un poco de espacio. Para eso, primero, la comunidad de vecinos. Te llevas el plano.',
+      carry: ['escritura'],
       scene: { wall: '#dfe3e8', floor: '#8c8f93', floorH: 30, pattern: 'tiles' },
       decor: [
         { kind: 'counter', l: 52, t: 58, w: 34, h: 9 },
@@ -1141,19 +1197,22 @@
           look(g) { g.say('La ortofoto del dron muestra tu terraza en azul: la ha catalogado como «piscina». Es una lona de cuando llovió en 2019.'); } },
         { id: 'funcionaria', x: 62, y: 49, emoji: '👩‍💼', s: 7, label: 'Funcionaria del Catastro',
           look(g) {
-            if (!g.flag('planoT')) {
-              g.set('planoT'); g.give('plano');
-              g.say('—¿Que su piso no mide 96? Pues mídalo. Tenga el plano que tenemos: sin cotas, que las cotas las carga el diablo. Cuando lo tenga todo, rellene el 902 en el terminal.', 'Funcionaria');
-              return;
-            }
+            if (!g.flag('planoT')) return g.say('—¿Que su piso no mide 96? ¿Y usted quién es? Enséñeme la escritura, que aquí cualquiera viene a decir que un piso es suyo. Hasta los drones.', 'Funcionaria');
             g.say('—Necesito la referencia de SU trastero, según los linderos de su escritura, y la superficie útil real según las normas. Nada de «a ojo».', 'Funcionaria');
+          },
+          use: {
+            escritura(g) {
+              if (g.flag('planoT')) return g.say('—Ya la he visto. Bonita escritura. Léase lo del trastero, que viene con sus linderos.', 'Funcionaria');
+              g.set('planoT'); g.give('plano');
+              g.say('—Finca 4478, 3ºB... Vale, es usted. Le devuelvo la escritura: fíjese en los <b>linderos del trastero</b>. ¿Que su piso no mide 96? Pues mídalo. Tenga el plano que tenemos: sin cotas, que las cotas las carga el diablo. Cuando lo tenga todo, rellene el 902 en el terminal.', 'Funcionaria');
+            },
           } },
         { id: 'terminal', x: 79, y: 50, emoji: '🖥️', s: 6, label: 'Terminal del modelo 902', look: m902Modal },
         { id: 'carpeta', x: 10, y: 60, emoji: '🗂️', s: 5, label: 'Tu carpeta',
           look(g) {
-            if (g.flag('carpT')) return g.say('Facturas, garantías y la nota simple, que ya te sabes de memoria.');
-            g.set('carpT'); g.give('escritura6'); g.give('notificacion');
-            g.say('Sacas la escritura (con la descripción del trastero) y la notificación del Catastro.');
+            if (g.flag('carpT')) return g.say('Facturas, garantías, la nota simple (que ya te sabes de memoria) y el justificante del ITP, que miras de vez en cuando para llorar un poco.');
+            g.set('carpT'); g.give('notificacion');
+            g.say('Sacas la notificación del Catastro, con su foto aérea y su optimismo.');
           } },
         { id: 'estuche', x: 30, y: 62, emoji: '🧰', s: 5, label: 'Caja de herramientas (olvidada por un técnico)',
           look(g) {
@@ -1174,9 +1233,9 @@
         'cinta+plano'(g) { g.take('plano'); g.give('planoAcotado'); g.say('Mides todo, habitación por habitación. Hasta el altillo, a gatas. Apuntas las medidas en el plano. Míralo en el inventario.'); },
       },
       hints: [
-        'Saca la escritura y la notificación de tu carpeta, pide el plano a la funcionaria y combínalo con la cinta métrica de la caja de herramientas. Lee las normas de medición.',
+        'Saca la notificación de tu carpeta y enseña tu escritura a la funcionaria: te dará el plano. Combínalo con la cinta métrica de la caja de herramientas. Lee las normas de medición y los linderos del trastero en la escritura.',
         'En el plano del sótano, la flecha del norte apunta hacia ABAJO: el norte está abajo, el sur arriba, el este a la izquierda y el oeste a la derecha. Busca el trastero con contadores al norte, pasillo al sur, otro trastero al este y fachada al oeste. Para la superficie: suma habitaciones; terraza cubierta al 50 %; ni patio ni altillo.',
-        'Trastero 4718. Superficie: 20 + 14 + 7,5 + 5 + 5,5 + 5 (cuarto interior) + 3 (la mitad de la terraza de 6) = 60 m². Preséntalo en el terminal: 4718 y 60.',
+        'Escritura a la funcionaria; cinta + plano. Trastero 4718. Superficie: 20 + 14 + 7,5 + 5 + 5,5 + 5 (cuarto interior) + 3 (la mitad de la terraza de 6) = 60 m². Preséntalo en el terminal: 4718 y 60.',
       ],
     },
 
@@ -1185,8 +1244,9 @@
       title: 'Junta de vecinos',
       place: 'Portal de C/ del Olvido 14 — Junta ordinaria',
       stars: 4,
-      intro: 'Quieres cerrar la terraza. Toca fachada, así que necesitas el permiso de la <b>junta de propietarios</b>. Y como eres nuevo/a, el sorteo anual te ha nombrado... <b>presidente/a de la comunidad</b>. Enhorabuena.<br><br>Como presidente/a, decides qué otros puntos se votan antes que el tuyo y en qué orden. Cada vecino tiene sus manías. Y los ausentes... no siempre están tan ausentes.<br><br><b>Objetivo:</b> consigue que la junta apruebe tu obra y que el administrador firme el acta.',
-      outro: 'Obra aprobada. Doña Pura ha impugnado el acta «por principio», pero el administrador dice que se le pasará. Con el acta en la mano, vas al Ayuntamiento a pedir la licencia de obra. ¿Qué podría salir mal?',
+      intro: 'Quieres cerrar la terraza: la tienes medida al centímetro en tu plano acotado. Toca fachada, así que necesitas el permiso de la <b>junta de propietarios</b>. Y como eres nuevo/a, el sorteo anual te ha nombrado... <b>presidente/a de la comunidad</b>. Enhorabuena.<br><br>Como presidente/a, decides qué otros puntos se votan antes que el tuyo y en qué orden. Cada vecino tiene sus manías. Y los ausentes... no siempre están tan ausentes.<br><br><b>Objetivo:</b> consigue que la junta apruebe tu obra y que el administrador firme el acta.',
+      outro: 'Obra aprobada. Doña Pura ha impugnado el acta «por principio», pero el administrador dice que se le pasará. Con el acta firmada en la mano, vas al Ayuntamiento a pedir la licencia de obra. ¿Qué podría salir mal?',
+      carry: ['planoAcotado'],
       scene: { wall: '#e4d6bd', floor: '#6c6158', floorH: 36, pattern: 'tiles' },
       decor: [
         { kind: 'counter', l: 34, t: 60, w: 32, h: 7 },
@@ -1218,24 +1278,33 @@
           look(g) {
             if (g.flag('buz')) return g.say('Publicidad de cerrajeros, una citación del juzgado para el 1ºB y un folleto de «compramos su piso al contado».');
             g.set('buz'); g.give('delegacion');
-            g.say('En el buzón: dos cartas. Una de los Peláez (2ºB): «Delegamos nuestro voto en Doña Remedios; votaremos lo mismo que ella». Ya la tiene Remedios. La otra, del fondo del 2ºA, delega en el presidente... que eres tú. Te la guardas.');
+            g.say('En el buzón: dos cartas. Una de los Peláez (2ºB): «Delegamos nuestro voto en Doña Engracia; votaremos lo mismo que ella». Ya la tiene Engracia. La otra, del fondo del 2ºA, delega en el presidente... que eres tú. Te la guardas.');
           } },
         { id: 'admin', x: 62, y: 48, emoji: '🧑‍💼', s: 6, label: 'El administrador de fincas',
           look(g) {
             if (g.has('acta')) return g.say('—Tráigame el acta y se la firmo. Es lo único que firmo sin leer.', 'Administrador');
-            g.say(`—Soy el administrador, de Fincas Morosas S.L. Yo levanto acta y cobro. ${g.flag('deleg') ? 'La delegación del fondo ya está registrada.' : 'Si alguien le ha dado una delegación de voto, entréguemela antes de empezar.'} La mesa presidencial es suya, presidente/a.`, 'Administrador');
+            g.say(`—Soy el administrador, de Fincas Morosas S.L. Yo levanto acta y cobro. ${g.flag('planoOK') ? 'Su obra ya está en el orden del día, con su plano.' : 'Para meter su obra en el orden del día necesito un <b>plano con las medidas</b> de la terraza: sin plano, los vecinos se imaginan un rascacielos.'} ${g.flag('deleg') ? 'La delegación del fondo ya está registrada.' : 'Si alguien le ha dado una delegación de voto, entréguemela antes de empezar.'} La mesa presidencial es suya, presidente/a.`, 'Administrador');
           },
           use: {
+            planoAcotado(g) {
+              if (g.flag('planoOK')) return g.say('—Ya lo he fotocopiado. Doña Pura ha pedido otra copia «para estudiarlo». Para impugnarlo, quiere decir.', 'Administrador');
+              g.set('planoOK');
+              g.say('—Terraza cubierta de 4,00 × 1,50... Perfecto, lo adjunto a la convocatoria. Su obra entra como último punto del orden del día. Le devuelvo el plano: guárdelo bien, que en esta casa los papeles vuelven siempre.', 'Administrador');
+            },
             delegacion(g) { g.take('delegacion'); g.set('deleg'); g.say('—Delegación del 2ºA registrada: el fondo votará lo mismo que usted. Un fondo de inversión obedeciendo a un vecino. Esto no lo había visto nunca.', 'Administrador'); },
-            acta(g) { g.take('acta'); g.say('—Firmado. Su obra queda aprobada. Doña Pura dice que lo va a impugnar, pero lo dice de todo desde 1981. Enhorabuena, presidente/a. Ahora, a por la licencia.', 'Administrador'); g.win(); },
+            acta(g) { g.take('acta'); g.give('actaFirmada'); g.say('—Firmado. Tenga su acta. Su obra queda aprobada. Doña Pura dice que lo va a impugnar, pero lo dice de todo desde 1981. Enhorabuena, presidente/a. Ahora, a por la licencia.', 'Administrador'); g.win(); },
           } },
-        { id: 'mesa', x: 50, y: 56, emoji: '🔔', s: 5, label: 'Mesa presidencial (orden del día)', look: juntaModal },
-        { id: 'remedios', x: 14, y: 52, emoji: '👵', s: 6, label: 'Doña Remedios (1ºA)',
-          look(g) { g.say('—Yo voto que sí a lo del portero automático y a pintar, que el portal está hecho un asco. A lo de las bicis, que no: mi nieto viene en bici. ¿Lo de tu terraza? Solo si <b>antes</b> se ha aprobado el portero automático, que no oigo a mi nieto cuando llama. Y los Peláez votan lo que yo, que me han delegado.', 'Doña Remedios'); } },
+        { id: 'mesa', x: 50, y: 56, emoji: '🔔', s: 5, label: 'Mesa presidencial (orden del día)',
+          look(g) {
+            if (!g.flag('planoOK')) return g.say('El administrador te tapa el orden del día: —Sin el plano de la obra no la meto en la junta, presidente/a. Démelo primero.', 'Administrador');
+            juntaModal(g);
+          } },
+        { id: 'remedios', x: 14, y: 52, emoji: '👵', s: 6, label: 'Doña Engracia (1ºA)',
+          look(g) { g.say('—Yo voto que sí a lo del portero automático y a pintar, que el portal está hecho un asco. A lo de las bicis, que no: mi nieto viene en bici. ¿Lo de tu terraza? Solo si <b>antes</b> se ha aprobado el portero automático, que no oigo a mi nieto cuando llama. Y los Peláez votan lo que yo, que me han delegado. Ah, y dígale a su tía Remedios que las porras del martes estaban duras.', 'Doña Engracia'); } },
         { id: 'fulgencio', x: 25, y: 52, emoji: '🧓', s: 6, label: 'Don Fulgencio (1ºB)',
           look(g) { g.say('—Yo, a todo lo que sea derrama, que NO: ni portero ni pintura. Lo de prohibir las bicis, que sí. ¿Tu terraza? Me da igual, voto que sí... salvo que en esta junta ya se haya aprobado alguna derrama: entonces, por despecho, que no.', 'Don Fulgencio'); } },
-        { id: 'paco', x: 36, y: 52, emoji: '🧑‍🍳', s: 6, label: 'Paco, del bar «El Recurso» (local)',
-          look(g) { g.say('—Lo de las bicis, NO: mis mejores clientes vienen en bici. Y como se apruebe, me voy al bar y no vuelvo en toda la junta. Pintar, tampoco, que me cierran la terraza un día. El portero, sí. ¿Tu obra? Que sí... a no ser que antes se haya aprobado pintar: si pintan, que nadie más toque la fachada en un año.', 'Paco (bar)'); } },
+        { id: 'paco', x: 36, y: 52, emoji: '🧑‍🍳', s: 6, label: 'Fermín, del bar «El Recurso» (local)',
+          look(g) { g.say('—Lo de las bicis, NO: mis mejores clientes vienen en bici. Y como se apruebe, me voy al bar y no vuelvo en toda la junta. Pintar, tampoco, que me cierran la terraza un día. El portero, sí. ¿Tu obra? Que sí... a no ser que antes se haya aprobado pintar: si pintan, que nadie más toque la fachada en un año.', 'Fermín (bar)'); } },
         { id: 'bermejo', x: 74, y: 52, emoji: '🧔', s: 6, label: 'Sr. Bermejo (3ºA)',
           look(g) { g.say('—El portero, no: yo tengo el telefonillo de 1974 y funciona. Pintar y prohibir bicis, sí. ¿Lo tuyo? Solo si antes se ha <b>votado</b> lo de las bicis, salga lo que salga. Que conste en acta que yo lo pedí.', 'Sr. Bermejo'); } },
         { id: 'pura', x: 85, y: 52, emoji: '👩‍🦳', s: 6, label: 'Doña Pura (4ºA)',
@@ -1243,12 +1312,12 @@
         { id: 'yeray', x: 75, y: 80, emoji: '💻', s: 5, label: 'Yeray (4ºB), por videollamada',
           look(g) { g.say('—¿Se me oye? En el primer punto me abstengo, que estoy conectándome. Luego, para equilibrar, voto siempre <b>lo contrario de lo que salió en el punto anterior</b>: si se aprobó, no; si se rechazó, sí. Es mi filosofía de vida.', 'Yeray (videollamada)'); } },
         { id: 'pipas', x: 34, y: 82, emoji: '🥜', s: 4, label: 'Bolsa de pipas',
-          look(g) { g.say('Pipas para la junta. Las juntas de vecinos son el único espectáculo en directo que sigue siendo gratis.'); } },
+          look(g) { g.say('Pipas para la junta. Las juntas de vecinos son el único espectáculo en directo que sigue siendo gratis. Fermín, el del bar, te cuenta que tu cuñado Paco ya le ha ofrecido «una franquicia de porras para el local». Fermín no ha dicho que no. Mal asunto.'); } },
       ],
       hints: [
-        'Habla con todos los vecinos y apunta sus condiciones. Lee los estatutos: tu obra necesita 7 de 9 propietarios y el 60 %. Sin el voto del fondo del 2ºA no llegas: está en el buzón; entrégasela al administrador.',
-        'Necesitas a Remedios y los Peláez (portero aprobado antes), a Paco (sin bicis aprobadas ni pintura aprobada), a Bermejo (bicis votadas) y a Yeray (el punto anterior al tuyo debe salir rechazado). Doña Pura vota que no al primer punto: úsalo para «quemar» un punto que te convenga que se rechace.',
-        'Entrega la delegación al administrador. Orden del día: 1) Pintar el portal (sale rechazado), 2) Portero automático (aprobado), 3) Prohibir bicis (rechazado). Tu obra sale con 7 propietarios y el 78 %. Dale el acta al administrador.',
+        'Primero dale tu plano acotado al administrador para que meta tu obra en el orden del día. Habla con todos los vecinos y apunta sus condiciones. Lee los estatutos: tu obra necesita 7 de 9 propietarios y el 60 %. Sin el voto del fondo del 2ºA no llegas: está en el buzón; entrégasela al administrador.',
+        'Necesitas a Doña Engracia y los Peláez (portero aprobado antes), a Fermín (sin bicis aprobadas ni pintura aprobada), a Bermejo (bicis votadas) y a Yeray (el punto anterior al tuyo debe salir rechazado). Doña Pura vota que no al primer punto: úsalo para «quemar» un punto que te convenga que se rechace.',
+        'Entrega el plano acotado y la delegación al administrador. Orden del día: 1) Pintar el portal (sale rechazado), 2) Portero automático (aprobado), 3) Prohibir bicis (rechazado). Tu obra sale con 7 propietarios y el 78 %. Dale el acta al administrador.',
       ],
     },
 
@@ -1257,8 +1326,9 @@
       title: 'Licencia de obra menor',
       place: 'Ayuntamiento de Villatrámite — Área de Urbanismo',
       stars: 4,
-      intro: 'Tienes el acta de la comunidad. Tienes al albañil. Te falta la <b>licencia de obra menor</b>. «Menor» porque los papeles son mayores.<br><br>Cada documento depende de otros, algunos se piden entre sí en bucle, y los plazos corren: el albañil empieza dentro de <b>24 días hábiles</b>. Si no tienes licencia para entonces, se va a otra obra hasta 2028.<br><br><b>Objetivo:</b> averigua qué documentos necesitas de verdad, tramítalos en un orden posible y dentro de plazo, y entrega la licencia al albañil.',
-      outro: 'Licencia concedida con el plazo justo. Tomás, el albañil, cierra la terraza en tres días... y te avisa: para poder alquilar o vender algún día, necesitarás la cédula de habitabilidad. Y para la cédula, el certificado energético.',
+      intro: 'Traes el acta de la junta, firmada por el administrador. Tienes al albañil. Te falta la <b>licencia de obra menor</b>. «Menor» porque los papeles son mayores.<br><br>Cada documento depende de otros, algunos se piden entre sí en bucle, y los plazos corren: el albañil empieza dentro de <b>24 días hábiles</b>. Si no tienes licencia para entonces, se va a otra obra hasta 2028.<br><br><b>Objetivo:</b> averigua qué documentos necesitas de verdad, tramítalos en un orden posible y dentro de plazo, y entrega la licencia al albañil.',
+      outro: 'Licencia concedida con el plazo justo. Tomás, el albañil, cierra la terraza en tres días... y te avisa: para poder alquilar o vender algún día, necesitarás la cédula de habitabilidad. Y para la cédula, el certificado energético. Guarda la licencia: el inspector querrá verla.',
+      carry: ['actaFirmada'],
       scene: { wall: '#d6dbe0', floor: '#77706a', floorH: 32, pattern: 'tiles' },
       init(g) { g.set('tram', { have: {}, days: 0, dead: false }); },
       decor: [
@@ -1298,7 +1368,7 @@
         { id: 'albanil', x: 86, y: 62, emoji: '👷', s: 7, label: 'Tomás, el albañil',
           look(g) { g.say('—Yo empiezo dentro de 24 días hábiles. Si no hay licencia, me voy a otra obra. Para el <b>presupuesto</b> tengo que <b>ir a verla</b> antes, claro. En el presupuesto pondré que el escombro cabe en <b>sacos</b>: menos de un metro cúbico.', 'Tomás (albañil)'); },
           use: {
-            licencia(g) { g.take('licencia'); g.say('—¡Licencia! Pues el lunes empiezo. Bueno, el martes, que el lunes es San Expediente. Y no se preocupe, que en tres días le cierro la terraza. O en tres semanas. Tres algo.', 'Tomás (albañil)'); g.win(); },
+            licencia(g) { g.say('—¡Licencia! Le hago una foto y se la devuelvo, que el inspector de la cédula se la va a pedir. Pues el lunes empiezo. Bueno, el martes, que el lunes es San Expediente. Y no se preocupe, que en tres días le cierro la terraza. O en tres semanas. Tres algo.', 'Tomás (albañil)'); g.win(); },
           } },
         { id: 'arquitecta', x: 66, y: 76, emoji: '👩‍🔧', s: 6, label: 'Tu prima, arquitecta técnica',
           look(g) { g.say('—La <b>memoria valorada</b> te la hago en 4 días, pero necesito el <b>presupuesto del albañil</b>. Un proyecto visado son 20 días: para cerrar una terraza es matar moscas a cañonazos. Y de Patrimonio, olvídate si el edificio no está catalogado.', 'Tu prima (arquitecta)'); } },
@@ -1306,15 +1376,13 @@
           look(g) { g.say('«GESTORÍA RÁPIDA: ¡El certificado de “no es obra mayor” es IMPRESCINDIBLE! (No lo pide nadie, pero por si acaso.) Solo 300 €.» El folleto huele a comisión.'); } },
         { id: 'carpeta', x: 14, y: 80, emoji: '🗂️', s: 5, label: 'Tu carpeta',
           look(g) {
-            if (g.flag('carpT')) return g.say('Ya has sacado el acta. Lo demás son recuerdos de la junta: un hueso de aceituna de Paco y una amenaza de Doña Pura.');
-            g.set('carpT'); g.give('actaFirmada');
-            g.say('Sacas el acta de la junta, firmada por el administrador. Huele a pipas.');
+            g.say('Recuerdos de la junta: un hueso de aceituna de Fermín, una amenaza de Doña Pura y la cuenta de lo que llevas gastado, que mejor no mirar.');
           } },
         { id: 'reloj', x: 64, y: 16, emoji: '🕰️', s: 4, label: 'Reloj',
           look(g) { g.say('El reloj del Área de Urbanismo va con 20 minutos de retraso. Como todo lo demás, pero en minutos.'); } },
       ],
       hints: [
-        'Saca el acta de tu carpeta y aporta el acta en la ventanilla de Registro. Lee los requisitos y la carta de servicios, y escucha a todas las ventanillas, al albañil y a tu prima: cada uno te dice qué necesita cada documento.',
+        'Aporta el acta firmada que traes en la ventanilla de Registro. Lee los requisitos y la carta de servicios, y escucha a todas las ventanillas, al albañil y a tu prima: cada uno te dice qué necesita cada documento.',
         'El contenedor es un bucle: usa sacos (necesitan el presupuesto). El proyecto visado (20 días) no cabe en el plazo: usa la memoria valorada. El edificio no está catalogado (sin Patrimonio) y el certificado de «no es obra mayor» no lo pide nadie.',
         'Acta en Registro. En la Sede, por este orden: visita (2), presupuesto (3), memoria (4), ICIO (1), gestor de residuos (3), fianza (2), sacos (1) y licencia (5): día 21. Entrega la licencia a Tomás.',
       ],
@@ -1325,8 +1393,9 @@
       title: 'Letra D de «Decente»',
       place: 'Tu piso (recién reformado)',
       stars: 5,
-      intro: 'Para tener la <b>cédula de habitabilidad</b> necesitas un <b>certificado de eficiencia energética</b> de letra D o mejor. El técnico certificador te ha dejado su guía y una nota: «Rellénalo tú, que yo certifico desde casa».<br><br>Habrá que averiguar cómo es de verdad tu piso, sin fiarse de las apariencias, y decidir qué mejoras pagar con lo poco que te queda.<br><br><b>Objetivo:</b> registra un certificado energético de letra D o mejor sin pasarte de presupuesto y consigue la cédula de habitabilidad.',
-      outro: 'Cédula de habitabilidad concedida: tu casa es, oficialmente, habitable. Lo celebras con Michi. Pero al bajar la basura ves un cartel nuevo en el portal: «EDIFICIO PRECINTADO — ITE DESFAVORABLE».',
+      intro: 'Verano de 2029. La terraza ya está cerrada (con licencia, que la traes en la carpeta junto a tu plano acotado). Para tener la <b>cédula de habitabilidad</b> necesitas, además, un <b>certificado de eficiencia energética</b> de letra D o mejor. El técnico certificador te ha dejado su guía y una nota: «Rellénalo tú, que yo certifico desde casa».<br><br>Habrá que averiguar cómo es de verdad tu piso, sin fiarse de las apariencias, y decidir qué mejoras pagar con lo poco que te queda.<br><br><b>Objetivo:</b> registra un certificado energético de letra D o mejor sin pasarte de presupuesto y consigue la cédula de habitabilidad.',
+      outro: 'Cédula de habitabilidad concedida: tu casa es, oficialmente, habitable. Lo celebras con Michi. Pero al bajar la basura (con la cédula y la escritura en el bolsillo, por costumbre) ves un cartel nuevo en el portal: «EDIFICIO PRECINTADO — ITE DESFAVORABLE». La puerta se cierra detrás de ti.',
+      carry: ['licencia', 'planoAcotado'],
       scene: { wall: '#f0e6d2', floor: '#a7825d', floorH: 30, pattern: 'wood' },
       decor: [
         { kind: 'window', l: 40, t: 8, w: 14, h: 28 },
@@ -1390,7 +1459,7 @@
         { id: 'termo', x: 92, y: 52, emoji: '🛁', s: 5, label: 'Baño (termo)',
           look(g) { g.say('En el baño hay un <b>termo eléctrico</b> de 80 litros. El agua caliente dura exactamente lo que tardas en enjabonarte.'); } },
         { id: 'cuarto', x: 8, y: 50, emoji: '🚪', s: 9, label: 'Cuarto interior',
-          look(g) { g.say('El cuarto interior: <b>2,50 × 2,00 m</b> (5 m²). <b>No tiene ventana</b>. Tu pareja lo llama «el dormitorio de invitados»; los invitados lo llaman «la celda».'); } },
+          look(g) { g.say('El cuarto interior: <b>2,50 × 2,00 m</b> (5 m²), como dice tu plano acotado. <b>No tiene ventana</b>. Tu pareja lo llama «el dormitorio de invitados»; los invitados lo llaman «la celda».'); } },
         { id: 'herramientas', x: 12, y: 82, emoji: '🧰', s: 5, label: 'Caja de herramientas',
           look(g) {
             if (g.flag('dest')) return g.say('Tornillos sobrantes de la reforma. Siempre sobran tornillos. Nadie sabe de dónde.');
@@ -1398,16 +1467,25 @@
             g.say('Coges un destornillador plano.');
           } },
         { id: 'movil', x: 52, y: 80, emoji: '📱', s: 4, label: 'Tu móvil (en el suelo)',
-          look(g) { g.say('App del banco: saldo disponible <b>3.000 €</b>. Notificación: «¿Le interesa un préstamo personal al 14 % TAE?». No.'); } },
+          look(g) { g.say('App del banco: saldo disponible <b>3.000 €</b>. Notificación: «¿Le interesa un préstamo personal al 14 % TAE?». No. Otra, de tu cuñado Paco: «¿Certificado energético? Conozco a uno que te pone una A por 50 € sin venir». Tampoco.'); } },
         { id: 'portatil', x: 66, y: 52, emoji: '💻', s: 5, label: 'Portátil (registro de certificados)',
           look(g) {
             if (g.has('certEnergetico') || g.flag('cedula')) return g.say('Certificado registrado. El portátil se ha puesto en modo ahorro de energía, por solidaridad.');
             ceeModal(g);
           } },
         { id: 'inspector', x: 60, y: 82, emoji: '🕵️', s: 6, label: 'Inspector de habitabilidad',
-          look(g) { g.say('—Para la cédula, tráigame el certificado energético registrado. Letra D o mejor. Y prepárese: luego le preguntaré por cada habitación.', 'Inspector'); },
+          look(g) {
+            if (!g.flag('licOK')) return g.say('—Antes de nada: esa terraza cerrada... ¿tiene licencia? Porque si no, eso no es una mejora, es una ampliación ilegal. Enséñeme la licencia de obra.', 'Inspector');
+            g.say('—Para la cédula, tráigame el certificado energético registrado. Letra D o mejor. Y prepárese: luego le preguntaré por cada habitación.', 'Inspector');
+          },
           use: {
+            licencia(g) {
+              if (g.flag('licOK')) return g.say('—Ya la he visto. Muy bonita. Ahora el certificado energético.', 'Inspector');
+              g.set('licOK');
+              g.say('—Licencia de obra menor para el cerramiento de la terraza. En regla. Qué raro. Ahora tráigame el certificado energético registrado: letra D o mejor.', 'Inspector');
+            },
             certEnergetico(g) {
+              if (!g.flag('licOK')) return g.say('—El certificado, luego. Primero la licencia de la terraza, que la veo desde aquí.', 'Inspector');
               g.choice({
                 title: '🕵️ Inspección de habitabilidad',
                 text: '—Certificado D, correcto. Ahora, ese cuarto interior de 5 m² sin ventana... ¿Cómo lo declara?',
@@ -1419,7 +1497,7 @@
                       msg({ Dormitorio: '—¿Dormitorio sin ventana? Eso no es un dormitorio, es un zulo con cama.', Despacho: '—Un despacho necesita ventana. Aunque teletrabaje usted mirando una pared.', 'Trastero interior': '—Un trastero interior no puede pasar de 4 m². Este tiene 5.' }[u], true);
                       return false;
                     }
-                    gg.take('certEnergetico'); gg.set('cedula');
+                    gg.take('certEnergetico'); gg.set('cedula'); gg.give('cedula');
                     gg.say('—Vestidor de 5 m². Perfecto: sin ventana y menos de 6 m². Aquí tiene su <b>cédula de habitabilidad</b>. Su casa es habitable. Oficialmente. Lo de vivir ya es cosa suya.', 'Inspector');
                     gg.win();
                     return true;
@@ -1430,9 +1508,9 @@
           } },
       ],
       hints: [
-        'Investiga la casa: el cajón de la cocina y la caja de herramientas tienen lo que necesitas. Usa el mechero en la ventana y el destornillador en el enchufe. Lee la guía, la caldera, el baño y la nota de la nevera.',
+        'Enseña la licencia de obra al inspector. Investiga la casa: el cajón de la cocina y la caja de herramientas tienen lo que necesitas. Usa el mechero en la ventana y el destornillador en el enchufe. Lee la guía, la caldera, el baño y la nota de la nevera.',
         'Cuatro llamas = dos vidrios (doble). Cámara vacía = sin aislamiento. Caldera de gas de 1998 sin condensación = convencional. Sol por la tarde = oeste. Termo eléctrico. Eso da 90 puntos (F). Necesitas bajar a 65 o menos con 3.000 € como máximo.',
-        'En el portátil: Doble vidrio, Sin aislamiento, Caldera de gas convencional, Oeste, Termo eléctrico; mejoras: insuflar aislamiento (2.400) + conectar el agua caliente a la caldera (300) → 65 puntos, letra D. Dale el certificado al inspector y declara el cuarto como Vestidor.',
+        'En el portátil: Doble vidrio, Sin aislamiento, Caldera de gas convencional, Oeste, Termo eléctrico; mejoras: insuflar aislamiento (2.400) + conectar el agua caliente a la caldera (300) → 65 puntos, letra D. Dale la licencia y el certificado al inspector y declara el cuarto como Vestidor.',
       ],
     },
 
@@ -1441,8 +1519,9 @@
       title: 'La ITE',
       place: 'Portal de C/ del Olvido 14 — Edificio precintado',
       stars: 5,
-      intro: 'La <b>Inspección Técnica del Edificio</b> ha salido desfavorable y el Ayuntamiento ha precintado el portal. Contigo fuera. Y con Michi dentro.<br><br>El técnico municipal solo levantará el precinto con tres cosas: la <b>fachada reparada</b>, un <b>informe de ITE veraz</b> registrado y el <b>pago de tu parte de la derrama</b>. Cuatro arquitectos han presentado informes. No todos dicen la verdad.<br><br><b>Objetivo:</b> repara la fachada, registra solo los informes veraces, paga tu derrama exacta y recupera las llaves de tu casa.',
-      outro: 'El técnico municipal arranca el precinto. Subes las escaleras (el ascensor está en la ITE del año que viene), abres la puerta y Michi te mira como diciendo: «¿Dónde estabas?». Estabas en un expediente. Pero ya has vuelto.',
+      intro: 'Otoño de 2029. La <b>Inspección Técnica del Edificio</b> ha salido desfavorable y el Ayuntamiento ha precintado el portal. Contigo fuera, con la escritura y la cédula en el bolsillo. Y con Michi dentro.<br><br>El técnico municipal solo levantará el precinto con tres cosas: la <b>fachada reparada</b>, un <b>informe de ITE veraz</b> registrado y el <b>pago de tu parte de la derrama</b>. Y solo devolverá las llaves a quien demuestre que vive ahí. Cuatro arquitectos han presentado informes. No todos dicen la verdad.<br><br><b>Objetivo:</b> repara la fachada, registra solo los informes veraces, paga tu derrama exacta y recupera las llaves de tu casa.',
+      outro: 'El técnico municipal arranca el precinto. Subes las escaleras (el ascensor está en la ITE del año que viene), abres la puerta del 3ºB y Michi te mira como diciendo: «¿Dónde estabas?». Estabas en un expediente. Pero ya has vuelto. A tu casa: C/ del Olvido 14, 3ºB.',
+      carry: ['escritura', 'cedula'],
       scene: { wall: '#c9b79a', floor: '#6a6560', floorH: 30, pattern: 'tiles' },
       decor: [
         { kind: 'board', l: 3, t: 8, w: 15, h: 24 },
@@ -1462,7 +1541,7 @@
           } },
         { id: 'coef', x: 37, y: 18, emoji: '📊', s: 5, label: 'Cuadro de coeficientes',
           look(g) {
-            g.doc('📊 Coeficientes de participación', `<table class="tbl">${J_OWN.map((o) => `<tr><td>${o.name.replace(', presidente/a', '').replace(', delegado en Doña Remedios', '').replace(', por videollamada', '')}</td><td>${o.c} %</td></tr>`).join('')}<tr><td><b>Total</b></td><td><b>100 %</b></td></tr></table>`);
+            g.doc('📊 Coeficientes de participación', `<table class="tbl">${J_OWN.map((o) => `<tr><td>${o.name.replace(', presidente/a', '').replace(', delegado en Doña Engracia', '').replace(', por videollamada', '')}</td><td>${o.c} %</td></tr>`).join('')}<tr><td><b>Total</b></td><td><b>100 %</b></td></tr></table>`);
           } },
         { id: 'precinto', x: 60, y: 14, sign: 'PRECINTADO', sub: 'ITE desfavorable', w: 13, label: 'Cartel del Ayuntamiento',
           look(g) { g.say('«EDIFICIO PRECINTADO POR ITE DESFAVORABLE. Prohibido el paso a toda persona, gato o expediente. Firmado: el técnico municipal (que está ahí al lado, comiéndose un bocadillo).»'); } },
@@ -1474,7 +1553,6 @@
           use: {
             llaves(g) {
               if (!g.flag('precOff')) return g.say('Primero tiene que quitar el precinto el técnico municipal.');
-              g.take('llaves');
               g.say('Metes la llave. Gira. La puerta se abre. Hueles a portal recién pintado... no, eso no se aprobó. Huele a portal. A tu portal.');
               g.win();
             },
@@ -1482,17 +1560,20 @@
         { id: 'tecnico', x: 76, y: 52, emoji: '👷‍♂️', s: 6, label: 'Técnico municipal',
           look(g) {
             if (g.flag('precOff')) return g.say('—Precinto levantado. Le doy cinco años antes de la próxima ITE. Disfrútelos.', 'Técnico municipal');
-            const need = { certFachada: 'el certificado de reparación de la fachada', informeITE: 'el informe de ITE veraz, registrado', justDerrama: 'el justificante de pago de su parte de la derrama' };
+            const need = { certFachada: 'el certificado de reparación de la fachada', informeITE: 'el informe de ITE veraz, registrado', justDerrama: 'el justificante de pago de su parte de la derrama', escritura: 'la escritura (para devolverle las llaves, que demuestre que el piso es suyo)', cedula: 'la cédula de habitabilidad (no reabro un portal para que vuelvan a una vivienda inhabitable)' };
             const miss = Object.keys(need).filter((k) => !(g.flag('dlv') || []).includes(k));
             g.say(`—Para levantar el precinto me falta: ${miss.map((k) => need[k]).join('; ')}. Y date prisa, que se me acaba el bocadillo.`, 'Técnico municipal');
           },
-          use: Object.fromEntries(['certFachada', 'informeITE', 'justDerrama'].map((k) => [k, (g) => {
+          use: Object.fromEntries(['certFachada', 'informeITE', 'justDerrama', 'escritura', 'cedula'].map((k) => [k, (g) => {
             const d = g.flag('dlv') || [];
-            g.take(k); d.push(k); g.set('dlv', d); g.sfx('stamp');
-            if (d.length === 3) {
+            if (d.includes(k)) return g.say('—Eso ya me lo ha enseñado. No me haga perder el bocadillo.', 'Técnico municipal');
+            const mostrar = k === 'escritura' || k === 'cedula';
+            if (!mostrar) g.take(k);
+            d.push(k); g.set('dlv', d); g.sfx('stamp');
+            if (d.length === 5) {
               g.set('precOff'); g.give('llaves');
-              g.say('—Fachada, informe y derrama. Todo en regla. ¡RAS! Arranca el precinto. —Aquí tiene sus llaves, que las había requisado «por protocolo».', 'Técnico municipal');
-            } else g.say(`—Recibido. Llevo ${d.length} de 3. El bocadillo, 2 de 3.`, 'Técnico municipal');
+              g.say('—Fachada, informe, derrama, escritura y cédula. Todo en regla. ¡RAS! Arranca el precinto. —Aquí tiene sus llaves, que las había requisado «por protocolo». Y sus papeles: guárdelos, que los va a necesitar toda la vida.', 'Técnico municipal');
+            } else g.say(`—${mostrar ? 'Visto. Se lo devuelvo.' : 'Recibido.'} Llevo ${d.length} de 5. El bocadillo, 4 de 5.`, 'Técnico municipal');
           }])) },
         { id: 'andamio', x: 58, y: 44, emoji: '🏗️', s: 9, label: 'Andamio de la fachada',
           look(g) {
@@ -1529,9 +1610,9 @@
           look(g) { g.say('—Yo voté que no a la ITE. Por principio. Ahora llevo dos días durmiendo en casa de mi hermana, que también vota que no a todo. Nos entendemos.', 'Doña Pura'); } },
       ],
       hints: [
-        'Tres frentes: (1) casco de la caseta → Tomás te da la llave del andamio → usa la llave en el andamio y repara la fachada; (2) lee los informes del tablón: unos mienten y otros no; (3) con los presupuestos veraces, calcula tu derrama con los estatutos y los coeficientes.',
+        'El técnico pide cinco cosas: tres las consigues aquí y dos las traes (escritura y cédula). Tres frentes: (1) casco de la caseta → Tomás te da la llave del andamio → usa la llave en el andamio y repara la fachada; (2) lee los informes del tablón: unos mienten y otros no; (3) con los presupuestos veraces, calcula tu derrama con los estatutos y los coeficientes.',
         'Lógica: si Diego (D) mintiera, Adela y Bruno dirían la verdad... pero Adela dice que solo uno la dice: contradicción. Así que D es veraz, y por tanto C también, y A y B mienten. Derrama: fachada 48.000 × 9 %; cubierta 25.200 repartida solo entre viviendas (el local, 16 %, exento). Fachada: cada golpe cambia la pieza y sus vecinas en cruz.',
-        'Fachada: golpea A1, C2, B3 y D4. Registro de ITE: marca solo C y D. Derrama: 48.000 × 9 % = 4.320 + 25.200 × 9/84 = 2.700 → 7020. Entrega certificado, informe y justificante al técnico municipal y usa las llaves en la puerta.',
+        'Fachada: golpea A1, C2, B3 y D4. Registro de ITE: marca solo C y D. Derrama: 48.000 × 9 % = 4.320 + 25.200 × 9/84 = 2.700 → 7020. Entrega certificado, informe y justificante al técnico municipal, enséñale la escritura y la cédula, y usa las llaves en la puerta.',
       ],
     },
   ];
@@ -1545,7 +1626,7 @@
     subtitle: 'Alquilar, hipotecarse, registrar, tributar y reformar. En ese orden. Si te dejan.',
     badge: 'Propietario',
     emoji: '🏠',
-    intro: 'Quieres un techo. Uno cualquiera. Entre tú y él se interponen un casero, un banco, el Registro, una notaría, Hacienda, el Catastro, tus vecinos, el Ayuntamiento y un dron. Diez expedientes te separan de las llaves.',
+    intro: '2028. Saliste de la inspección de Hacienda con el certificado de estar al corriente en la mano y la churrería <b>Porras del Trámite, S.L.</b> sigue abierta: Lucía fríe, tu tía Remedios cuenta la caja y tu cuñado Paco tiene ideas. Tú, como administrador/a, cobras una nómina. Y con nómina, se sueña: quieres un techo para ti, tu pareja y Michi. Entre tú y él se interponen un casero, un banco, el Registro, una notaría, Hacienda, el Catastro, tus vecinos, el Ayuntamiento y un dron. Diez expedientes te separan de las llaves.',
     items: ITEMS,
     levels: LEVELS,
     ending: {
@@ -1558,7 +1639,8 @@
           <div class="s3-deed-row"><small>OCUPANTES</small><b>Tú, tu pareja y Michi (que manda)</b></div>
         </div>
         <p>Tras un casero, un banco, el Registro, una notaria, Hacienda, el Catastro, una junta de vecinos, una licencia, un certificado energético y una ITE, por fin abres la puerta de tu casa.</p>
-        <p>Te quedan <b>359 cuotas</b> de hipoteca, una derrama pendiente para el ascensor y la próxima ITE en cinco años. Pero esta noche duermes en lo tuyo. <b>Bueno, en lo del banco.</b></p>`,
+        <p>Te quedan <b>347 cuotas</b> de hipoteca, una derrama pendiente para el ascensor y la próxima ITE en cinco años. La churrería paga la hipoteca a base de porras. Pero esta noche duermes en lo tuyo. <b>Bueno, en lo del banco.</b></p>
+        <p class="small">Dirección para notificaciones (de todo tipo): <b>C/ del Olvido 14, 3ºB, Villatrámite</b>.</p>`,
       stamp: 'LLAVES ENTREGADAS',
     },
     css: `

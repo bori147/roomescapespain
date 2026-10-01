@@ -37,38 +37,46 @@
   //  OBJETOS
   // =========================================================
   const ITEMS = {
+    // De la Temporada 1
+    dni: { emoji: '🪪', name: 'DNI nuevo', desc: '<b>DOCUMENTO NACIONAL DE IDENTIDAD</b><br>Nº <b>07345189-R</b> · Válido hasta el <b>01/10/2036</b><br>Te costó diez trámites, una investidura y un decreto publicado a las 23:59. En la foto sales con cara de haber hecho cola. Porque la hiciste.' },
     // Nivel 1
     plan: { emoji: '📊', name: 'Plan de empresa', desc: '<b>Plan de empresa — Churrería</b> (previsión de facturación)<br>· Churros y porras para llevar, en cucurucho: <b>25 %</b><br>· Chocolate con churros servido en mesa: <b>35 %</b><br>· Chocolate para llevar, en vaso: <b>15 %</b><br>· Cafés en barra: <b>20 %</b><br>· Patatas fritas de bolsa, para llevar: <b>5 %</b><br><i>Beneficio previsto: «mucho». Firmado: tu cuñado.</i>' },
-    contrato: { emoji: '🏠', name: 'Contrato de alquiler', desc: '<b>Contrato de alquiler de local comercial</b><br>Dirección: <b>Calle del Trámite, 12, bajo</b><br>Renta: <b>900 €/mes</b>. Fianza: dos meses. Aval: tu alma.<br><i>Cláusula 14: «El arrendatario renuncia a quejarse del olor a fritanga del vecino, que es usted».</i>' },
+    contrato: { emoji: '🏠', name: 'Contrato de alquiler', desc: '<b>Contrato de alquiler de local comercial</b><br>Dirección: <b>Calle del Trámite, 12, bajo, Villatrámite</b><br>Renta: <b>900 €/mes</b>. Fianza: dos meses. Aval: tu alma.<br><i>Cláusula 14: «El arrendatario renuncia a quejarse del olor a fritanga del vecino, que es usted».</i>' },
     modelo036: { emoji: '📄', name: 'Modelo 036 (en blanco)', desc: 'Modelo 036, «Declaración censal de alta, modificación y baja». 23 páginas. Hay que rellenarlo en algún sitio con un bolígrafo que funcione.' },
     modelo037: { emoji: '📃', name: 'Modelo 037', desc: 'Modelo 037, «Declaración censal SIMPLIFICADA». Solo 4 páginas. Demasiado bonito para ser verdad.' },
-    modelo036Relleno: { emoji: '📝', name: 'Modelo 036 relleno', desc: 'Tu modelo 036, relleno y firmado. Casilla, epígrafe y domicilio. Lo miras con el orgullo de quien ha entendido un impreso oficial.' },
+    modelo036Relleno: { emoji: '📝', name: 'Modelo 036 relleno', desc: 'Tu modelo 036, relleno y firmado. NIF, casilla, epígrafe y domicilio. Lo miras con el orgullo de quien ha entendido un impreso oficial.' },
+    copia036: { emoji: '📑', name: 'Copia sellada del 036', desc: '<b>Declaración censal — Copia para el interesado</b><br>NIF: <b>07345189-R</b> · Causa: <b>111</b> (alta)<br>Epígrafe del IAE: <b>644.6</b><br>Domicilio de la actividad: Calle del Trámite, 12, bajo, Villatrámite<br>Registro de entrada: 11/01/2027.<br><i>«Consérvela. Se la pedirán.» (Se la pedirán.)</i>' },
     // Nivel 2
     prevision: { emoji: '📈', name: 'Previsión de ingresos', desc: '<b>Previsión de ingresos de la churrería</b><br>Ventas mensuales previstas: <b>2.900 €</b><br><i>(Calculado a ojo. Con optimismo. Mucho optimismo.)</i>' },
     cocheLetra: { emoji: '🚗', name: 'Letra del coche', desc: '<b>Préstamo del coche</b>: <b>300 €/mes</b>.<br>Es el coche de los domingos: lo usas para ir a la playa y al pueblo en agosto. En la churrería no ha entrado nunca (no cabe).' },
     presupuestoHarina: { emoji: '🌾', name: 'Presupuesto del proveedor', desc: '<b>Harinas y Aceites El Molinillo</b><br>Suministro mensual para la churrería (harina, aceite y azúcar): <b>650 €/mes</b>.' },
     luzEstimada: { emoji: '💡', name: 'Estimación de la luz', desc: '<b>Eléctrica del Plazo, S.A.</b><br>Estimación mensual de consumo del local (freidora industrial incluida): <b>300 €/mes</b>.<br><i>«Precio cerrado» (hasta que lo abramos).</i>' },
-    vidaLaboral: { emoji: '📜', name: 'Informe de vida laboral', desc: '<b>INFORME DE VIDA LABORAL</b><br>· 2015–2024: Régimen General (varias empresas, todas cerradas).<br>· <b>RETA (autónomos): alta 01/04/2025 — baja 30/06/2025</b>. Actividad: venta ambulante de pulseras en la playa.<br>· Nueva alta solicitada: <b>noviembre de 2026</b>.' },
+    vidaLaboral: { emoji: '📜', name: 'Informe de vida laboral', desc: '<b>INFORME DE VIDA LABORAL</b><br>· 2015–2024: Régimen General (varias empresas, todas cerradas).<br>· <b>RETA (autónomos): alta 01/04/2025 — baja 30/06/2025</b>. Actividad: venta ambulante de pulseras en la playa.<br>· Nueva alta solicitada: <b>enero de 2027</b>.' },
     // Nivel 3
     solicitudDen: { emoji: '📄', name: 'Solicitud de denominación', desc: 'Solicitud de certificación negativa de denominación social, en blanco. Se rellena en el pupitre.' },
     solicitudRellena: { emoji: '📝', name: 'Solicitud rellena', desc: (g) => `Solicitud de certificación negativa. Denominación solicitada: <b>«${L3_P1[g.flag('p1') || 0].toUpperCase()} ${L3_P2[g.flag('p2') || 0].toUpperCase()}, S.L.»</b>. Entrégala a la registradora y cruza los dedos.` },
     certDen: { emoji: '📜', name: 'Certificado de denominación', desc: '<b>CERTIFICACIÓN NEGATIVA DE DENOMINACIÓN</b><br>«<b>PORRAS DEL TRÁMITE, S.L.</b>»<br>No figura inscrita ni reservada ninguna denominación idéntica. Validez: tres meses para otorgar la escritura.' },
     // Nivel 4
+    escritura: { emoji: '📔', name: 'Escritura de la S.L.', desc: '<b>Escritura de constitución</b> de PORRAS DEL TRÁMITE, S.L. (copia autorizada, con sello en relieve).<br>Domicilio social: Calle del Trámite, 12, bajo, Villatrámite.<br>Capital: 3.000 € (300 participaciones de 10 €). Socios: tú, tía Remedios y cuñado Paco.<br><b>Administrador único: tú.</b><br><i>Pesa como un ladrillo y ha costado como dos.</i>' },
     certBanco: { emoji: '🏦', name: 'Certificado bancario', desc: '<b>Caja de Ahorros del Plazo Fijo</b><br>Certificamos los siguientes ingresos en la cuenta de la sociedad en constitución «PORRAS DEL TRÁMITE, S.L.»:<br>· Tú: <b>1.650 €</b><br>· Doña Remedios (tu tía): <b>900 €</b><br>· Don Francisco «Paco» (tu cuñado): <b>450 €</b><br>Total desembolsado: <b>3.000 €</b>. Comisión por certificar: 30 €. Por mirar, 10 € más.' },
     // Nivel 5
-    plano: { emoji: '🗺️', name: 'Plano del local', desc: '<b>Plano del local</b> — Calle del Trámite, 12<br>Rectángulo de <b>9 m × 6 m</b>.<br>Obrador y barra: <b>3 m × 3 m</b>. Aseo adaptado: <b>3 m × 1,5 m</b>. Todo lo demás: zona de público.<br>Cuadrícula de módulos de 1,5 × 1,5 m (6 columnas × 4 filas). La puerta da a la calle por la 4.ª columna.<br><i>Honorarios de la arquitecta: mejor no mirar.</i>' },
+    plano: { emoji: '🗺️', name: 'Plano del local', desc: '<b>Plano del local</b> — Calle del Trámite, 12, Villatrámite<br>Rectángulo de <b>9 m × 6 m</b>.<br>Obrador y barra: <b>3 m × 3 m</b>. Aseo adaptado: <b>3 m × 1,5 m</b>. Todo lo demás: zona de público.<br>Cuadrícula de módulos de 1,5 × 1,5 m (6 columnas × 4 filas). La puerta da a la calle por la 4.ª columna.<br><i>Honorarios de la arquitecta: mejor no mirar.</i>' },
     planoFirmado: { emoji: '📐', name: 'Plano conforme', desc: 'Plano del local con la distribución conforme a la ordenanza: freidora, extintor, pasillo de evacuación y mesas. Firmado y sellado por ti, que no eres arquitecto, pero firmas como si lo fueras.' },
     justificanteTasa: { emoji: '🧾', name: 'Justificante de la tasa', desc: 'Justificante de pago de la tasa por licencia de actividad: 133 €. Incluye la tasa por tramitar la tasa. Pagado.' },
+    licencia: { emoji: '🪧', name: 'Licencia provisional', desc: '<b>LICENCIA DE ACTIVIDAD (PROVISIONAL)</b><br>Titular: PORRAS DEL TRÁMITE, S.L. · Calle del Trámite, 12, Villatrámite.<br>Actividad: churrería. Aforo máximo: <b>20 personas</b> (5 mesas).<br>«Deberá exhibirse en lugar visible desde la entrada.»<br><i>La definitiva llegará por correo. Algún día.</i>' },
     // Nivel 6
     tarjetaRamona: { emoji: '💳', name: 'Tarjeta de doña Ramona', desc: '<b>RAMONA EVENTOS Y BAUTIZOS, S.L.</b><br>NIF: <b>B12345674</b><br><i>«Organizamos su bautizo, su boda y su divorcio. Precios de grupo.»</i>' },
     facturaRamona: { emoji: '🧾', name: 'Factura A-2027-0002', desc: 'Factura completa nº A-2027-0002 para Ramona Eventos y Bautizos, S.L. Base 20,00 € · IVA 3,10 € · Total 23,10 € · Huella 1257. Registrada en Verifactu para siempre jamás.' },
+    copiaFactura: { emoji: '🧾', name: 'Copia de la factura A-2027-0002', desc: '<b>Copia para el archivo — Factura A-2027-0002</b> (01/02/2027)<br>Cliente: Ramona Eventos y Bautizos, S.L. (B12345674)<br>· 2 chocolates con churros en mesa: base <b>10,00 €</b> · IVA 10 %: 1,00 €<br>· 1 taza de recuerdo: base <b>10,00 €</b> · IVA 21 %: 2,10 €<br>Total: 23,10 € · Huella 1257.<br><i>Pendiente de anotar en el libro registro de facturas emitidas.</i>' },
     // Nivel 7
     libroRecibidas: { emoji: '📗', name: 'Libro de facturas recibidas', desc: '<b>Libro registro de facturas recibidas — 1T 2027</b> (solo las deducibles)<br>· Harinas El Molinillo: IVA <b>32,00 €</b><br>· Aceites del Sur: IVA <b>50,00 €</b><br>· Hostelequip (freidora): IVA <b>210,00 €</b><br>· Eléctrica del Plazo (luz de marzo): IVA <b>63,00 €</b><br><i>El total lo sumas tú, que para eso eres autónomo.</i>' },
     nrc: { emoji: '🔢', name: 'NRC del banco', desc: 'Número de Referencia Completo (NRC) del pago de 128 € a la Agencia Tributaria. 22 caracteres que demuestran que has pagado. Guárdalo mejor que el DNI.' },
+    justificante303: { emoji: '📨', name: 'Justificante del 303 (1T)', desc: '<b>Justificante de presentación — Modelo 303, 1T 2027</b><br>PORRAS DEL TRÁMITE, S.L.<br>Resultado: <b>+128 €</b> (a ingresar). Pagado con NRC el 18/04/2027.<br><i>La prueba de que, al menos una vez, lo hiciste todo bien y a tiempo.</i>' },
     // Nivel 8
     requerimientoITSS: { emoji: '📋', name: 'Requerimiento de la Inspección', desc: '<b>INSPECCIÓN DE TRABAJO — Requerimiento</b><br>Semana del lunes 10 al viernes 14 de mayo de 2027. Trabajadora: Lucía.<br>Criterios:<br>1. Si hay <b>fichaje válido</b>, manda el fichaje.<br>2. Si la fichadora falló: la <b>entrada</b> se acredita con la <b>cámara de la puerta</b> (primera vez que entra la trabajadora) y la <b>salida</b>, con el <b>último tique cobrado por ella</b> más el tiempo de limpieza que fije el <b>convenio</b>.<br>3. El registro en papel rellenado por la empresa no es prueba.<br>4. Indique el total de <b>horas extraordinarias</b> de la semana <b>en minutos</b> (jornada pactada: ver contrato).' },
     contratoLucia: { emoji: '📄', name: 'Contrato de Lucía', desc: '<b>Contrato de trabajo</b> — Lucía, oficial de primera de churrería (masa y fritura).<br>Jornada: <b>30 horas semanales</b>, de lunes a viernes, de 6:00 a 12:00.<br>Salario: el del convenio. Chocolate: el que sobre.' },
     registroPapel: { emoji: '🗒️', name: 'Registro horario en papel', desc: '<b>Registro horario</b> (rellenado por la empresa, o sea, tú)<br>Lunes a viernes: 6:00 – 12:00. Todo perfecto. Demasiado perfecto.<br>Firmado por Lucía: <i>«firmé sin leer, que tenía la masa al fuego»</i>.' },
+    actaITSS: { emoji: '📃', name: 'Acta de la Inspección de Trabajo', desc: '<b>ACTA DE LA INSPECCIÓN DE TRABAJO</b> — Mayo de 2027<br>Empresa: PORRAS DEL TRÁMITE, S.L. · Trabajadora: Lucía.<br>Resultado: <b>regularización voluntaria</b> (135 minutos de horas extra, pagados).<br><b>SIN SANCIÓN.</b><br><i>Firmado: la inspectora (que pagó su churro).</i>' },
     // Nivel 9
     facturaAgente: { emoji: '🧾', name: 'Factura del agente digitalizador', desc: '<b>DIGITALIZA-TE, S.L.</b> (agente digitalizador adherido)<br>Concepto: «Sitio web y presencia en internet — porrasdeltramite.es».<br>Base imponible: <b>2.000,00 €</b> · IVA (21 %): <b>420,00 €</b> · Total: <b>2.420,00 €</b><br>Forma de pago: según las bases del Kit Digital.' },
     efectivo: { emoji: '💶', name: 'Recaudación del día', desc: 'La recaudación de hoy: <b>150 €</b> en billetes que huelen a churro. Para que cuenten en el banco, habrá que ingresarlos.' },
@@ -76,7 +84,7 @@
     justificantePago: { emoji: '🏦', name: 'Justificante de transferencia', desc: 'Justificante bancario: transferencia de 420,00 € a DIGITALIZA-TE, S.L. Concepto: «IVA Kit Digital. Por favor, que llegue».' },
     // Nivel 10
     requerimientoAEAT: { emoji: '📋', name: 'Requerimiento de Hacienda', desc: '<b>REQUERIMIENTO — Ejercicio 2027</b><br>① IVA efectivamente <b>ingresado</b> en el año.<br>② Gastos deducibles. Solo se admiten gastos afectos <b>exclusivamente</b> a la actividad y justificados con factura. <b>Nunca</b>: multas y sanciones, gastos personales o familiares (aunque asistan los socios), ni servicios que no se prestaron.<br>③ Amortización de la chocolatera en 2027.<br>④ Firma del acta.' },
-    carpeta303: { emoji: '🗂️', name: 'Carpeta de los 303', desc: '<b>Modelos 303 de 2027</b> (resultado de cada trimestre, antes de compensar nada):<br>· 1T: <b>+128 €</b><br>· 2T: <b>+205 €</b><br>· 3T: <b>−90 €</b><br>· 4T: <b>+60 €</b>' },
+    carpeta303: { emoji: '🗂️', name: 'Carpeta de los 303', desc: (g) => `<b>Modelos 303 de 2027</b> (resultado de cada trimestre, antes de compensar nada):<br>· 1T: ${g.flag('c303') ? '<b>+128 €</b>' : '<i>hueco vacío. Tu gestor ha escrito: «el del primer trimestre lo presentó el cliente, un domingo por la noche; que lo traiga él»</i>'}<br>· 2T: <b>+205 €</b><br>· 3T: <b>−90 €</b><br>· 4T: <b>+60 €</b>` },
     facturaChoco: { emoji: '🧾', name: 'Factura de la chocolatera', desc: '<b>Hostelequip</b> — Factura de 12/06/2027<br>Chocolatera industrial «ChocoMatic 3000».<br>Base imponible: <b>2.400 €</b> · IVA: 504 €.' },
     albaran: { emoji: '🔧', name: 'Albarán de instalación', desc: '<b>Albarán de instalación</b> de la ChocoMatic 3000.<br>Puesta en funcionamiento: <b>1 de octubre de 2027</b>.<br><i>Observaciones del técnico: «Vine la semana que viene tres veces seguidas».</i>' },
     certificadoAEAT: { emoji: '✅', name: 'Certificado de estar al corriente', desc: '<b>CERTIFICADO</b>: «PORRAS DEL TRÁMITE, S.L.» se encuentra al corriente de sus obligaciones tributarias. Válido 12 meses o hasta la próxima ocurrencia normativa, lo que llegue antes.' },
@@ -87,12 +95,13 @@
   // =========================================================
   const L1_CAUSAS = [['111', '111 · Alta en el Censo de Empresarios'], ['120', '120 · Modificación de datos'], ['150', '150 · Baja (no tenga prisa)'], ['999', '999 · Otros motivos (ni idea)']];
   const L1_EPIS = [['033.3', '033.3 · Belenes vivientes'], ['644.1', '644.1 · Pan y bollería (sin freír)'], ['644.6', '644.6 · Masas fritas y chocolate PARA LLEVAR'], ['673.2', '673.2 · Otros cafés y bares'], ['676', '676 · Chocolaterías (consumo en local)'], ['857.1', '857.1 · Profesionales de la espera en colas'], ['999', '999 · Otros servicios n.c.o.p.']];
-  const L1_DOMS = [['casa', 'Calle de la Esperanza, 3, 2.º B (tu casa)'], ['local', 'Calle del Trámite, 12, bajo'], ['cunado', 'Avenida del Cuñado, 7 (casa de tu cuñado)'], ['apartado', 'Apartado de Correos 404']];
+  const L1_DOMS = [['casa', 'Calle de la Esperanza, 3, 2.º B, Villatrámite (tu casa)'], ['local', 'Calle del Trámite, 12, bajo, Villatrámite'], ['cunado', 'Avenida del Cuñado, 7 (casa de tu cuñado)'], ['apartado', 'Apartado de Correos 404']];
   const opts = (arr) => '<option value="">— Elija —</option>' + arr.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   function l1Form(g) {
     g.modal({
       title: '📝 Modelo 036 — Declaración censal',
       html: `<div class="s2-form"><p class="small">Rellena las casillas importantes. Las otras 340 son opcionales (o eso dice el funcionario).</p>
+        <label class="field">NIF del declarante <input type="text" id="s2-nif1" autocomplete="off" placeholder="00000000-X"></label>
         <label class="field">Causa de presentación <select id="s2-causa">${opts(L1_CAUSAS)}</select></label>
         <label class="field">Epígrafe del IAE (actividad principal) <select id="s2-epi">${opts(L1_EPIS)}</select></label>
         <label class="field">Domicilio donde se ejerce la actividad <select id="s2-dom">${opts(L1_DOMS)}</select></label>
@@ -100,6 +109,11 @@
       buttons: [{ label: 'Cancelar' }, {
         label: '✍️ Firmar el 036', cls: 'primary', onClick(close, el) {
           const v = ['#s2-causa', '#s2-epi', '#s2-dom'].map((s) => el.querySelector(s).value);
+          if (alnum(el.querySelector('#s2-nif1').value) !== '07345189R') {
+            g.sfx('bad');
+            msgIn(el, 's2-m1')('El NIF del declarante no coincide con el de tu DNI. Hacienda lo cruza todo; hasta los dedos.', true);
+            return false;
+          }
           if (v[0] === '111' && v[1] === '644.6' && v[2] === 'local') {
             g.take('modelo036'); g.give('modelo036Relleno'); g.sfx('stamp');
             g.say('Firmas el 036 con letra de notario. El bolígrafo encadenado se queda sin tinta justo al terminar: es una señal.', 'Mesa de impresos');
@@ -120,6 +134,7 @@
   //  NIVEL 2 — Cuota de autónomos
   // =========================================================
   function l2Cuota(g) {
+    if (!g.flag('censo')) return g.say('—Antes de hablar de cuotas: ¿está usted dado de alta en Hacienda? Enséñeme la copia sellada del 036. Sin existir para Hacienda, no puede existir para la Seguridad Social.', 'Funcionaria');
     g.input({
       title: '💶 Alta en el RETA — Cuota mensual',
       text: '—Dígame qué cuota mensual le corresponde, en euros. Sin decimales, que los decimales los ponemos nosotros.',
@@ -135,6 +150,17 @@
         g.say('—230 € al mes. Correcto. Bienvenido/a al Régimen Especial de Trabajadores Autónomos. Pagará aunque no facture, aunque esté enfermo y aunque llueva. Firme aquí.', 'Funcionaria');
         g.win();
       },
+    });
+  }
+
+  function l2Terminal(g) {
+    g.input({
+      title: '🖥️ Import@ss — Informe de vida laboral',
+      text: 'DNI 07345189-R leído. Introduzca ahora su número de afiliación a la Seguridad Social (12 cifras, sin barras).',
+      numeric: true, maxLen: 12,
+      check: (v) => v === '280347121534',
+      failText: () => 'Número de afiliación no encontrado. ¿Seguro que es usted quien dice ser? Míralo en tu tarjeta.',
+      ok: () => { g.give('vidaLaboral'); g.say('La impresora escupe tu informe de vida laboral. Lo lees: hay algo de 2025 que habías olvidado. El sistema, no.', 'Terminal Import@ss'); },
     });
   }
 
@@ -155,7 +181,7 @@
     ['EL SELLO DE ORO JOYEROS, S.A.', 'Inscrita (1987)'],
     ['LAS PORRAS DEL SELLO, S.L.', 'Inscrita (2020)'],
     ['PORRA DE LA BENTANILLA, S.L.', 'Inscrita (1998)'],
-    ['PORRAS DEL TRÁMITE, S.L.', 'Reservada el 12/04/2026'],
+    ['PORRAS DEL TRÁMITE, S.L.', 'Reservada el 15/06/2026'],
     ['PORRAS DEL TRANVÍA, S.L.', 'Inscrita (2001)'],
     ['TRÁMITE DE CHOCOLATES, S.A.', 'Inscrita (2015)'],
     ['VENTANILLA CHURROS, S.A.', 'Inscrita (2009)'],
@@ -192,7 +218,7 @@
     ['1', '<b>COMPARECEN:</b> tú, doña Remedios (tu tía) y don Francisco «Paco» (tu cuñado), mayores de edad y con capacidad legal suficiente (según ellos).'],
     ['2', '<b>DENOMINACIÓN:</b> la sociedad se denominará «PORRAS DEL TRÁMITE, S.A.».'],
     ['3', '<b>OBJETO SOCIAL:</b> elaboración y venta de churros, porras, buñuelos y chocolate, con o sin consumo en el local.'],
-    ['4', '<b>DOMICILIO SOCIAL:</b> Calle del Trámite, 21, bajo.'],
+    ['4', '<b>DOMICILIO SOCIAL:</b> Calle del Trámite, 21, bajo, Villatrámite.'],
     ['5', '<b>CAPITAL SOCIAL:</b> 3.000 euros, dividido en 300 participaciones de 1 euro de valor nominal cada una, íntegramente desembolsadas.'],
     ['6', '<b>SUSCRIPCIÓN:</b> tú suscribes 165 participaciones (1.650 €); doña Remedios, 90 (900 €); don Francisco, 45 (450 €).'],
     ['7', '<b>ADMINISTRACIÓN:</b> administrador único: tú. Cargo gratuito, como casi todo lo que haces.'],
@@ -252,7 +278,8 @@
             if (seq.join() === 'tia,tu,cunado,notario') {
               g.closeModal();
               g.sfx('stamp');
-              g.say('El notario estampa su firma: «Ante mí». Acaba de nacer PORRAS DEL TRÁMITE, S.L., con 3.000 € de capital y tres socios que en Nochebuena no se hablan.', 'Notario');
+              g.give('escritura');
+              g.say('El notario estampa su firma: «Ante mí». Acaba de nacer PORRAS DEL TRÁMITE, S.L., con 3.000 € de capital y tres socios que en Nochebuena no se hablan. Te entrega la copia autorizada de la escritura: «No la pierda. Se la van a pedir en todas partes».', 'Notario');
               g.win();
               return;
             }
@@ -331,8 +358,8 @@
     });
   }
   function l5Tecnico(g) {
-    if (!g.flag('plOK') || !g.flag('tasaOK')) {
-      const falta = [!g.flag('plOK') && 'el plano firmado y conforme a la ordenanza', !g.flag('tasaOK') && 'el justificante de la tasa'].filter(Boolean);
+    if (!g.flag('plOK') || !g.flag('tasaOK') || !g.flag('escOK')) {
+      const falta = [!g.flag('escOK') && 'la escritura de la sociedad (la licencia va a nombre de la S.L., no al suyo)', !g.flag('plOK') && 'el plano firmado y conforme a la ordenanza', !g.flag('tasaOK') && 'el justificante de la tasa'].filter(Boolean);
       return g.say(`—Para la licencia necesito ${falta.join(' y ')}. Y luego, que me diga el aforo. Sin prisa: el plazo de resolución es de tres meses. Y el silencio, negativo.`, 'Técnico municipal');
     }
     g.input({
@@ -342,16 +369,23 @@
       check: (v) => v === '20',
       failText: (v) => (+v === 27 ? '—El aforo se calcula sobre la zona de PÚBLICO, no sobre todo el local.' : '—Ese aforo no sale de la ordenanza. Haga la cuenta con el plano.'),
       ok: () => {
-        g.say('—Aforo 20, cinco mesas, extintor en su sitio. Le concedo... la licencia PROVISIONAL. La definitiva le llegará por correo. Algún día. Puede usted abrir.', 'Técnico municipal');
+        g.give('licencia'); g.sfx('stamp');
+        g.say('—Aforo 20, cinco mesas, extintor en su sitio. Le concedo... la licencia PROVISIONAL. Cuélguela a la vista del público. La definitiva le llegará por correo. Algún día. Puede usted abrir.', 'Técnico municipal');
         g.win();
       },
     });
   }
   function l5Entrega(g, it) {
-    g.take(it);
-    g.set(it === 'planoFirmado' ? 'plOK' : 'tasaOK');
-    g.say(it === 'planoFirmado' ? '—Plano conforme. Lo grapo al expediente. Con cinco grapas: una por mesa.' : '—Tasa pagada. Ya puede usted empezar a esperar.', 'Técnico municipal');
-    if (g.flag('plOK') && g.flag('tasaOK')) l5Tecnico(g);
+    if (it === 'escritura') {
+      if (g.flag('escOK')) return g.say('—La escritura ya la he fotocopiado. Entera. Por las dos caras. Guárdela, que no es mía.', 'Técnico municipal');
+      g.set('escOK');
+      g.say('—PORRAS DEL TRÁMITE, S.L., administrador único: usted. La fotocopio entera, las 34 páginas, por las dos caras. Tome, la original es suya.', 'Técnico municipal');
+    } else {
+      g.take(it);
+      g.set(it === 'planoFirmado' ? 'plOK' : 'tasaOK');
+      g.say(it === 'planoFirmado' ? '—Plano conforme. Lo grapo al expediente. Con cinco grapas: una por mesa.' : '—Tasa pagada. Ya puede usted empezar a esperar.', 'Técnico municipal');
+    }
+    if (g.flag('plOK') && g.flag('tasaOK') && g.flag('escOK')) l5Tecnico(g);
   }
 
   // =========================================================
@@ -433,7 +467,8 @@
           const c = (id) => cents(el.querySelector('#' + id).value);
           const pago = el.querySelector('#s2-pago').value;
           let err = null;
-          if (c('s2-c27') !== 48300) err = c('s2-c27') === 49300 ? 'Casilla 27: en el libro hay una factura rectificativa, y las rectificativas restan.' : 'Casilla 27: no coincide con su libro de facturas emitidas.';
+          if (!g.flag('anotada')) err = c('s2-c27') === 47990 ? 'Casilla 27: ¿y la factura de doña Ramona? Verifactu la tiene; tu libro de emitidas, todavía no.' : 'Casilla 27: el libro de facturas emitidas está incompleto. Anota antes todo lo que facturaste en el trimestre.';
+          else if (c('s2-c27') !== 48300) err = c('s2-c27') === 49300 ? 'Casilla 27: en el libro hay una factura rectificativa, y las rectificativas restan.' : 'Casilla 27: no coincide con su libro de facturas emitidas.';
           else if (c('s2-c45') !== 35500) err = 'Casilla 45: no coincide con el IVA de las facturas que de verdad puede deducir.';
           else if (c('s2-c71') !== 12800) err = 'Casilla 71: el resultado es la casilla 27 menos la 45.';
           else if (pago === 'dom') err = 'La domiciliación solo se admite hasta el día 15 de abril. Mire el calendario.';
@@ -442,8 +477,8 @@
           else if (pago !== 'nrc') err = 'Elija una forma de pago.';
           else if (!g.has('nrc')) err = 'Para pagar con NRC, primero tiene que hacer el pago desde su banco y obtener el NRC.';
           if (err) { g.sfx('bad'); msgIn(el, 's2-m7b')('❌ ' + err, true); return false; }
-          g.take('nrc');
-          g.say('«Declaración presentada. Resultado: 128 € a ingresar. NRC validado.» Tu primer trimestre. Solo te quedan 159 más hasta la jubilación.', 'Sede de la AEAT');
+          g.take('nrc'); g.give('justificante303');
+          g.say('«Declaración presentada. Resultado: 128 € a ingresar. NRC validado.» Imprimes el justificante y lo guardas como oro en paño. Tu primer trimestre. Solo te quedan 159 más hasta la jubilación.', 'Sede de la AEAT');
           g.win();
           return true;
         },
@@ -513,7 +548,7 @@
       }],
     });
   }
-  const L9_DOCS = [['captura', 'Captura de la web con los logotipos'], ['facturaAgente', 'Factura del agente digitalizador'], ['justificantePago', 'Justificante bancario del pago']];
+  const L9_DOCS = [['captura', 'Captura de la web con los logotipos'], ['facturaAgente', 'Factura del agente digitalizador'], ['justificantePago', 'Justificante bancario del pago'], ['actaITSS', 'Acta de la Inspección de Trabajo (sin sanción)']];
   function l9Portal(g) {
     g.modal({
       title: '📤 Portal de justificación — Kit Digital',
@@ -597,6 +632,7 @@
       options: [
         { label: '① IVA ingresado en 2027' + d('c1'), onPick(g2, msg) {
           if (g.flag('c1')) { msg('Comprobación ya superada.'); return false; }
+          if (!g.flag('c303')) { msg(g.has('carpeta303') ? '—Para hablar del IVA quiero ver los cuatro modelos 303 de 2027 juntos, en su carpeta. Y en su carpeta falta uno.' : '—Para hablar del IVA quiero ver los cuatro modelos 303 de 2027. ¿Dónde los tiene? ¿En ese archivador con candado?', true); return false; }
           g.input({
             title: '① IVA ingresado en 2027', text: '—¿Cuánto IVA INGRESÓ usted en total durante 2027? En euros.', numeric: true, maxLen: 4,
             check: (v) => v === '333',
@@ -665,8 +701,9 @@
       title: 'El epígrafe',
       place: 'Agencia Tributaria — Oficina de Censos',
       stars: 2,
-      intro: 'Con tu DNI nuevo en el bolsillo, decides cumplir un sueño: abrir una <b>churrería</b>. Tu cuñado dice que es «un negocio redondo». Como las porras.<br><br>Primer paso: darte de alta en Hacienda con el <b>modelo 036</b> y elegir tu epígrafe del IAE entre unos cuantos miles.<br><br><b>Objetivo:</b> entrega al funcionario la declaración censal bien rellenada.',
-      outro: 'Alta censal registrada. Ya existe usted para Hacienda, que es la forma más intensa de existir. Siguiente parada: la Seguridad Social, que también quiere conocerle. Sobre todo, a su cuenta corriente.',
+      intro: 'Enero de 2027. Hace tres meses, tras diez trámites, una investidura y un decreto publicado a las 23:59, conseguiste tu <b>DNI nuevo</b> (válido hasta 2036). Con él en el bolsillo decides cumplir un sueño: abrir una <b>churrería</b> en Villatrámite. Tu cuñado dice que es «un negocio redondo». Como las porras.<br><br>Primer paso: identificarte en Hacienda y darte de alta con el <b>modelo 036</b>, eligiendo tu epígrafe del IAE entre unos cuantos miles.<br><br><b>Objetivo:</b> identifícate con tu DNI y entrega al funcionario la declaración censal bien rellenada.',
+      outro: 'Alta censal registrada. Ya existe usted para Hacienda, que es la forma más intensa de existir. El funcionario te devuelve el DNI y una <b>copia sellada del 036</b>: «Consérvela. Se la pedirán». Siguiente parada: la Seguridad Social, que también quiere conocerle. Sobre todo, a su cuenta corriente.',
+      carry: ['dni'],
       scene: { wall: '#d9e0d0', floor: '#8a8f7f', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'window', l: 3, t: 8, w: 12, h: 26 },
@@ -694,7 +731,7 @@
               <p class="small">No vale elegir el epígrafe que más le guste, ni el que suene mejor en las cenas de empresa. Bueno, de empresa no: usted no tiene empresa todavía.</p>`);
           } },
         { id: 'pantalla', x: 80, y: 16, emoji: '📺', s: 5, label: 'Pantalla de turnos',
-          look(g) { g.say('«TURNO: C-001». Es el tuyo. Llegaste el primero. Nadie te cree: ni tú.'); } },
+          look(g) { g.say('«TURNO: C-001». Es el tuyo. Llegaste el primero y SIN cita previa: aquí se atiende por orden de llegada. Después de lo del DNI, te tiembla el pulso de la emoción.'); } },
         { id: 'tarifas', x: 27, y: 29, emoji: '📕', s: 5, label: 'Tarifas del IAE (tomo I de XIV)',
           look(g) {
             g.doc('📕 Tarifas del Impuesto sobre Actividades Económicas (extracto)', `<table class="tbl">
@@ -709,13 +746,22 @@
           } },
         { id: 'funcionario', x: 69, y: 48, emoji: '👨‍💼', s: 8, label: 'Funcionario de Censos',
           look(g) {
-            g.say('—Alta de actividad. Muy bien. Tráigame el modelo 036 relleno: causa, epígrafe y domicilio de la actividad. Las instrucciones, en los carteles. Los impresos, en el expositor.', 'Funcionario');
+            g.say('—Alta de actividad. Muy bien. Primero, identifíquese: DNI original. Luego tráigame el modelo 036 relleno: NIF, causa, epígrafe y domicilio de la actividad. Las instrucciones, en los carteles. Los impresos, en el expositor.', 'Funcionario');
             g.say('—Y no me pregunte qué epígrafe es el suyo. Si se lo digo yo y me equivoco, la culpa es mía. Si se equivoca usted, la culpa es suya. Prefiero lo segundo.', 'Funcionario');
           },
           use: {
+            dni(g) {
+              if (g.flag('ident')) return g.say('—Ya le he identificado. Dos veces sería acoso.', 'Funcionario');
+              g.take('dni'); g.set('ident'); g.sfx('stamp');
+              g.say('—A ver... 07345189-R, válido hasta el 1 de octubre de 2036. Nuevecito: todavía huele a decreto. Le hago una fotocopia. Una sola: aquí somos modernos.', 'Funcionario');
+              g.say('—Tome su DNI. No lo pierda: en este país, sin DNI no se puede ni abrir una churrería. Bueno, con DNI tampoco, pero ya lo irá viendo.', 'Funcionario');
+              g.give('dni');
+            },
             modelo036Relleno(g) {
+              if (!g.flag('ident')) return g.say('—Muy bonito el impreso. ¿Y usted quién es? Identifíquese primero: DNI original. El NIF del impreso lo puede haber escrito cualquiera.', 'Funcionario');
               g.take('modelo036Relleno');
-              g.say('—Casilla 111, epígrafe 644.6, local de la calle del Trámite... Impecable. Es usted el primer churrero que no se da de alta como «belén viviente». Queda dado de alta.', 'Funcionario');
+              g.say('—NIF 07345189-R, casilla 111, epígrafe 644.6, local de la calle del Trámite, 12... Impecable. Es usted el primer churrero que no se da de alta como «belén viviente». Tenga su copia sellada. Queda dado de alta.', 'Funcionario');
+              g.give('copia036');
               g.win();
             },
             modelo036(g) { g.say('—En blanco no, por favor. Se rellena en la mesa. Con el bolígrafo encadenado.', 'Funcionario'); },
@@ -760,6 +806,7 @@
               '—Yo me di de alta como «belén viviente» por error. Ahora tengo que poner un belén cada diciembre o me inspeccionan.',
               '—Yo vendo calcetines por internet. El funcionario dice que soy «comercio al por menor de artículos de mercería ambulante virtual». No sé si reír o llorar.',
               '—Dicen que el 037 era más fácil. Por eso lo quitaron.',
+              '—Yo vengo de renovar el DNI: diez trámites y tres fotocopias, una torcida. Después de eso, el 036 me parece un crucigrama de los fáciles.',
             ]), 'Alguien de la cola');
           } },
         { id: 'folleto', x: 76, y: 84, emoji: '📰', s: 5, label: 'Folleto «Emprende en 24 horas»',
@@ -768,9 +815,9 @@
           look(g) { g.say('Un ficus dado de alta en el epígrafe 999. Nadie sabe a qué se dedica, pero cotiza.'); } },
       ],
       hints: [
-        'En tu mochila tienes el plan de empresa y el contrato del local. El expositor tiene dos impresos: lee la guía antes de elegir.',
-        'El epígrafe es el de la actividad que más factura, pero sumando antes todo lo que cae en un mismo epígrafe (mira el tomo de Tarifas: el chocolate en mesa y el chocolate para llevar no van al mismo). El domicilio es el del local. Rellena el impreso en la mesa.',
-        'Coge el 036 (el 037 ya no existe) y úsalo en la mesa: casilla 111, epígrafe 644.6 (25 % + 15 % + 5 % = 45 %, más que el 35 % del 676) y Calle del Trámite, 12. Entrega el 036 relleno al funcionario.',
+        'Enséñale tu DNI al funcionario: sin identificarte no te atiende. En tu mochila tienes el plan de empresa y el contrato del local. El expositor tiene dos impresos: lee la guía antes de elegir.',
+        'El NIF es el número de tu DNI. El epígrafe es el de la actividad que más factura, pero sumando antes todo lo que cae en un mismo epígrafe (mira el tomo de Tarifas: el chocolate en mesa y el chocolate para llevar no van al mismo). El domicilio es el del local. Rellena el impreso en la mesa.',
+        'Usa el DNI con el funcionario. Coge el 036 (el 037 ya no existe) y úsalo en la mesa: NIF 07345189-R, casilla 111, epígrafe 644.6 (25 % + 15 % + 5 % = 45 %, más que el 35 % del 676) y Calle del Trámite, 12. Entrega el 036 relleno al funcionario.',
       ],
     },
 
@@ -779,8 +826,9 @@
       title: 'La cuota',
       place: 'Tesorería de la Seguridad Social — Sala de autónomos',
       stars: 2,
-      intro: 'Hacienda ya te conoce. Ahora te toca darte de alta en el <b>RETA</b>, el régimen de autónomos, y pagar tu <b>cuota mensual</b>.<br><br>La cuota depende de lo que vas a ganar, que no sabes. Y existe una «tarifa plana» de 80 € para quien cumpla los requisitos, que no sabes si cumples.<br><br><b>Objetivo:</b> presenta tu vida laboral y di qué cuota te corresponde.',
-      outro: 'Alta en el RETA confirmada. 230 € al mes, factures o no. Tu cuñado insiste en que una S.L. «queda más seria». Y para tener una S.L., lo primero es un nombre que no tenga nadie. Fácil, ¿no?',
+      intro: 'Hacienda ya te conoce: llevas la copia sellada del 036 para demostrarlo. Ahora te toca darte de alta en el <b>RETA</b>, el régimen de autónomos, y pagar tu <b>cuota mensual</b>.<br><br>La cuota depende de lo que vas a ganar, que no sabes. Y existe una «tarifa plana» de 80 € para quien cumpla los requisitos, que no sabes si cumples. Por suerte, también llevas encima el contrato del local y tu DNI.<br><br><b>Objetivo:</b> acredita tu alta en Hacienda, saca tu vida laboral y di qué cuota te corresponde.',
+      outro: 'Alta en el RETA confirmada. 230 € al mes, factures o no. Tu cuñado insiste en que una S.L. «queda más seria». Y para tener una S.L., lo primero es un nombre que no tenga nadie. Fácil, ¿no? El lunes, al Registro Mercantil. Con el DNI, claro.',
+      carry: ['dni', 'contrato', 'copia036'],
       scene: { wall: '#cfd9e3', floor: '#9aa3a8', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'window', l: 3, t: 8, w: 12, h: 24 },
@@ -805,36 +853,47 @@
               <p class="small">Si estuvo de alta, aunque fuera un ratito vendiendo pulseras, no insista: el sistema lo sabe todo. Menos dónde está su cita.</p>`);
           } },
         { id: 'calendario', x: 88, y: 16, emoji: '📅', s: 5, label: 'Calendario',
-          look(g) { g.say('Hoy es jueves, 12 de noviembre de 2026. Alguien ha rodeado el día 30 con rotulador rojo: «fin de plazo de algo». Nadie recuerda de qué.'); } },
+          look(g) { g.say('Hoy es jueves, 14 de enero de 2027. Alguien ha rodeado el día 29 con rotulador rojo: «fin de plazo de algo». Nadie recuerda de qué.'); } },
         { id: 'funcionaria', x: 75, y: 48, emoji: '👩‍💼', s: 8, label: 'Funcionaria del RETA',
           look(g) {
+            if (!g.flag('censo')) return g.say('—Para el alta en autónomos necesito tres cosas: la copia sellada de su alta en Hacienda (el 036), su vida laboral y que me diga qué cuota le corresponde. La vida laboral se imprime en el terminal. La cuota, en los carteles. La paciencia, en su casa.', 'Funcionaria');
             if (g.has('vidaLaboral')) return l2Cuota(g);
-            g.say('—Para el alta en autónomos necesito su vida laboral y que me diga qué cuota le corresponde. La vida laboral se imprime en el terminal. La cuota, en los carteles. La paciencia, en su casa.', 'Funcionaria');
+            g.say('—Alta en Hacienda, comprobada. Ahora, su vida laboral (en el terminal) y su cuota (en los carteles).', 'Funcionaria');
           },
           use: {
+            copia036(g) {
+              if (g.flag('censo')) return g.say('—Ya la he visto. Y la he fotocopiado. Y he fotocopiado la fotocopia, por si acaso.', 'Funcionaria');
+              g.set('censo'); g.sfx('stamp');
+              g.say('—NIF 07345189-R, epígrafe 644.6, Calle del Trámite, 12, Villatrámite. Existe usted para Hacienda: ya puede existir para nosotros. Quédese la copia, que es suya. Ahora, vida laboral y cuota.', 'Funcionaria');
+            },
             vidaLaboral: l2Cuota,
+            contrato(g) { g.say('—El contrato del local no lo necesito. Lo que pone dentro, a lo mejor sí: para sus cuentas.', 'Funcionaria'); },
+            dni(g) { g.say('—El DNI lo pide el terminal, no yo. Yo me fío de usted. El terminal, de nadie.', 'Funcionaria'); },
             prevision(g) { g.say('—Sus previsiones me parecen muy bien. Optimistas, pero bien. Yo lo que quiero es su vida laboral y su cuota.', 'Funcionaria'); },
           } },
         { id: 'terminal', x: 40, y: 51, emoji: '🖥️', s: 7, label: 'Terminal Import@ss',
           look(g) {
             if (g.has('vidaLaboral')) return g.say('Ya imprimiste tu vida laboral. Es más corta de lo que parece y, aun así, no cabe en una hoja.');
-            g.input({
-              title: '🖥️ Import@ss — Informe de vida laboral',
-              text: 'Introduzca su número de afiliación a la Seguridad Social (12 cifras, sin barras).',
-              numeric: true, maxLen: 12,
-              check: (v) => v === '280347121534',
-              failText: () => 'Número de afiliación no encontrado. ¿Seguro que es usted quien dice ser? Míralo en tu tarjeta.',
-              ok: () => { g.give('vidaLaboral'); g.say('La impresora escupe tu informe de vida laboral. Lo lees: hay algo de 2025 que habías olvidado. El sistema, no.', 'Terminal Import@ss'); },
-            });
+            if (!g.flag('dniLeido')) return g.say('La pantalla parpadea: «IMPORT@SS. Identifíquese: acerque su DNI al lector». Debajo del lector, a boli: «el DNI caducado no lo lee, no insista».');
+            l2Terminal(g);
+          },
+          use: {
+            dni(g) {
+              if (g.has('vidaLaboral')) return g.say('Ya imprimiste tu vida laboral. El lector te reconoce igual, por cariño.');
+              if (g.flag('dniLeido')) return l2Terminal(g);
+              g.set('dniLeido'); g.sfx('ok');
+              g.say('El lector pita: «07345189-R. Válido hasta 2036. Bienvenido/a». Es la primera máquina de la Administración que te reconoce a la primera. Casi lloras.', 'Terminal Import@ss');
+              l2Terminal(g);
+            },
           } },
         { id: 'cartera', x: 8, y: 80, emoji: '👛', s: 5, label: 'Tu cartera',
-          look(g) { g.say('En tu cartera: el DNI nuevo (qué recuerdos), 3,20 € y la tarjeta de la Seguridad Social: «Nº de afiliación: <b>28/03471215/34</b>». La conseguiste tras cinco ventanillas. Se nota.'); } },
+          look(g) { g.say('En tu cartera: 3,20 €, el hueco del DNI (vacío: lo llevas en la mano, por si acaso) y la tarjeta de la Seguridad Social: «Nº de afiliación: <b>28/03471215/34</b>». La conseguiste tras cinco ventanillas, cuando renovaste el DNI. Se nota.'); } },
         { id: 'mochila', x: 20, y: 82, emoji: '🎒', s: 6, label: 'Tu mochila',
           look(g) {
             if (!g.flag('moch')) {
               g.set('moch');
-              g.say('Rebuscas en la mochila: la previsión de ingresos que te hizo tu cuñado, el contrato del local y el papel del préstamo del coche.');
-              g.give('prevision'); g.give('contrato'); g.give('cocheLetra');
+              g.say('Rebuscas en la mochila: la previsión de ingresos que te hizo tu cuñado y el papel del préstamo del coche. El contrato del local no está: ya lo llevas a mano desde Hacienda, como un amuleto.');
+              g.give('prevision'); g.give('cocheLetra');
             } else g.say('Nada más. Bueno, un caramelo de menta con pelusa. No.');
           } },
         { id: 'repartidor', x: 54, y: 76, emoji: '👷', s: 7, label: 'Repartidor de harina',
@@ -863,9 +922,9 @@
           } },
       ],
       hints: [
-        'Necesitas tu vida laboral: el terminal pide tu número de afiliación (¿lo llevas en la cartera?). Reúne también ingresos y gastos: mochila, repartidor y móvil.',
+        'La funcionaria quiere ver la copia sellada de tu 036. Para la vida laboral, identifícate en el terminal con el DNI; luego te pide el número de afiliación (¿lo llevas en la cartera?). Reúne también ingresos y gastos: contrato del local, mochila, repartidor y móvil.',
         'Lee la vida laboral y el cartel de la tarifa plana: ¿han pasado dos años desde tu última baja como autónomo? Rendimiento = ingresos − gastos del negocio (el coche de la playa no cuenta), y luego réstale un 7 %.',
-        'Terminal: 280347121534. Sin tarifa plana (baja en junio de 2025: menos de dos años). 2.900 − 900 − 650 − 300 = 1.050; −7 % = 976,50 → cuota 230. Dile 230 a la funcionaria con la vida laboral.',
+        'Copia del 036 a la funcionaria. DNI en el terminal y afiliación 280347121534. Sin tarifa plana (baja en junio de 2025: menos de dos años). 2.900 − 900 (alquiler) − 650 − 300 = 1.050; −7 % = 976,50 → cuota 230. Dile 230 a la funcionaria con la vida laboral.',
       ],
     },
 
@@ -874,8 +933,9 @@
       title: 'Nombre no disponible',
       place: 'Registro Mercantil Central — Sección de Denominaciones',
       stars: 3,
-      intro: 'Tu cuñado te ha convencido: vas a constituir una <b>S.L.</b> Para eso necesitas un <b>certificado negativo de denominación</b>: que nadie en España tenga un nombre igual al tuyo... o «idéntico», que no es lo mismo, pero casi.<br><br>Llevas una lista de palabras. El Registro, una lista de prohibiciones.<br><br><b>Objetivo:</b> consigue el certificado y sal del Registro.',
-      outro: 'Certificado concedido: «PORRAS DEL TRÁMITE, S.L.». Tienes tres meses para firmar la escritura ante notario. Tu tía y tu cuñado ya han dicho que quieren ser socios. Qué ilusión. Qué miedo.',
+      intro: 'Tu cuñado te ha convencido: vas a constituir una <b>S.L.</b> Para eso necesitas un <b>certificado negativo de denominación</b>: que nadie en España tenga un nombre igual al tuyo... o «idéntico», que no es lo mismo, pero casi.<br><br>Llevas una lista de palabras y tu DNI: aquí solo atienden a solicitantes identificados. El Registro, por su parte, lleva una lista de prohibiciones.<br><br><b>Objetivo:</b> identifícate, consigue el certificado y sal del Registro.',
+      outro: 'Certificado concedido: «PORRAS DEL TRÁMITE, S.L.». Tienes tres meses para firmar la escritura ante notario, y el notario querrá el certificado original: no lo sueltes. Tu tía y tu cuñado ya han dicho que quieren ser socios. Qué ilusión. Qué miedo.',
+      carry: ['dni'],
       scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'counter', l: 60, t: 54, w: 24, h: 9 },
@@ -901,21 +961,28 @@
               <p class="small">Ni «Real Churrería», ni «Churros de Hacienda». Sobre todo este último: da miedo.</p>`);
           } },
         { id: 'calendario', x: 62, y: 14, emoji: '📅', s: 5, label: 'Calendario',
-          look(g) { g.say('Hoy es lunes, 16 de noviembre de 2026. El calendario es del Registro: tiene los festivos marcados en rojo y los puentes en rojo más oscuro.'); } },
+          look(g) { g.say('Hoy es lunes, 18 de enero de 2027. El calendario es del Registro: tiene los festivos marcados en rojo y los puentes en rojo más oscuro.'); } },
         { id: 'registradora', x: 71, y: 46, emoji: '🧑‍💼', s: 8, label: 'Registradora',
           look(g) {
             if (g.has('certDen')) return g.say('—Ya tiene su certificado. Corra al notario, que caduca. Todo caduca. Menos las colas.', 'Registradora');
+            if (!g.flag('ident')) return g.say('—Las solicitudes solo las presenta el interesado, identificado. DNI original, por favor. Las fotocopias las hago yo, que las que trae la gente salen torcidas.', 'Registradora');
             g.say('—Para su S.L. necesito una solicitud con la denominación. Si existe otra igual o «idéntica», inscrita o con reserva en vigor, se la deniego. Y no le digo cuál: está en el Libro, que para eso lo tenemos.', 'Registradora');
           },
           use: {
+            dni(g) {
+              if (g.flag('ident')) return g.say('—Ya le tengo fichado. En el buen sentido. Creo.', 'Registradora');
+              g.set('ident'); g.sfx('stamp');
+              g.say('—07345189-R... Le hago fotocopia por las dos caras. ¿Ve? Recta. Así se hace. Ya consta usted como solicitante: cada solicitud que entregue irá a su nombre. Tome su DNI.', 'Registradora');
+            },
             solicitudRellena(g) {
+              if (!g.flag('ident')) return g.say('—¿Y quién la solicita? ¿El espíritu santo? Identifíquese primero: DNI original.', 'Registradora');
               const p1 = g.flag('p1'); const p2 = g.flag('p2');
               g.take('solicitudRellena');
               g.set('intentos', (g.flag('intentos') || 0) + 1);
               if (p2 >= 3) { g.sfx('bad'); return g.say('—¿«' + L3_P2[p2] + '»? Término prohibido. ¿No ha leído el cartel? Denegada. Coja otra solicitud de la bandeja.', 'Registradora'); }
               if (p1 === 1 && p2 === 1) {
                 g.give('certDen'); g.sfx('stamp');
-                return g.say('—«Porras del Trámite»... Había una reserva, pero es de abril: caducada hace un mes. Está libre. ¡PAM! Certificado negativo. Que lo disfrute.', 'Registradora');
+                return g.say('—«Porras del Trámite»... Había una reserva, pero es de junio del año pasado: caducada hace un mes. Está libre. ¡PAM! Certificado negativo. Que lo disfrute.', 'Registradora');
               }
               g.sfx('bad');
               g.say(rand([
@@ -961,9 +1028,9 @@
           } },
       ],
       hints: [
-        'Coge una solicitud de la bandeja y rellénala en el pupitre. Antes, lee las normas (art. 408), las palabras prohibidas y el Libro de denominaciones.',
-        'Dos nombres son «idénticos» aunque cambien el orden, el número, los artículos, las preposiciones, las tildes, la forma social o letras que suenan igual (b/v, ll/y). Y fíjate en las reservas: caducan a los seis meses (hoy es 16 de noviembre de 2026).',
-        'PORRAS + DEL TRÁMITE: su reserva es del 12 de abril de 2026 y ya ha caducado. Entrega la solicitud a la registradora y sal por la puerta con el certificado.',
+        'Identifícate ante la registradora con tu DNI. Coge una solicitud de la bandeja y rellénala en el pupitre. Antes, lee las normas (art. 408), las palabras prohibidas y el Libro de denominaciones.',
+        'Dos nombres son «idénticos» aunque cambien el orden, el número, los artículos, las preposiciones, las tildes, la forma social o letras que suenan igual (b/v, ll/y). Y fíjate en las reservas: caducan a los seis meses (hoy es 18 de enero de 2027).',
+        'DNI a la registradora. PORRAS + DEL TRÁMITE: su reserva es del 15 de junio de 2026 y caducó en diciembre. Entrega la solicitud a la registradora y sal por la puerta con el certificado.',
       ],
     },
 
@@ -972,8 +1039,9 @@
       title: 'Ante mí',
       place: 'Notaría de don Fulgencio Fe Pública',
       stars: 3,
-      intro: 'Es el gran día: la <b>escritura de constitución</b> de tu S.L. Socios: tú, tu tía Remedios y tu cuñado Paco. Capital: 3.000 €. Ambiente: tenso.<br><br>El borrador lo ha preparado la oficial de la notaría «a toda prisa». Y en la mesa de firmas nadie quiere firmar en cualquier orden.<br><br><b>Objetivo:</b> corrige el borrador y consigue que todos firmen.',
-      outro: 'Escritura firmada. Tu S.L. ya existe... aunque para abrir la churrería necesitas algo más que existir: necesitas una licencia del Ayuntamiento. Y el Ayuntamiento tiene ordenanzas. Muchas.',
+      intro: 'Es el gran día: la <b>escritura de constitución</b> de tu S.L. Socios: tú, tu tía Remedios y tu cuñado Paco. Capital: 3.000 €. Ambiente: tenso.<br><br>Traes el <b>certificado de denominación</b> del Registro (vigente), el contrato del local y tu DNI. El borrador lo ha preparado la oficial de la notaría «a toda prisa». Y en la mesa de firmas nadie quiere firmar en cualquier orden.<br><br><b>Objetivo:</b> corrige el borrador, entrega al notario lo que pide y consigue que todos firmen.',
+      outro: 'Escritura firmada. Sales de la notaría con la <b>copia autorizada</b> bajo el brazo: tu S.L. ya existe... aunque para abrir la churrería necesitas algo más que existir: una licencia del Ayuntamiento. Y el Ayuntamiento tiene ordenanzas. Muchas.',
+      carry: ['dni', 'contrato', 'certDen'],
       scene: { wall: '#4f3b33', floor: '#5a3b2a', floorH: 30, pattern: 'wood' },
       decor: [
         { kind: 'shelf', l: 3, t: 36, w: 15, h: 2 },
@@ -999,17 +1067,35 @@
         { id: 'notario', x: 50, y: 44, emoji: '🧑‍⚖️', s: 8, label: 'Don Fulgencio, notario',
           look(g) {
             if (!g.flag('borradorOK')) return g.say('—Yo no firmo nada con erratas. Revise el borrador con mi oficial. Y luego, a la mesa de firmas. Yo firmo el último, como manda la tradición. Y la minuta.', 'Notario');
-            g.say('—Borrador correcto. Cuando los otorgantes estén de acuerdo en el orden, pasen a la mesa de firmas.', 'Notario');
+            if (!g.flag('certIn') || !g.flag('dniIn')) {
+              const falta = [!g.flag('certIn') && 'el ORIGINAL del certificado de denominación, que se incorpora a la escritura', !g.flag('dniIn') && 'su DNI, para la comparecencia'].filter(Boolean);
+              return g.say(`—Borrador correcto. Antes de firmar necesito ${falta.join(' y ')}. Los DNI de sus socios ya los tengo: su tía me los ha dado en una bolsa de congelados.`, 'Notario');
+            }
+            g.say('—Todo en regla. Cuando los otorgantes estén de acuerdo en el orden, pasen a la mesa de firmas.', 'Notario');
+          },
+          use: {
+            certDen(g) {
+              if (!g.flag('borradorOK')) return g.say('—El certificado me lo da cuando el borrador esté corregido. Si lo incorporo ahora y luego hay erratas, tendría que desincorporarlo. Y eso no existe.', 'Notario');
+              if (g.flag('certIn')) return g.say('—Ya está incorporado.', 'Notario');
+              g.take('certDen'); g.set('certIn'); g.sfx('stamp');
+              g.say('—Certificación negativa original, «PORRAS DEL TRÁMITE, S.L.», expedida hace nada: vigente. Se incorpora a la matriz. Ya no es suya: es de la Historia.', 'Notario');
+            },
+            dni(g) {
+              if (g.flag('dniIn')) return g.say('—Ya le he identificado. Sigue usted siendo usted, ¿verdad?', 'Notario');
+              g.set('dniIn'); g.sfx('stamp');
+              g.say('—07345189-R, válido hasta 2036. Comparece usted, «a quien identifico por su documento nacional de identidad», como diremos en la escritura. Bonita foto. Se le ve cara de haber pedido cita previa.', 'Notario');
+            },
           } },
         { id: 'oficial', x: 16, y: 58, emoji: '👩‍💼', s: 7, label: 'Oficial de la notaría',
           look(g) {
             if (g.flag('borradorOK')) return g.say('—El borrador ya está corregido. Ahora, a firmar. En orden.', 'Oficial');
-            if (!g.flag('carp')) g.say('—Aquí tiene el borrador. Antes de revisarlo, tenga a mano sus documentos: certificado de denominación, certificado del banco y contrato del local.', 'Oficial');
+            if (!g.flag('carp')) g.say('—Aquí tiene el borrador. Antes de revisarlo, tenga a mano sus documentos: certificado de denominación, certificado del banco (¿lo trae en esa carpeta?) y contrato del local.', 'Oficial');
             l4Borrador(g);
           } },
         { id: 'mesaFirmas', x: 86, y: 60, emoji: '✒️', s: 6, label: 'Mesa de firmas',
           look(g) {
             if (!g.flag('borradorOK')) return g.say('Sobre la mesa, la pluma estilográfica del notario. Nadie firma nada hasta que el borrador esté corregido.');
+            if (!g.flag('certIn') || !g.flag('dniIn')) return g.say('El notario tapa la pluma con la mano: «Antes de firmar, déme el certificado de denominación original y su DNI. Lo dice el Reglamento Notarial. Y mi minuta».');
             l4Firmas(g);
           } },
         { id: 'tia', x: 30, y: 80, emoji: '👵', s: 7, label: 'Tía Remedios',
@@ -1030,15 +1116,15 @@
           look(g) {
             if (!g.flag('carp')) {
               g.set('carp');
-              g.say('Sacas tus documentos: el certificado de denominación, el certificado bancario del capital y el contrato de alquiler del local.');
-              g.give('certDen'); g.give('certBanco'); g.give('contrato');
+              g.say('En la carpeta, el certificado bancario del capital, recién salido del banco. El certificado de denominación y el contrato del local no están aquí: ya los llevas tú encima desde hace días, como quien lleva el móvil.');
+              g.give('certBanco');
             } else g.say('La carpeta está vacía. Tu cuenta corriente, también: 1.650 € de capital, más la notaría, más el registro...');
           } },
       ],
       hints: [
-        'Saca los documentos de tu carpeta y compáralos con el borrador que tiene la oficial. Hay tres cláusulas mal.',
-        'Mira la forma social, el número de la calle y haz la cuenta del capital (300 participaciones × valor nominal = ¿3.000 €?). Para las firmas, escucha a la tía, al cuñado y lee el cartel.',
-        'Errores: cláusulas 2 (S.A. → S.L.), 4 (21 → 12) y 5 (participaciones de 10 €, no de 1 €). Valor nominal: 10. Orden de firma: Tía Remedios, Tú, Cuñado Paco, Notario.',
+        'Saca el certificado bancario de tu carpeta y compáralo, junto con lo que traes (certificado de denominación y contrato del local), con el borrador que tiene la oficial. Hay tres cláusulas mal. Luego el notario te pedirá dos cosas.',
+        'Mira la forma social, el número de la calle y haz la cuenta del capital (300 participaciones × valor nominal = ¿3.000 €?). Con el borrador corregido, da al notario el certificado de denominación original y tu DNI. Para las firmas, escucha a la tía, al cuñado y lee el cartel.',
+        'Errores: cláusulas 2 (S.A. → S.L.), 4 (21 → 12) y 5 (participaciones de 10 €, no de 1 €). Valor nominal: 10. Usa el certificado de denominación y el DNI con el notario. Orden de firma: Tía Remedios, Tú, Cuñado Paco, Notario.',
       ],
     },
 
@@ -1047,8 +1133,9 @@
       title: 'La licencia',
       place: 'Ayuntamiento — Gerencia de Urbanismo, Negociado de Actividades',
       stars: 3,
-      intro: 'Tienes sociedad, tienes local y tienes freidora. Te falta la <b>licencia de actividad</b> del Ayuntamiento.<br><br>Para dártela quieren un <b>plano</b> que cumpla la ordenanza, el pago de la <b>tasa</b> y el <b>aforo</b> exacto del local. Todo calculado por ti, que eres churrero, no arquitecto.<br><br><b>Objetivo:</b> consigue la licencia del técnico municipal.',
-      outro: 'Licencia provisional concedida. La definitiva «llegará por correo». Mientras tanto, ¡puedes abrir! Mañana es la inauguración. Tu primera clienta ya ha avisado de que quiere factura. Completa. Con todo.',
+      intro: 'Tienes sociedad (la escritura de la notaría viene contigo), tienes local y tienes freidora. Te falta la <b>licencia de actividad</b> del Ayuntamiento de Villatrámite.<br><br>Para dártela quieren saber quién es el titular, un <b>plano</b> que cumpla la ordenanza, el pago de la <b>tasa</b> y el <b>aforo</b> exacto del local. Todo calculado por ti, que eres churrero, no arquitecto.<br><br><b>Objetivo:</b> consigue la licencia del técnico municipal.',
+      outro: 'Licencia provisional concedida, a nombre de Porras del Trámite, S.L. La definitiva «llegará por correo». Mientras tanto, ¡puedes abrir! El lunes, 1 de febrero, es la inauguración: lo primero, colgar la licencia. Tu primera clienta ya ha avisado de que quiere factura. Completa. Con todo.',
+      carry: ['escritura'],
       scene: { wall: '#e0d6c4', floor: '#8e8e86', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'board', l: 3, t: 8, w: 12, h: 26 },
@@ -1092,6 +1179,7 @@
         { id: 'tecnico', x: 70, y: 46, emoji: '👷', s: 8, label: 'Técnico municipal',
           look: l5Tecnico,
           use: {
+            escritura: (g) => l5Entrega(g, 'escritura'),
             planoFirmado: (g) => l5Entrega(g, 'planoFirmado'),
             justificanteTasa: (g) => l5Entrega(g, 'justificanteTasa'),
             plano(g) { g.say('—Este plano no tiene la distribución. ¿Dónde va la freidora? ¿Y las mesas? Hágalo en la mesa de dibujo.', 'Técnico municipal'); },
@@ -1116,19 +1204,20 @@
           look(g) { g.say('Esta planta tiene licencia de actividad clasificada: hace la fotosíntesis. Tardaron dos años en concedérsela.'); } },
       ],
       hints: [
-        'La arquitecta tiene tu plano con medidas. Lee la ordenanza de actividades (reglas del plano y aforo) y la ordenanza fiscal (tasa).',
+        'La licencia va a nombre de la sociedad: el técnico querrá ver la escritura que traes. La arquitecta tiene tu plano con medidas. Lee la ordenanza de actividades (reglas del plano y aforo) y la ordenanza fiscal (tasa).',
         'Superficie total 9 × 6 = 54 m²; la de público es lo que queda tras quitar obrador y aseo. Aforo: 1 persona por cada 2 m², hacia abajo; mesas = aforo ÷ 4. En el plano: la freidora solo cabe en un sitio, y el extintor también. La tasa se paga en Caja.',
-        'Tasa: 54 × 2 + 25 = 133. Aforo: (54 − 9 − 4,5) ÷ 2 = 20 → 5 mesas. Plano (fila, columna; fila 1 = fondo): freidora (1,3), extintor (2,3), mesas en (2,5), (3,2), (3,6), (4,1) y (4,3); la columna 4 libre. Entrega plano y justificante al técnico y dile el aforo: 20.',
+        'Tasa: 54 × 2 + 25 = 133. Aforo: (54 − 9 − 4,5) ÷ 2 = 20 → 5 mesas. Plano (fila, columna; fila 1 = fondo): freidora (1,3), extintor (2,3), mesas en (2,5), (3,2), (3,6), (4,1) y (4,3); la columna 4 libre. Entrega la escritura, el plano y el justificante al técnico y dile el aforo: 20.',
       ],
     },
 
     // ------------------------------------------------------ 6
     {
       title: 'La primera factura',
-      place: 'Churrería «Porras del Trámite» — Día de la inauguración',
+      place: 'Churrería «Porras del Trámite» (Calle del Trámite, 12) — Día de la inauguración',
       stars: 4,
-      intro: '¡Inauguración! La churrería huele a aceite nuevo y a deudas. Tu primera clienta, doña Ramona, quiere <b>factura completa</b> a nombre de su empresa.<br><br>El TPV es «Verifactu»: cada factura se encadena con la anterior mediante una <b>huella</b>, se envía a Hacienda y no se puede borrar. Nunca. Ni llorando.<br><br><b>Objetivo:</b> emite una factura correcta y entrégasela a doña Ramona.',
-      outro: 'Doña Ramona se marcha con su factura y su taza. Han pasado tres meses de churros, chocolate y tiques. Ahora llega el primer trimestre: el modelo 303 del IVA. El IVA que cobraste... no era tuyo.',
+      intro: '¡Inauguración! Lunes, 1 de febrero de 2027. La churrería huele a aceite nuevo y a deudas. Traes la <b>licencia provisional</b> que te dio el técnico: sin ella a la vista, la persiana no sube.<br><br>Tu primera clienta, doña Ramona, quiere <b>factura completa</b> a nombre de su empresa. El TPV es «Verifactu»: cada factura se encadena con la anterior mediante una <b>huella</b>, se envía a Hacienda y no se puede borrar. Nunca. Ni llorando.<br><br><b>Objetivo:</b> abre la churrería, emite una factura correcta y entrégasela a doña Ramona.',
+      outro: 'Doña Ramona se marcha con su factura y su taza; tú te quedas la <b>copia</b> para el archivo. Pasan dos meses y medio de churros, chocolate y tiques. Llega el primer trimestre: el modelo 303 del IVA. El IVA que cobraste... no era tuyo.',
+      carry: ['licencia'],
       scene: { wall: '#f1e3c6', floor: '#a0764f', floorH: 30, pattern: 'wood' },
       decor: [
         { kind: 'counter', l: 26, t: 58, w: 46, h: 9 },
@@ -1158,6 +1247,17 @@
               <li><b>Huella</b> = huella de la última factura de la <b>MISMA serie</b> + total de la nueva factura <b>en céntimos</b>. Quédese con las <b>4 últimas cifras</b>.</li>
               <li>Una factura registrada en Verifactu <b>no se puede borrar</b>. Ni la de prueba.</li></ul>`);
           } },
+        { id: 'marco', x: 58, y: 18, sign: (g) => (g.flag('abierto') ? 'LICENCIA' : 'MARCO VACÍO'), sub: (g) => (g.flag('abierto') ? '🪧 Provisional' : '⬜'), w: 11, label: 'Marco junto a la entrada',
+          look(g) {
+            if (g.flag('abierto')) return g.say('Tu licencia provisional, enmarcada y a la vista. Al lado has dejado sitio para la definitiva. Va a estar vacío una temporada. Larga.');
+            g.say('Un marco vacío junto a la entrada. Debajo, una pegatina municipal: «La licencia de actividad deberá exhibirse en lugar visible desde la entrada. Sin ella, no se abre». Lucía no subirá la persiana hasta verla colgada.');
+          },
+          use: {
+            licencia(g) {
+              g.take('licencia'); g.set('abierto'); g.sfx('stamp');
+              g.say('Cuelgas la licencia provisional en el marco. Lucía sube la persiana con un estruendo de feria: ¡ABIERTO! Entra el olor de la calle, la cola de curiosos... y tu primera clienta, doña Ramona.', 'Marco');
+            },
+          } },
         { id: 'tazas', x: 72, y: 27, emoji: '☕', s: 4, label: 'Estantería de tazas de recuerdo',
           look(g) { g.say('Tazas «Porras del Trámite», con un sello de registro de entrada dibujado. 12,10 € cada una. Tu cuñado ya se ha llevado tres «para promoción».'); } },
         { id: 'lucia', x: 20, y: 51, emoji: '👩‍🍳', s: 7, label: 'Lucía, la churrera',
@@ -1172,7 +1272,14 @@
           look(g) { g.say('La freidora burbujea. Es lo único de este negocio que funciona sin certificado digital.'); } },
         { id: 'tpv', x: 50, y: 51, emoji: '🖥️', s: 6, label: 'TPV con Verifactu',
           look: l6Tpv },
+        { id: 'persiana', x: 80, y: 60, emoji: '🚪', s: 10, label: 'Persiana bajada',
+          show: (g) => !g.flag('abierto'),
+          look(g) { g.say('La persiana está bajada. Por la rendija se oye a alguien: «¿Abren o no abren? Sin la licencia a la vista yo no entro, que luego viene una inspección y me llevan de testigo». Es doña Ramona, tu primera clienta.'); },
+          use: {
+            licencia(g) { g.say('La licencia no se pega en la persiana con celo: va en el marco, a la vista desde la entrada. Esto es un negocio serio. Más o menos.'); },
+          } },
         { id: 'ramona', x: 80, y: 62, emoji: '💁‍♀️', s: 8, label: 'Doña Ramona, primera clienta',
+          show: (g) => !!g.flag('abierto'),
           look(g) {
             if (!g.flag('ramona')) {
               g.set('ramona');
@@ -1184,8 +1291,9 @@
           },
           use: {
             facturaRamona(g) {
-              g.take('facturaRamona');
+              g.take('facturaRamona'); g.give('copiaFactura');
               g.say('—Factura A-2027-0002. NIF correcto, IVA desglosado, huella... Perfecta. Eres el primer comercio del barrio que me da una factura bien a la primera. Volveré. Con el bautizo entero.', 'Doña Ramona');
+              g.say('El TPV imprime también la copia para tu archivo. La guardas. Algún día habrá que apuntarla en algún libro. Algún día.', 'TPV');
               g.win();
             },
             tarjetaRamona(g) { g.say('—Quédatela, que la necesitas para la factura. Yo tengo cuatrocientas.', 'Doña Ramona'); },
@@ -1205,6 +1313,7 @@
             ]), 'Tu cuñado');
           } },
         { id: 'cola', x: 62, y: 84, emoji: '🧍‍♂️🧍‍♀️', s: 4, label: 'Cola de clientes',
+          show: (g) => !!g.flag('abierto'),
           look(g) {
             g.say(rand([
               '—¿Tarda mucho la factura? Es que yo solo quería una porra.',
@@ -1213,9 +1322,9 @@
           } },
       ],
       hints: [
-        'Habla con doña Ramona: te dirá qué quiere y te dará su tarjeta. Lee la pizarra y las normas de Verifactu. En la papelera hay una factura y un tique de prueba.',
+        'Primero hay que abrir: cuelga la licencia que traes en el marco vacío. Luego habla con doña Ramona: te dirá qué quiere y te dará su tarjeta. Lee la pizarra y las normas de Verifactu. En la papelera hay una factura y un tique de prueba.',
         'Factura completa = serie A; la última de esa serie es la A-2027-0001. Los precios llevan IVA: divide entre 1,10 o 1,21. La huella se encadena con la de la última factura de la MISMA serie (no con el tique).',
-        'Nº A-2027-0002, NIF B12345674, base 20,00 (10 + 10), IVA 3,10 (1,00 + 2,10), total 23,10, huella 8947 + 2310 = 11257 → 1257. Entrega la factura a doña Ramona.',
+        'Licencia en el marco. Nº A-2027-0002, NIF B12345674, base 20,00 (10 + 10), IVA 3,10 (1,00 + 2,10), total 23,10, huella 8947 + 2310 = 11257 → 1257. Entrega la factura a doña Ramona.',
       ],
     },
 
@@ -1224,8 +1333,9 @@
       title: 'El 303',
       place: 'Trastienda de la churrería — Domingo por la noche',
       stars: 4,
-      intro: 'Es domingo, 18 de abril de 2027. Toca presentar el <b>modelo 303</b>: el IVA del primer trimestre. Tu gestor está de vacaciones. Claro.<br><br>Hay que sumar el IVA que cobraste, restar el que pagaste (solo el que se puede) y pagar la diferencia... de la forma correcta y en plazo.<br><br><b>Objetivo:</b> presenta el 303 correctamente.',
-      outro: '303 presentado. El lunes, por fin, duermes. El martes llama a la puerta una inspectora de Trabajo: «Venimos por una denuncia anónima sobre el horario de su churrera». La denuncia la firma «Vecina del 2.º».',
+      intro: 'Es domingo, 18 de abril de 2027. Toca presentar el <b>modelo 303</b>: el IVA del primer trimestre. Tu gestor está de vacaciones. Claro.<br><br>Hay que sumar el IVA que cobraste, restar el que pagaste (solo el que se puede) y pagar la diferencia... de la forma correcta y en plazo. Traes la copia de tu primera factura, la de doña Ramona, que nunca llegaste a anotar en ningún libro.<br><br><b>Objetivo:</b> presenta el 303 correctamente.',
+      outro: '303 presentado. Guardas el <b>justificante</b> en un sitio seguro (la caja de zapatos, no). El lunes, por fin, duermes. Pero en mayo llama a la puerta una inspectora de Trabajo: «Venimos por una denuncia anónima sobre el horario de su churrera». La denuncia la firma «Vecina del 2.º».',
+      carry: ['copiaFactura'],
       scene: { wall: '#d6cbb5', floor: '#6b5a48', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'counter', l: 36, t: 58, w: 30, h: 8 },
@@ -1251,15 +1361,22 @@
           look(g) { g.say('Contestador: «Hola, soy tu gestor. Estoy de vacaciones hasta el 21 de abril. Si es por el 303... ánimo».'); } },
         { id: 'libroEmitidas', x: 12, y: 55, emoji: '📒', s: 6, label: 'Libro de facturas emitidas',
           look(g) {
+            const a = g.flag('anotada');
             g.doc('📒 Libro registro de facturas emitidas — 1T 2027', `<table class="tbl">
-              <tr><td>Tiques serie T, enero · base al 10 %</td><td>1.200,00 €</td></tr>
-              <tr><td>Tiques serie T, febrero · base al 10 %</td><td>1.400,00 €</td></tr>
+              <tr><td>Tiques serie T, febrero (desde la inauguración, el día 1) · base al 10 %</td><td>2.600,00 €</td></tr>
               <tr><td>Tiques serie T, marzo · base al 10 %</td><td>1.690,00 €</td></tr>
               <tr><td>Tiques serie T, marzo · tazas de recuerdo, base al 21 %</td><td>290,00 €</td></tr>
-              <tr><td>Factura A-2027-0002 (doña Ramona) · base al 10 %</td><td>10,00 €</td></tr>
-              <tr><td>Factura A-2027-0002 (doña Ramona) · base al 21 %</td><td>10,00 €</td></tr>
+              ${a ? `<tr><td>Factura A-2027-0002 (doña Ramona) · base al 10 %</td><td>10,00 €</td></tr>
+              <tr><td>Factura A-2027-0002 (doña Ramona) · base al 21 %</td><td>10,00 €</td></tr>` : ''}
               <tr><td>Rectificativa R-2027-0001 (churros devueltos «por fríos») · base al 10 %</td><td>−100,00 €</td></tr></table>
+              ${a ? '' : '<p class="small">Facturas completas (serie A): <b>sin anotar</b>. Alguien dijo «ya las apunto mañana» el 1 de febrero.</p>'}
               <p class="small">Los totales no están hechos. Para eso estás tú, un domingo por la noche.</p>`);
+          },
+          use: {
+            copiaFactura(g) {
+              g.take('copiaFactura'); g.set('anotada'); g.sfx('stamp');
+              g.say('Anotas la factura A-2027-0002 en el libro: base 10,00 € al 10 % y 10,00 € al 21 %. Y grapas la copia a la página. Verifactu ya lo sabía; ahora lo sabe también tu libro.', 'Libro de facturas emitidas');
+            },
           } },
         { id: 'ordenador', x: 50, y: 51, emoji: '💻', s: 7, label: 'Ordenador (Sede de la AEAT)',
           look: l7Form },
@@ -1286,9 +1403,9 @@
           look(g) { g.say('—Jefe, me voy. Mañana entro a las seis. Bueno, a las cinco y media, que hay que hacer la masa. Pero tú pon las seis, como siempre.', 'Lucía'); } },
       ],
       hints: [
-        'Necesitas tres números: IVA repercutido (libro de emitidas), IVA deducible (caja de zapatos) y el resultado. Lee las instrucciones del 303 y mira el calendario.',
-        'La rectificativa resta. De la caja de zapatos solo valen facturas completas, del negocio y del trimestre (son 4). Hoy es 18: ya no se puede domiciliar; paga antes con el móvil para obtener el NRC.',
-        'Repercutido: 4.200 × 10 % + 300 × 21 % = 483. Deducible: harina 32 + aceite 50 + freidora 210 + luz de marzo 63 = 355. Resultado: 128. Móvil: pagar 128 → NRC. Ordenador: 483, 355, 128 e «Ingreso con NRC».',
+        'Necesitas tres números: IVA repercutido (libro de emitidas), IVA deducible (caja de zapatos) y el resultado. Al libro de emitidas le falta una factura: la copia la traes tú. Lee las instrucciones del 303 y mira el calendario.',
+        'Anota en el libro la copia de la factura de doña Ramona. La rectificativa resta. De la caja de zapatos solo valen facturas completas, del negocio y del trimestre (son 4). Hoy es 18: ya no se puede domiciliar; paga antes con el móvil para obtener el NRC.',
+        'Usa la copia de la factura en el libro de emitidas. Repercutido: 4.200 × 10 % + 300 × 21 % = 483. Deducible: harina 32 + aceite 50 + freidora 210 + luz de marzo 63 = 355. Resultado: 128. Móvil: pagar 128 → NRC. Ordenador: 483, 355, 128 e «Ingreso con NRC».',
       ],
     },
 
@@ -1297,8 +1414,9 @@
       title: 'El registro horario',
       place: 'Churrería «Porras del Trámite» — Inspección de Trabajo',
       stars: 4,
-      intro: 'Una <b>inspectora de Trabajo</b> revisa el horario de Lucía, tu churrera, la semana del 10 al 14 de mayo. Tu registro en papel dice «6:00 a 12:00» todos los días. Demasiado bonito.<br><br>La fichadora, la cámara, la caja registradora y el convenio cuentan otra historia. Y no coincide.<br><br><b>Objetivo:</b> calcula las horas extraordinarias reales de Lucía y regulariza la situación.',
-      outro: 'Acta de la Inspección: «La empresa regulariza de forma voluntaria». Lucía cobra sus horas extra y te invita a un chocolate. Tú, con tu cuenta en números rojos, descubres que existe un «Kit Digital» que te paga la web. Bueno: «paga».',
+      intro: 'Una <b>inspectora de Trabajo</b> revisa el horario de Lucía, tu churrera, la semana del 10 al 14 de mayo de 2027. Tu registro en papel dice «6:00 a 12:00» todos los días. Demasiado bonito.<br><br>Lo primero que querrá saber es quién responde por la empresa: menos mal que guardas la <b>escritura de la sociedad</b>. Después, la fichadora, la cámara, la caja registradora y el convenio cuentan otra historia. Y no coincide.<br><br><b>Objetivo:</b> calcula las horas extraordinarias reales de Lucía y regulariza la situación.',
+      outro: 'Te entregan el <b>acta de la Inspección</b>: «La empresa regulariza de forma voluntaria. Sin sanción». Lucía cobra sus horas extra y te invita a un chocolate. Tú, con tu cuenta en números rojos, descubres que existe un «Kit Digital» que te paga la web. Bueno: «paga».',
+      carry: ['escritura'],
       scene: { wall: '#efe3cf', floor: '#9a7b58', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'counter', l: 30, t: 58, w: 44, h: 9 },
@@ -1356,12 +1474,7 @@
           } },
         { id: 'inspectora', x: 64, y: 50, emoji: '🕵️‍♀️', s: 8, label: 'Inspectora de Trabajo',
           look(g) {
-            if (!g.flag('req')) {
-              g.set('req');
-              g.say('—Buenos días. Inspección de Trabajo. Su registro en papel es precioso, pero no me lo creo. Tenga el requerimiento: ahí le explico qué prueba vale cada día. Cuando lo tenga, me dice las horas extra de Lucía. En minutos.', 'Inspectora');
-              g.give('requerimientoITSS');
-              return;
-            }
+            if (!g.flag('req')) return g.say('—Buenos días. Inspección de Trabajo. ¿Es usted el empresario? Esto es una S.L.: acredíteme que la representa. Con papeles, no con cara de jefe.', 'Inspectora');
             g.input({
               title: '🕵️‍♀️ Inspección de Trabajo', text: '—Total de horas extraordinarias de Lucía esa semana, <b>en minutos</b>.',
               numeric: true, maxLen: 4,
@@ -1379,7 +1492,8 @@
                     { label: 'Alegar que Lucía hace horas extra «por amor al churro»', onPick(g2, msg) { msg('—El amor no se paga en horas extra. Bueno, sí: se paga. Usted.', true); return false; } },
                     { label: 'Decir que Lucía es becaria', onPick(g2, msg) { msg('—¿Una becaria de 52 años con treinta de experiencia friendo? Siguiente intento.', true); return false; } },
                     { label: 'Pagar a Lucía las horas extra y corregir el registro horario', onPick() {
-                      g.say('—Regularización voluntaria. Así da gusto. Le levanto acta sin sanción. Y, ya que insiste... un churro sí me tomo. Pagando.', 'Inspectora');
+                      g.give('actaITSS'); g.sfx('stamp');
+                      g.say('—Regularización voluntaria. Así da gusto. Le levanto acta sin sanción: tenga su copia. Y, ya que insiste... un churro sí me tomo. Pagando.', 'Inspectora');
                       g.win();
                     } },
                   ],
@@ -1388,6 +1502,12 @@
             });
           },
           use: {
+            escritura(g) {
+              if (g.flag('req')) return g.say('—Ya sé que manda usted. Ahora, las horas de Lucía.', 'Inspectora');
+              g.set('req'); g.sfx('stamp');
+              g.say('—PORRAS DEL TRÁMITE, S.L., administrador único: usted. Entonces responde usted. Su registro en papel es precioso, pero no me lo creo. Tenga el requerimiento: ahí le explico qué prueba vale cada día. Cuando lo tenga, me dice las horas extra de Lucía. En minutos.', 'Inspectora');
+              g.give('requerimientoITSS');
+            },
             registroPapel(g) { g.say('—Ese registro lo ha rellenado usted. Con boli de cuatro colores. No vale como prueba. Mire los criterios del requerimiento.', 'Inspectora'); },
           } },
         { id: 'lucia', x: 26, y: 78, emoji: '👩‍🍳', s: 7, label: 'Lucía',
@@ -1404,9 +1524,9 @@
           look(g) { g.say('El gato te mira con la tranquilidad de quien entra a trabajar a las 5:52 y no ficha.'); } },
       ],
       hints: [
-        'Habla con la inspectora: el requerimiento explica qué prueba vale cada día. El registro en papel no sirve. Reúne el contrato (archivador), la fichadora, la cámara, la caja y el convenio.',
+        'La inspectora quiere saber quién representa a la sociedad: enséñale la escritura que traes y te dará el requerimiento, que explica qué prueba vale cada día. El registro en papel no sirve. Reúne el contrato (archivador), la fichadora, la cámara, la caja y el convenio.',
         'Lunes, martes y viernes: manda la fichadora (aunque la cámara diga otra cosa). Miércoles y jueves: entrada por la cámara; salida, último tique cobrado POR LUCÍA + 15 minutos de limpieza (convenio). La vecina no es prueba.',
-        'L 6:00–12:00 (360), M 5:30–12:00 (390), X 6:00–12:30 (390), J 5:45–12:00 (375), V 6:00–13:00 (420) = 1.935 min; menos 1.800 de jornada = 135. Después, elige pagar las horas y corregir el registro.',
+        'Escritura a la inspectora. L 6:00–12:00 (360), M 5:30–12:00 (390), X 6:00–12:30 (390), J 5:45–12:00 (375), V 6:00–13:00 (420) = 1.935 min; menos 1.800 de jornada = 135. Después, elige pagar las horas y corregir el registro.',
       ],
     },
 
@@ -1415,8 +1535,9 @@
       title: 'El Kit Digital',
       place: 'Churrería «Porras del Trámite» — Por la tarde, con la persiana bajada',
       stars: 5,
-      intro: 'Te concedieron el <b>Kit Digital</b>: 2.000 € para la web de la churrería. Un agente digitalizador ya la ha hecho. Solo falta <b>justificar</b> la ayuda... hoy, que acaba el plazo.<br><br>Logotipos obligatorios, justificantes de pago, declaraciones responsables. Y una cuenta bancaria que no está para muchas alegrías: la ayuda llega <i>después</i> de haber pagado.<br><br><b>Objetivo:</b> presenta la justificación completa en el portal.',
-      outro: 'Justificación presentada. Tu web luce cuatro logos institucionales y una foto de una porra. Han pasado meses. Es marzo de 2028 y un sobre certificado anuncia la última prueba: <b>inspección de Hacienda</b> del ejercicio 2027.',
+      intro: 'Te concedieron el <b>Kit Digital</b>: 2.000 € para la web de la churrería. Un agente digitalizador ya la ha hecho. Solo falta <b>justificar</b> la ayuda... hoy, que acaba el plazo.<br><br>Logotipos obligatorios, justificantes de pago, declaraciones responsables y, como te inspeccionaron en mayo, el <b>acta de la Inspección de Trabajo</b> (menos mal que la guardaste). Y una cuenta bancaria que no está para muchas alegrías: la ayuda llega <i>después</i> de haber pagado.<br><br><b>Objetivo:</b> presenta la justificación completa en el portal.',
+      outro: 'Justificación presentada. Tu web luce cuatro logos institucionales y una foto de una porra. Han pasado meses. Es marzo de 2028 y un sobre certificado anuncia la última prueba: <b>inspección de Hacienda</b> del ejercicio 2027. Buscas la copia del 036 del primer día y el justificante de tu primer 303: algo te dice que vas a necesitarlos.',
+      carry: ['actaITSS'],
       scene: { wall: '#dbe3e6', floor: '#a0764f', floorH: 30, pattern: 'wood' },
       decor: [
         { kind: 'window', l: 72, t: 8, w: 20, h: 30 },
@@ -1433,6 +1554,7 @@
               <ol><li><b>Captura de la web</b> con los logotipos que exige el <b>Manual de publicidad</b>.</li>
               <li><b>Factura</b> del agente digitalizador.</li>
               <li><b>Justificante bancario</b> del pago que le corresponde a usted.</li>
+              <li>Si la empresa ha sido inspeccionada este año, el <b>acta de la Inspección de Trabajo</b>, que acredite que no hubo sanción laboral (si la hubo, ni lo intente).</li>
               <li><b>Declaración de ayudas <i>de minimis</i></b>.</li></ol>
               <p><b>Pago:</b> el bono cubre la <b>base imponible</b> de la factura y se abona directamente al agente digitalizador. El beneficiario solo paga el <b>IVA</b>, por transferencia bancaria. En efectivo, no.</p>
               <p><b>De minimis:</b> declare el total de <b>ayudas públicas</b> recibidas en <b>2025, 2026 y 2027</b>. Los premios de entidades privadas no son ayudas públicas.</p>`);
@@ -1488,8 +1610,8 @@
             g.doc('🗃️ Ayudas y premios que has recibido', `<table class="tbl">
               <tr><td>2023 · Subvención autonómica «Emprende Ya» (pública)</td><td>1.000 €</td></tr>
               <tr><td>2025 · Bono Comercio Local del Ayuntamiento (público)</td><td>200 €</td></tr>
-              <tr><td>2026 · Ayuda municipal para toldos (pública)</td><td>500 €</td></tr>
-              <tr><td>2026 · Premio «Mejor Porra del Barrio», Asociación de Churreros (privada)</td><td>300 €</td></tr>
+              <tr><td>2026 · Ayuda municipal para toldos del local, en diciembre (pública)</td><td>500 €</td></tr>
+              <tr><td>2027 · Premio «Mejor Porra del Barrio», Asociación de Churreros de Villatrámite (privada)</td><td>300 €</td></tr>
               <tr><td>2027 · Descuento del 10 % en la ferretería de tu cuñado (un «favor»)</td><td>14 €</td></tr></table>
               <p class="small">El premio de la porra está enmarcado. La ayuda de los toldos, también: el toldo se lo llevó el viento.</p>`);
           } },
@@ -1505,9 +1627,9 @@
           look(g) { g.say('—La web está lista. Si no la justifica hoy, el bono no llega y nos debe usted los 2.000 €. Sin presión. ¿Un café? Lo pago yo... con su bono.', 'Comercial'); } },
       ],
       hints: [
-        'Lee las bases: hacen falta cuatro cosas. Los logos de la web están en el manual; la factura, en el buzón; las ayudas, en la carpeta. Todo se gestiona desde el portátil.',
+        'Lee las bases: hacen falta cinco cosas. Los logos de la web están en el manual; la factura, en el buzón; el acta de la Inspección ya la traes; las ayudas, en la carpeta. Todo se gestiona desde el portátil.',
         'Tú solo pagas el IVA de la factura (21 % de 2.000 €), por transferencia. Con 312 € de saldo no llegas: ingresa la recaudación de la caja en el cajero. Ayudas: solo las públicas de 2025, 2026 y 2027.',
-        'Web: UE con texto + Plan de Recuperación + Gobierno de España + Kit Digital. Caja → cajero (saldo 462). Banca: transferir 420. Portal: adjunta captura, factura y justificante; minimis: 200 + 500 = 700. Presenta.',
+        'Web: UE con texto + Plan de Recuperación + Gobierno de España + Kit Digital. Caja → cajero (saldo 462). Banca: transferir 420. Portal: adjunta captura, factura, justificante y el acta de la Inspección; minimis: 200 + 500 = 700. Presenta.',
       ],
     },
 
@@ -1516,7 +1638,8 @@
       title: 'La inspección',
       place: 'Delegación de la Agencia Tributaria — Planta −2',
       stars: 5,
-      intro: 'Marzo de 2028. Hacienda inspecciona el ejercicio 2027 de <b>Porras del Trámite, S.L.</b> El inspector tiene cuatro comprobaciones, un café frío y ninguna prisa.<br><br>Tus papeles están en un archivador con candado que trajo tu gestor... que no recuerda la clave. Y tu cuñado ha venido «de apoyo». Mal asunto.<br><br><b>Objetivo:</b> supera las comprobaciones, firma el acta y sal con el certificado de estar al corriente.',
+      intro: 'Marzo de 2028. Hacienda inspecciona el ejercicio 2027 de <b>Porras del Trámite, S.L.</b> El inspector tiene cuatro comprobaciones, un café frío y ninguna prisa.<br><br>Tú traes la <b>copia sellada del 036</b> del primer día y el <b>justificante de tu primer 303</b>. El resto de papeles están en un archivador con candado que trajo tu gestor... que no recuerda la clave. Y tu cuñado ha venido «de apoyo». Mal asunto.<br><br><b>Objetivo:</b> supera las comprobaciones, firma el acta y sal con el certificado de estar al corriente.',
+      carry: ['copia036', 'justificante303'],
       outro: 'Sales de la Delegación con el certificado en la mano y 2.121 € menos en la cuenta. Fuera hace sol. La churrería sigue abierta. Lucía ha hecho porras. Tu cuñado ya tiene «una idea de negocio».',
       scene: { wall: '#bfc5c2', floor: '#6f706a', floorH: 32, pattern: 'tiles' },
       decor: [
@@ -1556,7 +1679,7 @@
           } },
         { id: 'corcho', x: 81, y: 19, emoji: '📌', s: 6, label: 'Corcho del inspector',
           look(g) {
-            g.doc('📌 El corcho del inspector (tu expediente)', `<div class="paper-note"><p><b>Copia de tu modelo 036</b> — Causa: alta (111) · Epígrafe IAE: <b>644.6</b> · Domicilio: Calle del Trámite, 12.</p></div><br>
+            g.doc('📌 El corcho del inspector (tu expediente)', `<div class="paper-note"><p>Pósit del inspector: «Pedir al contribuyente su copia del 036. Seguro que la lleva encima: los de la churrería lo llevan todo encima».</p></div><br>
               <div class="paper-note"><p><b>Foto de tu furgoneta</b> «de uso exclusivo para el negocio»: con silla de bebé, una tabla de surf en el techo y una pegatina de «Benidorm 2027».</p></div><br>
               <div class="paper-note"><p>Recorte de periódico: «Detenido un churrero por freír sin licencia». No eres tú. Aún.</p></div>`);
           } },
@@ -1575,13 +1698,13 @@
           look(g) {
             if (g.flag('archOpen')) return g.say('El archivador está abierto y vacío. Lo importante ya lo tienes. Lo demás, mejor que siga cerrado.');
             g.input({
-              title: '🔒 Archivador de tu gestor', text: 'Candado de 4 cifras. Pósit de tu gestor: «Clave: el epígrafe del IAE de tu alta, sin el punto. (Yo no me acuerdo. Estaba en tu 036.)»',
+              title: '🔒 Archivador de tu gestor', text: 'Candado de 4 cifras. Pósit de tu gestor: «Clave: el epígrafe del IAE de tu alta, sin el punto. (Yo no me acuerdo. Está en tu copia del 036, que la llevas tú desde el primer día.)»',
               numeric: true, maxLen: 4,
               check: (v) => v === '6446',
               failText: () => 'El candado no se abre. Tu gestor se encoge de hombros con mucha profesionalidad.',
               ok: () => {
                 g.set('archOpen');
-                g.say('¡Clic! Dentro: la carpeta con los cuatro modelos 303 de 2027, la factura de la chocolatera y el albarán de su instalación.');
+                g.say('¡Clic! Dentro: la carpeta de los modelos 303 de 2027 (con un hueco: el del primer trimestre), la factura de la chocolatera y el albarán de su instalación.');
                 g.give('carpeta303'); g.give('facturaChoco'); g.give('albaran');
               },
             });
@@ -1590,7 +1713,8 @@
           look(g) {
             g.say(rand([
               '—Yo le recomendé deducirlo todo. Ahora le recomiendo no decir que se lo recomendé.',
-              '—La clave del archivador... era algo de churros. O de chocolate. Estaba en su alta. Seguro que el inspector la tiene por ahí colgada.',
+              '—La clave del archivador... era algo de churros. O de chocolate. Estaba en su alta. ¿No lleva usted la copia del 036 a todas partes, como un amuleto?',
+              '—El 303 del primer trimestre no lo tengo yo: lo presentó usted solito, un domingo por la noche, mientras yo estaba de vacaciones. ¿Lo guardó?',
               '—Tranquilo. En la peor inspección que he llevado, el cliente solo perdió el negocio. Y la casa. Pero ganó experiencia.',
             ]), 'Tu gestor');
           } },
@@ -1610,10 +1734,16 @@
             },
           } },
       ],
+      combos: {
+        'carpeta303+justificante303'(g) {
+          g.take('justificante303'); g.set('c303'); g.sfx('pick');
+          g.say('Metes el justificante del primer trimestre en su hueco: 1T, +128 €. Ya están los cuatro 303 juntos, como una familia. Una familia que te debe dinero. O tú a ella.', 'Carpeta de los 303');
+        },
+      },
       hints: [
-        'Habla con el inspector: te dará un requerimiento con cuatro comprobaciones. Tus papeles están en el archivador: la clave tiene que ver con tu alta en Hacienda (mira el corcho).',
-        'IVA: los trimestres negativos se compensan con el siguiente, y si el 4T sigue negativo se devuelve, no se ingresa. Gastos: la foto de la furgoneta y tu cuñado te dicen mucho. Amortización: desde la puesta en funcionamiento (albarán). Sanción: 50 %, −30 % por conformidad y −25 % de lo que queda por pronto pago.',
-        'Archivador: 6446. IVA ingresado: 128 + 205 = 333 (el 4T: 60 − 90 = −30, a devolver). Gastos: cuotas de autónomo, uniforme, curso y seguro. Amortización: 2.400 × 10 % × 3/12 = 60. Acta en conformidad: cuota 1.680 + sanción 840 × 0,7 × 0,75 = 441 → 2121. Usa el certificado en la puerta.',
+        'Habla con el inspector: te dará un requerimiento con cuatro comprobaciones. Tus papeles están en el archivador: la clave tiene que ver con tu alta en Hacienda (¿qué epígrafe pone en la copia del 036 que traes?). A la carpeta de los 303 le falta uno: el que traes tú.',
+        'Combina el justificante del 303 del primer trimestre con la carpeta. IVA: los trimestres negativos se compensan con el siguiente, y si el 4T sigue negativo se devuelve, no se ingresa. Gastos: la foto de la furgoneta y tu cuñado te dicen mucho. Amortización: desde la puesta en funcionamiento (albarán). Sanción: 50 %, −30 % por conformidad y −25 % de lo que queda por pronto pago.',
+        'Archivador: 6446 (epígrafe 644.6 de tu 036). Combina el justificante del 303 con la carpeta. IVA ingresado: 128 + 205 = 333 (el 4T: 60 − 90 = −30, a devolver). Gastos: cuotas de autónomo, uniforme, curso y seguro. Amortización: 2.400 × 10 % × 3/12 = 60. Acta en conformidad: cuota 1.680 + sanción 840 × 0,7 × 0,75 = 441 → 2121. Usa el certificado en la puerta.',
       ],
     },
   ];
@@ -1647,7 +1777,7 @@
     subtitle: 'Abrir una churrería. Qué podría salir mal.',
     badge: 'Emprendedor',
     emoji: '💼',
-    intro: 'Ya tienes DNI. Ahora quieres abrir una churrería. Hacienda, la Seguridad Social, el Registro, la notaría, el Ayuntamiento y dos inspecciones te separan de freír la primera porra en paz.',
+    intro: 'Tras diez trámites, una investidura y un decreto publicado a las 23:59, por fin tienes tu DNI nuevo: 07345189-R, válido hasta 2036. Ahora quieres usarlo para algo grande: abrir una churrería en Villatrámite. Hacienda, la Seguridad Social, el Registro, la notaría, el Ayuntamiento y dos inspecciones te separan de freír la primera porra en paz. Guarda cada papel que te den: te lo volverán a pedir.',
     items: ITEMS,
     levels: LEVELS,
     ending: {
@@ -1655,7 +1785,7 @@
       title: '¡Tu churrería sigue abierta!',
       html: `<div class="s2-shop"><div class="s2-awning"></div>
           <div class="s2-shop-name">PORRAS DEL TRÁMITE, S.L.</div>
-          <div class="s2-shop-sub">Churros · Porras · Chocolate · Desde 2027</div>
+          <div class="s2-shop-sub">Churros · Porras · Chocolate · Calle del Trámite, 12 · Villatrámite · Desde 2027</div>
           <div class="s2-shop-sign">ABIERTO <small>(salvo inspección)</small></div></div>
         <p>Diez trámites, una notaría, dos inspecciones y un cuñado después, tu churrería sigue en pie.</p>
         <p>Por cierto: ha llegado por correo la licencia de apertura <b>definitiva</b>. Fecha de efectos: el día de tu jubilación. Hasta entonces, sigues abriendo con la provisional.</p>

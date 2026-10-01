@@ -5,7 +5,9 @@ module.exports = [
     h.click('mochila'); h.click('estanteria');
     h.combo('carpeta', 'nomina');
     h.use('movil', 'impresora');
-    h.combo('dossier1', 'extracto');
+    h.combo('carpeta', 'extracto');
+    h.combo('carpeta', 'certificadoAEAT');
+    h.use('dni', 'agente');
     h.use('dossier', 'agente');
     h.click('ordenador'); h.choose('R-03');
     await h.sleep(20); await h.keypad('3647');
@@ -15,13 +17,13 @@ module.exports = [
   async (h) => {
     h.click('mesa'); h.click('caramelos');
     h.combo('boli', 'solicitudHip');
-    h.use('solicitudFirmada', 'gestor'); h.close();
+    h.use('solicitudFirmada', 'gestor');
+    h.use('dossier', 'gestor'); h.close();
     h.click('simulador'); await h.keypad('5320');
     h.use('ofertaVinc', 'director');
   },
   // 3. Libre de cargas
   async (h) => {
-    h.click('bolso');
     h.use('dni', 'terminal');
     h.click('terminal'); await h.keypad('4478'); h.close();
     h.click('registradora'); await h.keypad('96250');
@@ -31,6 +33,7 @@ module.exports = [
     h.click('recepcion'); h.click('carpeta');
     h.click('b1'); h.click('conyuge');
     h.click('telefono'); await h.keypad('5550147');
+    h.use('certCargas', 'oficial'); h.use('ofertaVinc', 'oficial');
     h.use('certSaldo', 'oficial'); h.use('certComunidad', 'oficial'); h.use('reciboIBI', 'oficial');
     h.click('talonario'); await h.keypad('134830');
     h.click('notaria');
@@ -40,7 +43,7 @@ module.exports = [
   },
   // 5. Hacienda somos todos
   async (h) => {
-    h.click('cartera'); h.click('carpeta');
+    h.use('escritura', 'funcionaria');
     h.click('catastro'); await h.keypad('4821103');
     h.click('plusvalia'); h.choose('artículo 3');
     h.use('dni', 'terminal');
@@ -50,7 +53,7 @@ module.exports = [
   },
   // 6. El dron del Catastro
   async (h) => {
-    h.click('carpeta'); h.click('funcionaria'); h.click('estuche');
+    h.click('carpeta'); h.use('escritura', 'funcionaria'); h.click('estuche');
     h.combo('cinta', 'plano');
     h.click('terminal');
     h.setValue('#s3-902-ref', '4718'); h.setValue('#s3-902-sup', '60');
@@ -58,6 +61,7 @@ module.exports = [
   },
   // 7. Junta de vecinos
   async (h) => {
+    h.use('planoAcotado', 'admin');
     h.click('buzon');
     h.use('delegacion', 'admin');
     h.click('mesa');
@@ -69,7 +73,6 @@ module.exports = [
   },
   // 8. Licencia de obra menor
   async (h) => {
-    h.click('carpeta');
     h.use('actaFirmada', 'registro');
     h.click('sede');
     for (const d of ['visita', 'presupuesto', 'memoria', 'icio', 'gestor', 'fianza', 'sacos', 'licencia']) h.clickSel(`#s3-doc-${d}`);
@@ -79,6 +82,7 @@ module.exports = [
   },
   // 9. Letra D de «Decente»
   async (h) => {
+    h.use('licencia', 'inspector');
     h.click('cajon'); h.click('herramientas');
     h.use('mechero', 'ventana'); h.use('destornillador', 'enchufe');
     h.click('portatil');
@@ -104,6 +108,7 @@ module.exports = [
     h.btn('Registrar');
     h.click('admin'); await h.keypad('7020');
     h.use('certFachada', 'tecnico'); h.use('informeITE', 'tecnico'); h.use('justDerrama', 'tecnico');
+    h.use('escritura', 'tecnico'); h.use('cedula', 'tecnico');
     h.use('llaves', 'puerta');
   },
 ];

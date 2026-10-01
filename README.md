@@ -21,6 +21,16 @@ y se desbloquea al superar la previa.
 | 4 | 🗳️ Campaña electoral | Mesa electoral, voto por correo, mitin, encuestas, debate, escrutinio D'Hondt, pactos, moción de censura | Político |
 | 5 | 🏛️ Las altas esferas | Oposiciones, presupuestos prorrogados, fondos europeos, Bruselas, Senado, Constitucional, Consejo de Ministros | Alto funcionario |
 
+### Una sola historia
+
+Las cinco temporadas cuentan la vida del mismo protagonista, de 2026 a 2036 (ver `docs/CANON.md`):
+el DNI que consigues en la temporada 1 te identifica en Hacienda en la 2; la churrería de la 2 paga
+la nómina con la que alquilas y compras piso en la 3; a ese piso llega la carta de mesa electoral de la 4;
+y harto/a de elecciones, en la 5 te haces funcionario/a… hasta que te piden el DNI.
+
+Dentro de cada temporada, los documentos que consigues en un trámite **viajan contigo** al siguiente
+(se muestran en la intro de cada nivel como «🎒 Traes contigo») y hay que usarlos.
+
 ## Cómo se juega
 
 - **Haz clic** en objetos y personajes para examinarlos o hablar con ellos.
