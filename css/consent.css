@@ -31,3 +31,11 @@
 .cc-switch input:disabled { cursor: not-allowed; }
 .cc-switch input:disabled + span { opacity: .6; }
 .cc-switch input:focus-visible + span { outline: 3px solid #f1bf00; outline-offset: 2px; }
+
+/* Móvil: tres botones iguales en una fila y respetando la zona segura inferior */
+@media (max-width: 520px) {
+  .cc-banner { bottom: max(10px, env(safe-area-inset-bottom)); padding: 12px 14px; font-size: 14px; }
+  .cc-btn { flex: 1 1 0; padding: 10px 6px; font-size: 14px; min-height: 44px; }
+  .cc-panel { padding: 16px; }
+}
+.cc-btn { touch-action: manipulation; }

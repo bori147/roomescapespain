@@ -15,6 +15,9 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const rand = (a) => a[Math.floor(Math.random() * a.length)];
+  // En pantallas táctiles se dice «toca» en lugar de «haz clic»
+  const isTouch = () => !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  const tap = (cap) => (isTouch() ? (cap ? 'Toca' : 'toca') : (cap ? 'Haz clic' : 'haz clic'));
 
   function readLS(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   function writeLS(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
@@ -180,7 +183,7 @@
       html += (current.who ? `<div class="dlg-who">${current.who}</div>` : '') + `<div class="dlg-text">${current.text}</div>`;
       if (queue.length) html += `<div class="dlg-more">▼ Continuar (${queue.length})</div>`;
     } else if (!pendingWin) {
-      html = `<div class="dlg-idle">${selected && ITEMS[selected] ? `Usando <b>${ITEMS[selected].emoji} ${ITEMS[selected].name}</b>: haz clic en algo de la sala o en otro objeto.` : 'Haz clic en los objetos de la sala para examinarlos. Selecciona un objeto de tu inventario y haz clic en algo para usarlo.'}</div>`;
+      html = `<div class="dlg-idle">${selected && ITEMS[selected] ? `Usando <b>${ITEMS[selected].emoji} ${ITEMS[selected].name}</b>: ${tap()} en algo de la sala o en otro objeto.` : `${tap(true)} en los objetos de la sala para examinarlos. Selecciona un objeto de tu inventario y ${tap()} en algo para usarlo.`}</div>`;
     }
     if (pendingWin && !queue.length) html += '<button class="btn primary dlg-next" id="btnFinish">📨 Trámite completado — continuar ▶</button>';
     d.innerHTML = html;
@@ -282,6 +285,7 @@
       } : null,
     });
     const disp = $('.kp-display', card);
+    if (disp) disp.classList.toggle('long', maxLen > 8);
     const msg = $('.kp-msg', card);
     const inp = $('.kp-text input', card);
     function upd() {
@@ -397,7 +401,50 @@
   function refresh() {
     if (!S || !L || screen !== 'play') { save(); return; }
     renderScene(); renderInv(); renderTop(); renderDialog();
+    updatePan();
     save();
+  }
+
+  // ---------------- Sala desplazable (móvil) ----------------
+  function updatePan() {
+    const w = $('#sceneWrap');
+    if (!w) return;
+    const max = w.scrollWidth - w.clientWidth;
+    $('#panL').hidden = !(max > 4 && w.scrollLeft > 4);
+    $('#panR').hidden = !(max > 4 && w.scrollLeft < max - 4);
+  }
+  function centerScene() {
+    const w = $('#sceneWrap');
+    if (!w) return;
+    const max = w.scrollWidth - w.clientWidth;
+    w.scrollLeft = max > 0 ? max / 2 : 0;
+    updatePan();
+    if (max > 4) {
+      let seen = false;
+      try { seen = sessionStorage.getItem('roomescapespain.panhint') === '1'; } catch (e) { /* nada */ }
+      if (!seen) {
+        const ph = $('#panHint');
+        ph.hidden = false; ph.classList.remove('out');
+        try { sessionStorage.setItem('roomescapespain.panhint', '1'); } catch (e) { /* nada */ }
+        const hide = () => { ph.classList.add('out'); setTimeout(() => { ph.hidden = true; }, 400); w.removeEventListener('scroll', hide); };
+        w.addEventListener('scroll', hide, { passive: true });
+        setTimeout(hide, 3500);
+      }
+    }
+  }
+  // Toques que caen cerca de un objeto (sin acertar del todo) cuentan como toque en el objeto
+  function nearestHotspot(x, y) {
+    const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const limit = coarse ? 24 : 10;
+    let best = null; let bestD = Infinity;
+    $$('#scene .hs').forEach((b) => {
+      const r = b.getBoundingClientRect();
+      const dx = Math.max(r.left - x, 0, x - r.right);
+      const dy = Math.max(r.top - y, 0, y - r.bottom);
+      const d = Math.hypot(dx, dy);
+      if (d < bestD) { bestD = d; best = b; }
+    });
+    return bestD <= limit ? best : null;
   }
 
   // ---------------- Interacción ----------------
@@ -453,6 +500,7 @@
     screen = name;
     $$('.screen').forEach((s) => { s.hidden = s.id !== 'screen-' + name; });
     $('#topbar').classList.toggle('in-game', name === 'play');
+    document.body.dataset.screen = name;
     if (window.scrollTo) try { window.scrollTo(0, 0); } catch (e) { /* jsdom */ }
   }
 
@@ -503,6 +551,7 @@
     meta.last = S.season;
     show('play');
     refresh();
+    centerScene();
     track('level_start', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, title: L.title, resumed: !!resumed });
     if (resumed) say(`Expediente recuperado. Temporada ${S.season}, trámite ${S.level}: «${L.title}».`, '💾 Partida cargada');
   }
@@ -732,9 +781,10 @@
       html: `<div class="doc-body">
         <p><b>Vuelva usted mañana</b> es un <i>room escape</i>: en cada sala tienes que resolver un trámite para poder salir.</p>
         <ul>
-          <li>🔍 <b>Haz clic</b> en los objetos y personajes de la sala para examinarlos o hablar con ellos.</li>
-          <li>🎒 Lo que recojas aparece en tu <b>inventario</b>. Haz clic en un objeto para seleccionarlo (y leer su descripción).</li>
-          <li>🤝 Con un objeto seleccionado, haz clic en algo de la sala para <b>usarlo ahí</b>, o en otro objeto del inventario para <b>combinarlos</b>. Vuelve a pulsarlo para soltarlo.</li>
+          <li>🔍 <b>${tap(true)}</b> en los objetos y personajes de la sala para examinarlos o hablar con ellos.</li>
+          <li>🎒 Lo que recojas aparece en tu <b>inventario</b>. ${tap(true)} en un objeto para seleccionarlo (y leer su descripción).</li>
+          <li>🤝 Con un objeto seleccionado, ${tap()} en algo de la sala para <b>usarlo ahí</b>, o en otro objeto del inventario para <b>combinarlos</b>. Vuelve a pulsarlo para soltarlo.</li>
+          ${isTouch() ? '<li>📱 En el móvil, <b>desliza la sala</b> a los lados (o usa las flechas ‹ ›) para verla entera. También puedes girar el móvil.</li>' : ''}
           <li>💡 Si te atascas, pide una <b>pista</b>. La última pista de cada trámite es la solución.</li>
           <li>📚 El juego se divide en <b>temporadas</b> de 10 trámites. Cada temporada es más difícil que la anterior y se desbloquea al superar la previa.</li>
           <li>💾 La partida se <b>guarda sola</b> en este navegador. Con el botón Guardar obtienes un <b>código de expediente</b> para continuar en otro dispositivo.</li>
@@ -766,6 +816,16 @@
     $('#btnHelp2').onclick = () => { sfx('click'); helpModal(); };
     $('#btnMute').onclick = () => { meta.muted = !meta.muted; save(); renderTop(); sfx('click'); };
     $('#dialog').onclick = () => { if (queue.length) { sfx('click'); nextMsg(); } };
+    const wrap = $('#sceneWrap');
+    wrap.addEventListener('scroll', updatePan, { passive: true });
+    window.addEventListener('resize', () => { if (screen === 'play') updatePan(); });
+    $('#panL').onclick = () => wrap.scrollBy({ left: -wrap.clientWidth * 0.6, behavior: 'smooth' });
+    $('#panR').onclick = () => wrap.scrollBy({ left: wrap.clientWidth * 0.6, behavior: 'smooth' });
+    $('#scene').addEventListener('click', (e) => {
+      if (e.target.closest('.hs')) return;
+      const hs = nearestHotspot(e.clientX, e.clientY);
+      if (hs) hs.click();
+    });
     $('#winCopy').onclick = () => copyText($('#winCode').textContent, $('#winCopy'));
     // Botón flotante de apoyo, visible en todas las pantallas
     const kf = $('#kofiFloat');

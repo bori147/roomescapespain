@@ -17,3 +17,17 @@ th { background: rgba(0, 0, 0, .05); }
 nav.legal { max-width: 780px; margin: 18px auto 0; text-align: center; font-size: 14px; color: #d9cfbd; }
 nav.legal a, nav.legal button { color: #d9cfbd; background: none; border: 0; font: inherit; cursor: pointer; text-decoration: underline; padding: 0 4px; }
 @media (max-width: 520px) { table { font-size: 13px; } th, td { padding: 6px 4px; } }
+
+/* Móvil: direcciones largas que parten línea y tablas convertidas en fichas */
+.box, td, code { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  table, tbody, tr, td { display: block; width: 100%; }
+  th { display: none; }
+  tr:first-child:has(th) { display: none; }
+  tr { background: #fff; border: 1px solid rgba(0, 0, 0, .12); border-radius: 10px; padding: 8px 12px; margin: 0 0 10px; }
+  td { border: 0; padding: 4px 0; }
+  td::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--soft); }
+  td:first-child { font-weight: 700; }
+  nav.legal a, nav.legal button { display: inline-block; padding: 8px 4px; }
+}
+[hidden] { display: none !important; }

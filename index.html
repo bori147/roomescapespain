@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Vuelva Usted Mañana — Room Escape</title>
   <meta name="description" content="Un room escape satírico por las entrañas de la burocracia y la política española. 5 temporadas de 10 trámites, cada una más difícil que la anterior.">
   <meta name="theme-color" content="#1e1b18">
@@ -23,8 +23,8 @@
   <meta name="twitter:image" content="https://bori147.github.io/roomescapespain/img/og.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
   <link rel="preload" href="fonts/special-elite-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=4">
-  <link rel="stylesheet" href="css/consent.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/consent.css?v=6">
 </head>
 <body>
   <header id="topbar" class="topbar">
@@ -99,7 +99,12 @@
     <!-- JUEGO -->
     <section id="screen-play" class="screen" hidden>
       <div class="stage">
-        <div id="scene" class="scene"></div>
+        <div class="scene-box">
+          <div class="scene-wrap" id="sceneWrap"><div id="scene" class="scene"></div></div>
+          <button class="pan pan-l" id="panL" aria-label="Ver la parte izquierda de la sala" hidden>‹</button>
+          <button class="pan pan-r" id="panR" aria-label="Ver la parte derecha de la sala" hidden>›</button>
+          <div class="pan-hint" id="panHint" hidden>↔ Desliza para ver toda la sala</div>
+        </div>
         <div id="dialog" class="dialog" aria-live="polite"></div>
         <div class="inv-wrap">
           <div class="inv-title">🎒 Inventario</div>
@@ -156,15 +161,15 @@
   <div id="modal" class="modal" hidden></div>
   <div id="toast" class="toast" role="status"></div>
 
-  <script src="js/config.js?v=4"></script>
-  <script src="js/consent.js?v=4"></script>
-  <script src="js/analytics.js?v=4"></script>
-  <script src="js/core.js?v=4"></script>
-  <script src="js/seasons/s1.js?v=4"></script>
-  <script src="js/seasons/s2.js?v=4"></script>
-  <script src="js/seasons/s3.js?v=4"></script>
-  <script src="js/seasons/s4.js?v=4"></script>
-  <script src="js/seasons/s5.js?v=4"></script>
-  <script src="js/engine.js?v=4"></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="js/consent.js?v=6"></script>
+  <script src="js/analytics.js?v=6"></script>
+  <script src="js/core.js?v=6"></script>
+  <script src="js/seasons/s1.js?v=6"></script>
+  <script src="js/seasons/s2.js?v=6"></script>
+  <script src="js/seasons/s3.js?v=6"></script>
+  <script src="js/seasons/s4.js?v=6"></script>
+  <script src="js/seasons/s5.js?v=6"></script>
+  <script src="js/engine.js?v=6"></script>
 </body>
 </html>

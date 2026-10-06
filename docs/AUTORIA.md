@@ -181,3 +181,13 @@ la prueba falla con un mensaje claro. Al final de cada función el nivel debe es
 - Si un puzle lógico debe tener **solución única**, compruébalo por fuerza bruta antes.
 - Cada temporada es **más difícil** que la anterior, y dentro de cada temporada la dificultad sube del nivel 1 al 10.
 - Textos en español de España, con tildes y signos de apertura (¿¡).
+
+## 6. Móvil (la mayoría de jugadores)
+
+- En el móvil en vertical la sala se muestra **hasta 2 veces más ancha que la pantalla** y se desliza a los lados
+  (con flechas ‹ ›). En horizontal, la sala va a la izquierda y el inventario y el texto a la derecha.
+- Usa hotspots de tamaño `s: 5` o más. Los toques que caen hasta 24 px fuera de un objeto cuentan como toque en él,
+  pero dos objetos muy pegados se confunden: deja aire entre ellos.
+- Los carteles (`sign`) se leen bien con títulos cortos (una o dos palabras).
+- En modales propios, nada de anchos fijos mayores de ~300 px: usa `%`, `flex-wrap` o `grid` con `minmax`.
+- Para comprobarlo, abre el juego en el navegador con la vista de móvil (360 × 740) y juega los niveles nuevos.

@@ -130,13 +130,16 @@ main { padding: 12px 16px 28px; }
   --wall: #ddd; --floor: #888; --floorH: 32%;
   container-type: inline-size;
   position: relative; overflow: hidden;
-  width: min(100%, max(320px, calc((100dvh - 285px) * 16 / 9)));
+  width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow), inset 0 0 0 3px rgba(0, 0, 0, .25);
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, .25);
   background: var(--wall);
-  user-select: none;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
 }
+.stage { --stageW: min(100%, max(320px, calc((100dvh - 285px) * 16 / 9))); }
+.scene-box { position: relative; width: var(--stageW); }
+.scene-wrap { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.pan, .pan-hint { display: none; }
 .scene .wall {
   position: absolute; left: 0; right: 0; top: 0; bottom: var(--floorH);
   background:
@@ -207,7 +210,7 @@ main { padding: 12px 16px 28px; }
   filter: drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35));
 }
 .hs-emoji { font-family: var(--emoji); display: block; white-space: nowrap; }
-.hs:hover, .hs:focus-visible { transform: translate(-50%, -50%) scale(1.08); filter: drop-shadow(0 0 .7cqw rgba(255, 238, 150, .95)) drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35)); outline: none; z-index: 5; }
+.hs:focus-visible { transform: translate(-50%, -50%) scale(1.08); filter: drop-shadow(0 0 .7cqw rgba(255, 238, 150, .95)) drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35)); outline: none; z-index: 5; }
 .hs::after {
   content: attr(data-label);
   position: absolute; left: 50%; top: 100%; transform: translate(-50%, .4cqw);
@@ -216,7 +219,12 @@ main { padding: 12px 16px 28px; }
   padding: .35em .7em; border-radius: 6px; pointer-events: none;
   opacity: 0; transition: opacity .15s; z-index: 10;
 }
-.hs:hover::after, .hs:focus-visible::after { opacity: 1; }
+.hs:focus-visible::after { opacity: 1; }
+@media (hover: hover) {
+  .hs:hover { transform: translate(-50%, -50%) scale(1.08); filter: drop-shadow(0 0 .7cqw rgba(255, 238, 150, .95)) drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35)); z-index: 5; }
+  .hs:hover::after { opacity: 1; }
+}
+.hs:active { transform: translate(-50%, -50%) scale(.94); }
 @media (hover: none) { .hs::after { display: none; } }
 .hs.sign {
   background: var(--paper); color: var(--ink);
@@ -247,7 +255,7 @@ main { padding: 12px 16px 28px; }
   border-left: 6px solid var(--red); padding: 12px 16px; box-shadow: var(--shadow);
   font-size: 16px; line-height: 1.45; position: relative;
 }
-.scene + .dialog { width: min(100%, max(320px, calc((100dvh - 285px) * 16 / 9))); }
+.scene-box ~ .dialog { width: var(--stageW); }
 .dialog.clickable { cursor: pointer; }
 .dlg-who { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--red); margin-bottom: 2px; }
 .dlg-idle { color: var(--ink-soft); font-style: italic; font-size: 14px; }
@@ -256,7 +264,7 @@ main { padding: 12px 16px 28px; }
 .cipher { font-family: var(--type); background: #fff; padding: 2px 6px; border-radius: 4px; }
 
 /* Inventario */
-.inv-wrap { width: min(100%, max(320px, calc((100dvh - 285px) * 16 / 9))); }
+.inv-wrap { width: var(--stageW); }
 .inv-title { color: #d9cfbd; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin: 0 0 6px 2px; }
 .inventory { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
 .slot {
@@ -596,3 +604,146 @@ main { padding-bottom: 84px; }
 .site-footer a, .site-footer button { color: #d9cfbd; background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
 .site-footer a:hover, .site-footer button:hover { color: #fff; }
 main { padding-bottom: 12px; }
+
+/* ==========================================================
+   MÓVIL Y TÁCTIL
+   ========================================================== */
+/* Sin retardo de doble toque ni zoom accidental al pulsar */
+button, a, label, select, input, .hs, .slot, .kp-key { touch-action: manipulation; }
+/* Respeta la muesca / zonas seguras (viewport-fit=cover) */
+.topbar { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+main { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+html, body { overflow-x: clip; }
+
+/* Sin efectos «hover» pegados en pantallas táctiles */
+@media (hover: none) {
+  .btn:hover, .slot:not(.empty):hover, .strip:not(.pick):hover, .season-card.open:hover, .kofi-btn:hover { transform: none; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .slot:not(.empty):active { background: rgba(255, 255, 255, .14); }
+}
+
+/* Táctil: botones de al menos 44 px y campos que no hacen zoom en iPhone */
+@media (pointer: coarse) {
+  .btn { min-height: 44px; }
+  .modal-x { min-width: 44px; min-height: 44px; }
+  input:not([type=checkbox]):not([type=radio]), select, textarea { font-size: max(16px, 1em) !important; }
+  .kp-key { height: 56px; }
+}
+
+/* Teclado numérico: las casillas se encogen si el código es largo */
+.kp-display { flex-wrap: nowrap; }
+.kp-display span { flex: 0 1 44px; min-width: 24px; }
+
+/* ---------------- Móvil en vertical ---------------- */
+@media (max-width: 760px) and (orientation: portrait) {
+  main { padding-top: 8px; padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); }
+  .stage { --stageW: 100%; gap: 8px; }
+
+  /* Sala más grande (hasta 2 pantallas de ancho) que se desplaza en horizontal */
+  .scene-box { --sceneH: clamp(200px, min(calc(100dvh - 290px), calc((100vw - 20px) * 1.125)), 460px); }
+  .scene-wrap { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .scene-wrap::-webkit-scrollbar { display: none; }
+  .scene { height: var(--sceneH); width: calc(var(--sceneH) * 16 / 9); aspect-ratio: auto; margin: 0 auto; }
+  .pan {
+    display: grid; place-items: center; position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+    width: 40px; height: 56px; border: 0; padding: 0; cursor: pointer;
+    background: rgba(20, 18, 16, .55); color: #fff; font: 700 30px/1 var(--ui);
+    backdrop-filter: blur(2px);
+  }
+  .pan[hidden] { display: none; }
+  .pan-l { left: 0; border-radius: 0 12px 12px 0; }
+  .pan-r { right: 0; border-radius: 12px 0 0 12px; }
+  .pan-hint {
+    display: block; position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 7;
+    background: rgba(20, 18, 16, .85); color: #fff; font: 600 13px var(--ui); padding: 7px 12px; border-radius: 999px;
+    white-space: nowrap; pointer-events: none; transition: opacity .4s;
+  }
+  .pan-hint[hidden] { display: none; }
+  .pan-hint.out { opacity: 0; }
+
+  /* Inventario en una fila justo debajo de la sala (no se mueve al cambiar el texto) */
+  .inv-wrap { order: 2; }
+  .dialog { order: 3; min-height: 72px; padding: 10px 12px; font-size: 15px; }
+  .inv-title { margin-bottom: 4px; font-size: 11px; }
+  .inventory { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .inventory::-webkit-scrollbar { display: none; }
+  .slot { flex: 0 0 68px; min-height: 66px; padding: 4px 3px; border-radius: 10px; }
+  .slot-emoji { font-size: 26px; }
+  .slot-name { font-size: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .slot.empty { display: none; }
+  .inventory > .slot.empty:first-child, .slot:not(.empty) + .slot.empty { display: flex; flex-basis: 68px; }
+  .slot.empty::after { content: '🎒'; font-family: var(--emoji); font-size: 22px; opacity: .25; }
+}
+
+/* ---------------- Barra superior en pantallas estrechas ---------------- */
+@media (max-width: 520px) {
+  .brand { display: none; }
+  .topbar { gap: 6px; padding-top: 6px; padding-bottom: 6px; }
+  .topbar.in-game .game-info { gap: 8px; font-size: 13px; overflow: hidden; }
+  .topbar.in-game .game-actions { gap: 4px; margin-left: auto; }
+  .tb { padding: 0; width: 38px; height: 38px; justify-content: center; font-size: 16px; }
+  /* Fuera del juego, solo queda el logotipo: se vuelve a mostrar pequeño */
+  .topbar:not(.in-game) .brand { display: block; font-size: 16px; }
+}
+@media (max-width: 380px) {
+  .timer { display: none; }
+}
+
+/* ---------------- Móvil en horizontal ---------------- */
+@media (orientation: landscape) and (max-height: 520px) {
+  .topbar { padding-top: 4px; padding-bottom: 4px; gap: 8px; }
+  .brand span, .tb span, .lvl-title { display: none; }
+  .tb { padding: 0; width: 36px; height: 34px; justify-content: center; }
+  main { padding-top: 8px; }
+  .stage {
+    --sceneH: max(200px, calc(100dvh - 64px));
+    display: grid; grid-template-columns: auto minmax(180px, 1fr); grid-template-rows: auto 1fr;
+    align-items: start; gap: 8px 10px; max-width: none;
+  }
+  .scene-box { grid-row: 1 / span 2; width: min(calc(var(--sceneH) * 16 / 9), calc(100vw - 230px)); }
+  .scene { width: 100%; }
+  .inv-wrap { grid-column: 2; width: auto; }
+  .dialog { grid-column: 2; grid-row: 2; width: auto !important; min-height: 0; font-size: 14px; padding: 8px 10px; max-height: calc(100dvh - 190px); overflow-y: auto; }
+  .inventory { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 5px; }
+  .slot { min-height: 58px; padding: 3px; }
+  .slot-emoji { font-size: 22px; }
+  .slot-name { font-size: 9.5px; }
+  .slot.empty { display: none; }
+  .inv-title { font-size: 11px; margin-bottom: 4px; }
+  .modal-card { max-height: calc(100dvh - 16px); }
+  .modal { padding: 8px; }
+}
+
+/* ---------------- Ventanas modales en móvil ---------------- */
+@media (max-width: 760px) {
+  .modal { padding: 10px; }
+  .modal-card { max-height: calc(100dvh - 20px); }
+  .modal-head { padding: 10px 12px 6px 16px; }
+  .modal-head h3 { font-size: 19px; }
+  .modal-body { padding: 12px 16px; }
+  .modal-foot { padding: 8px 12px 12px; }
+  .modal-foot .btn { flex: 1 1 auto; }
+  .doc-body { font-size: 15px; }
+  .toast { max-width: calc(100% - 24px); top: 60px; }
+}
+@media (max-height: 600px) { .modal { align-items: flex-start; } }
+
+/* ---------------- Botón de café mientras se juega en móvil ---------------- */
+@media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
+  body[data-screen="play"] .kofi-float { padding: 6px; gap: 0; opacity: .92; }
+  body[data-screen="play"] .kofi-float .kofi-label { display: none; }
+}
+
+.kp-display.long { gap: 3px; }
+.kp-display.long span { flex: 1 1 0; min-width: 0; max-width: 34px; height: 46px; font-size: 20px; }
+@media (pointer: coarse) { .tiny { font-size: 11px; } }
+
+/* Sello de resolución en móvil: al final del documento, sin tapar el título */
+@media (max-width: 560px) {
+  .resolution .stamp, .ending .stamp { position: relative; top: auto; right: auto; bottom: auto; display: table; margin: 22px auto 30px; font-size: 20px; transform: rotate(-6deg); }
+}
+/* Enlaces del pie más fáciles de tocar */
+@media (pointer: coarse) {
+  .site-footer { gap: 0 10px; }
+  .site-footer a, .site-footer button { display: inline-block; padding: 10px 4px; }
+}

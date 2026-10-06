@@ -179,6 +179,14 @@ async function runSeason(sid) {
     if (!r || r.season !== sid || r.level !== l || r.hints !== 7) fail(`Código de expediente incorrecto para T${sid} N${l}`);
   }
 
+  // Humo: un toque en el fondo de la sala (lejos de todo) no debe lanzar errores
+  try {
+    R.start(sid, 1);
+    const fl = doc.querySelector('#scene .floor');
+    if (fl) fl.dispatchEvent(new w.MouseEvent('click', { bubbles: true, clientX: -5000, clientY: -5000 }));
+    if (errors.length) fail('Error al tocar el fondo de la sala: ' + errors.splice(0).join(' | '));
+  } catch (e) { fail('Error al tocar el fondo de la sala: ' + e.message); }
+
   const h = helpers(w, R);
   const givenBefore = new Set();
   const origGive = R.g.give; const origTake = R.g.take;

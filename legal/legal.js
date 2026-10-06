@@ -12,6 +12,11 @@
   document.querySelectorAll('[data-legal="email"]').forEach((e) => {
     if (L.email) { e.innerHTML = `<a href="mailto:${L.email}">${L.email}</a>`; } else { e.textContent = '(pendiente)'; }
   });
+  // Etiquetas de columna en cada celda (las tablas se muestran como fichas en el móvil)
+  document.querySelectorAll('table').forEach((t) => {
+    const heads = [...t.querySelectorAll('th')].map((th) => th.textContent.trim());
+    t.querySelectorAll('tr').forEach((tr) => [...tr.children].forEach((td, i) => { if (td.tagName === 'TD' && heads[i]) td.dataset.label = heads[i]; }));
+  });
   // Secciones que solo aplican si la analítica está configurada
   document.querySelectorAll('[data-if-analytics]').forEach((e) => { e.hidden = !A.key; });
   document.querySelectorAll('[data-if-no-analytics]').forEach((e) => { e.hidden = !!A.key; });
