@@ -882,6 +882,13 @@
     #dialog.queued .dlg-head { padding-right: 0; }
     .dlg-finish { --btn-h: 44px; min-height: 44px; margin-top: 6px; }
   }
+  /* Columna estrecha (HUD en horizontal) con algo de altura: la cola baja a su fila, compacta,
+     y quien habla se lee entero */
+  @container dlg (max-height: 159px) and (min-height: 130px) and (max-width: 300px) {
+    .dlg-actions { grid-area: act; justify-self: end; margin: 4px 0 0; }
+    #dialog.queued .dlg-log { display: grid; }
+    #dialog.queued .dlg-head { padding-right: 30px; }
+  }
   @media (max-width: 360px) {
     .dlg-body { font-size: 15px; line-height: 1.45; }
     /* «Usando:» solo para lectores: el chip amarillo ya lo dice y el objeto necesita el sitio */
