@@ -292,6 +292,10 @@
     win() {
       if (pendingWin) return;
       pendingWin = true;
+      // La victoria queda en la partida guardada: si el jugador sale (atrás, menú, cerrar la
+      // pestaña) antes de «Continuar», al volver recupera la sala ganada en vez de un nivel
+      // con los objetos ya gastados y sin salida.
+      if (S) { S.won = true; save(); }
       renderDialog();
       const sc = $('#scene'); if (sc) sc.classList.add('won');
       wonPresentation();
@@ -1322,6 +1326,7 @@
     useSeason(S.season);
     L = SEA.levels[n - 1];
     S.level = n; S.flags = {}; S.inv = []; S.hintIdx = 0; S.levelStart = S.elapsed;
+    delete S.won;
     resetLevelUi();
     newItems = new Set();
     // Objetos que el jugador trae de trámites anteriores
@@ -1362,6 +1367,8 @@
     useSeason(S.season);
     L = SEA.levels[S.level - 1];
     resetLevelUi();
+    if (!resumed) delete S.won;
+    const rewin = !!(resumed && S.won);
     if (resumed) newItems = new Set();
     meta.last = S.season;
     const n = SEA.levels.length;
@@ -1374,16 +1381,21 @@
         flashObjective();
         startPanHint();
         emit('level', { season: S.season, level: S.level, resumed: !!resumed, overflow: panOverflow() });
+        // Sala ganada y no cerrada: se vuelve al estado ganado (sello + «Continuar ▶»),
+        // sin repetir la lógica del nivel.
+        if (rewin) { pendingWin = false; g.win(); }
       },
+      focus: () => (rewin && pendingWin && isFine() && !$('#btnFinish').hidden ? $('#btnFinish') : null),
     });
     track('level_start', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, title: L.title, resumed: !!resumed });
-    if (resumed) say(`Expediente recuperado: «${plainTitle(L.title)}». 🎯 ${goalOf(L)}`, '💾 Partida cargada', { kind: 'system', srcId: null });
+    if (resumed && !rewin) say(`Expediente recuperado: «${plainTitle(L.title)}». 🎯 ${goalOf(L)}`, '💾 Partida cargada', { kind: 'system', srcId: null });
   }
 
   function finishLevel() {
     if (!pendingWin) return;
     pendingWin = false;
     clearWon();
+    delete S.won;
     const sid = S.season;
     const done = S.level;
     const doneL = SEA.levels[done - 1];

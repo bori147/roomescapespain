@@ -246,6 +246,14 @@ function probePage(o) {
       const r = el.getBoundingClientRect();
       if (!inView(r)) F.push(`${sel} se sale de la pantalla (top ${Math.round(r.top)}, bottom ${Math.round(r.bottom)} de ${vh})`);
     }
+    // 2b) En el teléfono la ventanilla enseña al menos 3 líneas de texto: las pistas viven ahí.
+    //     (Con el aviso de cookies a la vista cede a propósito hasta una línea: body.cc-open, ui-play.css.)
+    const db = document.querySelector('#dialog .dlg-body');
+    if (o.phone && db && shown(db) && !body.classList.contains('cc-open')) {
+      const lh = parseFloat(getComputedStyle(db).lineHeight) || parseFloat(getComputedStyle(db).fontSize) * 1.4;
+      const lines = db.clientHeight / lh;
+      if (lines < 2.95) F.push(`la ventanilla (.dlg-body) solo enseña ${lines.toFixed(1)} líneas (${db.clientHeight}px con líneas de ${Math.round(lh)}px; mínimo 3)`);
+    }
   }
 
   // 3) Pantallas de papel en el teléfono: el botón principal a la vista y sin tapar

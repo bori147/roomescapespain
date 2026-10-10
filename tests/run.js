@@ -86,7 +86,7 @@ function watchSysButtons(w, sink) {
   return mo;
 }
 
-function makeDom() {
+function makeDom(seed) {
   const html = read('index.html').replace(/<script[\s\S]*?<\/script>/g, '').replace(/<link[^>]*>/g, '');
   const errors = [];
   const vc = new VirtualConsole();
@@ -99,6 +99,8 @@ function makeDom() {
   w.addEventListener('error', (e) => errors.push('window.error: ' + (e.error && e.error.stack || e.message)));
   const sys = new Set();
   watchSysButtons(w, sys);
+  // «Recarga»: el almacenamiento de una sesión anterior, antes de que arranquen los scripts
+  if (seed) { try { w.localStorage.clear(); for (const [k, v] of Object.entries(seed)) w.localStorage.setItem(k, v); } catch (e) { errors.push('localStorage: ' + e.message); } }
   // Orden de index.html: config, core, temporadas, ui-puzzles y ui-fx (si existen), engine.
   for (const f of ORDER.files) {
     try { w.eval(read(f) + `\n//# sourceURL=${f}`); } catch (e) { errors.push(`Error al cargar ${f}: ${e.stack || e}`); }
@@ -628,6 +630,35 @@ async function contractChecks() {
     R.finish();
     need(R.screen() === 'win', `tras finish() la pantalla es «${R.screen()}», no «win»`);
     need(/^EXP-/.test(($('#winCode').textContent || '').trim()), '#winCode no muestra el código EXP-…');
+  });
+  await step('sala ganada y no cerrada: al recargar y «Continuar» sigue ganada (sin bloqueo)', async () => {
+    // T1-N1 de verdad: la jugada ganadora gasta el justificante. Si se sale antes de «Continuar»,
+    // la partida guardada debe recordar la victoria; si no, el nivel queda sin salida.
+    const sol = require(path.join(ROOT, 'tests/solutions/s1.js'))[0];
+    w.localStorage.clear();
+    R.start(1, 1);
+    await sol(helpers(w, R));
+    await settle();
+    need(R.pending() === true, 'la solución de T1-N1 no deja la sala ganada');
+    const store = {};
+    for (let i = 0; i < w.localStorage.length; i++) { const k = w.localStorage.key(i); store[k] = w.localStorage.getItem(k); }
+    const d2 = makeDom(store);
+    const R2 = d2.w.RoomEscape;
+    need(R2, 'el motor no arranca al recargar: ' + d2.errors.join(' | '));
+    const cont = d2.doc.querySelector('#btnContinue');
+    need(cont && !cont.hidden, 'tras recargar no hay «Continuar» en el menú');
+    cont.click();
+    await settle();
+    need(R2.screen() === 'play', `«Continuar» lleva a «${R2.screen()}», no a la sala`);
+    need(R2.state().season === 1 && R2.state().level === 1, '«Continuar» no vuelve a T1-N1');
+    need(R2.pending() === true, 'al volver a una sala ganada pending() no es true: el nivel queda bloqueado (objetos gastados)');
+    need(!d2.doc.querySelector('#btnFinish').hidden, '#btnFinish no está visible al volver a una sala ganada');
+    R2.finish();
+    need(R2.screen() === 'win', `tras finish() la pantalla es «${R2.screen()}», no «win»`);
+    need(R2.state().level === 2, `tras cerrar la sala recuperada el nivel es ${R2.state().level}, no 2`);
+    if (d2.errors.length) throw new Error(d2.errors.join(' | '));
+    d2.w.close();
+    w.localStorage.clear();
   });
 
   // Hojas del sistema: se abren y se cierran sin errores en jsdom (camino sin showModal), y sus botones [data-sys]

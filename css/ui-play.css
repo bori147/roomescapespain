@@ -1172,6 +1172,13 @@
        cabe entera, así que la barra (flechas, plano, Lupa) espera a que se decida y le cede su fila.
        Con un objeto en la mano, «Usando…» se queda. */
     @media (max-height: 700px) {
+      /* Móviles bajos (320×568, 375×553, Safari con barra…): la ventanilla tiene un suelo de unas
+         4–5 líneas, porque las pistas viven en ese texto. La sala cede ese alto: ya se desplaza y
+         su interior sigue en 16:9. (Con el aviso de cookies manda la regla de body.cc-open.) */
+      body[data-screen="play"] { --dlgH: clamp(150px, 25vh, 172px); }
+      @supports (height: 1dvh) {
+        body[data-screen="play"] { --dlgH: clamp(150px, 25dvh, 172px); }
+      }
       body.cc-open[data-screen="play"]:has(#roomBar:not(.using)) { --barH: 0px; }
       body.cc-open[data-screen="play"] .room-bar:not(.using) { display: none; }
     }
