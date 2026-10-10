@@ -894,7 +894,7 @@
     .dlg-finish { --btn-h: 44px; min-height: 44px; margin-top: 6px; }
   }
   /* Ventanilla baja y estrecha (320–360 px) con cola: la cara se aparta para que quien habla se lea */
-  @container dlg (max-height: 159px) and (max-width: 340px) {
+  @container dlg (max-height: 129px) and (max-width: 340px) {
     #dialog.queued .dlg-face { display: none; }
   }
   /* Columna estrecha (HUD en horizontal) con algo de altura: la cola baja a su fila, compacta,
@@ -1179,10 +1179,8 @@
     .room-bar .use-chip { grid-column: 1 / 4; }
   }
 
-  /* Tableta en vertical: sitio de sobra para el título del trámite, y la ventanilla puede crecer
-     hasta 320 px (sin un hueco grande sobre la bandeja) */
+  /* Tableta en vertical: sitio de sobra para el título del trámite */
   @media (min-width: 600px) and (orientation: portrait) {
-    body[data-screen="play"] { --dlgMax: 320px; }
     .topbar.in-game .game-info { flex: 1 1 auto; }
     .topbar.in-game .lvl-title {
       display: block;
@@ -1208,7 +1206,8 @@
       --toast-maxw: calc(var(--hudW) - 8px);
       grid-template-rows: 0 minmax(0, 1fr);
     }
-    body.cc-open[data-screen="play"] { --toast-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--cc-h, 0px)); }
+    /* Con el aviso de cookies a la vista el justificante sigue abajo: tapa un momento el aviso
+       (no deja de recibir toques: el justificante no los captura), nunca la sala */
     /* Muy bajas (≤ 380 px) y con el aviso: el objetivo se recoge (sigue en la ventanilla en reposo
        y en «Expediente en pausa») para que quepan ventanilla y bandeja */
     @media (max-height: 380px) {
