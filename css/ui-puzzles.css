@@ -572,6 +572,11 @@
      «min-content» apilan arriba lo de la izquierda y la última (1fr) se queda el resto,
      así el tablero (que las abarca todas) no separa los párrafos de la izquierda. */
   @media (orientation: landscape) and (max-height: 520px) {
+    .cal-grid { max-width: 320px; }
+    .cal-d { min-height: 0; }
+  }
+  /* Lado a lado solo si hay anchura (en 667 × 375 la columna de texto quedaría en nada) */
+  @media (orientation: landscape) and (max-height: 520px) and (min-width: 740px) {
     .modal-body:has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)),
     .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)) {
       display: grid;
@@ -600,8 +605,7 @@
       scrollbar-width: thin;
     }
     .modal-body :has(> .party-grid) > .party-grid .party { min-height: 48px; }
-    .modal-body :has(> .cal-grid) > .cal-grid { width: min(46cqi, 340px); }
-    .cal-d { min-height: 0; }
+    .modal-body :has(> .cal-grid) > .cal-grid { width: min(50cqi, 340px); }
     /* Sede: los tres desplegables del paso 1 en una fila */
     #sede:has(> label:nth-of-type(3)) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 12px; }
     #sede:has(> label:nth-of-type(3)) > :not(label) { grid-column: 1 / -1; }

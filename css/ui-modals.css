@@ -96,6 +96,8 @@
   }
   .modal-head h2 {
     display: -webkit-box;
+    width: fit-content;
+    max-width: 100%;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -139,22 +141,24 @@
      Cuelgan bajo la cabecera, a la derecha, sin aplastar el título. */
   .modal-chips {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% - 10px);
     right: 14px;
     z-index: 5;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 6px;
-    max-width: calc(100% - 28px);
+    max-width: min(calc(100% - 28px), 360px);
     pointer-events: none;
   }
   .modal-chips:empty { display: none; }
   .modal-chips > .stamp.sm {
     max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+    white-space: normal;
+    text-align: left;
+    line-height: 1.25;
+    text-wrap: balance;
+    background: var(--card-bg);
     animation: modal-staple var(--d-slow) var(--ease-out) both;
   }
   .modal-chips > .chip { box-shadow: var(--e1); animation: modal-fade-in var(--d-base) var(--ease-out) both; }
@@ -259,6 +263,8 @@
   }
   .modal-foot .btn { --btn-h: 44px; }
   .modal-foot .btn.primary { min-width: 120px; }
+  /* Hojas sin pie (pausa): el cuerpo respeta la zona segura de abajo */
+  .modal-card.no-foot .modal-body { padding-bottom: calc(var(--mbp) + env(safe-area-inset-bottom, 0px)); }
 
   /* ---------------- Familias ---------------- */
   /* Oficio: papel del mundo, membrete y letra de lectura */
@@ -301,8 +307,14 @@
     letter-spacing: .01em;
     transition: font-size var(--d-base) var(--ease-out);
   }
-  .modal-card.lupa .tiny { font-size: 1rem; line-height: 1.5; color: var(--ink-2); }
-  .modal-card.lupa .tiny { background: linear-gradient(transparent 55%, var(--marker-soft) 55%); }
+  .modal-card.lupa .tiny {
+    padding: 8px 10px;
+    border-radius: var(--r-sm);
+    background: var(--marker-soft);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 
   /* ---------------- Tamaño 1: hoja inferior (vertical ≤ 760 px) ---------------- */
   @media (max-width: 760px) and (orientation: portrait) {
@@ -423,6 +435,11 @@
     }
     .modal-foot .btn { width: 100%; min-width: 0; padding: 0 12px; }
     .modal-chips { top: calc(100% + 6px); }
+  }
+  /* Horizontal estrecho (iPhone SE): raíl de acciones algo más estrecho */
+  @media (orientation: landscape) and (max-height: 520px) and (max-width: 700px) {
+    .modal-card, .modal-card.wide, .modal-card.doc { grid-template-columns: minmax(0, 1fr) 172px; }
+    .modal-card.no-foot { grid-template-columns: minmax(0, 1fr); }
   }
 
   /* ---------------- Tamaño 3: tarjeta centrada (tableta y escritorio) ---------------- */
@@ -638,25 +655,21 @@
           radial-gradient(circle 9px at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat;
     overflow: hidden;
   }
-  .turno-head::after {
-    content: '';
-    position: absolute;
-    top: 8px;
-    bottom: 8px;
-    left: calc(22px + var(--turno-w, 7.2em));
-    border-left: 1.5px dashed var(--line-strong);
-  }
   .turno-n {
     grid-area: n;
-    min-width: 6.4em;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+    border-right: 1.5px dashed var(--line-strong);
     color: var(--red-ink);
     font: 400 1.375rem/1.1 var(--stamp-f);
     letter-spacing: .04em;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
-  .turno-c { grid-area: c; padding-left: 16px; color: var(--ink); font: 700 var(--fs-sm)/1.3 var(--ui); }
-  .pips { grid-area: p; display: flex; gap: 6px; padding-left: 16px; }
+  .turno-c { grid-area: c; color: var(--ink); font: 700 var(--fs-sm)/1.3 var(--ui); }
+  .pips { grid-area: p; display: flex; gap: 6px; }
   .pips i {
     width: 12px;
     height: 12px;
@@ -669,7 +682,7 @@
   .pips i.sol.on { background: var(--red); }
   .turno-head.is-new { animation: modal-ticket 260ms var(--ease-out) both; }
   .turno-lead { margin: 0 0 14px; color: var(--ink-2); font-size: var(--fs-sm); line-height: 1.5; }
-  .hint-list {
+  .modal-body .hint-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -730,6 +743,7 @@
     grid-template-areas: "e h" "e p";
     column-gap: 12px;
     align-items: start;
+    align-content: start;
     padding: 14px;
     border: 1px solid var(--line);
     border-radius: var(--r-md);
@@ -748,7 +762,7 @@
     font: 500 var(--fs-sm)/1.45 var(--ui);
   }
   .help-h { margin: 18px 0 8px; font: 700 var(--fs-cap)/1.3 var(--ui); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-  .help-about { margin: 0 0 12px; padding: 0; list-style: none; font: 400 var(--fs-sm)/1.5 var(--ui); color: var(--ink-2); }
+  .modal-body .help-about { margin: 0 0 12px; padding: 0; list-style: none; font: 400 var(--fs-sm)/1.5 var(--ui); color: var(--ink-2); }
   .help-about li { margin-bottom: 8px; padding-left: 1.8em; text-indent: -1.8em; }
   .help-about b { color: var(--ink); }
   #helpTips {
@@ -886,7 +900,7 @@
   }
 
   /* ---------------- Registro de entrada ---------------- */
-  .log-list {
+  .modal-body .log-list {
     margin: 0;
     padding: 4px 0;
     list-style: none;
