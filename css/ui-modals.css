@@ -449,6 +449,27 @@
     .modal-card, .modal-card.wide, .modal-card.doc { grid-template-columns: minmax(0, 1fr) 172px; }
     .modal-card.no-foot { grid-template-columns: minmax(0, 1fr); }
   }
+  /* Pie sin acción principal ni secundaria (solo «Volver a la sala», «Entendido», «Cancelar»…): no
+     merece un raíl de 172–200 px. La tarjeta es de una columna y el enlace va en una fila baja al pie;
+     el cuerpo (tableros como el de la coalición) gana ese ancho */
+  @media (orientation: landscape) and (max-height: 520px) {
+    .modal-card:not(.no-foot):not(:has(.modal-foot .btn:not(.ghost))) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+      grid-template-areas: "head" "mast" "body" "status" "foot";
+    }
+    .modal-card:not(.no-foot):not(:has(.modal-foot .btn:not(.ghost))) .modal-foot {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 44px;
+      padding: 0 12px;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      overflow: visible;
+    }
+    .modal-card:not(.no-foot):not(:has(.modal-foot .btn:not(.ghost))) .modal-foot .btn { width: auto; }
+  }
 
   /* ---------------- Tamaño 3: tarjeta centrada (tableta y escritorio) ---------------- */
   @media (min-width: 761px) and (orientation: portrait), (orientation: landscape) and (min-height: 521px) {

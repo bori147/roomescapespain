@@ -528,6 +528,12 @@
   let inertEls = [];
   let docN = 0;
   let closing = false;
+  // Toques dobles: el 2.º toque de un doble toque no debe cerrar la hoja recién abierta (cae en el telón,
+  // que aún sube) ni, tras cerrarla, activar lo que hay debajo en la sala o la bandeja
+  let modalOpenedAt = -1e9; let modalClosedAt = -1e9; let screenShownAt = -1e9;
+  const tNow = () => (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now());
+  const tapThrough = (e, t, ms) => !!e && e.detail !== 0 && tNow() - t < ms;
+  let menuSheetGuard = false; // la hoja abierta en el menú puso su propia guardia de historial
   function focusEl(e) {
     if (!e || typeof e.focus !== 'function') return;
     try { e.focus({ preventScroll: true }); } catch (x) { try { e.focus(); } catch (y) { /* nada */ } }
@@ -623,6 +629,10 @@
     m.setAttribute('aria-labelledby', kicker ? 'modalTitle modalKicker' : 'modalTitle');
     m.hidden = false;
     if (!m.open) {
+      modalOpenedAt = tNow();
+      // Hojas del menú («Cómo jugar», «Tengo un código»…): el «atrás» del sistema cierra la hoja y no
+      // saca de la web (navegadores sin CloseWatcher). Se arma aquí, dentro del gesto que la abrió.
+      if (screen === 'menu' && !guardArmed) { armGuard(); menuSheetGuard = guardArmed; }
       let native = false;
       if (typeof m.showModal === 'function') { try { m.showModal(); native = true; } catch (e) { native = false; } }
       if (!native) { m.setAttribute('open', ''); m.setAttribute('aria-modal', 'true'); setInert(true); }
@@ -664,6 +674,20 @@
       freezeRoom(false);
       if (screen === 'play') refresh();
       restoreFocus(mm && mm.opener);
+      modalClosedAt = tNow();
+      if (menuSheetGuard) {
+        menuSheetGuard = false;
+        // Cerrada sin «atrás»: se retira la guardia… salvo que la hoja llevara a otra pantalla (cargar
+        // un código → presentación), que la conserva, o que se abra otra hoja en el mismo gesto
+        if (why !== 'back') {
+          later(() => {
+            if (screen !== 'menu' || !guardArmed) return;
+            if (!$('#modal').hidden) { menuSheetGuard = true; return; }
+            guardArmed = false; ignoreNextPop = true;
+            try { history.back(); } catch (e) { ignoreNextPop = false; }
+          }, 0);
+        }
+      }
     } finally { closing = false; }
   }
 
@@ -1189,7 +1213,11 @@
     st.style.setProperty('--rot', (-14 + Math.random() * 8).toFixed(1) + 'deg');
     st.hidden = false;
     st.classList.remove('go'); void st.offsetWidth; st.classList.add('go');
-    cta.hidden = !isTouch();
+    // Un solo «continuar»: el de la ventanilla (#btnFinish) siempre está a la vista; el de la sala
+    // solo sale en táctil si la ventanilla quedara fuera de la pantalla
+    const dr = rectOf($('#dialog'));
+    const dlgSeen = !!dr && dr.top >= 0 && dr.top + dr.height <= (window.innerHeight || 0) + 1;
+    cta.hidden = !isTouch() || dlgSeen;
     const rm = RM();
     wonTimers.forEach(clearTimeout);
     wonTimers = [later(() => sfx('stamp'), rm ? 0 : 231), later(() => sfx('win'), rm ? 150 : 381)];
@@ -1222,6 +1250,7 @@
   // Capa DOM: con mensajes en cola, tocar la sala o la bandeja solo avanza la cola.
   // (R.click y R.item no pasan por aquí: las soluciones automáticas no cambian.)
   function onHsClick(e) {
+    if (tapThrough(e, modalClosedAt, 350)) return;
     const b = e.currentTarget;
     let x = e.clientX; let y = e.clientY;
     if (e.detail === 0) { const r = rectOf(b); if (r) { x = r.left + r.width / 2; y = r.top + r.height / 2; } }
@@ -1239,6 +1268,7 @@
     if (o.keyboard && queue.length && $('#modal').hidden) { kbOrigin = { kind: 'hs', id }; focusEl($('#btnNextMsg')); }
   }
   function onSlotClick(e) {
+    if (tapThrough(e, modalClosedAt, 350)) return;
     const id = e.currentTarget.dataset.id;
     if (!$('#modal').hidden) return;
     if (queue.length && !pendingWin) { sfx('click'); nextMsg(); nudge(); return; }
@@ -1297,6 +1327,7 @@
     const o = typeof opts === 'function' ? { after: opts } : (opts || {});
     const prev = screen;
     screen = name;
+    if (name !== prev) screenShownAt = tNow();
     if (o.before) o.before();
     const apply = () => {
       $$('.screen').forEach((s) => { s.hidden = s.id !== 'screen-' + name; });
@@ -1614,7 +1645,9 @@
     const anyProgress = SEASONS.some((s) => progressOf(s.id) > 0 || meta.done[s.id]);
     const cont3 = (sid, sv) => {
       const sea = seasonById(sid); const lv = sea.levels[sv.level - 1];
-      cont.innerHTML = `▶ Continuar <small>T${sea.id} · Trámite ${sv.level}: ${lv.title}</small>`;
+      if (!untouched(sv)) cont.innerHTML = `▶ Continuar <small>T${sea.id} · Trámite ${sv.level}: ${lv.title}</small>`;
+      else if (sid === SEASONS[0].id) cont.innerHTML = `▶ Empezar a jugar <small>Temporada ${sea.id} · ${sea.title} · ${sea.levels.length} trámites</small>`;
+      else cont.innerHTML = `▶ Empezar la temporada ${sea.id} <small>${sea.title}</small>`;
       goalP.textContent = `🎯 ${capFirst(goalOf(lv))}`; goalP.hidden = !goalOf(lv);
       heroAction = { leaves: true, run: () => continueGame(sid) };
     };
@@ -1718,7 +1751,7 @@
     const saved = readSave(sid);
     const play = $('#btnSeaPlay');
     const done = !!meta.done[sid];
-    if (saved && !saved.finished) play.innerHTML = `▶ Continuar <small>Trámite ${saved.level}: ${sea.levels[saved.level - 1].title}</small>`;
+    if (saved && !saved.finished && !untouched(saved)) play.innerHTML = `▶ Continuar <small>Trámite ${saved.level}: ${sea.levels[saved.level - 1].title}</small>`;
     else play.innerHTML = done ? '🔁 Volver a jugar la temporada' : '▶ Empezar temporada';
     const grid = $('#levelGrid');
     grid.innerHTML = '';
@@ -1780,7 +1813,15 @@
     const saved = readSave(sid || meta.last);
     if (!saved) return;
     S = Object.assign(newState(saved.season || sid, saved.level), saved);
+    // Partida que nunca llegó a jugarse (abrió la presentación y volvió): es un comienzo, no un
+    // «Expediente recuperado»; vuelve a la presentación y la sala saluda con la línea de cómo jugar
+    if (untouched(saved)) { showIntro(); return; }
     enterPlay(true);
+  }
+
+  // Guardado sin juego: trámite 1 sin tiempo en la sala, sin objetos y sin ganar
+  function untouched(sv) {
+    return !!sv && !sv.finished && sv.level === 1 && !sv.won && (sv.elapsed || 0) === (sv.levelStart || 0) && !(sv.inv || []).length;
   }
 
   function startFromLevel(sid, n) {
@@ -1922,7 +1963,12 @@
 
   function helpModal() {
     const T = isTouch();
-    const side = mq('(min-width: 1024px) and (min-height: 521px)') || mq('(orientation: landscape) and (max-height: 520px)');
+    // Bandeja en la columna de la derecha (HUD) o abajo (vertical, o bajo la sala: ui-play.css §10 b y §11)
+    const under = mq('(orientation: landscape) and (max-height: 520px) and (max-aspect-ratio: 9/5)')
+      || mq('(orientation: landscape) and (max-width: 1023px) and (min-aspect-ratio: 4/3) and (min-height: 521px)')
+      || mq('(min-width: 1024px) and (min-height: 521px) and (orientation: landscape) and (max-aspect-ratio: 3/2)');
+    const side = !under && (mq('(min-width: 1024px) and (min-height: 521px)') || mq('(orientation: landscape) and (max-height: 520px)')
+      || mq('(orientation: landscape) and (max-width: 1023px) and (min-aspect-ratio: 4/3)'));
     const card = (e, h, p) => `<div class="help-card"><span class="help-e" aria-hidden="true">${e}</span><h3>${h}</h3><p>${p}</p></div>`;
     const c = modal({
       title: '📘 Manual del ciudadano (edición abreviada)',
@@ -2079,11 +2125,14 @@
     };
     $('#btnCode').onclick = () => { sfx('click'); loadCodeModal(); };
     $('#btnHelp').onclick = () => { sfx('click'); helpModal(); };
-    $('#btnSeaPlay').onclick = () => { sfx('click'); seasonPlay(); };
+    // El botón principal del talón de cada pantalla ignora el 2.º toque de un doble toque que
+    // la abrió (p. ej. «Siguiente ▶» → «Empezar» en la misma posición)
+    const fresh = (e) => tapThrough(e, screenShownAt, 350);
+    $('#btnSeaPlay').onclick = (e) => { if (fresh(e)) return; sfx('click'); seasonPlay(); };
     $('#btnSeaBack').onclick = () => { sfx('click'); goMenu(); };
-    $('#btnStart').onclick = () => { sfx('click'); enterPlay(false); };
+    $('#btnStart').onclick = (e) => { if (fresh(e)) return; sfx('click'); enterPlay(false); };
     $('#btnIntroMenu').onclick = () => { sfx('click'); openSeason(S.season); };
-    $('#btnNext').onclick = () => { sfx('click'); showIntro(); };
+    $('#btnNext').onclick = (e) => { if (fresh(e)) return; sfx('click'); showIntro(); };
     $('#btnWinMenu').onclick = () => { sfx('click'); openSeason(S.season); };
     $('#btnEndMenu').onclick = () => { sfx('click'); goMenu(); };
     $('#btnEndNext').onclick = () => { sfx('click'); if (endNext) endNext(); };
@@ -2149,7 +2198,7 @@
       focusEl((id && invNodes.get(id)) || firstSlot() || $('#playTitle'));
     };
     $('#scene').addEventListener('click', (e) => {
-      if (e.target.closest('.hs')) return;
+      if (e.target.closest('.hs') || tapThrough(e, modalClosedAt, 350)) return;
       const b = nearestHotspot(e.clientX, e.clientY);
       if (b) activateHs(b.dataset.id, { keyboard: false, x: e.clientX, y: e.clientY, assisted: true });
     });
@@ -2197,12 +2246,13 @@
       const s = swipe; swipe = null;
       s.card.style.translate = '';
       const dt = Math.max(1, Date.now() - s.t);
+      if (tNow() - modalOpenedAt < 400) return;
       if (!cancel && (s.dy > 90 || (s.dy > 24 && s.dy / dt > 0.5))) closeModal('swipe');
     };
     m.addEventListener('pointerup', (e) => endSwipe(e, false));
     m.addEventListener('pointercancel', (e) => endSwipe(e, true));
     m.addEventListener('click', (e) => {
-      if (e.target !== m || !backdropDown) return;
+      if (e.target !== m || !backdropDown || tNow() - modalOpenedAt < 400) return;
       const card = $('.modal-card', m);
       if (card && 'form' in card.dataset) return;
       closeModal('backdrop');

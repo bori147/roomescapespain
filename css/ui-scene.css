@@ -339,7 +339,8 @@
     left: 50%;
     top: 100%;
     z-index: 10;
-    translate: -50% max(4px, .4cqw);
+    /* --tag-shift (ui-fx.js, con la Lupa): mete la píldora en la ventana visible de la sala */
+    translate: calc(-50% + var(--tag-shift, 0px)) max(4px, .4cqw);
     padding: .38em .7em;
     border-radius: var(--r-xs);
     background: rgba(20, 18, 16, .92);
@@ -354,7 +355,7 @@
   }
   .hs:focus-visible::after, .hs.show-label::after { opacity: 1; }
   /* Con foco, la etiqueta baja por debajo del anillo (desplazamiento + grosor) para no taparlo */
-  .hs:focus-visible::after { translate: -50% calc(max(4px, .45cqw) + max(3px, .3cqw) + 3px); }
+  .hs:focus-visible::after { translate: calc(-50% + var(--tag-shift, 0px)) calc(max(4px, .45cqw) + max(3px, .3cqw) + 3px); }
   @media (hover: hover) {
     .hs:hover::after { opacity: 1; }
   }
@@ -364,12 +365,20 @@
 
   /* Lupa: todo lo tocable se señala durante 2,5 s; lo no visto lleva un punto amarillo */
   .scene.reveal .hs::after { display: block; opacity: 1; }
-  /* Con todas las etiquetas a la vez (salas densas: hemiciclo), cada una se recorta para pisar
-     menos a las vecinas; la del objeto con foco o bajo el ratón se lee entera */
+  /* Con todas las etiquetas a la vez (salas densas: hemiciclo), cada una se estrecha para pisar
+     menos a las vecinas y parte en dos líneas equilibradas (sin perder la pista: «Reloj de pared
+     (14:35)»); la del objeto con foco o bajo el ratón se lee entera en una línea */
   .scene.reveal .hs:not(:focus-visible):not(:hover)::after {
-    max-width: max(24cqw, 112px);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    width: max-content;
+    max-width: min(max(42cqw, 132px), var(--tag-max, 100cqw));
     overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    text-wrap: balance;
+    text-align: center;
   }
   .scene.reveal .hs:not(.sign) { filter: drop-shadow(0 0 .8cqw var(--marker)) drop-shadow(0 0 .25cqw var(--marker)); }
   .scene.reveal .hs.sign { box-shadow: 0 0 0 max(3px, .35cqw) var(--marker), var(--e1); }

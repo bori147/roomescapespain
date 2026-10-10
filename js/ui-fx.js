@@ -880,4 +880,65 @@
     }
   });
   on('win', () => { clearIdle(); stopPeek(); dismissCoach(); });
+
+  // ==========================================================
+  // Lupa: cada etiqueta se queda dentro de la ventana visible de la sala
+  // (--tag-shift desplaza la píldora en horizontal; ui-scene.css la lee)
+  // ==========================================================
+  let tagRaf = 0;
+  function clampTags() {
+    tagRaf = 0;
+    const sc = D.getElementById('scene'); const wr = rectOf(D.getElementById('sceneWrap'));
+    if (!sc) return;
+    const on = sc.classList.contains('reveal');
+    // Ninguna etiqueta más ancha que la ventana de la sala (en vertical la sala mide el doble)
+    if (on && wr) sc.style.setProperty('--tag-max', Math.max(80, Math.round(wr.width - 8)) + 'px');
+    else sc.style.removeProperty('--tag-max');
+    $$('.hs', sc).forEach((hs) => {
+      if (!on || !wr || hs.hidden) { hs.style.removeProperty('--tag-shift'); return; }
+      const r = rectOf(hs); if (!r) return;
+      let w = 0;
+      try { w = parseFloat(W.getComputedStyle(hs, '::after').width) || 0; } catch (e) { w = 0; }
+      if (!w) return;
+      const cur = parseFloat(hs.style.getPropertyValue('--tag-shift')) || 0;
+      const cx = r.left + r.width / 2;
+      const lo = wr.left + 4; const hi = wr.right - 4;
+      let shift = 0;
+      // Etiqueta del todo fuera de la ventana (sala desplazada): se queda donde está; si asoma, entra entera
+      if (cx + w / 2 <= wr.left || cx - w / 2 >= wr.right) shift = 0;
+      else if (w > hi - lo) shift = (lo + hi) / 2 - cx;
+      else if (cx - w / 2 < lo) shift = lo - (cx - w / 2);
+      else if (cx + w / 2 > hi) shift = hi - (cx + w / 2);
+      shift = Math.round(shift);
+      if (shift !== Math.round(cur)) {
+        if (shift) hs.style.setProperty('--tag-shift', shift + 'px'); else hs.style.removeProperty('--tag-shift');
+      }
+    });
+  }
+  const queueTags = () => { if (!tagRaf) tagRaf = raf(safe(clampTags)); };
+  function bindTags() {
+    const sc = D.getElementById('scene'); const wrap = D.getElementById('sceneWrap');
+    if (!sc || sc.dataset.fxTags) return;
+    sc.dataset.fxTags = '1';
+    if (typeof W.MutationObserver === 'function') {
+      try { new W.MutationObserver(queueTags).observe(sc, { attributes: true, attributeFilter: ['class'] }); } catch (e) { /* nada */ }
+    }
+    if (wrap) wrap.addEventListener('scroll', () => { if (sc.classList.contains('reveal')) queueTags(); }, { passive: true });
+    W.addEventListener('resize', () => { if (sc.classList.contains('reveal')) queueTags(); });
+  }
+  on('screen', (d) => { if (d.name === 'play') bindTags(); });
+
+  // ==========================================================
+  // Foco de teclado (Tab, «Siguiente» del teclado del móvil): el campo enfocado se desplaza a la
+  // vista respetando scroll-padding (columnas fijas como la del cuadro de créditos de S5-N3)
+  // ==========================================================
+  D.addEventListener('focusin', (e) => {
+    const t = e.target;
+    if (!t || t === D.body || typeof t.scrollIntoView !== 'function' || !t.closest) return;
+    if (!t.closest('#modal input, #modal select, #modal textarea')) return;
+    let fv = false;
+    try { fv = t.matches(':focus-visible'); } catch (x) { fv = false; }
+    if (!fv) return;
+    try { t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: RM() ? 'auto' : 'smooth' }); } catch (x) { /* nada */ }
+  });
 })();

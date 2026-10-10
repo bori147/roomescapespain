@@ -3,7 +3,7 @@
    + sondas automáticas de maquetación en cada captura.
    Uso:  node tests/shots.js [carpeta_salida] [vistas…] [opciones]
      vistas:   movil-320 movil-360 movil-360c movil-se movil-corto movil-safari movil
-               horizontal horizontal-se tablet portatil escritorio   (sin vistas = todas)
+               horizontal horizontal-se tablet tablet-h ventana portatil escritorio   (sin vistas = todas)
                alias: moviles (todas las movil*), horizontales, telefonos (móviles + horizontales)
      --escenas=05,23-27,pausa   solo esas escenas (números, rangos o parte del nombre)
      --motion                   con animaciones (por defecto: prefers-reduced-motion: reduce)
@@ -41,6 +41,9 @@ const VIEWPORTS = {
   horizontal: phone(844, 390),
   'horizontal-se': phone(667, 375),
   tablet: phone(768, 1024),
+  // Tableta Android en horizontal (Fire HD 8, Lenovo M8) y ventana mediana: HUD a la derecha, no apilado
+  'tablet-h': phone(962, 601),
+  ventana: { viewport: { width: 900, height: 600 }, deviceScaleFactor: 1 },
   portatil: { viewport: { width: 1366, height: 650 }, deviceScaleFactor: 1 },
   escritorio: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 };

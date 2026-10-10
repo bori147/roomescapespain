@@ -817,6 +817,9 @@
   #modal .s5-scroll:has(> .s5-bud) {
     position: relative;
     overflow-x: auto;
+    /* El campo enfocado (Tab, «Siguiente» del teclado) nunca queda bajo la columna fija */
+    scroll-padding-left: calc(10em + 14px);
+    scroll-padding-right: 24px;
     overscroll-behavior-x: contain;
     border: 1px solid var(--line);
     border-radius: var(--r-sm);
