@@ -1157,8 +1157,23 @@
      ====================================================== */
   @media not all and (max-width: 760px) and (orientation: portrait) {
     .topbar.in-game .obj-chip { display: none; }
+    .topbar.in-game .game-actions { margin-left: auto; }
     .objective { display: flex; }
     .room-bar .use-chip { grid-column: 1 / 4; }
+  }
+
+  /* Tableta en vertical: sitio de sobra para el título del trámite */
+  @media (min-width: 600px) and (orientation: portrait) {
+    .topbar.in-game .game-info { flex: 1 1 auto; }
+    .topbar.in-game .lvl-title {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      color: var(--ink);
+      font: 600 15px/1.2 var(--ui);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   /* ======================================================
@@ -1168,13 +1183,13 @@
     body[data-screen="play"] {
       --hudW: clamp(208px, 30vw, 260px);
       --hudR: max(8px, env(safe-area-inset-right, 0px));
-      /* El aviso, en la columna del HUD (nunca sobre la sala) */
+      /* El aviso, abajo en la columna del HUD (nunca sobre la sala; si es largo crece hacia arriba) */
       --toast-x: calc(100vw - var(--hudR) - var(--hudW) / 2);
-      --toast-bottom: 40dvh;
+      --toast-bottom: max(8px, env(safe-area-inset-bottom, 0px));
       --toast-maxw: calc(var(--hudW) - 8px);
       grid-template-rows: 0 minmax(0, 1fr);
     }
-    body.cc-open[data-screen="play"] { --toast-bottom: calc(40dvh + var(--cc-h, 0px)); }
+    body.cc-open[data-screen="play"] { --toast-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--cc-h, 0px)); }
     /* La barra superior se recoge en la columna del HUD: fila 1 acciones, fila 2 objetivo */
     .topbar.in-game {
       position: fixed;
@@ -1337,7 +1352,7 @@
 
     body[data-screen="play"] {
       --toast-x: calc((100vw + min(100vw, 1480px)) / 2 - 24px - 170px);
-      --toast-bottom: 40dvh;
+      --toast-bottom: 24px;
       --toast-maxw: 332px;
     }
     body[data-screen="play"] #main { padding: 0; }
