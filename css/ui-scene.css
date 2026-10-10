@@ -419,7 +419,8 @@
     .hs.sign span { overflow-wrap: break-word; }
   }
   @container (max-width: 520px) {
-    .hs.sign b { font-size: max(10px, 1.35cqw); letter-spacing: .01em; }
+    /* El suelo del título es 11 px (§1): aquí solo se aprieta el espaciado */
+    .hs.sign b { letter-spacing: .01em; }
   }
 
   /* Etiqueta pegada a un objeto (p. ej. «DNI», «CERRADO») */

@@ -391,10 +391,11 @@
     top: 45%;
     z-index: 8;
     translate: -50% -50%;
-    font-size: clamp(20px, min(6.4cqw, 11cqh), 60px);
+    /* §7.4 pide clamp(22px, 7.5cqw, 64px); la caja de la sala puede ser más ancha que la sala
+       (horizontal, escritorio), así que también se limita por la altura */
+    font-size: clamp(22px, min(7.5cqw, 11cqh), 64px);
     background: color-mix(in srgb, var(--paper) 88%, transparent);
     mix-blend-mode: normal;
-    opacity: .95;
     box-shadow: 0 6px 18px rgba(26, 24, 20, .18);
   }
   #sceneBox.won { animation: play-thud 160ms var(--ease-out) 231ms 1 both; }
@@ -897,8 +898,8 @@
   @container dlg (max-height: 129px) and (max-width: 340px) {
     #dialog.queued .dlg-face { display: none; }
   }
-  /* Columna estrecha (HUD en horizontal) con algo de altura: la cola baja a su fila, compacta,
-     y quien habla se lee entero */
+  /* Ventanilla estrecha (≤ 300 px) con algo de altura: la cola baja a su fila, compacta, y quien
+     habla se lee entero. En el HUD horizontal lo decide la sección 10, solo por anchura */
   @container dlg (max-height: 159px) and (min-height: 130px) and (max-width: 300px) {
     .dlg-actions { grid-area: act; justify-self: end; margin: 4px 0 0; }
     #dialog.queued .dlg-log { display: grid; }
@@ -1262,6 +1263,9 @@
       row-gap: 4px;
       grid-template-rows: max(0px, calc(var(--topH, 88px) - 10px)) auto minmax(64px, 1fr) 82px;
     }
+    /* …y la Lupa espera a que se decida (salvo con un objeto en la mano: «Usando…» se queda) para que
+       la ventanilla tenga sitio para quién habla, una línea de texto y la cola */
+    body.cc-open[data-screen="play"] .room-bar:not(.using) { display: none; }
     .objective { display: none; }
     .scene-box { grid-row: 1 / -1; align-items: flex-start; }
     .scene { width: min(100cqw, 100cqh * 16 / 9); height: auto; aspect-ratio: 16 / 9; }
@@ -1276,6 +1280,19 @@
     .lupa-btn { margin-left: auto; }
 
     .dlg-body { font-size: 15px; line-height: 1.45; }
+    /* Ventanilla del HUD: la columna es estrecha (≤ 240 px de contenido) y aquí la altura no decide.
+       Con cola, «Saltar» + «Siguiente · 1/3» bajan siempre a su fila (en una línea) y la cabecera
+       queda entera para la cara y quien habla; el registro vuelve en cuanto se vacía la cola. */
+    @container dlg (max-height: 159px) {
+      .dlg-actions { grid-area: act; justify-self: end; margin: 3px 0 0; }
+      #dialog.queued .dlg-face:not(:empty) { display: grid; }
+      #dialog.queued .dlg-head { padding-right: 0; }
+      #dialog.queued .dlg-log { display: none; }
+      .dlg-head { gap: 4px; }
+      #dialog[data-skin="speech"] .dlg-who::before { margin-right: 4px; }
+    }
+    #dialog { padding-right: 10px; }
+    .dlg-actions .btn { flex: none; }
 
     /* Bandeja: cabecera visible y rejilla de 3 con desplazamiento propio */
     #tray {
