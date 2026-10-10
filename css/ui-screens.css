@@ -25,7 +25,6 @@
     color: var(--ink);
     /* Teléfono: el papel ocupa la pantalla y llega hasta el pie */
     min-height: calc(100dvh - var(--topH, 48px));
-    view-transition-name: paper;
   }
   /* Menú y temporada son «ventanilla»: lienzo. Intro, Resolución y final son papel del mundo. */
   .paper.menu, .paper.season-sheet { --sheet: var(--canvas); }
@@ -253,14 +252,14 @@
       column-gap: 64px;
       align-items: start;
     }
-    .menu-hero {
-      position: sticky;
-      top: calc(var(--topH, 56px) + 32px);
-      padding-top: 8px;
-    }
+    .menu-hero { padding-top: 8px; }
     .menu-seasons { margin-top: 0; }
     .paper .menu-seasons .grid-title { margin-top: 8px; }
     .disclaimer { grid-column: 1 / -1; }
+  }
+  /* La portada acompaña a la lista al desplazar, si cabe entera en la ventana */
+  @media (min-width: 1100px) and (min-height: 640px) {
+    .menu-hero { position: sticky; top: calc(var(--topH, 56px) + 32px); }
   }
 
   /* Móvil en horizontal: portada en dos columnas, sello a la derecha del título */
@@ -1221,9 +1220,21 @@
   ::view-transition-group(root),
   ::view-transition-old(root),
   ::view-transition-new(root) { animation-duration: 200ms; }
-  ::view-transition-group(paper) { animation-duration: 280ms; animation-timing-function: var(--ease-out); }
-  ::view-transition-old(paper) { animation: screen-paper-out 180ms var(--ease-in) both; }
-  ::view-transition-new(paper) { animation: screen-paper-in 280ms var(--ease-out) both; }
+  /* Cada pantalla tiene su folio con nombre propio: el viejo se retira y el nuevo entra, sin que el
+     navegador estire uno para convertirlo en el otro (el menú mide 1120 px y el resto 720). */
+  #screen-menu .paper { view-transition-name: paper-menu; }
+  #screen-season .paper { view-transition-name: paper-season; }
+  #screen-intro .paper { view-transition-name: paper-intro; }
+  #screen-win .paper { view-transition-name: paper-win; }
+  #screen-end .paper { view-transition-name: paper-end; }
+  ::view-transition-old(paper-menu), ::view-transition-old(paper-season), ::view-transition-old(paper-intro),
+  ::view-transition-old(paper-win), ::view-transition-old(paper-end) {
+    animation: screen-paper-out 180ms var(--ease-in) both;
+  }
+  ::view-transition-new(paper-menu), ::view-transition-new(paper-season), ::view-transition-new(paper-intro),
+  ::view-transition-new(paper-win), ::view-transition-new(paper-end) {
+    animation: screen-paper-in 280ms var(--ease-out) both;
+  }
   @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
     ::view-transition-old(*),
