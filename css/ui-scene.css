@@ -408,6 +408,20 @@
     line-height: 1;
   }
 
+  /* Salas estrechas (móvil, HUD en horizontal): las placas no pasan mucho de su ancho de diseño
+     (--sw) y parten la línea, para no montarse sobre la vecina ni salirse por el borde */
+  @container (max-width: 800px) {
+    .hs.sign {
+      max-width: max(calc(var(--sw, 12cqw) + 4cqw), 84px);
+      padding-inline: max(4px, .6cqw);
+    }
+    .hs.sign b { letter-spacing: .02em; overflow-wrap: break-word; text-wrap: balance; }
+    .hs.sign span { overflow-wrap: break-word; }
+  }
+  @container (max-width: 520px) {
+    .hs.sign b { font-size: max(10px, 1.35cqw); letter-spacing: .01em; }
+  }
+
   /* Etiqueta pegada a un objeto (p. ej. «DNI», «CERRADO») */
   .hs-tag {
     display: block;

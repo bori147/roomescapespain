@@ -253,8 +253,18 @@
   }
   /* Con un modal abierto la sala se congela (el teclado no la reordena) */
   body.room-frozen[data-screen="play"] { height: var(--freezeH, 100dvh); }
-  /* Con el aviso de cookies a la vista, el juego termina encima de él */
-  body.cc-open[data-screen="play"] { height: calc(100vh - var(--cc-h, 0px)); height: calc(100dvh - var(--cc-h, 0px)); --sceneMin: 72px; }
+  /* Con el aviso de cookies a la vista, el juego termina encima de él. En pantallas bajas cede
+     primero la ventanilla (hasta 68 px: cabecera y una línea) y luego la sala (hasta 72 px), para
+     que ventanilla y bandeja quepan siempre por encima del aviso */
+  body.cc-open[data-screen="play"] {
+    --sceneMin: 72px;
+    --dlgH: clamp(68px, min(16vh, calc(100vh - var(--cc-h, 0px) - var(--topH, 48px) - var(--barH) - var(--trayH) - 150px)), 132px);
+    --dlgH: clamp(68px, min(16dvh, calc(100dvh - var(--cc-h, 0px) - var(--topH, 48px) - var(--barH) - var(--trayH) - 150px)), 132px);
+    height: calc(100vh - var(--cc-h, 0px));
+    height: calc(100dvh - var(--cc-h, 0px));
+  }
+  /* Modal abierto con el aviso a la vista: también congelada (el teclado no reordena la sala) */
+  body.cc-open.room-frozen[data-screen="play"] { height: calc(var(--freezeH, 100dvh) - var(--cc-h, 0px)); }
   body[data-screen="play"] > #topbar { grid-row: 1; }
   body[data-screen="play"] > #main { grid-row: 2; }
   body[data-screen="play"] :is(.site-footer, #kofiFloat) { display: none; }
@@ -883,6 +893,10 @@
     #dialog.queued .dlg-head { padding-right: 0; }
     .dlg-finish { --btn-h: 44px; min-height: 44px; margin-top: 6px; }
   }
+  /* Ventanilla baja y estrecha (320–360 px) con cola: la cara se aparta para que quien habla se lea */
+  @container dlg (max-height: 159px) and (max-width: 340px) {
+    #dialog.queued .dlg-face { display: none; }
+  }
   /* Columna estrecha (HUD en horizontal) con algo de altura: la cola baja a su fila, compacta,
      y quien habla se lee entero */
   @container dlg (max-height: 159px) and (min-height: 130px) and (max-width: 300px) {
@@ -966,7 +980,7 @@
   /* Casilla: 4,6 por fila para que siempre asome la siguiente */
   .slot {
     position: relative;
-    flex: 0 0 clamp(48px, calc((100% - 4 * 6px) / 4.6), 96px);
+    flex: 0 0 clamp(58px, calc((100% - 4 * 6px) / 4.6), 96px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -994,9 +1008,11 @@
     overflow: hidden;
     font: 500 12px/1.2 var(--ui);
     text-align: center;
+    /* Con diccionario (móviles reales) se parte con guion; si no, solo la palabra que no cabe */
     hyphens: auto;
     -webkit-hyphens: auto;
-    overflow-wrap: anywhere;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
   @media (hover: hover) {
     .slot:not(.empty):not(.sel):hover { border-color: var(--line-strong); box-shadow: var(--e2); translate: 0 -1px; }
@@ -1163,8 +1179,10 @@
     .room-bar .use-chip { grid-column: 1 / 4; }
   }
 
-  /* Tableta en vertical: sitio de sobra para el título del trámite */
+  /* Tableta en vertical: sitio de sobra para el título del trámite, y la ventanilla puede crecer
+     hasta 320 px (sin un hueco grande sobre la bandeja) */
   @media (min-width: 600px) and (orientation: portrait) {
+    body[data-screen="play"] { --dlgMax: 320px; }
     .topbar.in-game .game-info { flex: 1 1 auto; }
     .topbar.in-game .lvl-title {
       display: block;
@@ -1191,6 +1209,11 @@
       grid-template-rows: 0 minmax(0, 1fr);
     }
     body.cc-open[data-screen="play"] { --toast-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--cc-h, 0px)); }
+    /* Muy bajas (≤ 380 px) y con el aviso: el objetivo se recoge (sigue en la ventanilla en reposo
+       y en «Expediente en pausa») para que quepan ventanilla y bandeja */
+    @media (max-height: 380px) {
+      body.cc-open .topbar.in-game .obj-chip { display: none; }
+    }
     /* La barra superior se recoge en la columna del HUD: fila 1 acciones, fila 2 objetivo */
     .topbar.in-game {
       position: fixed;
@@ -1230,7 +1253,15 @@
       column-gap: 12px;
       row-gap: 6px;
       grid-template-areas: "scene ." "scene bar" "scene dialog" "scene tray";
-      grid-template-rows: max(0px, calc(var(--topH, 88px) - 10px)) auto minmax(120px, 1fr) minmax(0, auto);
+      /* La bandeja nunca baja de cabecera + una fila (82 px); la ventanilla se queda el resto */
+      grid-template-rows: max(0px, calc(var(--topH, 88px) - 10px)) auto minmax(120px, 1fr) minmax(82px, auto);
+    }
+    /* Aviso de cookies a la vista: la bandeja se queda en una fila (con desplazamiento propio) y la
+       ventanilla, con lo que sobra, nunca baja de 64 px */
+    body.cc-open[data-screen="play"] #main { padding-bottom: 4px; }
+    body.cc-open[data-screen="play"] .stage {
+      row-gap: 4px;
+      grid-template-rows: max(0px, calc(var(--topH, 88px) - 10px)) auto minmax(64px, 1fr) 82px;
     }
     .objective { display: none; }
     .scene-box { grid-row: 1 / -1; align-items: flex-start; }
@@ -1367,8 +1398,10 @@
       grid-template-columns: minmax(0, 1fr) 340px;
       column-gap: 24px;
       row-gap: 12px;
-      grid-template-areas: "scene obj" "scene bar" "scene dialog" "scene tray";
-      grid-template-rows: auto auto minmax(140px, 1fr) minmax(0, auto);
+      /* La columna va arriba, como la sala: la ventanilla crece hasta 320 px, la bandeja va justo
+         debajo (su borde superior no se mueve) y el sitio que sobra queda abajo */
+      grid-template-areas: "scene obj" "scene bar" "scene dialog" "scene tray" "scene .";
+      grid-template-rows: auto auto minmax(140px, 320px) minmax(120px, auto) minmax(0, 1fr);
     }
     .scene-box { grid-row: 1 / -1; align-items: flex-start; }
     .scene { width: min(100cqw, 100cqh * 16 / 9); height: auto; aspect-ratio: 16 / 9; }
@@ -1383,10 +1416,10 @@
     .lupa-btn { margin-left: auto; }
 
     /* La ventanilla no crece más de lo que se lee; la bandeja queda abajo, quieta */
-    #dialog { align-self: start; height: 100%; max-height: 320px; padding: 12px 16px 14px 14px; }
+    #dialog { padding: 12px 16px 14px 14px; }
 
     #tray {
-      align-self: end;
+      align-self: stretch;
       display: flex;
       flex-direction: column;
       padding-bottom: 0;
