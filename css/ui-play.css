@@ -7,7 +7,8 @@
      · apilado ............ por defecto (vertical, tabletas, ventanas pequeñas)
      · apilado con plano .. (max-width:760px) and (orientation:portrait): sala desplazable
      · horizontal ......... (orientation:landscape) and (max-height:520px): HUD a la derecha
-     · escritorio ......... (min-width:1024px) and (min-height:521px): HUD de 340 px
+     · escritorio ......... (min-width:1024px) and (min-height:521px) and (orientation:landscape): HUD de 340 px
+                            (una tableta grande en vertical, 1024 × 1366, va apilada: sala de 960 × 540 en vez de 612 × 344)
    El juego nunca desplaza la página. Todo vive en @layer play;
    las animaciones llevan el prefijo play-.
    ========================================================== */
@@ -1349,7 +1350,7 @@
   }
 
   /* Título «Bandeja · 7» visible en horizontal y escritorio */
-  @media (orientation: landscape) and (max-height: 520px), (min-width: 1024px) and (min-height: 521px) {
+  @media (orientation: landscape) and (max-height: 520px), (min-width: 1024px) and (min-height: 521px) and (orientation: landscape) {
     .inv-title {
       position: static;
       width: auto;
@@ -1367,7 +1368,7 @@
 
 
   /* Rejilla de 3 (horizontal y escritorio): los huecos solo completan la última fila */
-  @media (orientation: landscape) and (max-height: 520px), (min-width: 1024px) and (min-height: 521px) {
+  @media (orientation: landscape) and (max-height: 520px), (min-width: 1024px) and (min-height: 521px) and (orientation: landscape) {
     .inventory > .slot.empty:nth-child(3n+1):not(:first-child),
     .inventory > .slot.empty:nth-child(3n+1):not(:first-child) ~ .slot.empty { display: none; }
     /* Bandeja vacía: basta con el texto */
@@ -1377,7 +1378,7 @@
   /* ======================================================
      11. ESCRITORIO (≥ 1024 × ≥ 521): HUD de 340 px
      ====================================================== */
-  @media (min-width: 1024px) and (min-height: 521px) {
+  @media (min-width: 1024px) and (min-height: 521px) and (orientation: landscape) {
     .topbar { min-height: calc(56px + env(safe-area-inset-top, 0px)); gap: 6px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
     /* En juego: sello + T3 6/10 · título · ⏱ … acciones con etiqueta */
     .topbar.in-game .brand { display: flex; flex: none; margin-right: 6px; padding-left: 0; }
