@@ -479,6 +479,8 @@
     schedule(); // por si restaurar un borrador hizo que la temporada repintara algo
     const st = card.querySelector('.modal-status');
     if (st) {
+      // Atajo solo de puntero (la tira es un <p role=status>, no un control): el teclado y los
+      // lectores ya reciben el veredicto entero en la propia tira y en el cuerpo.
       st.addEventListener('click', () => {
         const v = cur && cur.verdict;
         if (v && v.isConnected && typeof v.scrollIntoView === 'function') { try { v.scrollIntoView({ block: 'nearest', behavior: rm() ? 'auto' : 'smooth' }); } catch (e) { /* nada */ } }

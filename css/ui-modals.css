@@ -88,7 +88,7 @@
   }
   .modal-titles { flex: 1 1 auto; min-width: 0; padding-top: 6px; }
   .modal-kicker {
-    margin: 0 0 2px;
+    margin: 0 0 6px;  /* el anillo de foco del h2 (2 px + 3 px) no pisa el antetítulo */
     color: var(--red-ink);
     font: 600 var(--fs-cap)/1.3 var(--ui);
     letter-spacing: .08em;
