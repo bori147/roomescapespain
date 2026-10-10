@@ -286,8 +286,26 @@
     mine.timers.push(setTimeout(() => {
       if (cur !== mine || mine.verdict !== el) return;
       pause(() => { st.textContent = text; });
-      watchVerdict(el);
     }, 50));
+    // La tira visible solo se decide cuando el desplazamiento ha terminado (si no, la tira
+    // aparece a mitad del scroll suave, encoge el cuerpo y el veredicto se queda a medias)
+    let done = false;
+    const settle = () => {
+      if (done) return;
+      done = true;
+      try { mine.body.removeEventListener('scrollend', settle); } catch (e) { /* nada */ }
+      raf(() => {
+        if (cur !== mine || mine.verdict !== el) return;
+        // Si algo se ha movido mientras tanto, un último ajuste (instantáneo) antes de decidir
+        if (laidOut(el) && typeof el.scrollIntoView === 'function') {
+          const r = el.getBoundingClientRect(); const b = mine.body.getBoundingClientRect();
+          if (r.bottom > b.bottom + 1 || r.top < b.top - 1) { try { el.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) { /* nada */ } }
+        }
+        watchVerdict(el);
+      });
+    };
+    if ('onscrollend' in window) mine.body.addEventListener('scrollend', settle);
+    mine.timers.push(setTimeout(settle, rm() ? 80 : 520));
   }
   function watchVerdict(el) {
     if (!cur) return;

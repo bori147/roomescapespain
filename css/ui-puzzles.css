@@ -703,13 +703,24 @@
   /* S4-N10: el texto cifrado se parte en líneas (en el resguardo de P1 es una sola línea) */
   #modal .code-box code.s4-ct { white-space: normal; overflow-wrap: anywhere; font: 500 .9375rem/1.55 var(--mono); letter-spacing: .06em; user-select: text; -webkit-user-select: text; }
   /* S2-N9: «📎 Adjuntar» no se parte en dos líneas */
-  #modal .s2-row > .btn { flex: none; white-space: nowrap; }
+  #modal .s2-row { flex-wrap: wrap; }
+  #modal .s2-row > .btn { flex: none; white-space: nowrap; margin-left: auto; }
+  /* S2-N5: el plano del local (6 × 48 px + rótulos) no cabe en 320 px: casillas fluidas */
+  @container mbody (max-width: 340px) {
+    #modal .s2-grid { grid-template-columns: 16px repeat(6, minmax(0, 1fr)); gap: 3px; }
+    #modal .s2-grid .tile { width: auto; height: auto; aspect-ratio: 1; font-size: 1.125rem; }
+  }
 
   /* Sin opacidad para atenuar texto */
   .s3-docs .opt[disabled] { opacity: 1; }
   .s5-enm-r.done { opacity: 1; background: var(--sunken); color: var(--ink-2); }
   .s5-enm-r { min-height: 44px; }
   .s5-enm-b .btn { min-height: 44px; padding: 0 12px; font-size: var(--fs-sm); }
+  /* En estrecho, Aprobar / Rechazar bajan a su propia fila (dos mitades) */
+  @container mbody (max-width: 400px) {
+    #modal .s5-enm-r { flex-wrap: wrap; }
+    #modal .s5-enm-b { flex: 1 1 100%; display: grid; grid-template-columns: 1fr 1fr; }
+  }
 
   /* Selección coherente en las temporadas (sin sombras desplazadas) */
   .s3-lo-grid .tile.on { background: var(--marker-soft); color: var(--ink); box-shadow: 0 0 0 1px var(--ink); border-color: var(--ink); }
