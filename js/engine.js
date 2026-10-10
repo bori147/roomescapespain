@@ -313,9 +313,9 @@
   let kbOrigin = null;   // { kind: 'hs'|'slot', id } del toque por teclado que abrió una cola
   let idleSecs = 0;
   const NUDGES = [
-    'El funcionario carraspea. ¿Ha examinado usted todo lo de la sala?',
+    'El funcionario carraspea: —¿Ha examinado usted todo lo de la sala?',
     'Consejo de la casa: los objetos de tu bandeja se pueden combinar entre sí.',
-    'Pruebe la 🔍 Lupa: señala todo lo que se puede tocar.',
+    'Prueba la 🔍 Lupa: señala todo lo que se puede tocar.',
   ];
   const STUCK = '¿Atascado/a? La Ventanilla de Pistas 💡 atiende sin cita previa.';
   const DEFAULT_FACE = { speech: '💬', narration: '👀', item: '🎒', system: '📎' };
@@ -401,7 +401,7 @@
     if (idleSecs >= 45) return NUDGES[Math.floor((idleSecs - 45) / 20) % NUDGES.length];
     if (S.season === 1 && S.level <= 2) {
       return isTouch()
-        ? 'Toca los objetos de la sala para examinarlos. Para usar algo de tu bandeja, tócalo y luego toca dónde usarlo.'
+        ? 'Toca los objetos de la sala para examinarlos. Para usar algo de tu bandeja: tócalo y toca dónde.'
         : 'Haz clic en los objetos de la sala para examinarlos. Para usar algo de tu bandeja, selecciónalo y luego haz clic donde quieras usarlo.';
     }
     return `🎯 ${capFirst(goalOf(L))}`;
@@ -563,6 +563,8 @@
   // que aún sube) ni, tras cerrarla, activar lo que hay debajo en la sala o la bandeja
   let modalOpenedAt = -1e9; let modalClosedAt = -1e9; let screenShownAt = -1e9;
   const tNow = () => (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now());
+  // Hora en que ocurrió un evento, en la escala de tNow() (si el navegador da otra escala, la de ahora)
+  const evTime = (e) => { const t = e && e.timeStamp; const n = tNow(); return t > 0 && t <= n ? t : n; };
   const tapThrough = (e, t, ms) => !!e && e.detail !== 0 && tNow() - t < ms;
   let menuSheetGuard = false; // la hoja abierta en el menú puso su propia guardia de historial
   function focusEl(e) {
@@ -802,7 +804,7 @@
       const v = numeric ? val : inp.value.trim();
       if (!v) {
         sfx('bad');
-        msg.textContent = 'Sin papeles no hay trámite. Introduzca un valor.';
+        fail('—Sin papeles no hay trámite. Escriba algo, por favor.');
         if (inp) focusEl(inp);
         return;
       }
@@ -1511,6 +1513,8 @@
     $('#winCarry').innerHTML = carryHtml(L, 'Te llevas al siguiente trámite');
     $('#winCode').textContent = makeCode(S.season, S.level, S.totalHints);
     const wc = $('#winCopy'); clearTimeout(wc._t); wc.textContent = 'Copiar'; delete wc.dataset.label;
+    const wsh = $('#winShare'); wsh.textContent = shareLabel();
+    if (canShare()) wsh.removeAttribute('aria-label'); else wsh.setAttribute('aria-label', 'Con enlace: copiar el código y el enlace del juego');
     $('#winCopyHint').hidden = true;
     const ios = isIOS() && !isStandalone();
     const note = $('#winIosNote');
@@ -1655,9 +1659,17 @@
     if (native) return navigator.share(data).then(() => 'shared', (e) => (e && e.name === 'AbortError' ? 'aborted' : copy()));
     return copy();
   }
+  // Sin Web Share el botón copia el código con el enlace: que no parezca un segundo «Copiar»
+  // (corto, cabe junto a «Copiar» a 320 px; el nombre accesible lo dice entero)
+  const canShare = () => typeof navigator.share === 'function';
+  const shareLabel = () => (canShare() ? 'Enviármelo' : 'Con enlace');
+  const shareAria = () => (canShare() ? '' : ' aria-label="Con enlace: copiar el código y el enlace del juego"');
   function shareCode(code) {
+    // Con el enlace: en el otro móvil u ordenador hay que encontrar el juego para usar el código
     const text = `Mi código de expediente de ${BRAND}: ${code}`;
-    share({ title: BRAND, text }, text).then((r) => {
+    const withUrl = `${text}
+Sigue aquí: ${SITE_URL}`;
+    share({ title: BRAND, text, url: SITE_URL }, withUrl).then((r) => {
       if (r === 'copied') notify('Copiado. Pégalo donde quieras (por triplicado).');
       else if (r === 'failed') notify('No se ha podido copiar. Apunta el código a mano (como en 1987).');
     });
@@ -1933,7 +1945,7 @@
       title: '📂 Tu código de expediente',
       kind: 'system', cls: 'save', sys: true, pauseClock: true,
       html: `<p>Tu partida ya se guarda sola en este navegador. Este código sirve para seguir en otro móvil u ordenador.</p>
-        <div class="code-box"><code id="saveCode">${code}</code><button type="button" class="btn" id="copyCode" data-sys>${ico('i-copy')}Copiar</button><button type="button" class="btn" id="shareCode" data-sys>${ico('i-share')}Enviármelo</button></div>
+        <div class="code-box"><code id="saveCode">${code}</code><button type="button" class="btn" id="copyCode" data-sys>${ico('i-copy')}Copiar</button><button type="button" class="btn" id="shareCode" data-sys${shareAria()}>${ico('i-share')}${shareLabel()}</button></div>
         <p class="small copy-hint" id="saveCopyHint" hidden></p>
         <p class="small">El código te lleva al inicio del trámite ${S.level} de la temporada ${S.season} («${L.title}»).</p>
         ${isIOS() && !isStandalone() ? '<p class="small ios-note">En iPhone, Safari puede archivar tu partida si pasas una semana sin jugar: guarda este código.</p>' : ''}`,
@@ -2018,7 +2030,7 @@
         <ul class="help-about">
           <li>📚 <b>${BRAND}</b> es un <i lang="en">room escape</i> de 5 temporadas con 10 trámites cada una. Cada temporada es más difícil que la anterior y se desbloquea al superar la previa.</li>
           <li>💾 Tu partida se guarda sola en este navegador.</li>
-          <li>🎫 Con tu código de expediente puedes seguir en otro móvil u ordenador: lo encontrarás en «Expediente» durante la partida y al completar cada trámite.</li>
+          <li>🎫 Con tu código de expediente puedes seguir en otro móvil u ordenador: lo encontrarás durante la partida en la carpeta <span class="help-btn">${ico('i-folder')}«Expediente»</span> (arriba a la derecha) y al completar cada trámite.</li>
           ${isIOS() ? '<li>🍏 En iPhone, Safari puede archivar tu partida si pasas una semana sin jugar: guarda tu código de expediente.</li>' : ''}
         </ul>
         <p><button type="button" class="linklike" id="helpTips" data-sys>Repetir los consejos</button></p>
@@ -2269,8 +2281,15 @@
     // Sin 'cancel' previo solo llega aquí el «atrás» de Android (CloseWatcher)
     m.addEventListener('close', () => { if (!m.open && !m.hidden) closeModal('back'); });
     let backdropDown = false; let swipe = null;
+    // Medio segundo de gracia tras abrir: cubre un doble toque lento (el móvil ocupado lo alarga) y
+    // la entrada de la hoja (260 ms)
+    const BACKDROP_GRACE = 500;
     m.addEventListener('pointerdown', (e) => {
-      backdropDown = e.target === m;
+      // Un doble toque sin querer: el segundo cae en el telón recién abierto. Solo cuenta como «tocar
+      // fuera» el gesto que empieza cuando la hoja ya ha entrado (Esc, ✕, atrás y deslizar no cambian).
+      // Se mide con la hora del gesto (e.timeStamp), no la de atenderlo: con el móvil ocupado pintando la
+      // hoja, el segundo toque se atiende tarde y parecería posterior a la entrada.
+      backdropDown = e.target === m && evTime(e) - modalOpenedAt >= BACKDROP_GRACE;
       const head = e.target.closest && e.target.closest('.modal-head, .modal-grab');
       if (!head || e.pointerType === 'mouse' || e.target.closest('button, a, input')) return;
       const card = $('.modal-card', m);
@@ -2293,7 +2312,7 @@
     m.addEventListener('pointerup', (e) => endSwipe(e, false));
     m.addEventListener('pointercancel', (e) => endSwipe(e, true));
     m.addEventListener('click', (e) => {
-      if (e.target !== m || !backdropDown || tNow() - modalOpenedAt < 400) return;
+      if (e.target !== m || !backdropDown || evTime(e) - modalOpenedAt < BACKDROP_GRACE) return;
       const card = $('.modal-card', m);
       if (card && 'form' in card.dataset) return;
       closeModal('backdrop');
@@ -2383,6 +2402,8 @@
   syncMute();
   renderMenu();
   show('menu', { title: TITLE_MENU });
+  // El menú estático ya respondía a la vista; desde aquí también al toque (css/ui-screens.css)
+  document.documentElement.classList.remove('booting');
   if (resumeNow) continueGame(meta.last);
   booted = true;
   track('app_open', { has_save: !!meta.last, seasons_done: Object.keys(meta.done).filter((k) => meta.done[k]).length });

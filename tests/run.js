@@ -388,7 +388,8 @@ function globalChecks() {
 
   // 6. Orden de carga de index.html (spec §4): las capas las declara la primera hoja; los realzadores
   //    (ui-puzzles, ui-fx) se cargan después de las temporadas y antes del motor, como scripts clásicos.
-  const cssOrder = [...idx.matchAll(/<link\b[^>]*rel=["']?stylesheet[^>]*>/gi)].map((m) => (/href=["']([^"'?#]+)/.exec(m[0]) || [])[1]).filter(Boolean);
+  //    Las que no bloquean la pintura (media="print" + onload) repiten su enlace en <noscript>: cuenta la primera aparición.
+  const cssOrder = [...new Set([...idx.matchAll(/<link\b[^>]*rel=["']?stylesheet[^>]*>/gi)].map((m) => (/href=["']([^"'?#]+)/.exec(m[0]) || [])[1]).filter(Boolean))];
   const CSS_WANT = ['css/tokens.css', 'css/style.css', 'css/ui-components.css', 'css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css', 'css/ui-fx.css', 'css/consent.css'];
   const cssKnown = cssOrder.filter((f) => CSS_WANT.includes(f));
   const cssExpected = CSS_WANT.filter((f) => cssKnown.includes(f));

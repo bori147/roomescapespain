@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-screen="menu">
+<html lang="es" data-screen="menu" class="booting">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
@@ -28,9 +28,12 @@
   <link rel="stylesheet" href="css/ui-scene.css?v=7">
   <link rel="stylesheet" href="css/ui-play.css?v=7">
   <link rel="stylesheet" href="css/ui-screens.css?v=7">
-  <link rel="stylesheet" href="css/ui-modals.css?v=7">
-  <link rel="stylesheet" href="css/ui-puzzles.css?v=7">
-  <link rel="stylesheet" href="css/ui-fx.css?v=7">
+  <!-- Hojas que solo hacen falta con el motor en marcha (hojas, puzles, efectos): no bloquean la primera
+       pintura. Llegan mucho antes de que arranque engine.js y caen en su capa (tokens.css declara el orden). -->
+  <link rel="stylesheet" href="css/ui-modals.css?v=7" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/ui-puzzles.css?v=7" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/ui-fx.css?v=7" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="css/ui-modals.css?v=7"><link rel="stylesheet" href="css/ui-puzzles.css?v=7"><link rel="stylesheet" href="css/ui-fx.css?v=7"></noscript>
   <link rel="stylesheet" href="css/consent.css?v=7">
   <link rel="icon" type="image/svg+xml" href="img/sello.svg">
   <meta name="theme-color" content="#F4F1EA">

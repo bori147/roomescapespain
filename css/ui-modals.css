@@ -827,6 +827,9 @@
   .modal-body .help-about { margin: 0 0 12px; padding: 0; list-style: none; font: 400 var(--fs-sm)/1.5 var(--ui); color: var(--ink-2); }
   .help-about li { margin-bottom: 8px; padding-left: 1.8em; text-indent: -1.8em; }
   .help-about b { color: var(--ink); }
+  /* La carpeta del botón «Expediente», tal cual se ve en la barra (en el móvil, sin la palabra) */
+  .help-about .help-btn { white-space: nowrap; }
+  .help-about .ico { width: 1.25em; height: 1.25em; margin-right: 2px; vertical-align: -.25em; color: var(--ink); }
   #helpTips {
     display: inline-flex;
     align-items: center;

@@ -206,10 +206,33 @@
   .menu-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 8px;
+    gap: 0 20px;
     margin: 8px 0 0;
   }
-  .menu-links .btn.ghost { gap: 8px; }
+  /* Cada enlace alinea su texto con el del CTA, también el que baja a otra línea
+     (el hueco de 20 px menos los 12 px que recupera cada uno = 8 px a la vista) */
+  .menu-links .btn.ghost { gap: 8px; margin-left: -12px; }
+
+  /* Antes de que arranque el motor (html.booting, lo quita engine.js): el menú ya se ve pero aún no
+     responde. El CTA se muestra como esqueleto (ni toques que se pierden ni la etiqueta equivocada
+     a quien ya tiene partida) y los enlaces no reaccionan todavía. */
+  html.booting :is(.menu-hero .btn.hero, .menu-links .btn) { pointer-events: none; }
+  html.booting .menu-hero .btn.hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--sunken);
+    border-color: transparent;
+    box-shadow: none;
+    color: transparent;
+  }
+  html.booting .menu-hero .btn.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+    translate: -100% 0;
+    animation: k-skel 1.4s var(--ease-std) 3;
+  }
   .menu-links .btn.ghost .ico { width: 20px; height: 20px; }
   .menu-progress {
     margin: 12px 0 0;

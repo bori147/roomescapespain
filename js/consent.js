@@ -250,6 +250,10 @@
     });
     if (!read()) showBanner();
   }
+  // El aviso entra ya, al ejecutarse este script (va al final del <body>), y no al DOMContentLoaded:
+  // así no llega tras pintar el menú ni lo recoloca (CLS) mientras bajan el resto de scripts.
+  // showBanner() no duplica el aviso cuando init() vuelve a pedirlo.
+  if (document.body && !read()) showBanner();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
