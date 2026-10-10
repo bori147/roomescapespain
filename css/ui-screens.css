@@ -151,16 +151,17 @@
     font-size: .8em;
     line-height: 1.05;
     letter-spacing: .01em;
-    opacity: .92;
+    /* Tinta casi plena: es texto del título, no un adorno (contraste >= 4.5:1) */
+    opacity: 1;
     mix-blend-mode: multiply;
     transform: rotate(var(--rot));
-    --ink-floor: rgba(0, 0, 0, .7);
+    --ink-floor: rgba(0, 0, 0, .88);
     -webkit-mask-image: linear-gradient(var(--ink-floor), var(--ink-floor)), var(--ink-mask);
     mask-image: linear-gradient(var(--ink-floor), var(--ink-floor)), var(--ink-mask);
     -webkit-mask-size: 100% 100%, 140px 140px;
     mask-size: 100% 100%, 140px 140px;
     /* Cae una vez por carga de página (sin sonido) */
-    animation: k-stamp-hit var(--d-slow) var(--ease-out) 260ms both;
+    animation: screen-wm-hit var(--d-slow) var(--ease-out) 260ms both;
   }
   .wordmark.played .wm-stamp { animation: none; }
 
@@ -242,6 +243,13 @@
   }
   @media (max-width: 599px) and (max-height: 620px) {
     body.cc-open .menu-hero .kicker { display: none; }
+    body.cc-open .menu-hero .tag { margin-top: 6px; }
+    body.cc-open .btn.hero { margin-top: 8px; }
+    /* La taza baja y se arrima al borde: libera el pie del CTA */
+    body.cc-open[data-screen="menu"] #kofiFloat {
+      right: max(8px, env(safe-area-inset-right, 0px));
+      bottom: calc(6px + var(--cc-h, 0px));
+    }
   }
 
   /* Escritorio ancho: dos columnas, portada fija a la izquierda */
@@ -429,6 +437,19 @@
   @container seasons (max-width: 499px) {
     .season-card.locked { grid-template-areas: "tile main"; }
     .season-card.locked .sc-status { display: none; }
+    /* Compacta (~72-90 px): sin entradilla; el candado ya dice lo que falta */
+    .season-card.locked {
+      grid-template-columns: 40px minmax(0, 1fr);
+      column-gap: 12px;
+      padding-block: 10px;
+    }
+    .season-card.locked .sc-tile { width: 36px; height: 36px; margin-left: 4px; font-size: 20px; }
+    .season-card.locked .sc-sub { display: none; }
+    .season-card.locked .sc-title.redacted { margin: 2px 0 0; }
+    .season-card.locked .sc-lock { margin-top: 2px; font-size: .8125rem; line-height: 1.3; }
+    /* El sello DESBLOQUEADA va en su propia franja, bajo el chip de estado, sin taparlo */
+    .season-card.just-unlocked { padding-bottom: 44px; }
+    .season-card.just-unlocked .sc-unlock { bottom: 10px; }
   }
   /* «Sin empezar»: neutro (el amarillo de marcador es solo para lo que está en curso) */
   .season-card.open:not(.cur):not(.done) .sc-status { background: var(--surface); border-color: var(--line-strong); color: var(--ink-2); }
@@ -789,10 +810,7 @@
     color: var(--ink-2);
     font: 400 1.125rem/1.3 var(--stamp-f);
     letter-spacing: .02em;
-    rotate: -2deg;
-    transform-origin: left bottom;
   }
-  .res-sign-f { rotate: none; }
   .res-sign-l {
     order: 2;
     padding-top: 6px;
@@ -1124,6 +1142,12 @@
     }
     .row-actions.talon .kofi-chip { grid-column: 2; }
   }
+  /* 320 px: el botón largo («Temporada 2: Hazte autónomo ▶») cabe en dos líneas */
+  @media (max-width: 360px) {
+    .row-actions.talon { gap: 4px; }
+    .row-actions.talon .btn.ghost { padding-inline: 6px; }
+    .row-actions.talon .btn.primary { padding-inline: 8px; font-size: var(--fs-sm); }
+  }
   /* Tarjeta en horizontal: el talón llega a los bordes de la tarjeta */
   @media (orientation: landscape) and (max-height: 520px) and (min-width: 600px) {
     .row-actions.talon, .season-actions { border-radius: 0 0 var(--r-lg) var(--r-lg); }
@@ -1251,6 +1275,8 @@
     .season-card.cur, .lvl.cur { outline: 3px solid Highlight; outline-offset: -3px; }
     .season-card::before { background: CanvasText; }
     .row-actions.talon, .season-actions { border-top-color: CanvasText; }
+    .wm-stamp { -webkit-mask-image: none; mask-image: none; mix-blend-mode: normal; opacity: 1; color: CanvasText; }
+    .grid-title::after { background: CanvasText; }
   }
 
   /* ---------------- Animaciones propias ---------------- */
@@ -1259,6 +1285,13 @@
   }
   @keyframes screen-paper-in {
     from { opacity: 0; transform: translateY(28px) rotate(.6deg); }
+  }
+  /* Como k-stamp-hit, pero el sello del título acaba con la tinta entera */
+  @keyframes screen-wm-hit {
+    0% { opacity: 0; transform: rotate(var(--rot)) scale(2.4); }
+    55% { opacity: 1; transform: rotate(var(--rot)) scale(.95); }
+    75% { transform: rotate(var(--rot)) scale(1.03); }
+    100% { opacity: 1; transform: rotate(var(--rot)) scale(1); }
   }
   @keyframes screen-peel {
     from { transform: scaleX(1); }
