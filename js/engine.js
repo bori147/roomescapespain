@@ -1251,7 +1251,12 @@
     };
     const vt = booted && name !== prev && typeof document.startViewTransition === 'function' && !RM() && !document.hidden;
     if (vt) {
-      try { document.startViewTransition(() => { try { apply(); } catch (e) { later(() => { throw e; }, 0); } }); } catch (e) { apply(); }
+      try {
+        const t = document.startViewTransition(() => { try { apply(); } catch (e) { later(() => { throw e; }, 0); } });
+        // Si otra transición la sustituye, sus promesas se rechazan: no es un error
+        const quiet = (p) => { if (p && typeof p.catch === 'function') p.catch(() => {}); };
+        quiet(t.ready); quiet(t.finished); quiet(t.updateCallbackDone);
+      } catch (e) { apply(); }
     } else apply();
     if (name !== 'menu' && !guardArmed) needsGuard = true;
   }
@@ -1569,7 +1574,7 @@
       const n = sea.levels.length;
       const prog = done ? n : Math.max(0, progressOf(sea.id) - 1);
       const sv = readSave(sea.id);
-      const cur = open && !done && progressOf(sea.id) > 0;
+      const cur = open && !done && (!!sv || progressOf(sea.id) > 1);
       const curLevel = sv && !sv.finished ? sv.level : progressOf(sea.id);
       const just = open && sea.id > 1 && !meta.seenUnlock[sea.id];
       const prevSea = seasonById(sea.id - 1);
@@ -1586,7 +1591,7 @@
       b.innerHTML = `<span class="sc-tile" aria-hidden="true">${sea.emoji || '📂'}</span>
         <span class="sc-main">
           <span class="sc-kicker">Temporada ${sea.id}${sea.badge ? ` · ${sea.badge}` : ''}</span>
-          ${open ? `<span class="sc-title">${sea.title}</span>` : `<span class="sc-title redacted"><span class="sr-only">${sea.title}</span><span class="redact" aria-hidden="true">PENDIENTE DE TRÁMITE</span></span>`}
+          ${open ? `<span class="sc-title">${sea.title}${just ? '<span class="redact" aria-hidden="true">PENDIENTE DE TRÁMITE</span>' : ''}</span>` : `<span class="sc-title redacted"><span class="sr-only">${sea.title}</span><span class="redact" aria-hidden="true">PENDIENTE DE TRÁMITE</span></span>`}
           ${sea.subtitle ? `<span class="sc-sub">${sea.subtitle}</span>` : ''}
           ${!open && prevSea ? `<span class="sc-lock">🔒 Se desbloquea al terminar «${prevSea.title}»</span>` : ''}
           ${open ? `<span class="sc-cells" aria-hidden="true">${cells}</span>` : ''}
