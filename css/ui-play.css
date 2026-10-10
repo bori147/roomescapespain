@@ -244,6 +244,7 @@
     overflow: hidden;
     overscroll-behavior: none;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
     grid-auto-rows: 0;
   }
@@ -380,7 +381,7 @@
     top: 45%;
     z-index: 8;
     translate: -50% -50%;
-    font-size: clamp(22px, 7.5cqw, 64px);
+    font-size: clamp(20px, min(6.4cqw, 11cqh), 60px);
     background: color-mix(in srgb, var(--paper) 88%, transparent);
     mix-blend-mode: normal;
     opacity: .95;
@@ -654,7 +655,7 @@
     grid-template-areas: "head tool" "body body" "act act" "fin fin";
     min-width: 0;
     min-height: 0;
-    padding: 10px 14px 12px 12px;
+    padding: 8px 12px 9px 10px;
     overflow: hidden;
     border: 1px solid var(--line);
     border-left: 4px solid var(--line-strong);
@@ -855,14 +856,23 @@
   .dlg-finish { grid-area: fin; width: 100%; margin-top: 8px; }
 
   /* Ventanilla baja (móviles con poca altura): cabecera de 26 px y la cola dentro de ella */
+  /* Ventanilla holgada: algo más de aire */
+  @container dlg (min-height: 160px) {
+    .dlg-head { margin: 2px 0 0 2px; }
+    .dlg-body, .dlg-idle { margin-left: 2px; }
+    .dlg-actions, .dlg-finish { margin-bottom: 2px; }
+  }
   @container dlg (max-height: 159px) {
-    .dlg-head { min-height: 26px; gap: 6px; padding-right: 30px; }
+    .dlg-head { min-height: 24px; gap: 6px; padding-right: 30px; }
+    .stage:has(#inventory.has-sel) #dialog[data-skin="item"] .dlg-who::after { display: none; }
     .dlg-face { width: 24px; height: 24px; font-size: 15px; }
+    #dialog[data-skin="narration"] .dlg-face { border-radius: var(--r-xs); }
     .dlg-who { font-size: 12px; }
     .dlg-side { font-size: 17px; }
     .dlg-log { width: 36px; height: 36px; border-radius: 0 var(--r-lg) 0 var(--r-sm); }
     .dlg-log::before { content: ''; position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; translate: -50% -50%; }
-    .dlg-body { margin-top: 4px; }
+    .dlg-body { margin-top: 3px; }
+    .dlg-idle { margin-top: 3px; }
     .dlg-actions { grid-area: tool; margin: 0 0 0 6px; gap: 2px; align-self: center; }
     .dlg-actions .btn { --btn-h: 30px; min-height: 30px; }
     .dlg-actions .btn::before { content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: 44px; translate: -50% -50%; }
@@ -874,6 +884,17 @@
   }
   @media (max-width: 360px) {
     .dlg-body { font-size: 15px; line-height: 1.45; }
+    /* «Usando:» solo para lectores: el chip amarillo ya lo dice y el objeto necesita el sitio */
+    .use-k {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .use-chip { padding-left: 12px; }
   }
 
   /* ======================================================
@@ -945,7 +966,7 @@
     gap: 4px;
     min-width: 0;
     height: 68px;
-    padding: 5px 4px 4px;
+    padding: 5px 2px 4px;
     border: 1px solid var(--line);
     border-radius: var(--r-md);
     background: var(--surface);
@@ -1208,6 +1229,7 @@
       flex: 1 1 auto;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
       grid-auto-rows: 58px;
       align-content: start;
       height: auto;
@@ -1242,6 +1264,15 @@
       text-transform: uppercase;
     }
     .inv-title #invCount { font-variant-numeric: tabular-nums; }
+  }
+
+
+  /* Rejilla de 3 (horizontal y escritorio): los huecos solo completan la última fila */
+  @media (orientation: landscape) and (max-height: 520px), (min-width: 1024px) and (min-height: 521px) {
+    .inventory > .slot.empty:nth-child(3n+1):not(:first-child),
+    .inventory > .slot.empty:nth-child(3n+1):not(:first-child) ~ .slot.empty { display: none; }
+    /* Bandeja vacía: basta con el texto */
+    .inventory > .inv-empty ~ .slot.empty { display: none; }
   }
 
   /* ======================================================
@@ -1332,6 +1363,7 @@
       flex: 1 1 auto;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
       grid-auto-rows: 92px;
       align-content: start;
       gap: 8px;

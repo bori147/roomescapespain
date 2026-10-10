@@ -189,17 +189,18 @@
       linear-gradient(180deg, #c2161f 0 25%, #f1bf00 25% 75%, #c2161f 75%);
     box-shadow: 0 .3cqw .6cqw rgba(0, 0, 0, .3);
   }
+  /* Mástil de pared: soporte atornillado abajo, remate dorado arriba */
   .deco-flag::before {
     content: '';
     position: absolute;
-    left: -1.25cqw;
+    left: -1.05cqw;
     top: -1cqw;
-    width: 1.6cqw;
-    height: 16cqw;
+    width: 1.2cqw;
+    height: calc(100% + 5.5cqw);
     z-index: -1;
     background:
-      linear-gradient(90deg, #5a4630, #9a7a52 45%, #5a4630) center top / .35cqw calc(100% - .45cqw) no-repeat,
-      linear-gradient(180deg, #4d3926, #2e2117) center bottom / 1.6cqw .5cqw no-repeat;
+      linear-gradient(90deg, #5a4630, #9a7a52 45%, #5a4630) center top / .35cqw calc(100% - .5cqw) no-repeat,
+      linear-gradient(180deg, #6f6a60, #3d3a35) center bottom / 1.2cqw .5cqw no-repeat;
     border-radius: .2cqw;
   }
   .deco-flag::after {
