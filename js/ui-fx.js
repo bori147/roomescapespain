@@ -263,9 +263,11 @@
     if (peeked) return true;
     try { return W.sessionStorage.getItem(PEEK_KEY) === '1'; } catch (e) { return false; }
   }
+  let peekWrap = null;
   function stopPeek() {
     if (!peekOn) return;
     peekOn = false; caf(peekRaf); clearTimeout(peekT);
+    if (peekWrap) { peekWrap.style.scrollBehavior = ''; peekWrap.style.scrollSnapType = ''; peekWrap = null; }
     D.dispatchEvent(new CustomEvent('fx:peek-end'));
   }
   const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -288,6 +290,8 @@
     try { W.sessionStorage.setItem(PEEK_KEY, '1'); } catch (e) { /* nada */ }
     const s0 = wrap.scrollLeft;
     const dist = max * 0.18;
+    // Cada paso fija scrollLeft a mano: sin desplazamiento suave ni imán mientras dura
+    peekWrap = wrap; wrap.style.scrollBehavior = 'auto'; wrap.style.scrollSnapType = 'none';
     const to = s0 + dist <= max ? s0 + dist : s0 - dist; // si ya está a la derecha, se asoma a la izquierda
     peekOn = true;
     tween(wrap, s0, to, 450, () => {
@@ -310,6 +314,19 @@
     idleT120 = later(safe(hintNudge), 120000);
   }
   function quiet() { const st = state(); return inPlay() && !modalOpen() && visible() && !st.pendingWin && !D.body.classList.contains('finale-on'); }
+  // Anillo efímero alrededor de un rectángulo (destello de inactividad, aviso en 💡). Nunca recibe toques.
+  function halo(r, cls, ms) {
+    if (!r || RM()) return;
+    const h = el('span', 'fx-halo ' + cls); h.setAttribute('aria-hidden', 'true');
+    const pad = 6; const w = r.width + pad * 2; const hh = r.height + pad * 2;
+    h.style.left = (r.left + r.width / 2) + 'px'; h.style.top = (r.top + r.height / 2) + 'px';
+    h.style.width = Math.round(w) + 'px'; h.style.height = Math.round(hh) + 'px';
+    D.body.append(h);
+    let gone = false;
+    const kill = () => { if (!gone) { gone = true; h.remove(); } };
+    h.addEventListener('animationend', (e) => { if (e.target === h) kill(); });
+    later(kill, ms);
+  }
   function glint() {
     if (!quiet()) return;
     const wr = rectOf(D.getElementById('sceneWrap'));
@@ -319,17 +336,25 @@
       const cx = r.left + r.width / 2; const cy = r.top + r.height / 2;
       return cx > wr.left && cx < wr.right && cy > wr.top && cy < wr.bottom;
     }).slice(0, 8);
-    list.forEach((h, i) => later(() => { if (h.isConnected && !h.hidden) restartClass(h, 'glint', RM() ? 1500 : 1000); }, i * 120));
+    const rm = RM();
+    list.forEach((h, i) => later(safe(() => {
+      if (!h.isConnected || h.hidden || !quiet()) return;
+      restartClass(h, 'glint', rm ? 1500 : 760);
+      halo(rectOf(h), 'is-glint', 900);
+    }), i * 120));
   }
   function hintNudge() {
     if (!quiet() || nudged.has(levelKey)) return;
     const b = D.getElementById('btnHint');
-    if (!rectOf(b)) return;
+    const r = rectOf(b);
+    if (!r) return;
     const badge = D.getElementById('hintBadge');
     const m = badge && !badge.hidden ? /(\d+)\s*\/\s*(\d+)/.exec(badge.textContent || '') : null;
     if (m && +m[1] >= +m[2]) return; // ya no quedan pistas
     nudged.add(levelKey);
-    restartClass(b, 'nudge', RM() ? 2400 : 1500);
+    const rm = RM();
+    restartClass(b, 'nudge', rm ? 2400 : 1500);
+    if (!rm) { halo(r, 'is-nudge', 1500); }
     const st = state();
     track('hint_nudge', { season: st.season, level: st.level, level_id: st.season ? `T${st.season}-N${st.level}` : undefined });
   }
@@ -344,9 +369,10 @@
   const COPY = {
     room: ['👆 Toca lo que te llame la atención: carteles, personas, aparatos…', '👆 Haz clic en lo que te llame la atención: carteles, personas, aparatos…'],
     give: ['🎒 Lo que recoges va aquí. Tócalo para seleccionarlo.', '🎒 Lo que recoges va aquí. Haz clic en él para seleccionarlo.'],
-    select: ['Ahora toca a quién o dónde usarlo… o toca otro objeto para combinarlos.', 'Ahora haz clic en a quién o dónde usarlo… o en otro objeto para combinarlos.'],
+    select: ['Ahora toca a quién o dónde usarlo… o toca otro objeto para combinarlos.', 'Ahora haz clic en la persona o el sitio donde usarlo… o en otro objeto para combinarlos.'],
     queue: ['Toca «Siguiente» para seguir leyendo.', 'Pulsa «Siguiente» (o Intro) para seguir leyendo.'],
   };
+  const COACH_MS = 10000;
   let coach = null; let coachT = 0;
   function tips() { const t = pref('tips'); return t && typeof t === 'object' ? t : {}; }
   const seen = (k) => !!tips()[k];
@@ -359,14 +385,20 @@
     c.classList.add('out');
     later(() => c.remove(), 180);
   }
-  function onCoachScroll() { dismissCoach(); }
-  /** Coloca un pósit junto a target sin taparlo (encima si cabe; si no, debajo). */
+  // Solo los desplazamientos que mueven lo señalado (página, sala, bandeja) retiran el pósit
+  function onCoachScroll(e) {
+    const t = e && e.target;
+    if (!t || t === D || t === D.documentElement || t === D.body || t.id === 'sceneWrap' || t.id === 'inventory') dismissCoach();
+  }
+  const overlaps = (a, b, m) => a.left < b.right + m && a.right > b.left - m && a.top < b.bottom + m && a.bottom > b.top - m;
+  /** Coloca un pósit junto a target sin taparlo: encima o debajo, donde quepa mejor. Si no cabe sin taparlo, no sale
+      (y no cuenta como visto). No recibe toques: cualquier toque lo retira y llega igualmente a lo que haya debajo. */
   function showCoach(key, target) {
     if (!V() || seen(key) || coach || !quiet()) return false;
     const t = rectOf(target);
     if (!t) return false;
     const c = el('div', 'coach');
-    c.setAttribute('role', 'note');
+    c.setAttribute('aria-hidden', 'true'); // se anuncia aparte (VUM.announce), sin duplicar
     c.dataset.k = key;
     const text = COPY[key][fine() && !coarse() ? 1 : 0];
     c.append(el('p', 'coach-t', text));
@@ -375,14 +407,18 @@
     const cr = rectOf(c);
     if (!cr) { c.remove(); return false; }
     const gap = 14; const m = 8; const W0 = vw(); const H0 = vh();
-    const top0 = (rectOf(D.getElementById('topbar')) || { bottom: 0 }).bottom;
-    const above = t.top - gap - cr.height >= Math.max(m, key === 'room' ? 0 : top0);
-    const below = t.bottom + gap + cr.height <= H0 - m;
-    const up = above && (!below || key !== 'room' || t.top - cr.height > H0 - t.bottom - cr.height);
+    // Bajo la barra superior no se ve bien: el borde útil empieza debajo de ella
+    const top0 = Math.max(m, ((rectOf(D.getElementById('topbar')) || { bottom: 0 }).bottom || 0) + 4);
+    const roomUp = t.top - gap - top0; const roomDown = H0 - m - (t.bottom + gap);
+    const fitsUp = roomUp >= cr.height; const fitsDown = roomDown >= cr.height;
+    // Sala: preferimos debajo (no tapa la mitad de arriba de la sala); resto: encima (bandeja, ventanilla, chip de uso)
+    let up = key === 'room' ? !fitsDown && (fitsUp || roomUp > roomDown) : fitsUp || (!fitsDown && roomUp > roomDown);
     let top = up ? t.top - gap - cr.height : t.bottom + gap;
-    top = clamp(top, m, Math.max(m, H0 - cr.height - m));
+    top = clamp(top, top0, Math.max(top0, H0 - cr.height - m));
     const cx = t.left + t.width / 2;
     const left = clamp(cx - cr.width / 2, m, Math.max(m, W0 - cr.width - m));
+    const box = { left, top, right: left + cr.width, bottom: top + cr.height };
+    if (overlaps(box, t, 2)) { c.remove(); return false; }
     c.style.left = Math.round(left) + 'px';
     c.style.top = Math.round(top) + 'px';
     c.style.setProperty('--ax', Math.round(clamp(cx - left, 18, cr.width - 18)) + 'px');
@@ -392,11 +428,11 @@
     markSeen(key);
     announce(text.replace(/^[^\p{L}«]+/u, ''));
     D.addEventListener('scroll', onCoachScroll, { capture: true, passive: true });
-    coachT = later(dismissCoach, 9000);
+    coachT = later(dismissCoach, COACH_MS);
     return true;
   }
   // Cualquier toque o tecla lo cierra (sin tragarse el toque: lo de debajo responde)
-  W.addEventListener('pointerdown', () => { if (coach) later(dismissCoach, 0); }, { capture: true, passive: true });
+  W.addEventListener('pointerdown', () => { if (coach) dismissCoach(); }, { capture: true, passive: true });
   W.addEventListener('keydown', () => { if (coach) dismissCoach(); }, { capture: true });
   W.addEventListener('resize', () => { if (coach) dismissCoach(); }, { passive: true });
 
@@ -439,7 +475,7 @@
   // ==========================================================
   // 7) Final de temporada «EXPEDIENTE CERRADO» (spec §9.6) — ≤ 1600 ms, se salta con un toque
   // ==========================================================
-  let fin = null; // { overlay, confetti, timers[], impact, rm, skipClick }
+  let fin = null; // { overlay, timers[], impact, rm }
   const BITS = ['📄', '🧾', '📎', '✉️', '🖇️'];
   function confetti(n) {
     const box = el('div', 'fx-confetti'); box.setAttribute('aria-hidden', 'true');
@@ -490,12 +526,13 @@
     else { f.overlay.classList.add('out'); later(() => f.overlay.remove(), 320); }
     if (!f.rm && screen === 'end') countUp();
   }
+  // La capa no recibe toques (las sondas y lo de debajo la atraviesan): el toque se recoge aquí, salta el final
+  // y el clic que lo sigue no llega a lo que hubiera debajo.
+  let swallowT = 0;
   function onFinaleTap() {
     if (!fin) return;
-    // El toque solo salta el final: el clic que lo sigue no llega a lo que haya debajo
-    fin.skipClick = true;
-    later(() => { swallow = false; }, 700);
     swallow = true;
+    clearTimeout(swallowT); swallowT = later(() => { swallow = false; }, 700);
     endFinale(true);
   }
   let swallow = false;
@@ -505,20 +542,25 @@
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') e.preventDefault();
     endFinale(true);
   }
+  // Toda temporada terminada se cierra con su sello (spec §9.6). «last» (no hay temporada siguiente: los 50 trámites)
+  // solo cambia el membrete de la hoja.
   on('ending', (d) => {
     if (fin) endFinale(false);
     // Reclamar el final de forma SÍNCRONA: el motor deja de sonar su propio sello
     D.body.classList.add('finale-on');
+    dismissCoach();
     const rm = RM();
-    const ov = el('div', 'finale'); ov.setAttribute('aria-hidden', 'true');
+    const ov = el('div', 'finale' + (rm ? ' is-static' : '') + (d.last ? ' is-last' : ''));
+    ov.setAttribute('aria-hidden', 'true');
     const sheet = el('div', 'finale-sheet');
-    sheet.append(el('p', 'finale-k', `Ministerio de Asuntos Pendientes · Temporada ${d.season || ''}`.trim()));
+    const n = d.season ? `Temporada ${d.season}` : '';
+    sheet.append(el('p', 'finale-k', d.last ? 'Ministerio de Asuntos Pendientes · Los 50 trámites' : `Ministerio de Asuntos Pendientes${n ? ' · ' + n : ''}`));
     const st = el('div', 'stamp finale-stamp', d.stampText || 'EXPEDIENTE CERRADO');
     sheet.append(st);
-    sheet.append(el('p', 'finale-reg', `Reg. salida nº T${d.season || 0}-FIN/2026`));
+    sheet.append(el('p', 'finale-reg', `Reg. salida nº T${d.season || 0}-FIN/2026 · Archívese`));
     ov.append(sheet);
     D.body.append(ov);
-    fin = { overlay: ov, timers: [], impact: false, rm, skipClick: false };
+    fin = { overlay: ov, timers: [], impact: false, rm };
     const T = (fn, ms) => fin.timers.push(later(safe(fn), ms));
     const STAMP_DELAY = 200; // la hoja entra; el sello impacta al 55 % de 420 ms
     const impact = rm ? 0 : STAMP_DELAY + 231;
@@ -538,70 +580,97 @@
   // ==========================================================
   // 8) Salida de los modales: «fantasma» que se desvanece (y «CONFORME» del teclado)
   // ==========================================================
+  // Se copia el estilo calculado de cada nodo: así el fantasma se ve igual fuera del <dialog> (las reglas de ui-modals
+  // dependen de #modal) sin conocer esas reglas. Sin animaciones ni transiciones.
   const GHOST_PROPS = ['display', 'position', 'top', 'right', 'bottom', 'left', 'box-sizing', 'width', 'height', 'min-height',
     'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
     'border-top', 'border-right', 'border-bottom', 'border-left', 'border-radius', 'background-color', 'background-image',
     'background-size', 'background-position', 'background-repeat', 'color', 'font-family', 'font-size', 'font-weight', 'font-style',
-    'line-height', 'letter-spacing', 'text-transform', 'text-align', 'text-decoration-line', 'text-overflow', 'white-space',
-    'box-shadow', 'opacity', 'transform', 'rotate', 'scale', 'translate', 'flex-direction', 'flex-wrap', 'flex-grow', 'flex-shrink',
-    'flex-basis', 'align-items', 'align-self', 'justify-content', 'gap', 'grid-template-columns', 'grid-template-rows', 'grid-column',
-    'grid-row', 'order', 'overflow-x', 'overflow-y', 'visibility', 'vertical-align', 'list-style-type', 'object-fit', 'fill', 'stroke',
-    'stroke-width', 'mix-blend-mode', 'z-index', '-webkit-mask-image', 'mask-image', '-webkit-mask-size', 'mask-size', 'outline'];
-  const STRIP = /^(id|for|name|href|role|tabindex|autofocus|title|aria-.+|data-.+|on.+)$/i;
+    'font-variant-numeric', 'line-height', 'letter-spacing', 'text-transform', 'text-align', 'text-decoration-line', 'text-overflow',
+    'white-space', 'text-shadow', 'box-shadow', 'opacity', 'transform', 'rotate', 'scale', 'translate', 'flex-direction', 'flex-wrap',
+    'flex-grow', 'flex-shrink', 'flex-basis', 'align-items', 'align-self', 'justify-content', 'row-gap', 'column-gap',
+    'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row', 'order', 'overflow-x', 'overflow-y', 'visibility',
+    'vertical-align', 'list-style-type', 'object-fit', 'fill', 'stroke', 'stroke-width', 'mix-blend-mode', 'z-index',
+    '-webkit-mask-image', 'mask-image', '-webkit-mask-size', 'mask-size', 'outline-style', 'outline-width', 'outline-color',
+    'outline-offset', '-webkit-line-clamp', '-webkit-box-orient'];
+  const STRIP = /^(id|for|name|href|role|tabindex|autofocus|title|popover|aria-.+|data-.+|on.+)$/i;
+  const MAX_GHOST_NODES = 400;
   function copyStyles(src, dst) {
     let cs; try { cs = W.getComputedStyle(src); } catch (e) { return; }
     let txt = '';
-    for (const p of GHOST_PROPS) { const v = cs.getPropertyValue(p); if (v) txt += `${p}:${v};`; }
+    for (let i = 0; i < GHOST_PROPS.length; i++) { const v = cs.getPropertyValue(GHOST_PROPS[i]); if (v) txt += `${GHOST_PROPS[i]}:${v};`; }
     dst.setAttribute('style', txt + 'animation:none;transition:none;pointer-events:none;');
   }
-  function ghost(card, keypadOk) {
-    if (RM() || !card || !card.isConnected) return;
+  /** Construye (sin insertarlo) el fantasma de la tarjeta que se cierra. Debe llamarse con la tarjeta aún maquetada. */
+  function buildGhost(card, keypadOk) {
+    if (RM() || !card || !card.isConnected) return null;
     const r = rectOf(card);
-    if (!r || r.bottom < 0 || r.top > vh()) return;
+    if (!r || r.bottom < 0 || r.top > vh()) return null;
     const src = [card].concat($$('*', card));
-    if (src.length > 500) return; // tarjetas enormes: sin fantasma
+    if (src.length > MAX_GHOST_NODES) return null; // tarjetas enormes: sin fantasma (no se paga el coste al cerrar)
     const clone = card.cloneNode(true);
     const dst = [clone].concat($$('*', clone));
+    const scrolls = [];
     for (let i = 0; i < src.length && i < dst.length; i++) {
       const s = src[i]; const c = dst[i];
-      if (!(s instanceof W.Element)) continue;
-      const svgInner = s.ownerSVGElement && s.ownerSVGElement !== null;
-      if (!svgInner) copyStyles(s, c);
+      if (!s.ownerSVGElement) copyStyles(s, c); // el interior de un <svg> hereda de su <svg>
       for (const a of Array.prototype.slice.call(c.attributes)) if (STRIP.test(a.name)) c.removeAttribute(a.name);
-      if (s.scrollTop || s.scrollLeft) { c._st = s.scrollTop; c._sl = s.scrollLeft; }
+      if (s.scrollTop || s.scrollLeft) scrolls.push([c, s.scrollTop, s.scrollLeft]);
+      if (c.tagName === 'INPUT' || c.tagName === 'TEXTAREA') { try { c.value = s.value; } catch (e) { /* nada */ } }
+      if (c.tagName === 'SELECT') { try { c.selectedIndex = s.selectedIndex; } catch (e) { /* nada */ } }
     }
     const g = el('div', 'modal-ghost' + (keypadOk ? ' is-ok' : ''));
     g.setAttribute('aria-hidden', 'true');
     g.setAttribute('inert', '');
     g.style.left = r.left + 'px'; g.style.top = r.top + 'px';
     g.style.width = r.width + 'px'; g.style.height = r.height + 'px';
-    clone.style.position = 'relative'; clone.style.inset = 'auto'; clone.style.margin = '0';
-    clone.style.width = '100%'; clone.style.height = '100%'; clone.style.transform = 'none';
-    clone.style.translate = 'none'; clone.style.scale = 'none'; clone.style.rotate = 'none'; clone.style.opacity = '1';
+    const cs = clone.style;
+    cs.position = 'relative'; cs.inset = 'auto'; cs.margin = '0'; cs.width = '100%'; cs.height = '100%';
+    cs.transform = 'none'; cs.translate = 'none'; cs.scale = 'none'; cs.rotate = 'none'; cs.opacity = '1';
     g.append(clone);
     if (keypadOk) {
       const disp = $('.kp-display', card) || $('.kp-text', card);
       const dr = rectOf(disp);
       const st = el('span', 'stamp sm ok fx-conforme', 'CONFORME');
-      st.style.setProperty('--cy', (dr ? dr.top + dr.height / 2 - r.top : r.height / 2) + 'px');
+      st.style.setProperty('--cy', Math.round(dr ? dr.top + dr.height / 2 - r.top : r.height / 2) + 'px');
       g.append(st);
-      g.style.setProperty('--ghost-delay', '380ms');
     }
-    D.body.append(g);
-    dst.forEach((c) => { if (c._st) c.scrollTop = c._st; if (c._sl) c.scrollLeft = c._sl; });
+    const scrim = el('div', 'modal-ghost-scrim');
+    scrim.setAttribute('aria-hidden', 'true');
+    return { g, scrim, scrolls, keypadOk };
+  }
+  function showGhost(gh) {
+    const { g, scrim, scrolls, keypadOk } = gh;
+    D.body.append(scrim, g);
+    scrolls.forEach(([c, t, l]) => { c.scrollTop = t; c.scrollLeft = l; });
     let gone = false;
-    const kill = () => { if (!gone) { gone = true; g.remove(); } };
+    const kill = () => {
+      if (gone) return;
+      gone = true; g.remove(); scrim.remove();
+      W.removeEventListener('pointerdown', kill, true);
+    };
     g.addEventListener('animationend', (e) => { if (e.target === g) kill(); });
     later(kill, (keypadOk ? 380 : 0) + 140 + 200);
+    // Un toque durante la salida no espera: el fantasma se va
+    W.addEventListener('pointerdown', kill, { capture: true, passive: true });
   }
+  const screenNow = () => state().screen || screen;
   on('modal', (d) => {
     if (d.phase === 'open') { dismissCoach(); return; }
     if (d.phase !== 'close') return;
     const card = d.card;
     const cardRect = rectOf(card);
-    const kpOk = d.reason === 'commit' && !!card && card.classList && card.classList.contains('kp-modal')
-      && (!!$('.kp-box.ok', card) || (!!$('.kp-text input', card) && !$('.kp-text input[aria-invalid="true"]', card)));
-    if (d.reason !== 'commit' || kpOk) ghost(card, kpOk);
+    const isKp = !!card && !!card.classList && card.classList.contains('kp-modal');
+    const kpOk = d.reason === 'commit' && isKp
+      && (!!$('.kp-box.ok', card) || (!$('.kp-display', card) && !!$('.kp-text input', card) && !$('.kp-text input[aria-invalid="true"]', card)));
+    // El fantasma se construye ahora (tarjeta aún maquetada) y se inserta cuando closeModal ha terminado, solo si el
+    // modal no se ha vuelto a abrir ni ha cambiado la pantalla (sería un fantasma encima de otra cosa).
+    const gh = (d.reason && d.reason !== 'commit') || kpOk ? buildGhost(card, kpOk) : null;
+    const scr = screenNow();
+    if (gh) {
+      const go = safe(() => { if (!modalOpen() && screenNow() === scr) showGhost(gh); });
+      if (typeof W.queueMicrotask === 'function') W.queueMicrotask(go); else Promise.resolve().then(go);
+    }
     // Lo recibido mientras el modal estaba abierto vuela ahora desde la tarjeta
     if (pendingGive && d.reason) {
       const ids = pendingGive.ids; pendingGive = null;
@@ -630,7 +699,7 @@
     let wait = 700;
     if (d.overflow && !pref('panned') && !peekedThisSession() && !RM()) {
       // Tras el centrado y el destello del objetivo, la sala se asoma a un lado y vuelve
-      later(safe(() => { if (inPlay() && !modalOpen() && peek()) { /* el pósit espera al final */ } }), 350);
+      later(safe(() => { if (inPlay() && !modalOpen()) peek(); }), 350);
       wait = 350 + 450 + 250 + 450 + 150;
     }
     if (!seen('room')) {
