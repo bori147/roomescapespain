@@ -29,10 +29,11 @@ function seasonFiles() {
     .map((f) => /^s(\d+)\.js$/.exec(f)).filter(Boolean).map((m) => +m[1]).sort((a, b) => a - b);
 }
 
-// El rediseño se considera «cimentado» cuando css/tokens.css declara el orden de capas (paquete P1).
-// Antes de eso, las comprobaciones que dependen del rediseño se informan como omitidas.
+// El rediseño se considera «cimentado» en cuanto css/tokens.css tiene algo más que comentarios (paquete P1).
+// Antes de eso, las comprobaciones que dependen del rediseño se informan como omitidas. A partir de ahí son
+// estrictas: si falta o cambia la declaración exacta del orden de capas, falla (no se vuelve a «modo aviso»).
 const LAYER_ORDER = ['reset', 'tokens', 'base', 'components', 'scene', 'play', 'screens', 'modals', 'puzzles', 'fx', 'seasons', 'overrides'];
-const FOUNDATION = exists('css/tokens.css') && /@layer\s+reset\s*,/.test(read('css/tokens.css'));
+const FOUNDATION = hasCode('css/tokens.css');
 const PUZZLES_JS = hasCode('js/ui-puzzles.js');
 
 // ---------------- Orden de carga de los scripts (el de index.html) ----------------
@@ -41,6 +42,8 @@ function scriptOrder() {
   const html = read('index.html');
   const notes = [];
   const srcs = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"'?#]+)[^"']*["'][^>]*>/g)].map((m) => m[1].replace(/^\.\//, ''));
+  // Un script local enlazado que no existe es un error (no se convierte en «guarda omitida»)
+  const broken = srcs.filter((f) => !/^(?:[a-z]+:)?\/\//i.test(f) && !exists(f));
   let files = srcs.filter((f) => LOADABLE.test(f) && exists(f));
   const seasons = seasonFiles().map((n) => `js/seasons/s${n}.js`);
   const missing = seasons.filter((f) => !files.includes(f));
@@ -51,7 +54,7 @@ function scriptOrder() {
     const at = files.findIndex((f) => /ui-puzzles|ui-fx|engine/.test(f));
     files.splice(at, 0, ...missing);
   }
-  return { files, notes };
+  return { files, notes, broken };
 }
 const ORDER = scriptOrder();
 
@@ -322,7 +325,7 @@ function globalChecks() {
     const e = unlayeredRules(read(f));
     if (e.length) layerErrs.push(`${f}: ${e.length} regla(s) sin capa; p. ej. ${e.slice(0, 2).join('; ')}`);
   }
-  if (!FOUNDATION) skips.push(`CSS en capas: omitido hasta que css/tokens.css declare «@layer ${LAYER_ORDER.join(', ')};» (${layerErrs.length} fichero(s) aún sin capas)`);
+  if (!FOUNDATION) skips.push(`CSS en capas: omitido mientras css/tokens.css esté vacío (solo comentarios); ${layerErrs.length} fichero(s) aún sin capas`);
   else if (layerErrs.length) errs.push(...layerErrs.map((m) => 'CSS sin capa → ' + m));
   else oks.push(`CSS en capas: ${cssFiles.length} hojas sin reglas fuera de @layer`);
   if (FOUNDATION) {
@@ -361,7 +364,7 @@ function globalChecks() {
     const src = read(f);
     if (/serviceWorker\s*\.\s*register/.test(src)) errs.push(`${f} registra un service worker (prohibido: el juego no es instalable)`);
     if (/wakeLock/.test(src)) errs.push(`${f} usa Wake Lock (prohibido: no se mantiene la pantalla encendida)`);
-    if (/pantalla de inicio/i.test(src)) errs.push(`${f} invita a «Añadir a pantalla de inicio» (prohibido)`);
+    if (/a(?:ñ|n)adir\s+a\s+(?:la\s+)?pantalla\s+de\s+inicio/i.test(src)) errs.push(`${f} invita a «Añadir a pantalla de inicio» (prohibido)`);
   }
 
   // 5. Versionado ?v= coherente en index.html (todas las hojas y scripts locales con el mismo número)
@@ -375,6 +378,7 @@ function globalChecks() {
   if (unlinked.length) warns.push(`Hojas de estilo que index.html no enlaza: ${unlinked.join(', ')}`);
   if (vset.size === 1 && !unversioned.length) oks.push(`Versionado: ${vers.length} recursos con ?v=${[...vset][0]}`);
   warns.push(...ORDER.notes);
+  if (ORDER.broken.length) errs.push(`index.html enlaza scripts que no existen: ${ORDER.broken.join(', ')}`);
 
   // 6. Enlaces opcionales del rediseño: informar si aún son «placeholder»
   const pending = ['css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css', 'css/ui-fx.css', 'js/ui-puzzles.js', 'js/ui-fx.js'].filter((f) => !hasCode(f));
@@ -528,7 +532,8 @@ async function runGuards(sid, out, sysLabels) {
     // jsdom no entiende @layer (no tiene CSSLayerBlockRule): si core.js lo detecta y en jsdom inyecta el CSS tal cual,
     // basta con que el código de core.js envuelva la CSS en «@layer seasons{…}» para los navegadores reales.
     const layered = /^\s*@layer\s+seasons\s*\{/.test(st.textContent);
-    const srcOk = !w.CSSLayerBlockRule && /@layer\s+seasons\s*\{/.test(read('js/core.js'));
+    const coreSrc = read('js/core.js').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, ''); // sin comentarios
+    const srcOk = !w.CSSLayerBlockRule && /@layer\s+seasons\s*\{/.test(coreSrc);
     if (FOUNDATION && !layered && !srcOk) out.fail('La CSS de la temporada no se inyecta como «@layer seasons{…}» (js/core.js)');
     else if (layered || srcOk) out.lines.push('  ✓ Guarda: CSS de temporada dentro de @layer seasons');
   }
@@ -636,7 +641,7 @@ async function runSeason(sid) {
   let allOk = true;
 
   const gl = globalChecks();
-  console.log(`${gl.errs.length ? '❌' : '✅'} Comprobaciones globales${FOUNDATION ? '' : ' (rediseño aún sin cimientos: las reglas nuevas se avisan, no fallan)'}`);
+  console.log(`${gl.errs.length ? '❌' : '✅'} Comprobaciones globales${FOUNDATION ? '' : ' (rediseño aún sin cimientos: css/tokens.css vacío; las reglas nuevas se avisan, no fallan)'}`);
   gl.oks.forEach((l) => console.log('  ✓ ' + l));
   gl.errs.forEach((l) => console.log('  ✗ ' + l));
   gl.skips.forEach((l) => console.log('  ⏭ ' + l));

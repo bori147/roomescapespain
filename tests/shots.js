@@ -54,7 +54,9 @@ const ALIASES = {
 // ---------------- ¿Está completo el rediseño? (decide si las sondas fallan o avisan) ----------------
 const hasCode = (p) => { try { return fs.readFileSync(path.join(ROOT, p), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').trim().length > 0; } catch (e) { return false; } };
 const REDESIGN_FILES = ['css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css'];
-const REDESIGN = /@layer\s+reset\s*,/.test((() => { try { return fs.readFileSync(path.join(ROOT, 'css/tokens.css'), 'utf8'); } catch (e) { return ''; } })()) && REDESIGN_FILES.every(hasCode);
+// Cimientos = css/tokens.css con algo más que comentarios (no se mira una línea concreta: si la declaración de
+// capas falta o cambia, lo detecta tests/run.js y aquí las sondas siguen siendo estrictas).
+const REDESIGN = hasCode('css/tokens.css') && REDESIGN_FILES.every(hasCode);
 const STRICT = FLAGS.estricto ? true : FLAGS.suave ? false : REDESIGN;
 
 function serve() {
@@ -75,6 +77,8 @@ function serve() {
 const CONSENT = `localStorage.setItem('roomescapespain.consent.v1', JSON.stringify({ v: 1, analytics: false, date: Date.now() }));`;
 // meta.ui: preferencias de interfaz que el motor recuerda. panned = ya sabe deslizar la sala.
 // Si el paquete de efectos añade más avisos de primera vez (coachmarks), sus marcas van aquí para que no tapen las capturas.
+// OJO: el motor (P5) guarda meta.ui.tips como mapa por aviso ({}); si P6 lee meta.ui.tips[clave], hay que poner aquí
+// sus claves (p. ej. tips: { pan: true, … }) o las capturas saldrán con coachmarks encima de los hotspots.
 const META_UI = { panned: true, coach: true, coachDone: true, tips: true };
 // Progreso desbloqueado y cookies rechazadas (salvo en las escenas «fresh» o «consent»)
 const UNLOCK = `(() => { try {
@@ -263,15 +267,17 @@ function probePage(o) {
     else if (!k.some((el) => hitsSelf(el).ok)) F.push(`el Ko-fi está tapado (${k.map((el) => `${short(el)} bajo ${short(hitsSelf(el).hit)}`).join('; ')})`);
   }
 
-  // 5) Texto legible: ≥ 12px fuera de la sala (11px solo en mayúsculas espaciadas documentadas); ≥ 10px dentro
+  // 5) Texto legible: ≥ 12px fuera de la sala (11px solo en las clases documentadas de DOC11); ≥ 10px dentro.
+  //    Los glifos emoji (objetos, decorado, ☕) no son texto: no cuentan.
+  const EMOJI_ONLY = /^(?:[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{1F3FB}-\u{1F3FF}\u200D\uFE0E\uFE0F\u20E3]|\s)+$/u;
   const DOC11 = '.dni-card .dni-data small, .s3-deed-row small, .s4-cred small, .s5-end-card small, .s2-wall, .s5-cal-g b, .s5-mz small, .is-new, .redact, .stamp, .modal-masthead, .wm-stamp';
   const small = new Map();
   const tw = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
   for (let n = tw.nextNode(); n; n = tw.nextNode()) {
     const txt = n.nodeValue.trim();
-    if (!txt) continue;
+    if (!txt || EMOJI_ONLY.test(txt)) continue;
     const el = n.parentElement;
-    if (!el || small.has(el) || el.closest('script,style,noscript,title,svg')) continue;
+    if (!el || small.has(el) || el.closest('script,style,noscript,title,svg,.hs-emoji,.deco-emoji,.sub-emoji')) continue;
     const cs = getComputedStyle(el);
     const fs = parseFloat(cs.fontSize);
     if (fs >= 12) continue;
@@ -281,9 +287,7 @@ function probePage(o) {
     if (rr.width <= 2 || rr.height <= 2) continue; // sr-only y similares
     const inRoom = !!el.closest('#scene');
     if (inRoom) { if (fs < 10) small.set(el, `${short(el)} ${fs}px (sala)`); continue; }
-    const caps = cs.textTransform === 'uppercase' || (txt === txt.toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(txt));
-    const tracked = parseFloat(cs.letterSpacing) > 0;
-    if (fs >= 11 && (el.closest(DOC11) || (caps && tracked))) continue;
+    if (fs >= 11 && el.closest(DOC11)) continue;
     small.set(el, `${short(el)} ${fs}px`);
   }
   if (small.size) F.push(`texto demasiado pequeño (${small.size}): ${[...small.values()].slice(0, 6).join('; ')}${small.size > 6 ? '…' : ''}`);
@@ -304,6 +308,8 @@ function probePage(o) {
       const owner = h && h.closest('.hs');
       const id = hs.dataset.id || short(hs);
       if (owner === hs) continue;
+      // Desviación deliberada: si lo tapa OTRO hotspot solo se avisa (el contenido de las temporadas está congelado y
+      // tests/run.js ya avisa de los solapamientos); cualquier otra cosa encima (flechas, chips, avisos) falla.
       if (owner) W.push(`el hotspot «${owner.dataset.id}» tapa el centro de «${id}»`);
       else F.push(`el centro del hotspot «${id}» lo tapa ${short(h)}${h && h.closest('.pan') ? ' (flecha de desplazamiento)' : ''}`);
     }
@@ -322,7 +328,9 @@ function probePage(o) {
   // 7) Táctil: objetivos de 44×44 px fuera de la sala (salvo enlaces dentro de un texto)
   if (o.touch) {
     const scope = cc || (modalOpen ? modal : body);
-    const BOARDS = '.cal-grid, .tile-grid, .s2-grid, #s5-maze, .party-grid, .s3-lo-grid, .opt-grid, .s5-cal-g, .kp-grid';
+    // Solo los tableros densos que no caben a 44 px en 320 px de ancho avisan (si miden ≥ 24). Teclado (.kp-grid),
+    // filas de partidos (.party-grid) y opciones (.opt-grid) son botones normales: < 44 px falla.
+    const BOARDS = '.cal-grid, .tile-grid, .s2-grid, #s5-maze, .s5-cal-g, .s3-lo-grid';
     const sel = 'a[href], button, input:not([type="hidden"]), select, textarea, summary, [role="button"], [role="switch"], [role="radio"], [role="checkbox"], [role="tab"], [tabindex]:not([tabindex="-1"])';
     const bad = []; const meh = [];
     for (const el of scope.querySelectorAll(sel)) {

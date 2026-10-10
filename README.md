@@ -52,7 +52,7 @@ Dentro de cada temporada, los documentos que consigues en un trámite **viajan c
 ## Botón de apoyo (Ko-fi)
 
 El botón **☕ ¡Invítame a un café!** está siempre a mano fuera de los modales: flotante en el menú, al final de la
-bandeja mientras juegas en el móvil, en la barra superior en horizontal y en escritorio, y en el talón inferior de
+bandeja mientras juegas en el móvil, en la cabecera del HUD en horizontal, en la barra superior en escritorio, y en el talón inferior de
 las pantallas de papel del móvil. Al terminar cada temporada aparece además la «Tasa voluntaria · Modelo 0-CAFÉ».
 Enlaza a [ko-fi.com/R7H627ZTOM](https://ko-fi.com/R7H627ZTOM), donde se paga con tarjeta (Stripe) o PayPal.
 

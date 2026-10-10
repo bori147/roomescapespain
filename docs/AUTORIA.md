@@ -353,9 +353,16 @@ que en horizontal pero más amplio.
 | Marca | `index.html`, `404.html`, `legal/*.html` o `README.md` escriben «Vuelva Usted Mañana» (es «Vuelva usted mañana») | |
 | No instalable | hay manifest, `apple-touch-icon`, iconos PNG de app, service worker, Wake Lock o «Añadir a pantalla de inicio» | |
 | Versionado | `index.html` mezcla números `?v=` o enlaza CSS/JS sin `?v=` | |
+| Scripts enlazados | `index.html` enlaza un script local que no existe (p. ej. se borra `js/ui-puzzles.js`): falla, no se convierte en «guarda omitida» | |
 
-Mientras `css/tokens.css` no declare las capas, las comprobaciones del rediseño (capas, contraste, marca fuera
-del README) se informan como omitidas o avisos.
+Solo **avisan**: una temporada `js/seasons/sN.js` que `index.html` no enlaza (la prueba la carga igualmente, antes de
+`js/ui-puzzles.js`) y las hojas de `css/` que `index.html` no enlaza. Ojo: el versionado `?v=` solo se comprueba en
+`index.html`; las páginas de `legal/` y `404.html` hay que revisarlas a mano al publicar (`docs/PUBLICAR.md`).
+
+Mientras `css/tokens.css` esté **vacío** (solo comentarios), las comprobaciones del rediseño (capas, contraste, marca
+fuera del README, `@layer seasons`) se informan como omitidas o avisos. En cuanto tenga cualquier contenido son
+**estrictas**: no se mira una línea concreta para decidirlo, así que si la declaración `@layer reset, tokens, …;`
+falta, cambia de orden o se borra, la comprobación de capas falla en lugar de volver al modo aviso.
 
 **Por temporada:** datos bien formados, ids únicos, objetos existentes, combos en orden alfabético, `carry`,
 códigos de expediente y que la solución completa los 10 niveles. Además, **avisos** (no fallan) de solapamientos,
@@ -380,7 +387,7 @@ tiene una **guarda** en `tests/run.js` que falla si el marcado de la temporada c
 | Tablas a fichas en el móvil: Pisos (T3-N1), Caja de facturas y CAFÉ-MRR (T5-N4) | reciben `table.tbl-stack` y `td[data-label]` |
 | Clasificación de CAFÉ-MRR con chips en lugar de `<select>` | los `#s5-f1…#s5-f11` siguen existiendo y aceptan `h.setValue` |
 | El cuadro de créditos de T5-N3 (`.s5-bud`) **no** se convierte en fichas (tiene columna fija) | T5-N3 «cuadro»: `.s5-bud` sin `.tbl-stack` |
-| CSS de temporada dentro de `@layer seasons` (para que `overrides` gane) | el `<style data-season>` empieza por `@layer seasons{` (en jsdom, que no entiende `@layer`, basta con que `js/core.js` lo haga en los navegadores que sí) |
+| CSS de temporada dentro de `@layer seasons` (para que `overrides` gane) | el `<style data-season>` empieza por `@layer seasons{` (en jsdom, que no entiende `@layer`, basta con que el código de `js/core.js`, sin contar comentarios, contenga `@layer seasons{`; es una guarda de texto, débil a propósito, y la confirma `tests/shots.js` en un navegador real) |
 | Textos mínimos de temporada (`.s2-wall`, `.s5-cal-g b`, `.s5-mz small` ≥ 11 px en mayúsculas; carnés finales), monoespaciada para cifrados y tiras | sondas de tamaño de texto de `tests/shots.js` |
 
 Las guardas que dependen de un fichero aún vacío (`js/ui-puzzles.js`) se marcan como omitidas (⏭) hasta que exista.
@@ -395,10 +402,10 @@ cada captura, pasa estas **sondas** (un fallo da salida 1; los avisos solo se li
 | Juego | la página de juego se desplaza, o la ventanilla o la bandeja no se ven enteras |
 | Botón principal | en una pantalla de papel del teléfono, el `.btn.primary` no se ve sin desplazar o algo lo tapa |
 | Ko-fi | sin modal abierto (y fuera del final de temporada), no hay ninguna entrada ☕ visible y pulsable |
-| Tamaño de texto | hay texto visible de menos de 12 px fuera de la sala (11 px en mayúsculas espaciadas) o de menos de 10 px dentro |
-| Hotspots | el centro de un hotspot visible lo tapa otra cosa (flechas, chips, avisos). Si lo tapa otro hotspot, solo avisa |
+| Tamaño de texto | hay texto visible de menos de 12 px fuera de la sala o de menos de 10 px dentro. Los 11 px solo se aceptan en las clases documentadas (sellos, `.redact`, `.is-new`, `.modal-masthead`, carnés finales, `.s2-wall`, `.s5-cal-g b`, `.s5-mz small`); los glifos emoji (`.hs-emoji`, `.deco-emoji`, ☕) no cuentan como texto |
+| Hotspots | el centro de un hotspot visible lo tapa otra cosa (flechas, chips, avisos). **Desviación deliberada:** si lo tapa otro hotspot, solo avisa, porque las temporadas están congeladas y `tests/run.js` ya avisa de los solapamientos |
 | Toast | el justificante «Añadido a tu bandeja» tapa la sala |
-| Objetivos táctiles | en vistas táctiles, un botón, enlace o campo fuera de la sala mide menos de 44 × 44, contando la zona ampliada con `::before`/`::after` (en tableros solo avisa si mide ≥ 24) |
+| Objetivos táctiles | en vistas táctiles, un botón, enlace o campo fuera de la sala mide menos de 44 × 44, contando la zona ampliada con `::before`/`::after`. Solo se libran los enlaces dentro de un texto y, con un aviso si miden ≥ 24, las casillas de los tableros densos que no caben a 44 px en 320 px de ancho (`.cal-grid`, `.tile-grid`, `.s2-grid`, `#s5-maze`, `.s5-cal-g`, `.s3-lo-grid`). El teclado (`.kp-grid`, 56 px de alto), las filas de partidos y las opciones son botones normales: por debajo de 44 px fallan |
 | Sello | el sello «APROBADO» o el del final pisa el título |
 
 Opciones útiles: `--escenas=05,23-27` (solo esas), `--motion` (con animaciones), `--estricto` (que las sondas
