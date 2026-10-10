@@ -56,7 +56,7 @@
   const TEXTISH = 'input:not([type]), input[type="text"], input[type="number"], input[type="search"], input[type="tel"], input[type="password"]';
   // Guiones blandos en las casillas estrechas del plano S3-N6: sin diccionario de
   // separación (Chrome en Windows) «Contadores» se partía letra a letra.
-  const SHY = { Contadores: 'Conta­dores', Ascensor: 'Ascen­sor', Caldera: 'Cal­dera', Trastero: 'Tras­tero', Pasillo: 'Pa­sillo' };
+  const SHY = { Contadores: 'Conta\u00ADdores', Ascensor: 'Ascen\u00ADsor', Caldera: 'Cal\u00ADdera', Trastero: 'Tras\u00ADtero', Pasillo: 'Pa\u00ADsillo' };
   function softHyphens(body) {
     $$('.s3-fach > br', body).forEach((br) => br.replaceWith(document.createTextNode(' ')));
     $$('.s3-cell', body).forEach((c) => {
