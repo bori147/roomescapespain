@@ -394,7 +394,7 @@
     }
   }
   function observe(st) {
-    try { st.mo.observe(st.card, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class'] }); } catch (e) { /* nada */ }
+    try { st.mo.observe(st.card, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'hidden'] }); } catch (e) { /* nada */ }
   }
   function enhance(initial) {
     if (!cur) return;
@@ -422,9 +422,23 @@
     const mine = cur;
     mine.rafId = raf(() => { mine.rafId = null; if (cur === mine) enhance(false); });
   }
+  // Un bloque que se destapa debajo del pliegue (p. ej. la confirmación «Ver la solución…»
+  // de las pistas): el motor lo enfoca sin desplazar, así que lo traemos a la vista.
+  const UNHIDE = '.turno-confirm';
+  function unhidden(el) {
+    const mine = cur;
+    raf(() => {
+      if (cur !== mine || !el.isConnected || el.hidden || !laidOut(el) || typeof el.scrollIntoView !== 'function') return;
+      try { el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: rm() ? 'auto' : 'smooth' }); } catch (e) { try { el.scrollIntoView(false); } catch (x) { /* nada */ } }
+    });
+  }
   function onMutations(recs) {
     if (!cur) return;
     recs.forEach((r) => {
+      if (r.type === 'attributes' && r.attributeName === 'hidden') {
+        if (r.target.nodeType === 1 && !r.target.hidden && r.target.matches(UNHIDE)) unhidden(r.target);
+        return;
+      }
       let n = r.target;
       if (n && n.nodeType !== 1) n = n.parentElement;
       const v = n && n.closest ? n.closest(VERDICT) : null;

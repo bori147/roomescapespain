@@ -723,6 +723,7 @@
     border-radius: var(--r-md);
     background: var(--red-bg);
     color: var(--red-ink);
+    scroll-margin: 12px;
     animation: modal-fade-in var(--d-fast) var(--ease-out) both;
   }
   .turno-confirm p { margin: 0 0 10px; font-weight: 600; font-size: var(--fs-sm); }

@@ -16,10 +16,9 @@
   .sede-msg:not(:empty),
   .sede-err,
   .sede-ok {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-    column-gap: 10px;
+    /* flow-root, no grid: el texto suelto tras <b>, <small> o <br> sería un
+       elemento anónimo de la rejilla y caería debajo del sello. */
+    display: flow-root;
     margin: 12px 0 0;
     padding: 10px 12px;
     border: 2px solid var(--line-strong);
@@ -34,8 +33,8 @@
   /* La mini-sello del veredicto (decorativo: el texto lo dice todo) */
   :is(.msg, .coal-msg, .sede-msg, .sede-err, .sede-ok)::before {
     content: none;
-    align-self: start;
-    margin-top: 1px;
+    float: left;
+    margin: 1px 10px 2px 0;
     padding: 2px 6px 1px;
     border: 2px solid currentColor;
     border-radius: 3px;
@@ -45,8 +44,6 @@
     white-space: nowrap;
     rotate: -4deg;
   }
-  :is(.msg, .coal-msg, .sede-msg, .sede-err, .sede-ok) > * { grid-column: 2; }
-  :is(.msg:not(.bad):not(.good):not(.vm-bad):not(.vm-good), .coal-msg:not(.bad):not(.vm-bad):not(.vm-good), .sede-msg:not(.bad):not(.good)) { grid-template-columns: minmax(0, 1fr); }
 
   .msg.bad, .msg.vm-bad,
   .coal-msg.bad:not(:empty), .coal-msg.vm-bad:not(:empty),
@@ -463,7 +460,6 @@
   /* ---------------- Barra de acciones dentro del cuerpo: siempre a mano ---------------- */
   .modal-body :is(.row-btns, .modal-inline-actions):has(> .btn.primary) {
     position: sticky;
-    top: calc(-1 * var(--mbp, 16px));
     bottom: calc(-1 * var(--mbp, 16px));
     z-index: 4;
     margin-bottom: calc(-1 * var(--mbp, 16px));
@@ -536,7 +532,7 @@
     forced-color-adjust: none;
   }
   .tp-preview b { display: block; margin-bottom: 4px; color: #fff; font: 600 var(--fs-cap)/1.3 var(--ui); letter-spacing: .08em; text-transform: uppercase; }
-  .tp-preview .tp-gap { color: var(--lcd-dim); }
+  .tp-preview .tp-gap { color: color-mix(in srgb, var(--lcd-fg) 62%, var(--lcd-bg)); }
 
   /* ---------------- CAFÉ: control segmentado de componente (ui-puzzles.js) ---------------- */
   .seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; width: 100%; }
@@ -583,7 +579,8 @@
      «min-content» apilan arriba lo de la izquierda y la última (1fr) se queda el resto,
      así el tablero (que las abarca todas) no separa los párrafos de la izquierda. */
   @media (orientation: landscape) and (max-height: 520px) {
-    .cal-grid { max-width: 320px; }
+    /* 7 × 44 px + huecos: 340 px como mucho, nunca menos que el dedo */
+    .cal-grid { max-width: 340px; }
     .cal-d { min-height: 0; }
   }
   /* Lado a lado solo si hay anchura (en 667 × 375 la columna de texto quedaría en nada) */
@@ -606,6 +603,7 @@
       margin: 0;
     }
     /* Coalición: lista de partidos en una columna con su propio scroll; votación siempre a la vista */
+    .modal-body:has(> .party-grid) > .party-grid,
     .modal-body :has(> .party-grid) > .party-grid {
       grid-template-columns: minmax(0, 1fr);
       width: min(50cqi, 400px);
@@ -615,8 +613,12 @@
       padding: 8px 8px 8px 2px;
       scrollbar-width: thin;
     }
+    .modal-body:has(> .party-grid) > .party-grid .party,
     .modal-body :has(> .party-grid) > .party-grid .party { min-height: 48px; }
-    .modal-body :has(> .cal-grid) > .cal-grid { width: min(50cqi, 340px); }
+    /* El calendario cuelga a veces directamente del cuerpo (S4-N8): sin anchura
+       explícita, la columna «auto» lo dejaría en su min-content (celdas de 23 px). */
+    .modal-body:has(> .cal-grid) > .cal-grid,
+    .modal-body :has(> .cal-grid) > .cal-grid { width: min(50cqi, 340px); min-width: 332px; }
     /* Sede: los tres desplegables del paso 1 en una fila */
     #sede:has(> label:nth-of-type(3)) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 12px; }
     #sede:has(> label:nth-of-type(3)) > :not(label) { grid-column: 1 / -1; }
@@ -705,8 +707,10 @@
 
   /* Tamaños mínimos de lectura en piezas de temporada */
   .s2-wall { font: 600 11px/1.4 var(--ui); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
-  .s5-mz small { font-size: 11px; color: var(--ink-2); }
-  .s3-deed-row small, .s4-cred small, .s5-end-card small { font-size: 11px; color: var(--ink-2); }
+  .s5-mz small { font-size: 12px; color: var(--ink-2); }
+  .s3-deed-row small, .s4-cred small { font-size: 12px; color: var(--ink-2); }
+  /* 11 px solo como versalitas espaciadas («DNI Nº», «VÁLIDO HASTA») */
+  .s5-end-card small { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
   .s5-law { font-family: var(--read); line-height: 1.55; }
   .s2-seq { font-size: 18px; }
   .s5-fac select { max-width: none; }
@@ -806,7 +810,7 @@
     }
     #modal .tbl-stack td {
       display: grid;
-      grid-template-columns: 7.5em minmax(0, 1fr);
+      grid-template-columns: 8.5em minmax(0, 1fr);
       gap: 10px;
       align-items: baseline;
       padding: 4px 0;
