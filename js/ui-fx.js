@@ -404,12 +404,30 @@
     return t.classList.contains('show') || open;
   }
   const overlaps = (a, b, m) => a.left < b.right + m && a.right > b.left - m && a.top < b.bottom + m && a.bottom > b.top - m;
-  /** Coloca un pósit junto a target sin taparlo: encima o debajo, donde quepa mejor. Si no cabe sin taparlo, no sale
-      (y no cuenta como visto). No recibe toques: cualquier toque lo retira y llega igualmente a lo que haya debajo. */
-  function showCoach(key, target, avoid) {
+  /** Lo que ocupa la tinta de un bloque de texto (no su caja entera): así el pósit puede ir sobre el hueco vacío de la
+      ventanilla sin tapar lo que se está leyendo. Recortado a la caja (la ventanilla puede tener scroll propio). */
+  function inkRect(n) {
+    const r = rectOf(n); if (!r) return null;
+    try {
+      const rg = D.createRange(); rg.selectNodeContents(n);
+      const b = rg.getBoundingClientRect();
+      if (b && b.width > 0 && b.height > 0) {
+        const o = { left: Math.max(b.left, r.left), top: Math.max(b.top, r.top), right: Math.min(b.right, r.right), bottom: Math.min(b.bottom, r.bottom) };
+        return o.right > o.left && o.bottom > o.top ? o : null;
+      }
+    } catch (e) { /* sin Range: la caja entera */ }
+    return r;
+  }
+  const less = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] < b[i]; return false; };
+  /** Coloca un pósit junto a uno de los targets (en orden de preferencia) sin taparlo: encima o debajo, centrado o
+      corrido a un lado, donde menos pise lo que se está leyendo, el aviso de la bandeja y el café de Ko-fi. Si no cabe
+      sin tapar lo señalado, no sale (y no cuenta como visto). No recibe toques: cualquier toque lo retira y llega
+      igualmente a lo que haya debajo. */
+  function showCoach(key, targets, avoid) {
     if (!V() || seen(key) || coach || !quiet()) return false;
-    const t = rectOf(target);
-    if (!t || !onScreen(target, t)) return false; // no cuenta como visto: saldrá la próxima vez que se vea
+    // Lo señalado ha de verse; si no, no cuenta como visto: saldrá la próxima vez que se vea
+    const tgs = (Array.isArray(targets) ? targets : [targets]).map((n) => ({ n, r: rectOf(n) })).filter((o) => o.r && onScreen(o.n, o.r));
+    if (!tgs.length) return false;
     const c = el('div', 'coach');
     c.setAttribute('aria-hidden', 'true'); // se anuncia aparte (VUM.announce), sin duplicar
     c.dataset.k = key;
@@ -422,23 +440,38 @@
     const gap = 14; const m = 8; const W0 = vw(); const H0 = vh();
     // Bajo la barra superior no se ve bien: el borde útil empieza debajo de ella
     const top0 = Math.max(m, ((rectOf(D.getElementById('topbar')) || { bottom: 0 }).bottom || 0) + 4);
-    const roomUp = t.top - gap - top0; const roomDown = H0 - m - (t.bottom + gap);
-    const fitsUp = roomUp >= cr.height; const fitsDown = roomDown >= cr.height;
-    // Sala: preferimos debajo (no tapa la mitad de arriba de la sala); resto: encima (bandeja, ventanilla, chip de uso)
-    const pref0 = key === 'room' ? !fitsDown && (fitsUp || roomUp > roomDown) : fitsUp || (!fitsDown && roomUp > roomDown);
-    const cx = t.left + t.width / 2;
-    const left = clamp(cx - cr.width / 2, m, Math.max(m, W0 - cr.width - m));
-    const place = (isUp) => {
-      const top = clamp(isUp ? t.top - gap - cr.height : t.bottom + gap, top0, Math.max(top0, H0 - cr.height - m));
-      return { up: isUp, left, top, right: left + cr.width, bottom: top + cr.height };
-    };
-    // Lo que no se debe tapar (el texto que se está leyendo, el aviso de la bandeja): se elige el lado que menos lo pisa
-    const nogo = (avoid || []).map(rectOf).concat(toastShown() ? [rectOf(D.getElementById('toast'))] : []).filter(Boolean);
-    const area = (b) => nogo.reduce((a, r) => a + Math.max(0, Math.min(b.right, r.right) - Math.max(b.left, r.left)) * Math.max(0, Math.min(b.bottom, r.bottom) - Math.max(b.top, r.top)), 0);
-    const opts = [place(pref0), place(!pref0)].filter((b) => !overlaps(b, t, 2));
-    if (!opts.length) { c.remove(); return false; }
-    const box = opts.reduce((a, b) => (area(b) < area(a) ? b : a));
-    const up = box.up; const top = box.top;
+    // Lo que no se debe tapar: el texto de la ventanilla, el objetivo, el aviso «Añadido a tu bandeja» y el café
+    const nogo = ['dlgMsg', 'dlgIdle'].map((id) => inkRect(D.getElementById(id)))
+      .concat(['objective', 'objChip', 'objSlip'].map((id) => { const n = D.getElementById(id); return n && !n.hidden ? rectOf(n) : null; }))
+      .concat((avoid || []).map(rectOf), toastShown() ? [rectOf(D.getElementById('toast'))] : [])
+      .concat($$('[data-kofi]').filter((a) => !a.hidden).map(rectOf))
+      .filter(Boolean);
+    const area = (b, extra) => nogo.concat(extra).reduce((a, r) => a + Math.max(0, Math.min(b.right, r.right) - Math.max(b.left, r.left)) * Math.max(0, Math.min(b.bottom, r.bottom) - Math.max(b.top, r.top)), 0);
+    let best = null;
+    tgs.forEach((tg, ti) => {
+      const t = tg.r;
+      const others = tgs.filter((o) => o !== tg).map((o) => o.r); // con varios candidatos, no tapar los demás
+      const roomUp = t.top - gap - top0; const roomDown = H0 - m - (t.bottom + gap);
+      const fitsUp = roomUp >= cr.height; const fitsDown = roomDown >= cr.height;
+      // Sala: preferimos debajo (no tapa la mitad de arriba de la sala); resto: encima (bandeja, ventanilla, chip de uso)
+      const pref0 = key === 'room' ? !fitsDown && (fitsUp || roomUp > roomDown) : fitsUp || (!fitsDown && roomUp > roomDown);
+      const cx = t.left + t.width / 2;
+      const left0 = clamp(cx - cr.width / 2, m, Math.max(m, W0 - cr.width - m));
+      // Centrado sobre lo señalado o corrido para dejar libre algo que no se debe tapar (la flecha sigue apuntando)
+      const lefts = [left0];
+      nogo.concat(others).forEach((r) => { lefts.push(r.left - 6 - cr.width, r.right + 6); });
+      [pref0, !pref0].forEach((isUp, si) => lefts.forEach((l, li) => {
+        if (li > 0 && (l < m || l + cr.width > W0 - m || cx - l < 22 || cx - l > cr.width - 22)) return;
+        const top = clamp(isUp ? t.top - gap - cr.height : t.bottom + gap, top0, Math.max(top0, H0 - cr.height - m));
+        const b = { left: l, top, right: l + cr.width, bottom: top + cr.height };
+        if (overlaps(b, t, 2)) return;
+        // Orden: lo que menos tapa (en bloques de 10×10 px), luego el target preferido, el lado preferido y lo centrado
+        const s = [Math.round(area(b, others) / 100), ti, si, Math.round(Math.abs(l - left0))];
+        if (!best || less(s, best.s)) best = { s, b, up: isUp, cx };
+      }));
+    });
+    if (!best) { c.remove(); return false; }
+    const { up, cx } = best; const left = best.b.left; const top = best.b.top;
     c.style.left = Math.round(left) + 'px';
     c.style.top = Math.round(top) + 'px';
     c.style.setProperty('--ax', Math.round(clamp(cx - left, 18, cr.width - 18)) + 'px');
@@ -470,7 +503,8 @@
       const d = (x - cx) * (x - cx) + (y - cy) * (y - cy);
       if (d < bd) { bd = d; best = h; }
     });
-    if (best) showCoach('room', best);
+    // Mejor sin tapar los demás objetos de la sala (aunque el pósit deja pasar los toques)
+    if (best) showCoach('room', best, $$('#scene .hs[data-id]:not([hidden])').filter((h) => h !== best));
   }
   // Espera a que se retire el aviso de la bandeja (1800 ms + 400 por objeto extra): debajo de él no se leería
   function coachGive(ids, tries) {
@@ -478,25 +512,34 @@
     tries = tries || 0;
     const inv = D.getElementById('inventory');
     if (inv && inv.classList.contains('has-sel')) return; // ya ha seleccionado algo: el consejo llega tarde
-    if (toastShown() && tries < 30) { later(safe(() => coachGive(ids, tries + 1)), 200); return; }
+    // Uno cada vez: espera a que se retire otro pósit (p. ej. el de «Siguiente») y a que acabe la lectura en cola
+    if ((toastShown() || coach || state().queue > 0) && tries < 60) { later(safe(() => coachGive(ids, tries + 1)), 200); return; }
     const slot = slotOf(ids[ids.length - 1]);
     if (slot) showCoach('give', slot);
   }
+  // Señala el chip «Usando: …» (o, si ahí taparía lo que se lee, la casilla seleccionada)
   on('select', (d) => {
     if (!d.id || seen('select')) return;
     later(safe(() => {
+      if (state().selected !== d.id) return; // ya ha soltado o cambiado de objeto
       const chip = D.getElementById('useChip');
-      const target = chip && !chip.hidden && rectOf(chip) ? chip : slotOf(d.id);
+      const targets = [chip && !chip.hidden && rectOf(chip) ? chip : null, slotOf(d.id)].filter(Boolean);
       if (coach && coach.dataset.k === 'give') dismissCoach();
-      showCoach('select', target);
+      showCoach('select', targets);
     }), 80);
   });
+  // «Siguiente»: espera a que se retire el aviso de la bandeja (suele llegar a la vez y taparía el botón)
+  function coachQueue(tries) {
+    if (seen('queue') || !(state().queue > 0)) return;
+    tries = tries || 0;
+    const b = D.getElementById('btnNextMsg');
+    if (!b || b.closest('[hidden]')) return;
+    if ((toastShown() || coach) && tries < 20) { later(safe(() => coachQueue(tries + 1)), 200); return; }
+    showCoach('queue', b);
+  }
   on('say', (d) => {
     if (!d.queued || seen('queue')) return;
-    later(safe(() => {
-      const b = D.getElementById('btnNextMsg');
-      if (b && !b.closest('[hidden]')) showCoach('queue', b, [D.getElementById('dlgMsg')]);
-    }), 80);
+    later(safe(() => coachQueue(0)), 80);
   });
 
   // ==========================================================
@@ -578,9 +621,13 @@
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') e.preventDefault();
     endFinale(true);
   }
-  // Toda temporada terminada se cierra con su sello (spec §9.6). «last» (no hay temporada siguiente: los 50 trámites)
-  // solo cambia el membrete de la hoja.
+  // Toda temporada terminada se cierra con su sello (spec §9.6: «season finale», con el texto del sello de cada
+  // temporada). El motor manda «last» = no hay temporada siguiente (los 50 trámites): solo cambia el membrete.
+  // Para reservar el final solo a la última temporada (lectura literal del paquete P6), basta con poner false:
+  // el motor hace entonces su sello y sus sonidos de siempre en las demás.
+  const FINALE_EVERY_SEASON = true;
   on('ending', (d) => {
+    if (!FINALE_EVERY_SEASON && !d.last) return;
     if (fin) endFinale(false);
     // Reclamar el final de forma SÍNCRONA: el motor deja de sonar su propio sello
     D.body.classList.add('finale-on');
