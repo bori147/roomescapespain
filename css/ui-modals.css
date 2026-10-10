@@ -467,6 +467,11 @@
     .modal { --mbp: 24px; }
     .modal-card { max-height: min(calc(100dvh - 64px), 860px); }
   }
+  /* Portátil bajo (1366 × 650, 1280 × 720): menos marco alrededor de la tarjeta */
+  @media (orientation: landscape) and (min-height: 521px) and (max-height: 760px) {
+    .modal { --mbp: 20px; padding: 16px 24px; }
+    .modal-card { max-height: calc(100dvh - 32px); }
+  }
 
   /* Respuesta incorrecta (el motor pone .shake en la tarjeta): manda sobre la entrada de cada
      tamaño (si no, la hoja inferior no se movería). Con movimiento reducido, base.css lo
@@ -570,6 +575,14 @@
     .kp-grid { gap: 6px; }
     .kp-key { height: 48px; font-size: 1.375rem; }
     .kp-msg { margin-top: 10px; }
+  }
+  /* Portátil bajo: el teclado entero en la tarjeta aunque el enunciado ocupe tres líneas (S3-N2) */
+  @media (orientation: landscape) and (min-height: 521px) and (max-height: 760px) {
+    #kpPrompt { margin-bottom: 10px; }
+    .kp-display { margin: 0 0 12px; }
+    .kp-box { height: 48px; }
+    .kp-grid { gap: 6px; }
+    .kp-key { height: 48px; }
   }
   /* 320 × 568 y 375 × 553 con un enunciado largo (S3-N2, S3-N10): teclas al mínimo táctil */
   @media (orientation: portrait) and (max-height: 600px) {
