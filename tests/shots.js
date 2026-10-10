@@ -336,6 +336,12 @@ function probePage(o) {
       let r = el.getBoundingClientRect();
       const lab = el.matches('input[type="checkbox"], input[type="radio"]') ? (el.closest('label') || (el.id && document.querySelector(`label[for="${CSS.escape(el.id)}"]`))) : null;
       if (lab) { const lr = lab.getBoundingClientRect(); r = { width: Math.max(r.width, lr.width), height: Math.max(r.height, lr.height) }; }
+      // Zona de toque ampliada con un ::before/::after absoluto (p. ej. un chip de 32 px con 44 px de zona útil)
+      for (const pe of ['::before', '::after']) {
+        const ps = getComputedStyle(el, pe);
+        if (ps.content === 'none' || ps.content === 'normal' || ps.position !== 'absolute' || ps.pointerEvents === 'none' || ps.display === 'none') continue;
+        r = { width: Math.max(r.width, parseFloat(ps.width) || 0), height: Math.max(r.height, parseFloat(ps.height) || 0) };
+      }
       if (r.width >= 43.5 && r.height >= 43.5) continue;
       const d = `${short(el)} ${Math.round(r.width)}×${Math.round(r.height)}`;
       if (el.closest(BOARDS) && r.width >= 24 && r.height >= 24) meh.push(d); else bad.push(d);
