@@ -525,9 +525,12 @@ async function runGuards(sid, out, sysLabels) {
   // Las CSS de temporada se inyectan dentro de @layer seasons (core.js)
   const st = w.document.querySelector(`style[data-season="${sid}"]`);
   if (st) {
+    // jsdom no entiende @layer (no tiene CSSLayerBlockRule): si core.js lo detecta y en jsdom inyecta el CSS tal cual,
+    // basta con que el código de core.js envuelva la CSS en «@layer seasons{…}» para los navegadores reales.
     const layered = /^\s*@layer\s+seasons\s*\{/.test(st.textContent);
-    if (FOUNDATION && !layered) out.fail('La CSS de la temporada no se inyecta como «@layer seasons{…}» (js/core.js)');
-    else if (layered) out.lines.push('  ✓ Guarda: CSS de temporada dentro de @layer seasons');
+    const srcOk = !w.CSSLayerBlockRule && /@layer\s+seasons\s*\{/.test(read('js/core.js'));
+    if (FOUNDATION && !layered && !srcOk) out.fail('La CSS de la temporada no se inyecta como «@layer seasons{…}» (js/core.js)');
+    else if (layered || srcOk) out.lines.push('  ✓ Guarda: CSS de temporada dentro de @layer seasons');
   }
   for (const gd of mine) {
     if (gd.needs === 'puzzles' && !PUZZLES_JS) { out.skips.push(`Guarda omitida (js/ui-puzzles.js vacío): ${gd.name}`); continue; }

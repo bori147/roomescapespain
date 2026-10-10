@@ -90,10 +90,11 @@ const FIRST_VISIT = `(() => { try { ${CONSENT} } catch (e) {} })();`;
 class Skip extends Error {}
 const R = 'window.RoomEscape';
 /** En móvil los botones Código y Ayuda viven en la hoja «Expediente en pausa»: si no se ven, se abre #btnMenu y se pulsa la fila. */
-async function topbarOrSheet(p, sel, rowText) {
+async function topbarOrSheet(p, sel, rowId, rowText) {
   if (await p.isVisible(sel)) return p.click(sel);
   await p.click('#btnMenu');
   await p.waitForSelector('#modal:not([hidden])', { timeout: 2000 }).catch(() => { throw new Skip(`${sel} no está visible y #btnMenu no abre la hoja de pausa`); });
+  if (await p.$(rowId)) return p.click(rowId);
   const row = p.locator('#modal button, #modal a').filter({ hasText: rowText }).first();
   if (!(await row.count())) throw new Skip(`la hoja de pausa no tiene la fila «${rowText}»`);
   await row.click();
@@ -121,8 +122,8 @@ const SCENES = [
   { name: '13-modal-sede', run: async (p) => p.evaluate(`${R}.start(1,5); ${R}.click('ordenador')`) },
   { name: '14-modal-tiras', run: async (p) => p.evaluate(`${R}.start(1,8); ${R}.click('trituradora')`) },
   { name: '15-modal-pistas', run: async (p) => { await p.evaluate(`${R}.start(1,6)`); await p.click('#btnHint'); await p.click('#moreHint'); } },
-  { name: '16-modal-guardar', run: async (p) => { await p.evaluate(`${R}.start(3,6)`); await topbarOrSheet(p, '#btnSave', /C[óo]digo/); } },
-  { name: '17-modal-ayuda', run: async (p) => { await p.evaluate(`${R}.start(1,1)`); await topbarOrSheet(p, '#btnHelp2', /C[óo]mo jugar|Ayuda/); } },
+  { name: '16-modal-guardar', run: async (p) => { await p.evaluate(`${R}.start(3,6)`); await topbarOrSheet(p, '#btnSave', '#pauseSave', /C[óo]digo/); } },
+  { name: '17-modal-ayuda', run: async (p) => { await p.evaluate(`${R}.start(1,1)`); await topbarOrSheet(p, '#btnHelp2', '#pauseHelp', /C[óo]mo jugar|Ayuda/); } },
   { name: '18-nivel-completado', run: async (p) => p.evaluate(`${R}.start(2,3); ${R}.g.win(); ${R}.finish()`) },
   { name: '19-fin-temporada', run: async (p) => p.evaluate(`${R}.start(1,10); ${R}.g.win(); ${R}.finish()`) },
   { name: '20-juego-temporada5', run: async (p) => p.evaluate(`${R}.start(5,10)`) },
@@ -220,7 +221,7 @@ function probePage(o) {
   for (const el of document.querySelectorAll('body *')) {
     if (culprits.length >= 3) break;
     const r = el.getBoundingClientRect();
-    if (r.width < 1 || r.height < 1) continue;
+    if (r.width < 1 || r.height < 1 || el.ownerSVGElement) continue; // el interior de un SVG cuenta como su <svg>
     if (!((r.right > cfgW + 1 && r.left < cfgW - 1) || (r.left < -1 && r.right > 1))) continue;
     if (!shown(el)) continue;
     let clipped = false; // dentro de un contenedor con scroll o recorte propio (p. ej. la sala desplazable): no cuenta
