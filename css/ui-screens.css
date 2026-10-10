@@ -485,7 +485,9 @@
     text-wrap: pretty;
   }
 
-  /* Recién desbloqueada: la censura se despega y cae el sello DESBLOQUEADA */
+  /* Recién desbloqueada: la censura se despega y cae el sello DESBLOQUEADA. Al compás del motor, que
+     suena el sello a los 531 ms (= retraso 300 ms + 55 % de 420 ms, el impacto de k-stamp-hit).
+     El despegue va sin rebote: con muelle la tira se daría la vuelta (scaleX negativo). */
   .season-card.just-unlocked .sc-title .redact {
     position: absolute;
     inset: -2px -6px;
@@ -493,19 +495,19 @@
     place-items: center;
     overflow: hidden;
     transform-origin: right center;
-    animation: screen-peel 300ms var(--ease-spring) 650ms both;
+    animation: screen-peel 300ms var(--ease-out) 120ms both;
   }
   .sc-unlock {
     position: absolute;
     right: 22px;
     bottom: 16px;
     --rot: -8deg;
-    --stamp-delay: 820ms;
+    --stamp-delay: 300ms;
     animation: k-stamp-hit var(--d-slow) var(--ease-out) var(--stamp-delay) both;
   }
   .season-card.just-unlocked .sc-cells i {
     animation: screen-cell-in 200ms var(--ease-out) both;
-    animation-delay: calc(900ms + var(--i, 0) * 45ms);
+    animation-delay: calc(600ms + var(--i, 0) * 45ms);
   }
   .season-card.just-unlocked .sc-cells i:nth-child(2) { --i: 1; }
   .season-card.just-unlocked .sc-cells i:nth-child(3) { --i: 2; }
