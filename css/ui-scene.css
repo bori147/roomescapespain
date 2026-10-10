@@ -483,5 +483,10 @@
     .hs.sign { border-color: CanvasText; }
     .hs::after { forced-color-adjust: none; }
     #sceneBox.using .scene-wrap { outline: 3px solid Highlight; }
+    /* El navegador pasa los emoji a su versión de texto (monocroma, casi negra sobre las paredes) en todo
+       lo que no lleve forced-color-adjust: none. La sala es un dibujo, así que sus emoji siguen en color;
+       el emoji de cada casilla de la bandeja (solo emoji, aria-hidden) también */
+    .slot-emoji { forced-color-adjust: none; }
+    .scene, .scene *, .slot-emoji { font-variant-emoji: emoji; }
   }
 }

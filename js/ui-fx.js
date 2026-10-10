@@ -932,9 +932,35 @@
   // Foco de teclado (Tab, «Siguiente» del teclado del móvil): el campo enfocado se desplaza a la
   // vista respetando scroll-padding (columnas fijas como la del cuadro de créditos de S5-N3)
   // ==========================================================
+  // Objetos de la sala: con Tab, la sala desplazable se mueve hasta que el objeto y su etiqueta
+  // quedan enteros dentro de la ventana (con 12 px de margen); el scroll actualiza flechas y plano
+  function revealHs(hs) {
+    const wrap = D.getElementById('sceneWrap');
+    if (!wrap || !wrap.contains(hs) || wrap.scrollWidth - wrap.clientWidth <= 4) return;
+    const r = rectOf(hs); const wr = rectOf(wrap);
+    if (!r || !wr || !wr.width) return;
+    let w = 0;
+    try { w = parseFloat(W.getComputedStyle(hs, '::after').width) || 0; } catch (x) { w = 0; }
+    const cx = r.left + r.width / 2;
+    const left = Math.min(r.left, cx - w / 2); const right = Math.max(r.left + r.width, cx + w / 2);
+    const pad = 12; const lo = wr.left + pad; const hi = wr.left + wr.width - pad;
+    let d = 0;
+    if (right - left > hi - lo) d = (left + right) / 2 - (lo + hi) / 2;
+    else if (left < lo) d = left - lo;
+    else if (right > hi) d = right - hi;
+    d = Math.round(d);
+    if (!d) return;
+    try { wrap.scrollBy({ left: d, behavior: RM() ? 'auto' : 'smooth' }); } catch (x) { wrap.scrollLeft += d; }
+  }
   D.addEventListener('focusin', (e) => {
     const t = e.target;
     if (!t || t === D.body || typeof t.scrollIntoView !== 'function' || !t.closest) return;
+    if (t.classList && t.classList.contains('hs') && t.closest('#scene')) {
+      let hv = false;
+      try { hv = t.matches(':focus-visible'); } catch (x) { hv = false; }
+      if (hv) safe(revealHs)(t);
+      return;
+    }
     if (!t.closest('#modal input, #modal select, #modal textarea')) return;
     let fv = false;
     try { fv = t.matches(':focus-visible'); } catch (x) { fv = false; }

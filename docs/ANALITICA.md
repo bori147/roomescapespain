@@ -35,9 +35,9 @@ Todos llevan `season` (1-5), `level` (1-10) y `level_id` (`T2-N7`) cuando aplica
 | `season_complete` | Al terminar una temporada | `seconds`, `hints` (totales) |
 | `wrong_answer` | Código o respuesta incorrecta en un teclado/campo | `puzzle` (nombre del candado) |
 | `hint_request` | Al pedir una pista | `hint` (1, 2, 3…), `is_solution` |
-| `back_to_menu` | Al salir al menú en mitad de un trámite (señal de abandono): «Salir al menú principal» de «Expediente en pausa» | `seconds_in_level` |
+| `back_to_menu` | Al salir en mitad de un trámite (señal de abandono): «Salir al menú principal» o «Trámites de la temporada» de «Expediente en pausa» | `seconds_in_level`, `to` (`menu` o `season`) |
 | `save_code_shown` / `code_loaded` | Guardar con código / cargar un código | — |
-| `donate_click` | Clic en cualquier botón de Ko-fi («Invítame a un café») | `where` (ver tabla siguiente) |
+| `donate_click` | Clic en cualquier botón de Ko-fi («Invítame a un café») | `where` (pantalla), `slot` (botón; ver tablas siguientes) |
 | `share_click` | Al pulsar «📤 Compartir resultado» al final de una temporada | — |
 | `reveal_used` | Al pulsar 🔍 **Lupa** en la sala (señala todo lo que se puede tocar) | — |
 | `hint_nudge` | Cuando, tras 120 s sin avanzar, el juego sugiere la Ventanilla de Pistas (💡 da dos pulsos y la ventanilla lo dice). No abre nada solo | — |
@@ -45,7 +45,13 @@ Todos llevan `season` (1-5), `level` (1-10) y `level_id` (`T2-N7`) cuando aplica
 | `log_open` | Al abrir el «Registro de entrada» (historial de mensajes de la ventanilla) | — |
 | `pause_open` | Al abrir «Expediente en pausa» (botón 📂, Esc o el botón «atrás» del móvil en el juego) | — |
 
-### `donate_click.where`: dónde estaba el botón
+### `donate_click.where`: en qué pantalla
+
+Igual que antes del rediseño: el nombre de la pantalla (`menu`, `season`, `intro`, `play`, `win`, `end`),
+o `season_end` si el clic es en la «Tasa voluntaria · Modelo 0-CAFÉ» del final de temporada.
+Los periodos antes y después del rediseño se comparan sin agrupar nada.
+
+### `donate_click.slot`: qué botón (nuevo con el rediseño)
 
 | Valor | Botón |
 |---|---|
@@ -55,10 +61,7 @@ Todos llevan `season` (1-5), `level` (1-10) y `level_id` (`T2-N7`) cuando aplica
 | `talon-intro` | Talón inferior de la intro del trámite (móvil) |
 | `talon-win` | Talón inferior de la resolución del trámite (móvil) |
 | `talon-end` | Talón inferior del final de temporada (móvil) |
-| `end-slip` | «Tasa voluntaria · Modelo 0-CAFÉ», la papeleta del final de temporada |
-
-Antes del rediseño, `where` valía el nombre de la pantalla (`menu`, `play`, `win`…) o `season_end`.
-Al comparar periodos, agrupa `season_end` con `end-slip`, y `play` con `tray` + `topbar`.
+| `tasa` | «Tasa voluntaria · Modelo 0-CAFÉ», la papeleta del final de temporada (`where` = `season_end`) |
 
 ## Panel recomendado (Dashboard en PostHog)
 
@@ -71,7 +74,7 @@ Al comparar periodos, agrupa `season_end` con `end-slip`, y `play` con `tray` + 
 | ¿Cuánto dura cada trámite? | *Trends* · `level_complete`, media de `seconds`, desglose por `level_id` |
 | ¿Vuelven otro día? | *Retention* · `app_open` → `app_open` |
 | ¿De dónde vienen? | *Web analytics* (integrado en PostHog) |
-| ¿Funciona el café? | *Trends* · `donate_click` y desglose por `where` |
+| ¿Funciona el café? | *Trends* · `donate_click` y desglose por `where` (pantalla) o `slot` (botón) |
 | ¿Se comparte? | *Trends* · `share_click` por `season`; *Funnel* `season_complete` → `share_click` |
 | ¿Ayuda la Lupa o el empujón? | *Trends* · `reveal_used` y `hint_nudge` por `level_id`; compáralos con `hint_request` |
 | ¿Se atascan hasta reiniciar? | *Trends* · `level_restart` por `level_id` |

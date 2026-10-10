@@ -554,6 +554,16 @@ const GUARDS = [
       const t = h.$('#modal table.s5-bud');
       if (!t) throw new Error('no aparece table.s5-bud');
       if (t.classList.contains('tbl-stack')) throw new Error('.s5-bud no debe recibir .tbl-stack (tiene su propia columna fija)');
+      // Cada casilla con nombre accesible «Fila · Columna» (axe «label»): lo pone js/ui-puzzles.js
+      const ins = h.$$('#modal table.s5-bud input');
+      if (!ins.length) throw new Error('table.s5-bud no tiene casillas');
+      const bad = ins.filter((i) => !/\S · \S/.test(i.getAttribute('aria-label') || ''));
+      if (bad.length) throw new Error(`casillas del cuadro sin nombre accesible «Fila · Columna»: ${bad.map((i) => '#' + i.id).join(', ')}`);
+      const ap2 = h.$('#s5-b-AP2');
+      if (ap2 && !/Cap\. 2 Corrientes$/.test(ap2.getAttribute('aria-label'))) throw new Error(`#s5-b-AP2 se llama «${ap2.getAttribute('aria-label')}» (se esperaba «… · Cap. 2 Corrientes»)`);
+      // Ningún campo del modal sin nombre accesible
+      const noName = h.$$('#modal input:not([type=hidden]), #modal select:not([aria-hidden=true]), #modal textarea').filter((i) => !(i.getAttribute('aria-label') || i.getAttribute('aria-labelledby') || i.getAttribute('title') || i.getAttribute('placeholder') || (i.labels && i.labels.length) || i.closest('label')));
+      if (noName.length) throw new Error(`campos sin nombre accesible: ${noName.map((i) => i.id || i.name || i.tagName).join(', ')}`);
     } },
 ];
 
@@ -789,6 +799,9 @@ async function runSeason(sid) {
         if (bad.length) throw new Error(`carry incluye objetos que no se consiguen en ningún trámite anterior de la temporada: ${bad.join(', ')}`);
       }
       R.start(sid, n);
+      // El objetivo se muestra solo (chip, ficha, pausa…): siempre con mayúscula inicial
+      const goalTxt = ((doc.querySelector('#objChipText') || {}).textContent || '').trim();
+      if (w.VUM && w.VUM.goal() && !/^\P{L}*\p{Lu}/u.test(goalTxt)) throw new Error(`el objetivo se muestra sin mayúscula inicial: «${goalTxt.slice(0, 50)}»`);
       if (sols[i]) {
         await Promise.race([sols[i](h), sleep(15000).then(() => { throw new Error('tiempo agotado (15 s)'); })]);
       }

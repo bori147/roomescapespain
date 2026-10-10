@@ -1279,14 +1279,18 @@
       flex-wrap: wrap;
       align-content: flex-start;
       row-gap: 2px;
-      column-gap: 2px;
+      column-gap: 0;
       padding: max(6px, env(safe-area-inset-top, 0px)) var(--hudR) 4px 4px;
       border-bottom: 0;
       background: var(--canvas);
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
     }
-    .topbar.in-game .game-info { margin-right: auto; gap: 5px; }
+    /* Datos + acciones en una sola fila aun en la columna mínima (208 px, p. ej. 640×360 o zoom al 200 %)
+       con «10/10»: sin huecos entre botones (cada uno ya mide 44 px) y la etiqueta de temporada más estrecha */
+    .topbar.in-game .game-actions { gap: 0; }
+    .topbar.in-game .game-info { margin-right: auto; gap: 4px; }
+    .topbar.in-game .season-chip { padding: 0 5px; }
     .topbar.in-game .obj-chip { display: flex; order: 9; flex: 1 0 100%; margin: 0; }
     .topbar.in-game #kofiPlay { display: inline-flex; }
     .topbar.in-game .tb-hint .tb-l {

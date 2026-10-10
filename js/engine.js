@@ -412,8 +412,39 @@
     if (e.textContent !== t) { e.textContent = t; raf(measureDlg); }
   }
   // ¿El texto visible de la ventanilla (mensaje o reposo) no cabe? → degradado inferior (.overflows)
+  // Zonas con scroll propio (cuerpo de los modales, texto de la ventanilla): si desbordan, entran en el
+  // orden de Tab para que el teclado pueda desplazarlas (Safari no hace enfocables los scrollers).
+  // Solo se quitan los atributos que se pusieron aquí (data-kbs).
+  function kbScroll(el, region) {
+    if (!el) return;
+    const over = el.clientHeight > 0 && el.scrollHeight > el.clientHeight + 4 && !el.hidden;
+    if (over) {
+      if (el.dataset.kbs) return;
+      el.dataset.kbs = '1';
+      el.setAttribute('tabindex', '0');
+      if (region) { el.setAttribute('role', 'region'); el.setAttribute('aria-labelledby', region); }
+    } else if (el.dataset.kbs) {
+      delete el.dataset.kbs;
+      if (document.activeElement === el) return; // no se le quita el foco a quien lo tiene
+      el.removeAttribute('tabindex');
+      if (region) { el.removeAttribute('role'); el.removeAttribute('aria-labelledby'); }
+    }
+  }
+  function kbScrollModal() {
+    const m = $('#modal'); if (!m || m.hidden) return;
+    const b = $('.modal-body', m); const t = $('#modalTitle', m);
+    if (b && t) kbScroll(b, 'modalTitle');
+    // Cajas con scroll propio dentro del cuerpo (p. ej. el texto de la ley de T5) sin nada enfocable dentro
+    if (b) $$('.modal-body *', m).forEach((n) => {
+      if (n.dataset.kbs) { kbScroll(n); return; }
+      if (n.scrollHeight <= n.clientHeight + 4 || n.querySelector('input, select, textarea, button, a[href], [tabindex]')) return;
+      const oy = getComputedStyle(n).overflowY;
+      if (oy === 'auto' || oy === 'scroll') kbScroll(n);
+    });
+  }
   function measureDlg() {
     const d = $('#dialog'); if (!d) return;
+    kbScroll($('#dlgMsg')); kbScroll($('#dlgIdle'));
     const box = d.dataset.skin === 'idle' ? $('#dlgIdle') : $('#dlgMsg');
     if (!box || box.hidden || !box.getClientRects().length) { d.classList.remove('overflows'); return; }
     // Alto real del texto (un Range no depende del relleno que añade el propio degradado ni del recorte)
@@ -649,6 +680,7 @@
     m.classList.toggle('top-align', !!txt);
     if (txt && isFine()) focusEl(txt); else focusEl($('#modalTitle', card));
     if (kind !== 'puzzle' && !wasOpen) sfx('paper');
+    raf(kbScrollModal);
     emit('modal', { phase: 'open', card, body, title, cls: cls || '', reason: null });
     return card;
   }
@@ -1232,8 +1264,10 @@
   }
 
   // ---------------- Interacción ----------------
+  // Nombre de un objeto citado tal cual («DNI nuevo», «Tarjeta de doña Ramona»): sin pasarlo a minúsculas
+  const itemQ = (id) => `«${ITEMS[id].name}»`;
   function nope(it) {
-    const n = ITEMS[it].name.toLowerCase();
+    const n = itemQ(it);
     return rand([
       `Usar ${n} ahí no parece buena idea.`,
       'Eso no es competencia de este negociado. Diríjase a otra ventanilla.',
@@ -1305,7 +1339,7 @@
       const key = [a, id].sort().join('+');
       const fn = L.combos && L.combos[key];
       if (fn) fn(g);
-      else say(`No se te ocurre cómo combinar ${ITEMS[a].name.toLowerCase()} con ${ITEMS[id].name.toLowerCase()}.`, null, { face: '🤔', kind: 'system' });
+      else say(`No se te ocurre cómo combinar ${itemQ(a)} con ${itemQ(id)}.`, null, { face: '🤔', kind: 'system' });
     } else if (selected === id) {
       setSelected(null);
     } else {
@@ -2000,6 +2034,7 @@
 
   function logModal() {
     if (!S) return;
+    track('log_open', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}` });
     const items = log.slice().reverse();
     modal({
       title: '📋 Registro de entrada', kind: 'system', cls: 'log', sys: true, pauseClock: true,
@@ -2013,6 +2048,7 @@
 
   function pauseModal() {
     if (!S || !L || screen !== 'play' || !$('#modal').hidden) return;
+    track('pause_open', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}` });
     setObjOpen(false);
     const vib = canVibrate() && isTouch(); // el escritorio también tiene navigator.vibrate, pero no vibra
     const code = makeCode(S.season, S.level, S.totalHints);
@@ -2055,7 +2091,7 @@
       sfx('click');
       confirmModal('¿Reiniciar el trámite?', `Vuelves al principio de «${L.title}» con los objetos que traías. Las pistas ya pedidas siguen contando.`, 'Reiniciar', restartLevel, { cost: true });
     });
-    on('Season', () => { sfx('click'); closeModal('commit'); save(); openSeason(S.season); });
+    on('Season', () => { sfx('click'); closeModal('commit'); save(); trackLeave('season'); openSeason(S.season); });
     on('Exit', () => { closeModal('commit'); exitToMenu(); });
     $$('.pause-legal a', card).forEach((a) => a.addEventListener('click', () => {
       try { sessionStorage.setItem(RESUME_KEY, String(Date.now())); } catch (e) { /* nada */ }
@@ -2074,9 +2110,13 @@
     track('level_restart', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}` });
     enterPlay(false);
   }
+  // Salir de un trámite a medias (señal de abandono): al menú principal o a la lista de la temporada
+  function trackLeave(to) {
+    if (S && !pendingWin) track('back_to_menu', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, seconds_in_level: Math.max(0, S.elapsed - (S.levelStart || 0)), to });
+  }
   function exitToMenu() {
     sfx('click'); save();
-    if (S && !pendingWin) track('back_to_menu', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, seconds_in_level: Math.max(0, S.elapsed - (S.levelStart || 0)) });
+    trackLeave('menu');
     goMenu();
   }
 
@@ -2177,7 +2217,7 @@
       if (panIntent && !meta.ui.panned && Math.abs(wrap.scrollLeft - panStart) > 24) { meta.ui.panned = true; save(); }
     }, { passive: true });
     ['pointerdown', 'touchstart', 'wheel'].forEach((t) => wrap.addEventListener(t, panIntentStart, { passive: true }));
-    window.addEventListener('resize', () => { if (screen === 'play') { schedulePan(); raf(measureDlg); } });
+    window.addEventListener('resize', () => { if (screen === 'play') { schedulePan(); raf(measureDlg); } raf(kbScrollModal); });
     // La ventanilla cambia de alto sin «resize» (se cierra el aviso de cookies, gira el móvil…)
     if (typeof window.ResizeObserver === 'function') { try { new ResizeObserver(() => raf(measureDlg)).observe($('#dialog')); } catch (e) { /* nada */ } }
     $('#panL').onclick = () => { panIntentStart(); scrollRoom(-1); };
@@ -2219,7 +2259,8 @@
     bindKofi(document);
     document.addEventListener('click', (e) => {
       const a = e.target.closest && e.target.closest('[data-kofi]');
-      if (a) track('donate_click', { where: a.dataset.kofi, season: S ? S.season : null, level: S ? S.level : null });
+      // where = pantalla (o season_end en la tasa del final), como antes del rediseño; slot = qué botón
+      if (a) track('donate_click', { where: a.dataset.kofi === 'tasa' ? 'season_end' : screen, slot: a.dataset.kofi, season: S ? S.season : null, level: S ? S.level : null });
     });
 
     // Modal: Esc (cancel), cierre nativo, telón y deslizar hacia abajo

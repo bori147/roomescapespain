@@ -112,6 +112,37 @@
     if (x) head.insertBefore(b, x); else head.append(b);
   }
 
+  // ---------------- 1b. Campos dentro de tablas: nombre accesible «Fila · Columna» ----------------
+  // (p. ej. el cuadro de créditos de T5-3: casillas sin <label>; la fila no lleva <th>)
+  const cellTxt = (c) => (c ? Array.prototype.map.call(c.childNodes, (n) => n.textContent || '').join(' ').replace(/­/g, '').replace(/\s+/g, ' ').trim() : '');
+  function hasName(inp) {
+    if (inp.getAttribute('aria-label') || inp.getAttribute('aria-labelledby') || inp.getAttribute('title')) return true;
+    try { if (inp.labels && inp.labels.length) return true; } catch (e) { /* nada */ }
+    return !!inp.closest('label');
+  }
+  function cellNames(body) {
+    $$('table', body).forEach((t) => {
+      const rows = t.rows ? Array.prototype.slice.call(t.rows) : [];
+      if (rows.length < 2) return;
+      const head = rows[0].cells ? Array.prototype.slice.call(rows[0].cells) : [];
+      if (!head.length || !head.every((c) => c.tagName === 'TH') || head.some((c) => (c.colSpan || 1) > 1)) return;
+      rows.slice(1).forEach((tr) => {
+        const first = tr.cells && tr.cells[0];
+        if (!first) return;
+        const rowName = cellTxt(first);
+        const inputs = $$('input, select, textarea', tr).filter((i) => !hasName(i) && !(i.type === 'hidden'));
+        if (!inputs.length) return;
+        if (first.tagName === 'TD' && rowName && !first.querySelector('input, select, textarea')) first.setAttribute('role', 'rowheader');
+        inputs.forEach((inp) => {
+          const td = inp.closest('td, th');
+          const colName = td && td.cellIndex >= 0 ? cellTxt(head[td.cellIndex]) : '';
+          const name = [rowName, colName].filter(Boolean).join(' · ');
+          if (name) inp.setAttribute('aria-label', name);
+        });
+      });
+    });
+  }
+
   // ---------------- 1. Tablas → fichas ----------------
   function fichas(body) {
     $$(STACKABLE, body).forEach((t) => {
@@ -246,7 +277,7 @@
       if (groups.has(sel)) return;
       const label = sel.closest('label');
       const name = blockName(label, sel);
-      const root = buildGroup(sel, 'tp', 'choice-cards', 'choice-card', name ? `Frase de ${name.toLowerCase()}` : 'Frase');
+      const root = buildGroup(sel, 'tp', 'choice-cards', 'choice-card', name ? `Frase de ${name.replace(/^(\p{Lu})(?=\p{Ll})/u, (c) => c.toLowerCase())}` : 'Frase');
       if (!root) return;
       if (label) { label.classList.add('tp-label'); label.after(root); } else sel.after(root);
       syncGroup(sel);
@@ -455,6 +486,7 @@
         softHyphens(body);
         lupa(card, body);
         fichas(body);
+        cellNames(body);
         slideCue(body);
         teleprompter(body);
         cafe(body);
