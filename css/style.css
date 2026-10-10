@@ -78,7 +78,6 @@
   /* Foco visible: anillo azul de 3 px en todo lo interactivo */
   :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
   :focus:not(:focus-visible) { outline: none; }
-  [tabindex="-1"]:focus { outline: none; }
 
   /* Solo para lectores de pantalla (nunca display:none) */
   .sr-only {
