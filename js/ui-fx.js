@@ -209,7 +209,7 @@
       if (r) {
         n = $$('.slot[data-id]', inv).filter((s) => {
           const sr = rectOf(s); if (!sr) return false;
-          return axis === 'x' ? sr.right > ir.right + 2 : sr.bottom > ir.bottom + 2;
+          return axis === 'x' ? sr.left + sr.width / 2 > ir.right : sr.top + sr.height / 2 > ir.bottom; // la que asoma a medias cuenta si no se ve su mitad
         }).length;
       }
     }
