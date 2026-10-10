@@ -692,7 +692,7 @@
   .hint-list li.sol .hint-k { color: var(--red-ink); }
   .hint-list li.is-new { animation: modal-hint-new 1.2s var(--ease-std) both; }
   /* Con movimiento reducido: resalte fijo durante 1,2 s (lo pone y lo quita ui-puzzles.js) */
-  .hint-list li.hl-static { background: var(--marker-soft); }
+  .hint-list li.is-new.hl-static { animation: none; background: var(--marker-soft); }
   .hint-none { margin: 0 0 16px; color: var(--ink-2); font-style: italic; }
   .turno-actions { display: flex; }
   .turno-actions .btn { width: 100%; --btn-h: 52px; }

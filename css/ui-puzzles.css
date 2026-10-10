@@ -479,20 +479,6 @@
   .modal-body:has(.s5-cands) { counter-reset: sel; }
 
   /* ---------------- Teleprompter: tarjetas de frase (ui-puzzles.js) ---------------- */
-  .vum-native {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    min-height: 0 !important;
-    margin: -1px !important;
-    padding: 0 !important;
-    border: 0 !important;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-  }
   .choice-cards { display: flex; flex-direction: column; gap: 6px; margin: 0 0 14px; }
   .choice-card {
     position: relative;
@@ -607,6 +593,25 @@
   #modal .s4-num, #modal .s4-txt { border: 2px solid var(--ink-3); border-radius: var(--r-sm); }
   #modal .modal-body .s3-form :is(input, select) { padding: 10px 12px; border: 2px solid var(--ink-3); }
   #modal .modal-body .s3-form select { padding-right: 36px; }
+
+  /* Select nativo que manda por debajo de un grupo de opciones (ui-puzzles.js):
+     invisible y fuera del orden de tabulación, pero con su id y su valor.
+     Aquí y no en «puzzles» porque la CSS de temporada (más alta) da ancho a los select. */
+  #modal select.vum-native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    min-height: 0;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+  }
+  #modal label.tp-label { pointer-events: none; }
 
   /* S4-N8: el 1 de junio de 2030 es sábado (S1 tiene huecos explícitos: no le afecta) */
   .cal-grid > .cal-h + .cal-d { grid-column-start: 6; }
