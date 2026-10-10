@@ -3,14 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aviso legal — Vuelva Usted Mañana</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
-  <link rel="stylesheet" href="legal.css">
-  <link rel="stylesheet" href="../css/consent.css">
+  <title>Aviso legal — Vuelva usted mañana</title>
+  <link rel="icon" type="image/svg+xml" href="../img/sello.svg">
+  <meta name="theme-color" content="#F4F1EA">
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/tokens.css?v=7">
+  <link rel="stylesheet" href="../css/style.css?v=7">
+  <link rel="stylesheet" href="../css/ui-components.css?v=7">
+  <link rel="stylesheet" href="legal.css?v=7">
+  <link rel="stylesheet" href="../css/consent.css?v=7">
 </head>
-<body>
-  <div class="wrap"><a class="back" href="../">← Volver al juego</a></div>
-  <main class="doc">
+<body class="legal-page">
+  <header class="lg-top">
+    <div class="lg-brand"><svg class="seal-mini" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.25"/><circle cx="12" cy="12" r="7.25"/><path d="M8.75 16.25v-4a3.25 3.25 0 0 1 6.5 0v4M7.75 16.25h8.5"/><circle cx="12" cy="12.6" r=".9"/></svg><span>Vuelva usted <span class="wm-m">mañana</span></span></div>
+    <a class="back" id="backLink" href="../">‹ Volver al juego</a>
+  </header>
+  <main class="doc" id="main">
+    <p class="doc-kicker">Información legal</p>
     <h1>Aviso legal</h1>
     <p class="upd">Última actualización: <span data-legal="actualizado"></span></p>
 
@@ -45,9 +54,9 @@
     <h2>7. Legislación aplicable y jurisdicción</h2>
     <p>Este aviso legal se rige por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales de Barcelona, salvo que la normativa de consumidores y usuarios establezca otro fuero.</p>
   </main>
-  <nav class="legal"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="descargo.html">Descargo de responsabilidad</a> · <button data-open-consent>Configurar cookies</button></nav>
-  <script src="../js/config.js"></script>
-  <script src="legal.js"></script>
-  <script src="../js/consent.js"></script>
+  <nav class="legal" aria-label="Información legal"><a href="aviso-legal.html" aria-current="page">Aviso legal</a> <a href="privacidad.html">Privacidad</a> <a href="cookies.html">Cookies</a> <a href="descargo.html">Descargo de responsabilidad</a> <button data-open-consent>Configurar cookies</button></nav>
+  <script src="../js/config.js?v=7"></script>
+  <script src="legal.js?v=7"></script>
+  <script src="../js/consent.js?v=7"></script>
 </body>
 </html>

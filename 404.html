@@ -2,26 +2,93 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Expediente no encontrado — Vuelva Usted Mañana</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Expediente no encontrado — Vuelva usted mañana</title>
   <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#F4F1EA">
   <style>
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #1e1b18; font-family: system-ui, sans-serif; padding: 16px; }
-    .p { background: #f5eedc; color: #2b2622; max-width: 480px; padding: 28px; border-radius: 14px; text-align: center; }
-    h1 { font-family: 'Courier New', monospace; margin: 0 0 8px; }
-    a { display: inline-block; margin-top: 14px; background: #b3181f; color: #fff; padding: 10px 18px; border-radius: 10px; text-decoration: none; font-weight: 700; }
+    @layer tokens, base, screens;
+    @layer tokens {
+      :root {
+        color-scheme: light;
+        --canvas: #F4F1EA; --surface: #FFFFFF; --paper: #FBF8F1; --sunken: #ECE7DC;
+        --ink: #1A1814; --ink-2: #4A443C; --ink-3: #6E675D;
+        --line: rgba(26, 24, 20, .12); --line-strong: rgba(26, 24, 20, .28);
+        --red: #C2161F; --marker: #FFD84D; --focus: #1F4FD1;
+        --ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        --stamp-f: 'Special Elite', 'Courier New', monospace;
+        --ink-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.4 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        --r-xs: 4px; --r-md: 12px; --r-lg: 16px;
+        --e2: 0 2px 4px rgba(26, 24, 20, .06), 0 8px 20px -6px rgba(26, 24, 20, .16);
+      }
+    }
+    @layer base {
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+      body {
+        margin: 0; min-height: 100vh; min-height: 100dvh; display: grid; place-items: center;
+        padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+        background: var(--canvas); color: var(--ink); font: 400 16px/1.5 var(--ui); font-synthesis: none;
+        -webkit-font-smoothing: antialiased; overflow-x: clip;
+      }
+      :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; } }
+    }
+    @layer screens {
+      .p {
+        position: relative; overflow: hidden; width: 100%; max-width: 520px;
+        padding: 40px clamp(20px, 6vw, 40px) 32px; border-radius: var(--r-lg);
+        background: var(--paper); box-shadow: var(--e2); text-align: center;
+      }
+      .p::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 2px; background: linear-gradient(90deg, var(--red) 0 25%, var(--marker) 25% 75%, var(--red) 75%); }
+      .kicker { margin: 0 0 6px; color: var(--ink-3); font: 600 12px/1.3 var(--ui); letter-spacing: .08em; text-transform: uppercase; }
+      h1 { margin: 0 0 12px; font: 800 clamp(26px, 6vw, 34px)/1.15 var(--ui); letter-spacing: -.02em; text-wrap: balance; }
+      p { margin: 0 auto; max-width: 40ch; color: var(--ink-2); text-wrap: pretty; }
+      .stamp {
+        display: inline-block; margin: 0 0 18px; padding: .15em .6em; border: 3px double currentColor; border-radius: var(--r-xs);
+        color: var(--red); font: 400 26px/1.1 var(--stamp-f); letter-spacing: .04em; text-transform: uppercase;
+        opacity: .9; transform: rotate(-8deg); mix-blend-mode: multiply;
+        -webkit-mask-image: linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.62)), var(--ink-mask); mask-image: linear-gradient(rgba(0,0,0,.62), rgba(0,0,0,.62)), var(--ink-mask);
+        -webkit-mask-size: 100% 100%, 140px 140px; mask-size: 100% 100%, 140px 140px;
+        animation: hit 420ms cubic-bezier(.2, .8, .2, 1) 150ms both;
+      }
+      @keyframes hit {
+        0% { opacity: 0; transform: rotate(-8deg) scale(2.4); }
+        55% { opacity: .9; transform: rotate(-8deg) scale(.95); }
+        75% { transform: rotate(-8deg) scale(1.03); }
+        100% { opacity: .9; transform: rotate(-8deg) scale(1); }
+      }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin-top: 24px; padding: 0 24px;
+        border: 1.5px solid var(--ink); border-radius: var(--r-md); background: var(--ink); color: #fff;
+        font: 600 17px/1.2 var(--ui); text-decoration: none; touch-action: manipulation;
+      }
+      .btn:hover { background: #2E2A24; }
+      .btn:active { scale: .98; }
+      @media (forced-colors: active) { .stamp { mix-blend-mode: normal; color: CanvasText; -webkit-mask-image: none; mask-image: none; } }
+    }
   </style>
 </head>
 <body>
-  <div class="p">
-    <h1>Error 404</h1>
+  <main class="p">
+    <div class="stamp" aria-hidden="true">No consta</div>
+    <p class="kicker">Error 404 · Ministerio de Asuntos Pendientes</p>
+    <h1>Expediente no encontrado</h1>
     <p>El expediente que busca no consta. Puede que se haya traspapelado, o que nunca haya existido. Vuelva usted mañana.</p>
-    <a id="home" href="./">Volver al juego</a>
-  </div>
+    <a class="btn" id="home" href="./">Volver al juego</a>
+  </main>
   <script>
     // Funciona tanto en bori147.github.io/roomescapespain/ como en un dominio propio
     var base = location.pathname.indexOf('/roomescapespain') === 0 ? '/roomescapespain/' : '/';
     document.getElementById('home').href = base;
+    // Las fuentes de la casa, con la ruta correcta desde cualquier URL inexistente
+    var st = document.createElement('style');
+    st.textContent = "@font-face{font-family:'Inter';font-weight:400 800;font-display:swap;src:url(" + base + "fonts/inter-latin.woff2) format('woff2')}" +
+      "@font-face{font-family:'Special Elite';font-weight:400;font-display:swap;src:url(" + base + "fonts/special-elite-latin.woff2) format('woff2')}";
+    document.head.appendChild(st);
+    var ic = document.createElement('link');
+    ic.rel = 'icon'; ic.type = 'image/svg+xml'; ic.href = base + 'img/sello.svg';
+    document.head.appendChild(ic);
   </script>
 </body>
 </html>

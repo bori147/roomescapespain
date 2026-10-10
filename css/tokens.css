@@ -1,1 +1,138 @@
-/* Vacío: lo rellena su paquete (ver spec de rediseño) */
+@layer reset, tokens, base, components, scene, play, screens, modals, puzzles, fx, seasons, overrides;
+/* ==========================================================
+   VUELVA USTED MAÑANA — Fichas de diseño (tokens)
+   Lienzo claro, tinta para la acción, rojo como tinta del Estado.
+   Única fuente de colores, tipos, espacios, radios, sombras y tiempos.
+   Fuera de @layer solo van @font-face (lo permite el contrato de capas).
+   ========================================================== */
+
+/* Fuentes alojadas en el propio sitio (sin peticiones a terceros) */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(../fonts/inter-latin.woff2) format('woff2'); }
+@font-face { font-family: 'Special Elite'; font-style: normal; font-weight: 400; font-display: swap; src: url(../fonts/special-elite-latin.woff2) format('woff2'); }
+/* Sustitutas con métricas ajustadas: el texto no «salta» cuando llega la fuente buena */
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'), local('ArialMT'), local('Roboto'), local('Helvetica Neue'); size-adjust: 107%; ascent-override: 90%; descent-override: 22.5%; line-gap-override: 0%; }
+@font-face { font-family: 'Special Elite Fallback'; src: local('Courier New'), local('CourierNewPSMT'), local('Courier'); size-adjust: 104%; ascent-override: 88%; descent-override: 26%; line-gap-override: 0%; }
+
+@layer tokens {
+  :root {
+    color-scheme: light;
+
+    /* Superficies */
+    --canvas: #F4F1EA;      /* fondo de todas las pantallas */
+    --surface: #FFFFFF;     /* tarjetas, ventanilla, casillas, hojas */
+    --paper: #FBF8F1;       /* papel del mundo: oficios, intro, resolución */
+    --sunken: #ECE7DC;      /* pozos, pistas, secundario pulsado, desactivado */
+
+    /* Tinta */
+    --ink: #1A1814;
+    --ink-2: #4A443C;
+    --ink-3: #6E675D;       /* el texto más claro permitido */
+    --line: rgba(26, 24, 20, .12);
+    --line-strong: rgba(26, 24, 20, .28);
+    --scrim: rgba(20, 19, 16, .52);
+
+    /* Estado */
+    --red: #C2161F;
+    --red-ink: #A3121A;
+    --red-bg: #FBE7E5;
+    --green: #2D6A4F;
+    --green-bg: #E4F1EA;
+    --marker: #FFD84D;
+    --marker-soft: #FFF0A8;
+    --focus: #1F4FD1;
+    --kofi: #72A4F2;        /* solo el disco detrás de ☕; la etiqueta siempre en tinta */
+    --lcd-bg: #1D2A22;
+    --lcd-fg: #8DFFB0;
+    --lcd-dim: rgba(141, 255, 176, .28);
+    --gov-blue: #1B3A5C;
+    --eu-blue: #1F3F9A;
+    --gold: #C9A227;
+    --accent: #2B5C8A;
+    --on-accent: #FFFFFF;
+    --accent-2: var(--gold);
+    --star-on: #A37B00;
+    --star-off: #8A7C63;
+    --switch-off: #7D7262;
+
+    /* Familias (sin ficheros nuevos) */
+    --ui: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --read: Charter, 'Bitstream Charter', 'Iowan Old Style', 'Source Serif 4', 'Noto Serif', Georgia, serif;
+    --stamp-f: 'Special Elite', 'Special Elite Fallback', 'Courier New', monospace;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', 'Courier New', monospace;
+    --emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+
+    /* Escala tipográfica (rem: respeta el tamaño de texto del sistema) */
+    --fs-cap: .75rem;       /* 12px, 600, +.08em, mayúsculas: el suelo de la interfaz */
+    --fs-sm: .875rem;
+    --fs-md: 1rem;
+    --fs-read: 1.0625rem;
+    --fs-lg: 1.25rem;
+    --fs-xl: clamp(1.5rem, 2.2vw + 1rem, 1.875rem);
+    --fs-2xl: clamp(2rem, 4vw + 1.125rem, 3rem);
+    --fs-display: clamp(2.75rem, 7vw + 1.25rem, 5.5rem);
+    --lh-display: .95;
+    --lh-head: 1.15;
+    --lh-ui: 1.35;
+    --lh-body: 1.5;
+    --lh-read: 1.6;
+
+    /* Espacios (base 4px) */
+    --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+    --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+    --gutter: 16px;         /* 24 a partir de 768, 32 a partir de 1100 */
+
+    /* Radios */
+    --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
+
+    /* Elevación: cálida, nunca negro puro */
+    --e0: 0 0 0 1px var(--line);
+    --e1: 0 1px 2px rgba(26, 24, 20, .06), 0 1px 1px rgba(26, 24, 20, .04);
+    --e2: 0 2px 4px rgba(26, 24, 20, .06), 0 8px 20px -6px rgba(26, 24, 20, .16);
+    --e3: 0 24px 56px -16px rgba(26, 24, 20, .34), 0 4px 12px rgba(26, 24, 20, .08);
+
+    /* Movimiento */
+    --d-press: 90ms; --d-fast: 160ms; --d-base: 240ms; --d-slow: 420ms; --d-hero: 900ms;
+    --ease-out: cubic-bezier(.2, .8, .2, 1);
+    --ease-in: cubic-bezier(.4, 0, 1, 1);
+    --ease-std: cubic-bezier(.4, 0, .2, 1);
+    --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+
+    /* Texturas (solo sellos) */
+    --ink-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.4 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    /* Alias heredados que leen las CSS de las temporadas — NO BORRAR */
+    --ink-soft: var(--ink-3);
+    --type: var(--stamp-f);
+    --paper2: var(--sunken);
+    --red-dark: var(--red-ink);
+    --yellow: var(--marker);
+    --radius: var(--r-lg);
+    --shadow: var(--e2);
+    --bg: var(--canvas);
+  }
+
+  /* Muelle más natural donde el navegador entiende linear() */
+  @supports (transition-timing-function: linear(0, 1)) {
+    :root { --ease-spring: linear(0, .32 7%, .75 15%, 1.04 23%, 1.12 30%, 1.08 38%, 1 48%, .98 58%, 1 72%, 1); }
+  }
+
+  @media (min-width: 768px) { :root { --gutter: 24px; } }
+  @media (min-width: 1100px) { :root { --gutter: 32px; } }
+
+  /* Acento de cada temporada: body[data-season] en juego, [data-sid] en las tarjetas del menú */
+  [data-season="1"], [data-sid="1"] { --accent: #2B5C8A; }
+  [data-season="2"], [data-sid="2"] { --accent: #9E4F0F; }   /* oscurecido: blanco 5,87:1; sobre papel 5,53:1 */
+  [data-season="3"], [data-sid="3"] { --accent: #9A4630; }
+  [data-season="4"], [data-sid="4"] { --accent: #7A1F2B; --accent-2: var(--gold); }
+  [data-season="5"], [data-sid="5"] { --accent: #1E3A6B; --accent-2: var(--gold); }
+
+  /* Más contraste cuando el sistema lo pide */
+  @media (prefers-contrast: more) {
+    :root {
+      --ink-3: #4A443C;
+      --line: rgba(26, 24, 20, .4);
+      --line-strong: rgba(26, 24, 20, .6);
+      --scrim: rgba(0, 0, 0, .82);
+    }
+  }
+}

@@ -3,14 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Política de cookies — Vuelva Usted Mañana</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
-  <link rel="stylesheet" href="legal.css">
-  <link rel="stylesheet" href="../css/consent.css">
+  <title>Política de cookies — Vuelva usted mañana</title>
+  <link rel="icon" type="image/svg+xml" href="../img/sello.svg">
+  <meta name="theme-color" content="#F4F1EA">
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/tokens.css?v=7">
+  <link rel="stylesheet" href="../css/style.css?v=7">
+  <link rel="stylesheet" href="../css/ui-components.css?v=7">
+  <link rel="stylesheet" href="legal.css?v=7">
+  <link rel="stylesheet" href="../css/consent.css?v=7">
 </head>
-<body>
-  <div class="wrap"><a class="back" href="../">← Volver al juego</a></div>
-  <main class="doc">
+<body class="legal-page">
+  <header class="lg-top">
+    <div class="lg-brand"><svg class="seal-mini" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.25"/><circle cx="12" cy="12" r="7.25"/><path d="M8.75 16.25v-4a3.25 3.25 0 0 1 6.5 0v4M7.75 16.25h8.5"/><circle cx="12" cy="12.6" r=".9"/></svg><span>Vuelva usted <span class="wm-m">mañana</span></span></div>
+    <a class="back" id="backLink" href="../">‹ Volver al juego</a>
+  </header>
+  <main class="doc" id="main">
+    <p class="doc-kicker">Información legal</p>
     <h1>Política de cookies</h1>
     <p class="upd">Última actualización: <span data-legal="actualizado"></span></p>
 
@@ -21,7 +30,7 @@
     <table>
       <tr><th>Nombre</th><th>Titular</th><th>Tipo y finalidad</th><th>Duración</th></tr>
       <tr><td><code>roomescapespain.save.s1</code> … <code>.s5</code></td><td>Propia</td><td><b>Técnica.</b> Guarda tu partida de cada temporada.</td><td>Hasta que la borres</td></tr>
-      <tr><td><code>roomescapespain.meta.v2</code></td><td>Propia</td><td><b>Técnica.</b> Temporadas desbloqueadas, última partida y preferencia de sonido.</td><td>Hasta que la borres</td></tr>
+      <tr><td><code>roomescapespain.meta.v2</code></td><td>Propia</td><td><b>Técnica.</b> Temporadas desbloqueadas, última partida, récords por trámite y preferencias (sonido, vibración, consejos vistos).</td><td>Hasta que la borres</td></tr>
       <tr><td><code>roomescapespain.consent.v1</code></td><td>Propia</td><td><b>Técnica.</b> Guarda tu elección sobre cookies.</td><td>12 meses</td></tr>
       <tr data-if-analytics><td><code>ph_phc_…_posthog</code></td><td>PostHog (UE)</td><td><b>Analítica.</b> Identificador aleatorio y datos de sesión para medir el uso del juego. <b>Solo si la aceptas.</b></td><td>12 meses</td></tr>
     </table>
@@ -33,9 +42,9 @@
     <p><button class="btn" data-open-consent>Configurar cookies</button></p>
     <p>También puedes borrar todo lo guardado desde la configuración de tu navegador («Borrar datos de sitios» o similar). Ten en cuenta que, si lo haces, <b>perderás tu partida</b> (salvo que hayas apuntado tu código de expediente).</p>
   </main>
-  <nav class="legal"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="cookies.html">Cookies</a> · <a href="descargo.html">Descargo de responsabilidad</a> · <button data-open-consent>Configurar cookies</button></nav>
-  <script src="../js/config.js"></script>
-  <script src="legal.js"></script>
-  <script src="../js/consent.js"></script>
+  <nav class="legal" aria-label="Información legal"><a href="aviso-legal.html">Aviso legal</a> <a href="privacidad.html">Privacidad</a> <a href="cookies.html" aria-current="page">Cookies</a> <a href="descargo.html">Descargo de responsabilidad</a> <button data-open-consent>Configurar cookies</button></nav>
+  <script src="../js/config.js?v=7"></script>
+  <script src="legal.js?v=7"></script>
+  <script src="../js/consent.js?v=7"></script>
 </body>
 </html>
