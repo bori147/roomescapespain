@@ -1092,8 +1092,13 @@
     .plano-thumb { background: Highlight; forced-color-adjust: none; }
   }
 
-  /* Aviso «Justificante» en vertical: justo encima de la bandeja */
+  /* Aviso «Justificante» en vertical: justo encima de la bandeja (--toast-bottom, arriba).
+     En pantallas bajas la sala llega más abajo: el aviso baja hasta el borde y tapa la bandeja
+     un momento antes que la sala. --toast-maxw: ancho máximo que ui-modals puede leer. */
   body[data-screen="play"] { --toast-maxw: min(420px, calc(100vw - 32px)); }
+  @media (max-height: 700px) and (orientation: portrait) {
+    body[data-screen="play"] { --toast-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--cc-h, 0px)); }
+  }
 
   /* ======================================================
      8. APILADO CON PLANO: móviles en vertical (sala desplazable)
