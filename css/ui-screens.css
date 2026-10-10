@@ -403,7 +403,7 @@
     margin-top: 10px;
   }
   /* Ancho suficiente: el estado arriba a la derecha */
-  @container seasons (min-width: 500px) {
+  @container seasons (min-width: 460px) {
     .season-card {
       grid-template-columns: 56px minmax(0, 1fr) auto;
       grid-template-areas: "tile main stat";
@@ -433,18 +433,27 @@
     filter: grayscale(1);
   }
   .season-card.locked .sc-kicker { color: var(--ink-2); }
-  /* En estrecho el chip «Bloqueada» repite la línea del candado: fuera, la tarjeta queda compacta */
-  @container seasons (max-width: 499px) {
+  /* En estrecho (teléfono) el chip «Bloqueada» repite la línea del candado: fuera, la tarjeta queda
+     compacta. La entradilla se queda, en tinta plena, con dos líneas como mucho. El umbral (460 px) no
+     salta en la columna de escritorio (~490 px), donde la altura no aprieta. */
+  @container seasons (max-width: 459px) {
     .season-card.locked { grid-template-areas: "tile main"; }
     .season-card.locked .sc-status { display: none; }
-    /* Compacta (~72-90 px): sin entradilla; el candado ya dice lo que falta */
     .season-card.locked {
       grid-template-columns: 40px minmax(0, 1fr);
       column-gap: 12px;
       padding-block: 10px;
     }
     .season-card.locked .sc-tile { width: 36px; height: 36px; margin-left: 4px; font-size: 20px; }
-    .season-card.locked .sc-sub { display: none; }
+    .season-card.locked .sc-sub {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+      font-size: .875rem;
+      line-height: 1.35;
+    }
     .season-card.locked .sc-title.redacted { margin: 2px 0 0; }
     .season-card.locked .sc-lock { margin-top: 2px; font-size: .8125rem; line-height: 1.3; }
     /* El sello DESBLOQUEADA va en su propia franja, bajo el chip de estado, sin taparlo */
@@ -488,8 +497,8 @@
   }
   .sc-unlock {
     position: absolute;
-    right: 14px;
-    bottom: 12px;
+    right: 22px;
+    bottom: 16px;
     --rot: -8deg;
     --stamp-delay: 820ms;
     animation: k-stamp-hit var(--d-slow) var(--ease-out) var(--stamp-delay) both;
