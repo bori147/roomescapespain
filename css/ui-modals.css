@@ -351,14 +351,12 @@
     .modal-masthead::after { left: 16px; right: 16px; }
     .modal-status.is-visible { padding: 8px 16px; }
     .modal-foot {
-      flex-wrap: nowrap;
       padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
     }
-    .modal-foot .btn { flex: 0 1 auto; min-width: 0; padding: 0 14px; }
-    .modal-foot .btn.primary { flex: 1 1 auto; min-width: 0; }
-    .modal-foot > .btn:only-child { flex: 1 1 auto; }
-    .modal-foot:has(> .btn:nth-child(3)) { flex-wrap: wrap; }
-    .modal-foot:has(> .btn:nth-child(3)) > .btn.primary { flex-basis: 100%; }
+    /* Cada botón mide lo que su texto; si no caben en una fila, cada uno baja a la suya
+       (el principal, último, queda abajo: bajo el pulgar). En la fila, el principal crece más. */
+    .modal-foot .btn { flex: 1 1 auto; width: max-content; max-width: 100%; min-width: 0; padding: 0 14px; }
+    .modal-foot .btn.primary { flex-grow: 3; }
 
     /* Hojas con campo de texto: arriba, para que el teclado no las tape */
     .modal.top-align,
@@ -368,7 +366,7 @@
     .modal.top-align .modal-card,
     .modal:has(.modal-card[data-form] :is(input[type="text"], input:not([type]), input[type="password"], input[type="number"], textarea)) .modal-card {
       max-height: calc(var(--vvh, 100dvh) - max(16px, env(safe-area-inset-top)) - 8px);
-      border-radius: 0 0 var(--r-xl) var(--r-xl);
+      border-radius: var(--r-lg) var(--r-lg) var(--r-xl) var(--r-xl);
       box-shadow: var(--e3);
       animation-name: modal-drop-in;
     }

@@ -83,7 +83,7 @@
     font-variant-numeric: tabular-nums;
     transition: border-color var(--d-fast) var(--ease-std), box-shadow var(--d-fast) var(--ease-std);
   }
-  .modal-body select {
+  .modal-body select:not(.vum-native) {
     padding-right: 36px;
     -webkit-appearance: none;
     appearance: none;
@@ -109,18 +109,19 @@
 
   /* Casilla: recuadro de 24 px con la ✗ de bolígrafo */
   .chk {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    position: relative;
+    display: block;
     min-height: 44px;
-    padding: 10px 2px;
+    padding: 10px 2px 10px 38px;
     border-bottom: 1px dashed var(--line-strong);
     font: 400 var(--fs-md)/1.45 var(--ui);
     cursor: pointer;
   }
   .chk + br { display: none; }
   .chk input[type="checkbox"], .chk input[type="radio"] {
-    flex: none;
+    position: absolute;
+    left: 2px;
+    top: 10px;
     width: 24px;
     height: 24px;
     min-height: 0;
@@ -208,7 +209,8 @@
     content: '';
     position: absolute;
     left: 12px;
-    top: 11px;
+    top: 50%;
+    translate: 0 -50%;
     width: 18px;
     height: 18px;
     border: 2px solid var(--ink-2);
@@ -234,7 +236,7 @@
 
   /* OMR: hoja de respuestas a lápiz (S5-N1) */
   .s5-ans { padding-left: 42px; }
-  .s5-ans::before { border-radius: 50%; width: 20px; height: 20px; top: 10px; border: 2px solid #3B3B3B; background: #fff; }
+  .s5-ans::before { border-radius: 50%; width: 20px; height: 20px; border: 2px solid #3B3B3B; background: #fff; }
   .s5-ans.on::before { background: radial-gradient(circle, #3B3B3B 58%, transparent 62%), #fff; }
   .s5-ans.on { background: var(--surface); box-shadow: 0 0 0 1px var(--ink); }
 
@@ -297,7 +299,14 @@
   .sede-steps li.done { background: var(--green-bg); color: var(--green); }
   .sede-steps li.done::before { content: '✔ ' / ''; }
   #sede > .btn { margin: 4px 0 8px; }
-  #sede > .btn.primary { width: 100%; }
+  /* «Comprobar», «Acceder», «Validar»: pegado abajo mientras se rellena el paso */
+  #sede > .btn.primary {
+    position: sticky;
+    bottom: 10px;
+    z-index: 4;
+    width: 100%;
+    box-shadow: 0 0 0 10px var(--card-bg, var(--surface));
+  }
 
   /* ---------------- Coalición ---------------- */
   .party-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
@@ -454,13 +463,15 @@
   /* ---------------- Barra de acciones dentro del cuerpo: siempre a mano ---------------- */
   .modal-body :is(.row-btns, .modal-inline-actions):has(> .btn.primary) {
     position: sticky;
+    top: calc(-1 * var(--mbp, 16px));
     bottom: calc(-1 * var(--mbp, 16px));
     z-index: 4;
     margin-bottom: calc(-1 * var(--mbp, 16px));
     padding: 14px 0 var(--mbp, 16px);
-    background: linear-gradient(transparent, var(--card-bg, var(--surface)) 14px);
+    background: linear-gradient(transparent, var(--card-bg, var(--surface)) 12px);
   }
   .modal-body :is(.row-btns, .modal-inline-actions):has(> .btn.primary):not(:last-child) { margin-bottom: 0; padding-bottom: 10px; }
+  .modal-body :is(.row-btns, .modal-inline-actions) > :is(input, select) { flex: 1 1 12em; min-width: 0; }
   .modal-body :is(.row-btns, .modal-inline-actions) > .btn.primary { flex: 1 1 auto; max-width: 420px; }
   .modal-body:has(:is(.row-btns, .modal-inline-actions) > .btn.primary) { scroll-padding-bottom: 80px; }
 
@@ -500,7 +511,8 @@
     content: '';
     position: absolute;
     left: 12px;
-    top: 12px;
+    top: 50%;
+    translate: 0 -50%;
     width: 20px;
     height: 20px;
     border: 2px solid var(--ink-2);
@@ -555,26 +567,47 @@
   /* ---------------- S4: votantes, en filas sin scroll propio en el móvil ---------------- */
   .s4-voter .s4-vbtns { display: flex; flex-direction: row; gap: 6px; }
 
-  /* ---------------- Tableros en horizontal: instrucciones a la izquierda, tablero a la derecha ---------------- */
+  /* ---------------- Tableros en horizontal: instrucciones a la izquierda, tablero a la derecha ----------------
+     El contenedor es el padre directo del tablero (o el propio cuerpo). Las filas
+     «min-content» apilan arriba lo de la izquierda y la última (1fr) se queda el resto,
+     así el tablero (que las abarca todas) no separa los párrafos de la izquierda. */
   @media (orientation: landscape) and (max-height: 520px) {
-    .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, .s3-lo-grid, .s5-mz-g)),
-    .modal-body:has(> #s3-lo, > #s5-maze) {
+    .modal-body:has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)),
+    .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)) {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      column-gap: 18px;
-      align-items: start;
+      grid-template-rows: repeat(8, min-content) 1fr;
+      column-gap: 20px;
+      align-content: start;
     }
-    .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, .s3-lo-grid, .s5-mz-g)) > *,
-    .modal-body:has(> #s3-lo, > #s5-maze) > * { grid-column: 1; }
-    .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, .s3-lo-grid, .s5-mz-g)) > :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, .s3-lo-grid, .s5-mz-g),
-    .modal-body:has(> #s3-lo, > #s5-maze) > :is(#s3-lo, #s5-maze) {
+    .modal-body:has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)) > *,
+    .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)) > * { grid-column: 1; min-width: 0; }
+    .modal-body:has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)) > :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g),
+    .modal-body :has(> :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g)) > :is(.tile-grid, .party-grid, .cal-grid, .s2-grid, #s3-lo, .s5-mz-g) {
       grid-column: 2;
-      grid-row: 1 / span 12;
+      grid-row: 1 / -1;
+      align-self: start;
       margin: 0;
     }
-    .modal-body :has(> .party-grid) > .party-grid { width: min(52cqi, 420px); }
+    /* Coalición: lista de partidos en una columna con su propio scroll; votación siempre a la vista */
+    .modal-body :has(> .party-grid) > .party-grid {
+      grid-template-columns: minmax(0, 1fr);
+      width: min(50cqi, 400px);
+      max-height: calc(var(--vvh, 100dvh) - 132px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 8px 8px 8px 2px;
+      scrollbar-width: thin;
+    }
+    .modal-body :has(> .party-grid) > .party-grid .party { min-height: 48px; }
     .modal-body :has(> .cal-grid) > .cal-grid { width: min(46cqi, 340px); }
     .cal-d { min-height: 0; }
+    /* Sede: los tres desplegables del paso 1 en una fila */
+    #sede:has(> label:nth-of-type(3)) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 12px; }
+    #sede:has(> label:nth-of-type(3)) > :not(label) { grid-column: 1 / -1; }
+    .sede-banner { padding: 8px 12px; margin-bottom: 8px; }
+    .sede-steps { margin-bottom: 8px; }
+    .sede-steps li { padding: 5px 6px; }
   }
 }
 
@@ -588,11 +621,22 @@
     min-height: 44px;
     border-radius: var(--r-sm);
   }
-  #modal .modal-body :is(.s2-form, .s4-tp, .s4-acta) :is(select, input) { border: 2px solid var(--ink-3); padding: 10px 12px; font-size: max(16px, 1rem); }
+  #modal .modal-body :is(.s2-form, .s4-tp, .s4-acta) :is(select, input) { border: 2px solid var(--ink-3); padding: 10px 12px; font: 500 max(16px, 1rem)/1.25 var(--ui); }
   #modal .modal-body :is(.s2-form, .s4-tp, .s4-acta) select { padding-right: 36px; }
   #modal .s4-num, #modal .s4-txt { border: 2px solid var(--ink-3); border-radius: var(--r-sm); }
-  #modal .modal-body .s3-form :is(input, select) { padding: 10px 12px; border: 2px solid var(--ink-3); }
+  #modal .modal-body .s3-form :is(input, select) { padding: 10px 12px; border: 2px solid var(--ink-3); font: 500 max(16px, 1rem)/1.25 var(--ui); }
   #modal .modal-body .s3-form select { padding-right: 36px; }
+  /* Flecha del desplegable dibujada (la temporada pone background:#fff y la borraría) */
+  #modal .modal-body select:not(.vum-native):not([multiple]) {
+    padding-right: 36px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%231A1814' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center / 12px 8px;
+    text-overflow: ellipsis;
+  }
+  #modal .modal-body select[aria-invalid="true"] { background-color: #fff3f1; }
+  /* El select nativo escondido se queda dentro de su celda */
+  #modal :has(> select.vum-native) { position: relative; }
 
   /* Select nativo que manda por debajo de un grupo de opciones (ui-puzzles.js):
      invisible y fuera del orden de tabulación, pero con su id y su valor.
@@ -654,6 +698,13 @@
   .cipher-in, .cipher-out, .s4-ct, .s4-out { font-family: var(--mono); }
   .s4-out { padding: 10px 12px; }
 
+  /* S5-N1: la temporada le quita el hueco a la burbuja de la hoja de respuestas */
+  #modal .opt.s5-ans { min-height: 44px; padding: 8px 10px 8px 40px; }
+  /* S4-N10: el texto cifrado se parte en líneas (en el resguardo de P1 es una sola línea) */
+  #modal .code-box code.s4-ct { white-space: normal; overflow-wrap: anywhere; font: 500 .9375rem/1.55 var(--mono); letter-spacing: .06em; user-select: text; -webkit-user-select: text; }
+  /* S2-N9: «📎 Adjuntar» no se parte en dos líneas */
+  #modal .s2-row > .btn { flex: none; white-space: nowrap; }
+
   /* Sin opacidad para atenuar texto */
   .s3-docs .opt[disabled] { opacity: 1; }
   .s5-enm-r.done { opacity: 1; background: var(--sunken); color: var(--ink-2); }
@@ -709,14 +760,17 @@
   #modal .s5-bud th { font: 600 var(--fs-cap)/1.25 var(--ui); background: var(--sunken); }
   #modal .s5-bud .s5-stain input { width: 5.2em; min-height: 44px; font-size: max(16px, 1rem); padding: 6px 8px; border: 1.5px dashed #7A4E2A; }
 
-  /* ---------------- Tablas → fichas (contenedor estrecho) ---------------- */
+  /* ---------------- Tablas → fichas (contenedor estrecho) ----------------
+     ui-puzzles.js marca la tabla con .tbl-stack, la fila de cabecera con .tbl-head
+     y cada celda con data-label. Cada fila pasa a ser una ficha: la primera celda
+     hace de encabezado y el resto son pares «etiqueta · valor». */
   @container mbody (max-width: 560px) {
     #modal table.tbl-stack, #modal .tbl-stack > tbody, #modal .tbl-stack > thead, #modal .tbl-stack tr, #modal .tbl-stack td { display: block; width: 100%; }
-    #modal .tbl-stack { margin: 8px 0; border: 0; background: none; font-size: var(--fs-sm); }
+    #modal table.tbl-stack { margin: 8px 0; border: 0; background: none; font-size: var(--fs-sm); }
     #modal .tbl-stack tr.tbl-head { display: none; }
     #modal .tbl-stack tr:not(.tbl-head) {
       margin: 0 0 10px;
-      padding: 6px 12px;
+      padding: 2px 14px 8px;
       border: 1px solid var(--line);
       border-radius: var(--r-md);
       background: var(--surface);
@@ -724,16 +778,17 @@
     }
     #modal .tbl-stack td {
       display: grid;
-      grid-template-columns: 8.5em minmax(0, 1fr);
+      grid-template-columns: 7.5em minmax(0, 1fr);
       gap: 10px;
       align-items: baseline;
-      padding: 7px 0;
+      padding: 4px 0;
       border: 0;
-      border-bottom: 1px dashed var(--line);
+      background: none;
+      color: var(--ink);
       text-align: left;
       font-weight: 400;
+      line-height: 1.4;
     }
-    #modal .tbl-stack td:last-child { border-bottom: 0; }
     #modal .tbl-stack td::before {
       content: attr(data-label);
       color: var(--ink-3);
@@ -743,19 +798,27 @@
       overflow-wrap: anywhere;
     }
     #modal .tbl-stack td:not([data-label])::before, #modal .tbl-stack td[data-label=""]::before { content: none; }
-    #modal .tbl-stack td:first-child { font-weight: 700; }
+    #modal .tbl-stack td:not([data-label]), #modal .tbl-stack td[data-label=""] { grid-template-columns: minmax(0, 1fr); }
+    /* Encabezado de la ficha: la primera celda, en negrita y con su filete */
+    #modal .tbl-stack td:first-child {
+      margin-bottom: 4px;
+      padding: 10px 0 8px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      font-size: var(--fs-md);
+    }
     #modal .tbl-stack td :is(select, input) { width: 100%; max-width: none; }
-    #modal .tbl-stack td:has(.seg) { grid-template-columns: minmax(0, 1fr); gap: 6px; }
-    #modal .s5-scroll:has(> .tbl-stack) { overflow: visible; }
+    #modal .tbl-stack td:has(> .seg) { grid-template-columns: minmax(0, 1fr); gap: 6px; margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--line-strong); }
+    #modal .s5-scroll:has(> .tbl-stack) { overflow: visible; border: 0; background: none; }
   }
-  /* CAFÉ con su control segmentado: fichas también en la tarjeta ancha */
-  @container mbody (max-width: 900px) {
+  /* CAFÉ con su control segmentado: fichas también en la tarjeta ancha (2 por fila) */
+  @container mbody (min-width: 561px) and (max-width: 900px) {
     #modal table.tbl-stack.has-seg, #modal .tbl-stack.has-seg > tbody, #modal .tbl-stack.has-seg tr, #modal .tbl-stack.has-seg td { display: block; width: 100%; }
     #modal .tbl-stack.has-seg > tbody { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px; }
     #modal .tbl-stack.has-seg tr.tbl-head { display: none; }
     #modal .tbl-stack.has-seg tr:not(.tbl-head) {
       margin: 0;
-      padding: 6px 12px 10px;
+      padding: 2px 14px 10px;
       border: 1px solid var(--line);
       border-radius: var(--r-md);
       background: var(--surface);
@@ -766,13 +829,12 @@
       grid-template-columns: 7em minmax(0, 1fr);
       gap: 10px;
       align-items: baseline;
-      padding: 6px 0;
+      padding: 4px 0;
       border: 0;
-      border-bottom: 1px dashed var(--line);
       text-align: left;
       font-weight: 400;
+      line-height: 1.4;
     }
-    #modal .tbl-stack.has-seg td:last-child { border-bottom: 0; padding-top: 10px; }
     #modal .tbl-stack.has-seg td::before {
       content: attr(data-label);
       color: var(--ink-3);
@@ -780,9 +842,9 @@
       letter-spacing: .06em;
       text-transform: uppercase;
     }
-    #modal .tbl-stack.has-seg td:first-child { font-weight: 700; }
-    #modal .tbl-stack.has-seg td:has(.seg) { grid-template-columns: minmax(0, 1fr); gap: 6px; }
-    #modal .s5-scroll:has(> .tbl-stack.has-seg) { overflow: visible; }
+    #modal .tbl-stack.has-seg td:first-child { margin-bottom: 4px; padding: 10px 0 8px; border-bottom: 1px solid var(--line); font-weight: 700; }
+    #modal .tbl-stack.has-seg td:has(> .seg) { grid-template-columns: minmax(0, 1fr); gap: 6px; margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--line-strong); }
+    #modal .s5-scroll:has(> .tbl-stack.has-seg) { overflow: visible; border: 0; background: none; }
   }
 
   /* ---------------- Móvil (≤ 760 px): fuera los scrolls anidados ---------------- */
