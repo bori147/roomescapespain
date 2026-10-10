@@ -1,8 +1,16 @@
 /* ==========================================================
-   Banco de pruebas: juega automáticamente cada temporada en jsdom.
+   Banco de pruebas: juega automáticamente cada temporada en jsdom
+   y vigila las reglas del rediseño para que nada se rompa en silencio.
    Uso:  node tests/run.js          (todas las temporadas)
          node tests/run.js 2 3      (solo las temporadas 2 y 3)
    Cada temporada N necesita js/seasons/sN.js y tests/solutions/sN.js
+   Qué comprueba (ver docs/AUTORIA.md §7):
+   - Globales: CSS en capas (@layer), contraste de las fichas de color,
+     grafía de la marca, juego no instalable, ?v= coherente, scripts enlazados.
+   - Por temporada: datos bien formados, avisos de emoji modernos y hotspots
+     pequeños, códigos de expediente, cada nivel resoluble con su solución,
+     guardas de los arreglos de CSS sobre contenido congelado y etiquetas de
+     botones del motor que no choquen con los textos de las soluciones.
    ========================================================== */
 'use strict';
 const fs = require('fs');
@@ -13,10 +21,62 @@ const ROOT = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const exists = (p) => fs.existsSync(path.join(ROOT, p));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/** true si el fichero existe y tiene algo más que comentarios (los ficheros «placeholder» no cuentan). */
+const hasCode = (p) => exists(p) && read(p).replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '').trim().length > 0;
 
 function seasonFiles() {
   return fs.readdirSync(path.join(ROOT, 'js/seasons'))
     .map((f) => /^s(\d+)\.js$/.exec(f)).filter(Boolean).map((m) => +m[1]).sort((a, b) => a - b);
+}
+
+// El rediseño se considera «cimentado» cuando css/tokens.css declara el orden de capas (paquete P1).
+// Antes de eso, las comprobaciones que dependen del rediseño se informan como omitidas.
+const LAYER_ORDER = ['reset', 'tokens', 'base', 'components', 'scene', 'play', 'screens', 'modals', 'puzzles', 'fx', 'seasons', 'overrides'];
+const FOUNDATION = exists('css/tokens.css') && /@layer\s+reset\s*,/.test(read('css/tokens.css'));
+const PUZZLES_JS = hasCode('js/ui-puzzles.js');
+
+// ---------------- Orden de carga de los scripts (el de index.html) ----------------
+const LOADABLE = /^js\/(config|core|seasons\/s\d+|ui-puzzles|ui-fx|engine)\.js$/; // consent.js y analytics.js no se cargan en jsdom
+function scriptOrder() {
+  const html = read('index.html');
+  const notes = [];
+  const srcs = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"'?#]+)[^"']*["'][^>]*>/g)].map((m) => m[1].replace(/^\.\//, ''));
+  let files = srcs.filter((f) => LOADABLE.test(f) && exists(f));
+  const seasons = seasonFiles().map((n) => `js/seasons/s${n}.js`);
+  const missing = seasons.filter((f) => !files.includes(f));
+  if (missing.length) notes.push(`index.html no enlaza ${missing.join(', ')} (añade su <script> antes de js/ui-puzzles.js)`);
+  if (!files.includes('js/engine.js')) { // index.html irreconocible: orden de siempre
+    files = ['js/config.js', 'js/core.js', ...seasons, ...['js/ui-puzzles.js', 'js/ui-fx.js'].filter(exists), 'js/engine.js'];
+  } else if (missing.length) {
+    const at = files.findIndex((f) => /ui-puzzles|ui-fx|engine/.test(f));
+    files.splice(at, 0, ...missing);
+  }
+  return { files, notes };
+}
+const ORDER = scriptOrder();
+
+// Etiquetas de botones del sistema ([data-sys]) vistas durante cada ejecución (para el control de «agujas»).
+function watchSysButtons(w, sink) {
+  const grab = (el) => {
+    if (!el || el.nodeType !== 1) return;
+    const list = [];
+    if (el.matches('[data-sys]')) list.push(el);
+    list.push(...el.querySelectorAll('[data-sys]'));
+    for (const b of list) {
+      const t = (b.textContent || '').replace(/\s+/g, ' ').trim();
+      const a = (b.getAttribute('aria-label') || '').trim();
+      for (const s of [t, a]) if (s) sink.add(s);
+    }
+  };
+  const mo = new w.MutationObserver((recs) => {
+    for (const r of recs) {
+      if (r.type === 'childList') r.addedNodes.forEach(grab);
+      const tgt = r.target && (r.target.nodeType === 1 ? r.target : r.target.parentElement);
+      if (tgt && tgt.closest) grab(tgt.closest('[data-sys]'));
+    }
+  });
+  mo.observe(w.document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['data-sys', 'aria-label'] });
+  return mo;
 }
 
 function makeDom() {
@@ -27,17 +87,159 @@ function makeDom() {
   vc.on('error', (...a) => errors.push('console.error: ' + a.join(' ')));
   const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only', pretendToBeVisual: true, virtualConsole: vc });
   const w = dom.window;
-  w.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
+  w.matchMedia = (q) => ({ matches: false, media: String(q), onchange: null, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; } });
   w.scrollTo = () => {};
   w.addEventListener('error', (e) => errors.push('window.error: ' + (e.error && e.error.stack || e.message)));
-  const files = ['js/config.js', 'js/core.js', ...seasonFiles().map((n) => `js/seasons/s${n}.js`), 'js/engine.js'];
-  for (const f of files) {
+  const sys = new Set();
+  watchSysButtons(w, sys);
+  // Orden de index.html: config, core, temporadas, ui-puzzles y ui-fx (si existen), engine.
+  for (const f of ORDER.files) {
     try { w.eval(read(f) + `\n//# sourceURL=${f}`); } catch (e) { errors.push(`Error al cargar ${f}: ${e.stack || e}`); }
   }
-  return { dom, w, doc: w.document, errors };
+  return { dom, w, doc: w.document, errors, sys };
 }
 
-// ---------------- Comprobaciones estáticas ----------------
+// ---------------- CSS: todo dentro de @layer ----------------
+/** Divide CSS en sentencias de primer nivel { prelude, block|null, line }. Respeta cadenas y comentarios. */
+function cssTopLevel(src) {
+  const s = src.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '));
+  const out = []; const bad = [];
+  let depth = 0; let start = 0; let prelude = ''; let bStart = 0;
+  const lineAt = (i) => s.slice(0, i).split('\n').length + (s.slice(i).match(/^\s*/)[0].split('\n').length - 1);
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (c === '"' || c === "'") { // cadena: saltar hasta la comilla de cierre
+      for (i++; i < s.length && s[i] !== c; i++) if (s[i] === '\\') i++;
+      continue;
+    }
+    if (depth === 0) {
+      if (c === '{') { prelude = s.slice(start, i); bStart = i + 1; depth = 1; } else if (c === ';') { out.push({ prelude: s.slice(start, i), block: null, line: lineAt(start) }); start = i + 1; } else if (c === '}') { bad.push(`llave «}» sobrante (línea ${lineAt(i)})`); start = i + 1; }
+    } else if (c === '{') depth++;
+    else if (c === '}' && --depth === 0) { out.push({ prelude, block: s.slice(bStart, i), line: lineAt(start) }); start = i + 1; }
+  }
+  if (depth) bad.push('faltan llaves de cierre al final del fichero');
+  else if (s.slice(start).trim()) out.push({ prelude: s.slice(start), block: null, line: lineAt(start) });
+  return { out, bad };
+}
+const TOP_OK = new Set(['layer', 'font-face', 'property', 'view-transition', 'charset']);
+/** Devuelve la lista de reglas fuera de capa. Los envoltorios @supports/@media/@container solo pueden contener capas. */
+function unlayeredRules(src, lineBase = 0) {
+  const { out, bad } = cssTopLevel(src);
+  const errs = bad.slice();
+  for (const st of out) {
+    const p = st.prelude.trim().replace(/\s+/g, ' ');
+    if (!p) { if (st.block !== null && st.block.trim()) errs.push(`bloque sin selector (línea ${lineBase + st.line})`); continue; }
+    const at = /^@([\w-]+)/.exec(p);
+    const name = at ? at[1].toLowerCase() : null;
+    if (name && TOP_OK.has(name)) continue;
+    if (name === 'import' && /\blayer\b/.test(p)) continue;
+    if (name === 'supports' || name === 'media' || name === 'container') {
+      if (st.block === null) { errs.push(`«${p.slice(0, 60)}» sin bloque (línea ${lineBase + st.line})`); continue; }
+      errs.push(...unlayeredRules(st.block, lineBase + st.line - 1));
+      continue;
+    }
+    errs.push(`«${p.slice(0, 70)}${p.length > 70 ? '…' : ''}» fuera de @layer (línea ${lineBase + st.line})`);
+  }
+  return errs;
+}
+
+// ---------------- Contraste (WCAG 2.x, luminancia relativa) ----------------
+function hexRgb(hex) {
+  let h = hex.replace('#', '');
+  if (h.length === 3 || h.length === 4) h = h.split('').map((c) => c + c).join('');
+  if (h.length === 8) { if (parseInt(h.slice(6), 16) < 255) return null; h = h.slice(0, 6); }
+  if (h.length !== 6) return null;
+  return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+}
+function luminance([r, g, b]) {
+  const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+}
+function contrast(a, b) {
+  const la = luminance(a); const lb = luminance(b);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+/** Fichas de color de :root (primera definición) y acentos de temporada de css/tokens.css. */
+function parseTokens(css) {
+  const clean = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const tok = {};
+  for (const m of clean.matchAll(/--([\w-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\b/g)) if (!(m[1] in tok)) tok[m[1]] = m[2];
+  const accents = {};
+  for (const m of clean.matchAll(/\[data-season=["']?(\d+)["']?\][^{]*\{([^}]*)\}/g)) {
+    const a = /--accent\s*:\s*(#[0-9a-fA-F]{3,8})\b/.exec(m[2]);
+    if (a) accents[m[1]] = a[1];
+  }
+  return { tok, accents };
+}
+// Tabla de contraste del spec §2 (texto ≥ 4.5; no texto ≥ 3). Valores literales = colores fijos documentados.
+const CONTRAST_PAIRS = [
+  ['ink', 'canvas', 4.5], ['ink', 'paper', 4.5], ['ink', 'surface', 4.5],
+  ['ink-2', 'canvas', 4.5], ['ink-2', 'sunken', 4.5],
+  ['ink-3', 'canvas', 4.5], ['ink-3', 'paper', 4.5], ['ink-3', 'sunken', 4.5], ['ink-3', 'surface', 4.5],
+  ['#FFFFFF', 'red', 4.5], ['red', 'paper', 4.5], ['red-ink', 'paper', 4.5], ['red-ink', 'red-bg', 4.5],
+  ['green', 'green-bg', 4.5], ['#FFFFFF', 'green', 4.5],
+  ['ink', 'marker', 4.5], ['ink', 'marker-soft', 4.5], ['ink-3', 'marker-soft', 4.5],
+  ['focus', 'canvas', 3], ['focus', 'surface', 3], ['focus', 'paper', 3],
+  ['ink', 'kofi', 4.5],
+  ['star-on|#A37B00', 'paper', 3], ['star-off|#8A7C63', 'paper', 3], ['switch-off|#7D7262', 'paper', 3],
+  ['lcd-fg', 'lcd-bg', 4.5],
+];
+function contrastChecks() {
+  const errs = []; let n = 0;
+  const { tok, accents } = parseTokens(read('css/tokens.css'));
+  const val = (k) => {
+    if (k[0] === '#') return k;
+    const [name, fallback] = k.split('|');
+    return tok[name] || fallback || null;
+  };
+  const check = (fg, bg, min, label) => {
+    const a = hexRgb(fg || ''); const b = hexRgb(bg || '');
+    if (!a || !b) { errs.push(`contraste ${label}: color no encontrado o no opaco en css/tokens.css`); return; }
+    const r = contrast(a, b); n++;
+    if (r + 1e-9 < min) errs.push(`contraste ${label} = ${r.toFixed(2)}:1 (mínimo ${min}:1)`);
+  };
+  for (const [f, b, min] of CONTRAST_PAIRS) check(val(f), val(b), min, `${f.split('|')[0]} sobre ${b}`);
+  // Acentos: blanco (--on-accent) sobre el acento de cada temporada (y el de :root)
+  const onAccent = tok['on-accent'] || '#FFFFFF';
+  if (!tok.accent) errs.push('falta --accent en :root');
+  else check(onAccent, tok.accent, 4.5, 'on-accent sobre accent (:root)');
+  for (const sid of seasonFiles()) {
+    if (!accents[sid]) { errs.push(`falta el acento de la temporada ${sid} ([data-season="${sid}"]{--accent:…})`); continue; }
+    check(onAccent, accents[sid], 4.5, `on-accent sobre el acento T${sid}`);
+  }
+  return { errs, n };
+}
+
+// ---------------- Emoji modernos (posible «tofu» en Windows 10 / Android antiguos) ----------------
+// Emoji 12.0 es el último bien soportado. Se avisa de los posteriores (12.1+, 13, 14, 15…).
+const EMOJI_OK_1FA = [[0x1FA70, 0x1FA73], [0x1FA78, 0x1FA7A], [0x1FA80, 0x1FA82], [0x1FA90, 0x1FA95]];
+const EMOJI_NEW_CP = new Set([0x1F6D6, 0x1F6D7, 0x1F6DC, 0x1F6DD, 0x1F6DE, 0x1F6DF, 0x1F90C, 0x1F972, 0x1F977, 0x1F978, 0x1F979,
+  0x1F9A3, 0x1F9A4, 0x1F9AB, 0x1F9AC, 0x1F9AD, 0x1F9CB, 0x1F9CC, 0x1F7F0]);
+const EMOJI_NEW_ZWJ = [/\u{1F9D1}‍/u, /[\u{1F935}\u{1F470}]‍/u, /\u{1F408}‍⬛/u, /\u{1F43B}‍❄/u, /❤️?‍/u,
+  /\u{1F62E}‍/u, /\u{1F635}‍/u, /\u{1F636}‍/u, /\u{1F9D4}‍/u, /\u{1F3F3}️?‍⚧/u];
+function modernEmoji(str) {
+  if (typeof str !== 'string' || !str) return [];
+  const found = new Set();
+  for (const ch of str) {
+    const cp = ch.codePointAt(0);
+    if (EMOJI_NEW_CP.has(cp)) found.add(ch);
+    else if (cp >= 0x1FA70 && cp <= 0x1FAFF && !EMOJI_OK_1FA.some(([a, b]) => cp >= a && cp <= b)) found.add(ch);
+  }
+  for (const re of EMOJI_NEW_ZWJ) { const m = new RegExp(re.source + '[^\\s]*', 'u').exec(str); if (m) found.add(m[0]); }
+  return [...found];
+}
+/** Evalúa un campo que puede ser texto o función (g) => texto, con estados vacío y «todo activo». */
+function variants(v) {
+  if (typeof v !== 'function') return [v];
+  const out = [];
+  for (const on of [false, true]) {
+    const g = { flag: () => on, has: () => on, state: () => ({}), set() {}, give() {}, take() {}, say() {} };
+    try { out.push(v(g)); } catch (e) { /* depende de estado que no simulamos */ }
+  }
+  return out;
+}
+
+// ---------------- Comprobaciones estáticas por temporada ----------------
 function staticChecks(sea, sid) {
   const errs = []; const warns = [];
   const items = sea.items || {};
@@ -46,9 +248,14 @@ function staticChecks(sea, sid) {
   if (!sea.ending || !sea.ending.title || !sea.ending.html) errs.push('Falta season.ending {title, html}');
   if (!Array.isArray(sea.levels)) { errs.push('season.levels no es un array'); return { errs, warns }; }
   if (sea.levels.length !== 10) warns.push(`La temporada tiene ${sea.levels.length} niveles (se esperan 10)`);
+  const emojiWarn = new Map(); // emoji → dónde
+  const noteEmoji = (v, where) => { for (const x of variants(v)) for (const e of modernEmoji(x)) if (!emojiWarn.has(e)) emojiWarn.set(e, where); };
+  noteEmoji(sea.emoji, 'emoji de la temporada');
   for (const [id, it] of Object.entries(items)) {
     if (!it.emoji || !it.name || !it.desc) errs.push(`Objeto ${id}: falta emoji/name/desc`);
+    noteEmoji(it.emoji, `objeto «${id}»`);
   }
+  const small = [];
   sea.levels.forEach((L, i) => {
     const tag = `Nivel ${i + 1} («${L.title}»)`;
     for (const k of ['title', 'place', 'intro', 'outro']) if (!L[k]) errs.push(`${tag}: falta ${k}`);
@@ -65,6 +272,9 @@ function staticChecks(sea, sid) {
       if (!h.look && !h.use) errs.push(`${tag}: hotspot ${h.id} sin look ni use`);
       if (!h.sign && !h.emoji) errs.push(`${tag}: hotspot ${h.id} sin emoji ni sign`);
       for (const k of Object.keys(h.use || {})) if (k !== '*' && !items[k]) errs.push(`${tag}: hotspot ${h.id} usa objeto inexistente «${k}»`);
+      if (!h.sign && typeof h.s === 'number' && h.s < 5) small.push(`N${i + 1} ${h.id} (s: ${h.s})`);
+      noteEmoji(h.emoji, `N${i + 1} hotspot «${h.id}»`);
+      if (h.sign) noteEmoji(h.sub, `N${i + 1} cartel «${h.id}»`);
     }
     for (const id of L.carry || []) if (!items[id]) errs.push(`${tag}: carry con objeto inexistente «${id}»`);
     if (sid >= 2 && !(L.carry && L.carry.length)) errs.push(`${tag}: falta «carry» (objetos que trae del trámite anterior / temporada anterior)`);
@@ -94,7 +304,100 @@ function staticChecks(sea, sid) {
       }
     }
   });
+  if (small.length) warns.push(`Hotspots con s < 5 (difíciles de tocar en el móvil; usa s: 5 o más): ${small.join(', ')}`);
+  if (emojiWarn.size) warns.push(`Emoji posteriores a Emoji 12.0 (pueden verse como □ en Windows 10 y Android antiguos): ${[...emojiWarn].map(([e, w]) => `${e} (${w})`).join(', ')}`);
   return { errs, warns };
+}
+
+// ---------------- Comprobaciones globales (una vez) ----------------
+function globalChecks() {
+  const errs = []; const warns = []; const oks = []; const skips = [];
+  const strictOr = (msg) => (FOUNDATION ? errs : warns).push(msg);
+
+  // 1. Todas las hojas de estilo en capas
+  const cssFiles = fs.readdirSync(path.join(ROOT, 'css')).filter((f) => f.endsWith('.css')).map((f) => 'css/' + f);
+  if (exists('legal/legal.css')) cssFiles.push('legal/legal.css');
+  const layerErrs = [];
+  for (const f of cssFiles) {
+    const e = unlayeredRules(read(f));
+    if (e.length) layerErrs.push(`${f}: ${e.length} regla(s) sin capa; p. ej. ${e.slice(0, 2).join('; ')}`);
+  }
+  if (!FOUNDATION) skips.push(`CSS en capas: omitido hasta que css/tokens.css declare «@layer ${LAYER_ORDER.join(', ')};» (${layerErrs.length} fichero(s) aún sin capas)`);
+  else if (layerErrs.length) errs.push(...layerErrs.map((m) => 'CSS sin capa → ' + m));
+  else oks.push(`CSS en capas: ${cssFiles.length} hojas sin reglas fuera de @layer`);
+  if (FOUNDATION) {
+    const decl = `@layer ${LAYER_ORDER.join(', ')};`;
+    const firstStmt = (f) => { const m = /@layer\s+[\w-]+(?:\s*,\s*[\w-]+)+\s*;/.exec(read(f)); return m ? m[0].replace(/\s+/g, ' ').replace(/ ,/g, ',') : null; };
+    for (const f of ['css/tokens.css', 'css/style.css']) {
+      const got = exists(f) ? firstStmt(f) : null;
+      if (got !== decl) errs.push(`${f} debe declarar el orden de capas exacto «${decl}» (tiene: ${got || 'nada'})`);
+    }
+  }
+
+  // 2. Contraste de las fichas de color (§2)
+  if (!FOUNDATION) skips.push('Contraste de fichas: omitido (css/tokens.css aún vacío)');
+  else {
+    const c = contrastChecks();
+    if (c.errs.length) errs.push(...c.errs);
+    else oks.push(`Contraste: ${c.n} pares de la tabla §2 cumplen AA (texto ≥ 4,5:1; no texto ≥ 3:1)`);
+  }
+
+  // 3. Grafía de la marca: «Vuelva usted mañana»
+  const brandFiles = ['README.md', 'index.html', '404.html', ...fs.readdirSync(path.join(ROOT, 'legal')).filter((f) => f.endsWith('.html')).map((f) => 'legal/' + f)].filter(exists);
+  let brandBad = 0;
+  for (const f of brandFiles) {
+    const bad = [...read(f).matchAll(/vuelva\s+usted\s+mañana/gi)].map((m) => m[0]).filter((t) => t !== 'Vuelva usted mañana' && t !== t.toUpperCase() && t !== t.toLowerCase());
+    if (bad.length) { brandBad++; (f === 'README.md' ? errs : { push: strictOr }).push(`${f}: la marca se escribe «Vuelva usted mañana» (encontrado «${bad[0]}» ×${bad.length})`); }
+  }
+  if (!brandBad) oks.push(`Marca: «Vuelva usted mañana» bien escrita en ${brandFiles.length} ficheros`);
+
+  // 4. El juego NO es instalable y no mantiene la pantalla encendida (decisión del propietario)
+  const idx = read('index.html');
+  if (/<link[^>]+rel=["']?manifest/i.test(idx)) errs.push('index.html enlaza un manifest: el juego no debe ser instalable');
+  if (/apple-touch-icon/i.test(idx)) errs.push('index.html declara apple-touch-icon: el juego no debe ser instalable');
+  for (const f of ['manifest.webmanifest', 'img/icon-180.png', 'img/icon-192.png', 'img/icon-512.png', 'img/icon-maskable-512.png']) if (exists(f)) errs.push(`${f} no debe existir (el juego no es instalable)`);
+  const jsFiles = ['js', 'js/seasons'].flatMap((d) => fs.readdirSync(path.join(ROOT, d)).filter((f) => f.endsWith('.js')).map((f) => `${d}/${f}`));
+  for (const f of jsFiles) {
+    const src = read(f);
+    if (/serviceWorker\s*\.\s*register/.test(src)) errs.push(`${f} registra un service worker (prohibido: el juego no es instalable)`);
+    if (/wakeLock/.test(src)) errs.push(`${f} usa Wake Lock (prohibido: no se mantiene la pantalla encendida)`);
+    if (/pantalla de inicio/i.test(src)) errs.push(`${f} invita a «Añadir a pantalla de inicio» (prohibido)`);
+  }
+
+  // 5. Versionado ?v= coherente en index.html (todas las hojas y scripts locales con el mismo número)
+  const vers = [...idx.matchAll(/(?:href|src)=["']((?:css|js)\/[^"'?]+)\?v=([^"'&]+)["']/g)].map((m) => ({ f: m[1], v: m[2] }));
+  const vset = new Set(vers.map((x) => x.v));
+  const unversioned = [...idx.matchAll(/(?:href|src)=["']((?:css|js)\/[^"'?]+\.(?:css|js))["']/g)].map((m) => m[1]);
+  if (vset.size > 1) errs.push(`index.html mezcla versiones ?v= (${[...vset].join(', ')}): súbelas todas a la vez (docs/PUBLICAR.md)`);
+  if (unversioned.length) errs.push(`index.html enlaza sin ?v=: ${unversioned.join(', ')}`);
+  const linkedCss = new Set(vers.filter((x) => x.f.endsWith('.css')).map((x) => x.f));
+  const unlinked = cssFiles.filter((f) => f.startsWith('css/') && !linkedCss.has(f));
+  if (unlinked.length) warns.push(`Hojas de estilo que index.html no enlaza: ${unlinked.join(', ')}`);
+  if (vset.size === 1 && !unversioned.length) oks.push(`Versionado: ${vers.length} recursos con ?v=${[...vset][0]}`);
+  warns.push(...ORDER.notes);
+
+  // 6. Enlaces opcionales del rediseño: informar si aún son «placeholder»
+  const pending = ['css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css', 'css/ui-fx.css', 'js/ui-puzzles.js', 'js/ui-fx.js'].filter((f) => !hasCode(f));
+  if (pending.length) skips.push(`Pendientes de rellenar (sus guardas se omiten): ${pending.join(', ')}`);
+  return { errs, warns, oks, skips };
+}
+
+// ---------------- Agujas: textos de botón que usan las soluciones ----------------
+const NEEDLES_BASE = ['Presentar', 'Firmar', 'Registrar', 'Enviar', 'Someter', 'Transferir', 'Modificar', 'Rellenar solicitud', 'Que empiece la firma',
+  'Publicar y hacer captura', 'Emitir factura', 'Devolver con correcciones', 'Confirmar gastos', 'Calcular y registrar', 'Anotar en el libro'];
+function solutionNeedles() {
+  const set = new Set(NEEDLES_BASE);
+  const dir = path.join(ROOT, 'tests/solutions');
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.js'))) {
+    for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/h\.btn\(\s*(['"`])([^'"`]+)\1\s*\)/g)) set.add(m[2]);
+  }
+  return [...set];
+}
+const NEEDLES = solutionNeedles();
+function needleCollisions(labels) {
+  const hits = [];
+  for (const l of labels) for (const n of NEEDLES) if (l.includes(n)) hits.push(`«${l}» contiene «${n}»`);
+  return hits;
 }
 
 // ---------------- Ayudantes para las soluciones ----------------
@@ -120,9 +423,11 @@ function helpers(w, R) {
       e.dispatchEvent(new w.Event('input', { bubbles: true }));
       e.dispatchEvent(new w.Event('change', { bubbles: true }));
     },
+    // Botones de la temporada por su texto. Los botones del sistema ([data-sys]: ✕, pie por defecto, Lupa, chips) no cuentan.
     btn: (text) => {
-      const b = $$('#modal button, #modal a').find((x) => x.textContent.includes(text));
-      if (!b) throw new Error(`No hay botón con el texto «${text}» en el modal. Botones: ${$$('#modal button').map((x) => x.textContent.trim()).join(' | ')}`);
+      const all = $$('#modal button:not([data-sys]), #modal a:not([data-sys])');
+      const b = all.find((x) => x.textContent.includes(text));
+      if (!b) throw new Error(`No hay botón con el texto «${text}» en el modal. Botones: ${all.map((x) => x.textContent.trim()).join(' | ')}`);
       b.click();
     },
     choose: (text) => {
@@ -155,11 +460,99 @@ function helpers(w, R) {
   return h;
 }
 
-async function runSeason(sid) {
-  const { w, doc, errors } = makeDom();
+// ---------------- Guardas de los arreglos sobre contenido congelado ----------------
+// El CSS del núcleo (@layer overrides) y los realzadores de js/ui-puzzles.js arreglan cosas de las temporadas
+// sin tocarlas. Si alguien cambia el marcado de la temporada, estas guardas avisan de que el arreglo ya no aplica.
+const settle = () => sleep(40); // deja correr los realzadores (rAF / MutationObserver)
+const tableStacked = (h, sel) => {
+  const t = h.$(sel);
+  if (!t) throw new Error(`no aparece «${sel}»`);
+  if (!t.classList.contains('tbl-stack')) throw new Error(`«${sel}» no recibe .tbl-stack (fichas en el móvil)`);
+  const tds = [...t.querySelectorAll('td')];
+  const labelled = tds.filter((td) => (td.getAttribute('data-label') || '').trim());
+  if (!tds.length || labelled.length < tds.length * 0.8) throw new Error(`«${sel}»: solo ${labelled.length} de ${tds.length} celdas tienen data-label`);
+};
+const GUARDS = [
+  { sid: 1, level: 10, name: 'S1-N10 calendario: huecos iniciales explícitos (el arreglo de S4 no le afecta)',
+    async run(h) {
+      h.click('calendario'); await settle();
+      if (!h.$('#modal .cal-grid')) throw new Error('no se abre el calendario (.cal-grid)');
+      if (h.$('#modal .cal-grid > .cal-h + .cal-d')) throw new Error('el día 1 va pegado a la cabecera: el arreglo «.cal-h + .cal-d {grid-column-start:6}» lo movería al sábado');
+    } },
+  { sid: 4, level: 8, name: 'S4-N8 calendario: el 1 de junio de 2030 sigue a la cabecera (arreglo → sábado)',
+    async run(h) {
+      h.click('calendario'); await settle();
+      const d = h.$('#modal .cal-grid > .cal-h + .cal-d');
+      if (!d) throw new Error('no existe «#modal .cal-grid > .cal-h + .cal-d»: el arreglo de @layer overrides ya no coloca el día 1');
+      if (!/^1(?!\d)/.test(d.textContent.trim())) throw new Error(`la primera casilla es «${d.textContent.trim()}», no el día 1`);
+    } },
+  { sid: 3, level: 6, name: 'S3-N6 plano del sótano: .s3-plan presente (rejilla de 5 columnas fluida)',
+    async run(h) {
+      h.click('plansot'); await settle();
+      if (!h.$('#modal .s3-plan')) throw new Error('el plano ya no usa .s3-plan: revisa el arreglo de @layer overrides');
+      if (!h.$('#modal .s3-plan .s3-cell')) throw new Error('el plano no tiene .s3-cell');
+    } },
+  { sid: 3, level: 1, needs: 'puzzles', name: 'S3-N1 Pisos en alquiler: tabla → fichas (.tbl-stack + td[data-label])',
+    async run(h) { h.click('tablon'); await settle(); tableStacked(h, '#modal table.s3-tbl'); } },
+  { sid: 5, level: 4, needs: 'puzzles', name: 'S5-N4 Caja de facturas: tabla → fichas',
+    async run(h) { h.click('caja'); await settle(); tableStacked(h, '#modal table.s5-fac'); } },
+  { sid: 5, level: 4, needs: 'puzzles', name: 'S5-N4 CAFÉ-MRR: fichas y selects #s5-f* manejables con h.setValue',
+    async run(h) {
+      h.use('portatilOk', 'plataforma'); h.use('cuadroOk', 'plataforma'); h.click('plataforma'); await settle();
+      tableStacked(h, '#modal table.s5-fac');
+      const sels = h.$$('#modal select[id^="s5-f"]');
+      if (sels.length < 11) throw new Error(`solo hay ${sels.length} selects #s5-f* (se esperan 11)`);
+      const opts = [...sels[0].options].map((o) => o.value).filter(Boolean);
+      const v = opts[opts.length - 1];
+      h.setValue('#s5-f1', v); await settle();
+      const s1 = h.$('#s5-f1');
+      if (!s1 || s1.value !== v) throw new Error(`#s5-f1 no conserva el valor «${v}» tras h.setValue (valor: «${s1 && s1.value}»)`);
+    } },
+  { sid: 5, level: 3, needs: 'puzzles', name: 'S5-N3 Cuadro de créditos: .s5-bud NO se convierte en fichas',
+    async run(h) {
+      h.click('cuadro'); await settle();
+      const t = h.$('#modal table.s5-bud');
+      if (!t) throw new Error('no aparece table.s5-bud');
+      if (t.classList.contains('tbl-stack')) throw new Error('.s5-bud no debe recibir .tbl-stack (tiene su propia columna fija)');
+    } },
+];
+
+async function runGuards(sid, out, sysLabels) {
+  const mine = GUARDS.filter((g) => g.sid === sid);
+  const { w, errors, sys } = makeDom();
   const R = w.RoomEscape;
-  const out = { sid, ok: true, lines: [], warns: [] };
+  if (!R) return;
+  // Las CSS de temporada se inyectan dentro de @layer seasons (core.js)
+  const st = w.document.querySelector(`style[data-season="${sid}"]`);
+  if (st) {
+    const layered = /^\s*@layer\s+seasons\s*\{/.test(st.textContent);
+    if (FOUNDATION && !layered) out.fail('La CSS de la temporada no se inyecta como «@layer seasons{…}» (js/core.js)');
+    else if (layered) out.lines.push('  ✓ Guarda: CSS de temporada dentro de @layer seasons');
+  }
+  for (const gd of mine) {
+    if (gd.needs === 'puzzles' && !PUZZLES_JS) { out.skips.push(`Guarda omitida (js/ui-puzzles.js vacío): ${gd.name}`); continue; }
+    try {
+      R.start(sid, gd.level);
+      const h = helpers(w, R);
+      await gd.run(h);
+      if (errors.length) throw new Error(errors.splice(0).join(' | '));
+      out.lines.push(`  ✓ Guarda: ${gd.name}`);
+      if (h.modalOpen()) h.close();
+    } catch (e) {
+      out.fail(`Guarda «${gd.name}»: ${e.message}`);
+      if (!w.document.querySelector('#modal').hidden) { const x = w.document.querySelector('.modal-x'); if (x) x.click(); }
+    }
+  }
+  await sleep(5);
+  sys.forEach((l) => sysLabels.add(l));
+}
+
+async function runSeason(sid) {
+  const { w, doc, errors, sys } = makeDom();
+  const R = w.RoomEscape;
+  const out = { sid, ok: true, lines: [], warns: [], skips: [] };
   const fail = (m) => { out.ok = false; out.lines.push('  ✗ ' + m); };
+  out.fail = fail;
   if (!R) { fail('El motor no se ha cargado. ' + errors.join('\n')); return out; }
   const sea = w.SEASONS[sid - 1];
   if (!sea) { fail(`No hay temporada ${sid} registrada. ${errors.join('\n')}`); return out; }
@@ -221,14 +614,33 @@ async function runSeason(sid) {
   }
   if (out.ok && R.screen() !== 'end') fail(`Al terminar el último nivel no se muestra la pantalla final (pantalla: ${R.screen()})`);
   if (errors.length) errors.forEach(fail);
+
+  // Guardas de contenido congelado (en un DOM aparte, para no alterar la partida de la solución)
+  const sysLabels = new Set(sys);
+  await runGuards(sid, out, sysLabels);
+
+  // Ningún botón del motor o de un realzador puede contener el texto que buscan las soluciones
+  const hits = needleCollisions(sysLabels);
+  if (hits.length) fail(`Botones del sistema ([data-sys]) que chocan con textos de las soluciones: ${hits.join('; ')}`);
+  else if (sysLabels.size) out.lines.push(`  ✓ Botones del sistema: ${sysLabels.size} etiquetas distintas, ninguna choca con las soluciones`);
+  else out.skips.push('Control de agujas: el motor aún no marca ningún botón con [data-sys]');
   return out;
 }
 
 (async () => {
   const want = process.argv.slice(2).map(Number).filter(Boolean);
   const list = want.length ? want : seasonFiles();
-  // Compatibilidad con códigos antiguos (4 cifras = temporada 1)
   let allOk = true;
+
+  const gl = globalChecks();
+  console.log(`${gl.errs.length ? '❌' : '✅'} Comprobaciones globales${FOUNDATION ? '' : ' (rediseño aún sin cimientos: las reglas nuevas se avisan, no fallan)'}`);
+  gl.oks.forEach((l) => console.log('  ✓ ' + l));
+  gl.errs.forEach((l) => console.log('  ✗ ' + l));
+  gl.skips.forEach((l) => console.log('  ⏭ ' + l));
+  gl.warns.forEach((l) => console.log('  ⚠ ' + l));
+  if (gl.errs.length) allOk = false;
+
+  // Compatibilidad con códigos antiguos (4 cifras = temporada 1)
   {
     const { w } = makeDom();
     const old = w.RoomEscape && w.RoomEscape.readCode('EXP-03T2-C');
@@ -238,6 +650,7 @@ async function runSeason(sid) {
     const r = await runSeason(sid);
     console.log(`${r.ok ? '✅' : '❌'} Temporada ${sid}`);
     r.lines.forEach((l) => console.log(l));
+    r.skips.forEach((l) => console.log('  ⏭ ' + l));
     r.warns.forEach((l) => console.log('  ⚠ ' + l));
     if (!r.ok) allOk = false;
   }
