@@ -523,7 +523,8 @@
   }
   function freezeRoom(on) {
     const b = document.body;
-    if (on && screen === 'play') { b.style.setProperty('--freezeH', window.innerHeight + 'px'); b.classList.add('room-frozen'); }
+    // Solo la primera vez: al cambiar de modal con el teclado abierto, innerHeight ya ha encogido
+    if (on && screen === 'play') { if (!b.classList.contains('room-frozen')) { b.style.setProperty('--freezeH', window.innerHeight + 'px'); b.classList.add('room-frozen'); } }
     else if (!on) { b.classList.remove('room-frozen'); b.style.removeProperty('--freezeH'); }
   }
   function captureOpener() {
@@ -1021,10 +1022,13 @@
     const actSlot = act && act.closest && act.closest('#inventory .slot[data-id]');
     const sd = renderScene(); const id = renderInv();
     renderTop(); renderRoomUi(); renderDialog();
-    // El foco sobrevive: si el objeto enfocado desaparece, pasa al siguiente visible
-    if (document.activeElement === document.body || (act && !act.isConnected)) {
+    // El foco sobrevive: si el objeto enfocado desaparece, pasa al siguiente visible.
+    // (Chrome no suelta el foco de un nodo recién ocultado hasta el siguiente pintado: se mira «hidden».)
+    const gone = (n) => !n.isConnected || !!n.closest('[hidden]');
+    if (document.activeElement === document.body || (act && act !== document.body && gone(act))) {
       if (actHs) focusEl(visibleHs(actHs.dataset.id) || nextVisibleHs(actHs.dataset.id) || $('#playTitle'));
       else if (actSlot) focusEl(invNodes.get(actSlot.dataset.id) || firstSlot() || $('#playTitle'));
+      else if (act && act !== document.body && act.closest && act.closest('#screen-play') && $('#modal').hidden) focusEl($('#playTitle'));
     }
     if (!sd.initial) pendingPings.push(...sd.addedHs, ...sd.changedHs);
     schedulePan();
@@ -1209,7 +1213,7 @@
     haptic('tap');
     emit('tap', { id, x: o.x, y: o.y, assisted: !!o.assisted });
     clickHotspot(hs);
-    if (o.keyboard && queue.length) { kbOrigin = { kind: 'hs', id }; focusEl($('#btnNextMsg')); }
+    if (o.keyboard && queue.length && $('#modal').hidden) { kbOrigin = { kind: 'hs', id }; focusEl($('#btnNextMsg')); }
   }
   function onSlotClick(e) {
     const id = e.currentTarget.dataset.id;
@@ -1217,7 +1221,7 @@
     if (queue.length && !pendingWin) { sfx('click'); nextMsg(); nudge(); return; }
     idleSecs = 0;
     clickItem(id);
-    if (e.detail === 0 && queue.length) { kbOrigin = { kind: 'slot', id }; focusEl($('#btnNextMsg')); }
+    if (e.detail === 0 && queue.length && $('#modal').hidden) { kbOrigin = { kind: 'slot', id }; focusEl($('#btnNextMsg')); }
   }
 
   function clickHotspot(hs) {
@@ -1230,10 +1234,10 @@
       if (selected) {
         const it = selected; setSelected(null);
         const fn = hs.use && (hs.use[it] || hs.use['*']);
-        if (fn) fn(g, it); else { sfx('bad'); g.say(nope(it)); }
+        if (fn) fn(g, it); else { sfx('bad'); say(nope(it), undefined, { kind: 'system' }); } // mensajes del motor: piel «system»
       } else {
         sfx('click');
-        if (hs.look) hs.look(g); else g.say('Nada interesante.');
+        if (hs.look) hs.look(g); else say('Nada interesante.', undefined, { kind: 'system' });
       }
     } finally { ctx = null; }
     refresh();
@@ -1248,7 +1252,7 @@
       const key = [a, id].sort().join('+');
       const fn = L.combos && L.combos[key];
       if (fn) fn(g);
-      else say(`No se te ocurre cómo combinar ${ITEMS[a].name.toLowerCase()} con ${ITEMS[id].name.toLowerCase()}.`, null, { face: '🤔', kind: 'narration' });
+      else say(`No se te ocurre cómo combinar ${ITEMS[a].name.toLowerCase()} con ${ITEMS[id].name.toLowerCase()}.`, null, { face: '🤔', kind: 'system' });
     } else if (selected === id) {
       setSelected(null);
     } else {
@@ -1932,7 +1936,7 @@
   function pauseModal() {
     if (!S || !L || screen !== 'play' || !$('#modal').hidden) return;
     setObjOpen(false);
-    const vib = canVibrate();
+    const vib = canVibrate() && isTouch(); // el escritorio también tiene navigator.vibrate, pero no vibra
     const code = makeCode(S.season, S.level, S.totalHints);
     const row = (act, icon, label, value, cls, extra) => `<button type="button" class="sheet-row${cls ? ' ' + cls : ''}" id="pause${act}" data-act="${act}" data-sys${extra || ''}>${ico(icon)}<span class="sheet-l">${label}</span>${value != null ? `<span class="sheet-v">${value}</span>` : ''}</button>`;
     const card = modal({
