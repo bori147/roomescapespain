@@ -147,9 +147,8 @@
       // X con salida suave y Y con entrada-salida: el objeto describe un arco hasta la casilla
       outer.animate([{ transform: `translateX(${sx - dx}px)` }, { transform: 'translateX(0)' }], { duration: FLY_MS, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
       const a = inner.animate([
-        { transform: `translateY(${sy - dy}px) scale(1.6)`, opacity: 0.9 },
-        { transform: `translateY(${(sy - dy) * 0.35 - 24}px) scale(1.35)`, opacity: 1, offset: 0.45 },
-        { transform: 'translateY(0) scale(1)', opacity: 1 },
+        { transform: `translateY(${sy - dy}px) scale(1.6)` },
+        { transform: 'translateY(0) scale(1)' },
       ], { duration: FLY_MS, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'both' });
       a.onfinish = finish; a.oncancel = finish;
     } catch (e) { finish(); return; }
@@ -614,6 +613,7 @@
     for (let i = 0; i < src.length && i < dst.length; i++) {
       const s = src[i]; const c = dst[i];
       if (!s.ownerSVGElement) copyStyles(s, c); // el interior de un <svg> hereda de su <svg>
+      if (s === D.activeElement) { c.style.outline = 'none'; c.style.boxShadow = 'none'; } // sin anillo de foco en el fantasma
       for (const a of Array.prototype.slice.call(c.attributes)) if (STRIP.test(a.name)) c.removeAttribute(a.name);
       if (s.scrollTop || s.scrollLeft) scrolls.push([c, s.scrollTop, s.scrollLeft]);
       if (c.tagName === 'INPUT' || c.tagName === 'TEXTAREA') { try { c.value = s.value; } catch (e) { /* nada */ } }
@@ -622,20 +622,40 @@
     const g = el('div', 'modal-ghost' + (keypadOk ? ' is-ok' : ''));
     g.setAttribute('aria-hidden', 'true');
     g.setAttribute('inert', '');
-    g.style.left = r.left + 'px'; g.style.top = r.top + 'px';
-    g.style.width = r.width + 'px'; g.style.height = r.height + 'px';
+    // Si el papel lo pinta el <dialog> (tarjeta transparente dentro de una hoja), el fantasma es la hoja entera
+    const dlg = card.parentElement;
+    const dr0 = dlg && dlg.id === 'modal' ? rectOf(dlg) : null;
+    let dcs = null; try { dcs = dr0 ? W.getComputedStyle(dlg) : null; } catch (e) { dcs = null; }
+    let ccs = null; try { ccs = W.getComputedStyle(card); } catch (e) { ccs = null; }
+    const clear = (c) => !c || c === 'transparent' || /rgba\([^)]*,\s*0\)$/.test(c);
+    const sheet = !!(dcs && ccs && clear(ccs.backgroundColor) && !clear(dcs.backgroundColor));
+    const box = sheet ? dr0 : r;
+    g.style.left = box.left + 'px'; g.style.top = box.top + 'px';
+    g.style.width = box.width + 'px'; g.style.height = box.height + 'px';
     const cs = clone.style;
-    cs.position = 'relative'; cs.inset = 'auto'; cs.margin = '0'; cs.width = '100%'; cs.height = '100%';
+    if (sheet) {
+      ['background-color', 'background-image', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-radius', 'box-shadow']
+        .forEach((p) => { const v = dcs.getPropertyValue(p); if (v) g.style.setProperty(p, v); });
+      g.style.boxSizing = 'border-box'; g.style.overflow = 'hidden';
+      const bl = parseFloat(dcs.borderLeftWidth) || 0; const bt = parseFloat(dcs.borderTopWidth) || 0;
+      cs.position = 'absolute'; cs.inset = 'auto'; cs.margin = '0';
+      cs.left = (r.left - box.left - bl) + 'px'; cs.top = (r.top - box.top - bt) + 'px';
+      cs.width = r.width + 'px'; cs.height = r.height + 'px';
+    } else {
+      cs.position = 'relative'; cs.inset = 'auto'; cs.margin = '0'; cs.width = '100%'; cs.height = '100%';
+    }
     cs.transform = 'none'; cs.translate = 'none'; cs.scale = 'none'; cs.rotate = 'none'; cs.opacity = '1';
     g.append(clone);
     if (keypadOk) {
       const disp = $('.kp-display', card) || $('.kp-text', card);
       const dr = rectOf(disp);
       const st = el('span', 'stamp sm ok fx-conforme', 'CONFORME');
-      st.style.setProperty('--cy', Math.round(dr ? dr.top + dr.height / 2 - r.top : r.height / 2) + 'px');
+      st.style.setProperty('--cy', Math.round(dr ? dr.top + dr.height / 2 - box.top : r.top - box.top + r.height / 2) + 'px');
       g.append(st);
+      // Candado de texto (sin casillas): la casilla se queda en verde, como las .kp-box.ok del teclado
+      $$('.kp-text input', clone).forEach((i) => { i.style.borderColor = 'var(--green)'; i.style.boxShadow = '0 0 0 2px var(--green)'; i.style.color = 'var(--green)'; });
     }
-    const scrim = el('div', 'modal-ghost-scrim');
+    const scrim = el('div', 'modal-ghost-scrim' + (keypadOk ? ' is-ok' : ''));
     scrim.setAttribute('aria-hidden', 'true');
     return { g, scrim, scrolls, keypadOk };
   }
