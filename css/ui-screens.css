@@ -121,7 +121,7 @@
   /* ======================================================
      2. Menú
      ====================================================== */
-  .paper.menu { padding-top: 16px; }
+  @media (max-width: 599px) { .paper.menu { --pad-t: 16px; } }
 
   .menu-hero {
     position: relative;
@@ -442,7 +442,7 @@
     border-radius: 2px;
     background: var(--ink);
     color: #fff;
-    font: 700 11px/1.2 var(--ui);
+    font: 700 .6875rem/1.2 var(--ui);
     letter-spacing: .14em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -724,7 +724,7 @@
     padding: 2px 0 14px;
     border-bottom: 3px double var(--ink);
     color: var(--ink);
-    font: 400 13px/1.4 var(--stamp-f);
+    font: 400 .8125rem/1.4 var(--stamp-f);
     letter-spacing: .14em;
     text-align: center;
     text-transform: uppercase;
@@ -732,7 +732,7 @@
   .res-head small {
     display: block;
     color: var(--ink-2);
-    font: 400 18px/1.3 var(--stamp-f);
+    font: 400 1.125rem/1.3 var(--stamp-f);
     letter-spacing: .02em;
     text-transform: none;
   }
@@ -788,7 +788,7 @@
     padding: 0 0 6px 4px;
     border-bottom: 1px solid var(--ink);
     color: var(--ink-2);
-    font: 400 18px/1.3 var(--stamp-f);
+    font: 400 1.125rem/1.3 var(--stamp-f);
     letter-spacing: .02em;
     rotate: -2deg;
     transform-origin: left bottom;
@@ -872,7 +872,7 @@
     width: fit-content;
     max-width: calc(100% - 16px);
     margin: 18px 0 16px 6px;
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 1.15;
     white-space: normal;
     text-align: center;
@@ -1086,9 +1086,10 @@
       padding-bottom: 0;
     }
     .paper:is(.intro-card, .resolution) > .row-actions.talon { margin-top: auto; }
+    /* Aire antes del talón: lo último visible antes de él (la tasa del final puede ir oculta) */
     .paper:is(.intro-card, .resolution) > :nth-last-child(2) { margin-bottom: 24px; }
-    #endStamp, .res-head .chip { align-self: flex-start; }
-    .res-head .chip { align-self: center; }
+    .paper:is(.intro-card, .resolution) > :not([hidden]):not(.row-actions):not(:has(~ :not([hidden]):not(.row-actions))) { margin-bottom: 24px; }
+    #endStamp { align-self: flex-start; }
 
     .row-actions.talon {
       position: sticky;
@@ -1184,7 +1185,8 @@
     gap: 0 4px;
     max-width: 1120px;
     margin: 0 auto;
-    padding: 8px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+    /* abajo, hueco para el café flotante: el último enlace nunca queda debajo */
+    padding: 0 var(--gutter) calc(84px + env(safe-area-inset-bottom, 0px));
     color: var(--ink-3);
     font: 500 var(--fs-sm)/1.3 var(--ui);
   }
@@ -1208,10 +1210,7 @@
     .site-footer a:hover, .site-footer button:hover { color: var(--ink); text-decoration-thickness: 2px; }
   }
   body[data-screen="play"] .site-footer { display: none; }
-  /* Teléfono: que el flotante y el aviso de cookies no tapen los últimos enlaces */
-  @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
-    body:is([data-screen="menu"], [data-screen="season"]) .site-footer { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
-  }
+  /* …ni debajo del aviso de cookies */
   body.cc-open .site-footer { padding-bottom: calc(var(--cc-h, 0px) + 84px); }
 
 
@@ -1271,13 +1270,13 @@
   .s5-end-card small {
     display: block;
     color: var(--ink-2);
-    font: 700 11px/1.3 var(--ui);
+    font: 700 .6875rem/1.3 var(--ui);
     letter-spacing: .1em;
     text-transform: uppercase;
   }
   .s3-deed-row small { color: #6A5238; }
   /* Special Elite nunca por debajo de 18 px */
-  .s4-cred b { font-size: 18px; }
+  .s4-cred b { font-size: 1.125rem; }
   .s4-cred {
     border: 1px solid var(--line-strong);
     border-radius: var(--r-lg);
