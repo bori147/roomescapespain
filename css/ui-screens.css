@@ -1057,35 +1057,6 @@
     .tasa .kofi-btn { white-space: nowrap; }
   }
 
-  /* Tarjeta del DNI (final de la T1; sin CSS propio en la temporada) */
-  .dni-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    max-width: 420px;
-    margin: 4px 0 20px;
-    padding: 14px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: linear-gradient(135deg, #D7E6F1, #F3EAD0 60%, #F4DCDC);
-    box-shadow: var(--e2);
-    color: var(--ink);
-    forced-color-adjust: none;
-  }
-  .dni-photo {
-    flex: none;
-    padding: 4px 8px;
-    border-radius: var(--r-sm);
-    background: #fff;
-    font-family: var(--emoji);
-    font-size: 52px;
-    line-height: 1.1;
-  }
-  .dni-data { min-width: 0; }
-  .dni-data div { display: flex; flex-direction: column; margin-bottom: 4px; }
-  .dni-data div:last-child { margin-bottom: 0; }
-  .dni-data b { font: 700 .9375rem/1.25 var(--ui); letter-spacing: .02em; overflow-wrap: anywhere; }
-
 
   /* ======================================================
      7. Talón: acciones pegadas abajo en el teléfono
@@ -1382,6 +1353,36 @@
    Arreglos sobre la CSS de las temporadas (contenido congelado)
    ========================================================== */
 @layer overrides {
+  /* Tarjeta del DNI (final de la T1; la temporada no trae CSS propio). Aquí y no en «screens»:
+     así ninguna capa intermedia (puzles) la recoloca ni la centra. */
+  .dni-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 420px;
+    margin: 4px 0 20px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: linear-gradient(135deg, #D7E6F1, #F3EAD0 60%, #F4DCDC);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    forced-color-adjust: none;
+  }
+  .dni-photo {
+    flex: none;
+    padding: 4px 8px;
+    border-radius: var(--r-sm);
+    background: #fff;
+    font-family: var(--emoji);
+    font-size: 52px;
+    line-height: 1.1;
+  }
+  .dni-data { min-width: 0; }
+  .dni-data div { display: flex; flex-direction: column; margin-bottom: 4px; }
+  .dni-data div:last-child { margin-bottom: 0; }
+  .dni-data b { font: 700 .9375rem/1.25 var(--ui); letter-spacing: .02em; overflow-wrap: anywhere; }
+
   /* Etiquetas de las tarjetas finales: versalitas de 11 px con aire (documentado en DOC11) */
   .dni-card .dni-data small,
   .s3-deed-row small,
