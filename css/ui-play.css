@@ -1235,6 +1235,9 @@
     .objective { display: none; }
     .scene-box { grid-row: 1 / -1; align-items: flex-start; }
     .scene { width: min(100cqw, 100cqh * 16 / 9); height: auto; aspect-ratio: 16 / 9; }
+    /* La sala va arriba y puede ser más baja que su caja: sello y botón se centran en la sala */
+    .won-stamp { top: calc(min(100cqh, 56.25cqw) * .45); }
+    .won-cta { top: calc(min(100cqh, 56.25cqw) * .62); }
 
     /* Barra de la sala: solo «Usando…» y la Lupa */
     .room-bar { display: flex; gap: 8px; height: auto; }
@@ -1369,6 +1372,9 @@
     }
     .scene-box { grid-row: 1 / -1; align-items: flex-start; }
     .scene { width: min(100cqw, 100cqh * 16 / 9); height: auto; aspect-ratio: 16 / 9; }
+    /* La sala va arriba y puede ser más baja que su caja: sello y botón se centran en la sala */
+    .won-stamp { top: calc(min(100cqh, 56.25cqw) * .45); }
+    .won-cta { top: calc(min(100cqh, 56.25cqw) * .62); }
     .objective { display: flex; padding: 10px 16px 11px 14px; }
 
     .room-bar { display: flex; gap: 8px; height: auto; }
