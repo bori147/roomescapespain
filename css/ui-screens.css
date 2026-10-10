@@ -1177,8 +1177,9 @@
     .row-actions.talon .btn.ghost { padding-inline: 6px; }
     .row-actions.talon .btn.primary { padding-inline: 8px; font-size: var(--fs-sm); }
   }
-  /* Tarjeta en horizontal: el talón llega a los bordes de la tarjeta */
-  @media (orientation: landscape) and (max-height: 520px) and (min-width: 600px) {
+  /* Papel en tarjeta (≥ 600 px) con el talón al pie: sus esquinas siguen las de la tarjeta.
+     Mientras va pegado a mitad de papel, detrás de las esquinas solo hay margen. */
+  @media (min-width: 600px) and (max-width: 760px), (orientation: landscape) and (max-height: 520px) and (min-width: 600px) {
     .row-actions.talon, .season-actions { border-radius: 0 0 var(--r-lg) var(--r-lg); }
   }
 
@@ -1298,6 +1299,17 @@
   body[data-screen="play"] .site-footer { display: none; }
   /* …ni debajo del aviso de cookies */
   body.cc-open .site-footer { padding-bottom: calc(var(--cc-h, 0px) + 84px); }
+  /* La temporada es corta: en tableta el pie asoma desde el principio, justo donde flota el café.
+     Se deja libre su columna a los dos lados (el pie sigue centrado bajo el papel). */
+  @media (min-width: 600px) and (max-width: 1199px) {
+    body[data-screen="season"] .site-footer { padding-inline: max(var(--gutter), var(--float-room, 0px)); }
+  }
+  @media (min-width: 761px) and (max-width: 1199px) {
+    body[data-screen="season"] .site-footer { --float-room: 228px; }   /* «¡Invítame a un café!» */
+  }
+  @media (min-width: 600px) and (max-width: 760px), (min-width: 600px) and (orientation: landscape) and (max-height: 520px) {
+    body[data-screen="season"] .site-footer { --float-room: 76px; }    /* solo la taza */
+  }
 
 
   /* ======================================================
