@@ -17,7 +17,12 @@
     if (season.css && typeof document !== 'undefined') {
       const st = document.createElement('style');
       st.dataset.season = season.id;
-      st.textContent = season.css;
+      // Capa «seasons»: por encima de los estilos base y por debajo de «overrides»
+      // (ver el orden de capas en css/tokens.css y css/style.css). Los navegadores
+      // sin @layer (y jsdom, cuyo analizador CSS no lo entiende) reciben el CSS tal cual.
+      st.textContent = typeof window.CSSLayerBlockRule === 'function'
+        ? '@layer seasons{' + season.css + '}'
+        : season.css;
       document.head.appendChild(st);
     }
   };
