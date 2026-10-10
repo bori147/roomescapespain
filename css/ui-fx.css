@@ -1,1 +1,352 @@
-/* Vacío: lo rellena su paquete (ver spec de rediseño) */
+/* ==========================================================
+   VUELVA USTED MAÑANA — Efectos de presentación (paquete P6)
+   Capa fx: lo que js/ui-fx.js pone y quita al vuelo.
+     · vuelo a la bandeja (.fly-item) y llegada (.slot.arrived)
+     · respuesta al toque (.hs.hs-tapped, .tap-ring)
+     · inactividad (.hs.glint, #btnHint.nudge, .fx-halo)
+     · pósits de primera vez (.coach)
+     · final de temporada (.finale, .fx-confetti, body.finale-on)
+     · salida de los modales (.modal-ghost, .fx-conforme)
+   Solo se animan transform/opacity y las propiedades sueltas
+   translate/scale/rotate; nada es infinito. Con movimiento reducido
+   (la base fuerza 0,01 ms en toda animación) cada efecto tiene un
+   equivalente estático que js/ui-fx.js mantiene el tiempo que toca.
+   Fotogramas con prefijo fx-.
+   ========================================================== */
+@layer fx {
+
+  /* ---------------- Capas fijas: nunca reciben toques ---------------- */
+  .fly-item, .tap-ring, .fx-halo, .coach, .finale, .fx-confetti, .modal-ghost, .modal-ghost-scrim {
+    position: fixed;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* ==========================================================
+     1) «Justificante de entrega»: el objeto vuela a su casilla
+     ========================================================== */
+  /* Por encima del fantasma de los modales (76/77): tras un «CONFORME» el objeto
+     se ve despegar de la tarjeta verde en vez de viajar bajo el velo */
+  .fly-item {
+    z-index: 78;
+    width: 0;
+    height: 0;
+    contain: layout style;
+    will-change: transform;
+  }
+  .fly-in {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    translate: -50% -50%;
+    font: 400 26px/1 var(--emoji);
+    filter: drop-shadow(0 6px 8px rgba(26, 24, 20, .28));
+    will-change: transform, opacity;
+  }
+  /* La casilla de destino espera vacía a que el objeto aterrice */
+  .slot.fly-dest .slot-emoji { opacity: 0; }
+
+  /* Llegada: la casilla acusa el golpe y el emoji se asienta con rebote */
+  .slot.arrived { animation: fx-arrive-slot 320ms var(--ease-out) both; }
+  .slot.arrived .slot-emoji { animation: fx-arrive 320ms var(--ease-spring) both; }
+  @keyframes fx-arrive-slot {
+    0% { scale: .96; }
+    45% { scale: 1.04; }
+    100% { scale: 1; }
+  }
+  @keyframes fx-arrive {
+    0% { scale: .6; }
+    60% { scale: 1.12; }
+    100% { scale: 1; }
+  }
+
+  /* ==========================================================
+     2) Respuesta al toque: pulso del objeto + anillo en el dedo
+     ========================================================== */
+  /* Pulso con la propiedad suelta «scale»: no pisa el translate(-50%,-50%) del hotspot */
+  #scene .hs.hs-tapped { animation: fx-tap 260ms var(--ease-out) both; }
+  @keyframes fx-tap {
+    0% { scale: 1; }
+    35% { scale: .9; }
+    70% { scale: 1.07; }
+    100% { scale: 1; }
+  }
+  .tap-ring {
+    z-index: 61;
+    left: 0;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, .75), inset 0 0 0 2px rgba(255, 255, 255, .55);
+    opacity: 0;
+    animation: fx-ring 420ms var(--ease-out) both;
+  }
+  @keyframes fx-ring {
+    0% { opacity: .9; scale: .3; }
+    100% { opacity: 0; scale: 1.25; }
+  }
+
+  /* ==========================================================
+     3) Inactividad: destello de lo no examinado y aviso en 💡
+     ========================================================== */
+  #scene .hs.glint { animation: fx-bump 700ms var(--ease-std) both; }
+  @keyframes fx-bump {
+    0%, 100% { scale: 1; }
+    30% { scale: 1.1; }
+    55% { scale: .98; }
+    75% { scale: 1.03; }
+  }
+  /* Halo efímero en coordenadas de pantalla (lo coloca ui-fx.js con el rect del objeto) */
+  .fx-halo {
+    z-index: 61;
+    left: 0;
+    top: 0;
+    translate: -50% -50%;
+    border-radius: var(--r-pill);
+    opacity: 0;
+  }
+  .fx-halo.is-glint {
+    border: 3px solid var(--marker);
+    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), inset 0 0 0 1px rgba(26, 24, 20, .2);
+    animation: fx-halo 900ms var(--ease-out) both;
+  }
+  @keyframes fx-halo {
+    0% { opacity: 0; scale: .7; }
+    30% { opacity: 1; scale: 1; }
+    100% { opacity: 0; scale: 1.25; }
+  }
+  /* 💡: dos pulsos de anillo y el icono «suena» dos veces */
+  .fx-halo.is-nudge {
+    border: 2px solid var(--ink);
+    background: rgba(255, 216, 77, .35);
+    animation: fx-halo 700ms var(--ease-out) 2 both;
+  }
+  #btnHint.nudge .ico { animation: fx-ring-bell 700ms var(--ease-std) 2 both; transform-origin: 50% 12%; }
+  @keyframes fx-ring-bell {
+    0%, 100% { rotate: 0deg; }
+    15% { rotate: 16deg; }
+    35% { rotate: -14deg; }
+    55% { rotate: 9deg; }
+    75% { rotate: -5deg; }
+  }
+
+  /* ==========================================================
+     4) Pósits de primera vez
+     ========================================================== */
+  .coach {
+    --ax: 50%;
+    z-index: 85;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    max-width: min(260px, calc(100vw - 16px));
+    padding: 10px 12px 11px;
+    border: 2px solid var(--ink);
+    border-radius: var(--r-xs);
+    background: var(--marker);
+    color: var(--ink);
+    box-shadow: var(--e2);
+    rotate: -1.5deg;
+    animation: fx-coach-in var(--d-base) var(--ease-out) both;
+  }
+  .coach-t {
+    margin: 0;
+    font: 600 .875rem/1.35 var(--ui);
+    text-wrap: pretty;
+  }
+  /* Flecha: triángulo de tinta (::before) con el amarillo del pósit encima (::after) */
+  .coach::before, .coach::after {
+    content: "";
+    position: absolute;
+    left: var(--ax);
+    width: 0;
+    height: 0;
+    border: solid transparent;
+    translate: -50% 0;
+  }
+  .coach.is-above::before { top: 100%; border-width: 10px 9px 0; border-top-color: var(--ink); }
+  .coach.is-above::after { top: 100%; margin-top: -3px; border-width: 8px 7px 0; border-top-color: var(--marker); }
+  .coach.is-below::before { bottom: 100%; border-width: 0 9px 10px; border-bottom-color: var(--ink); }
+  .coach.is-below::after { bottom: 100%; margin-bottom: -3px; border-width: 0 7px 8px; border-bottom-color: var(--marker); }
+  .coach.is-below { animation-name: fx-coach-in-below; }
+  .coach.out { animation: fx-fade-out 160ms var(--ease-in) both; }
+  @keyframes fx-coach-in {
+    from { opacity: 0; translate: 0 6px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  @keyframes fx-coach-in-below {
+    from { opacity: 0; translate: 0 -6px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  @keyframes fx-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  /* ==========================================================
+     5) «EXPEDIENTE CERRADO»: final de temporada (≤ 1600 ms)
+     ========================================================== */
+  /* Mientras dura el final no se pide café (vuelve en cuanto acaba) */
+  body.finale-on :is([data-kofi], #kofiFloat) { visibility: hidden; }
+  body.finale-on #endStamp.go { --stamp-delay: 1300ms; }
+
+  .finale {
+    z-index: 90;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    background: var(--scrim);
+    animation: fx-fade-in 160ms var(--ease-out) both;
+  }
+  /* La salida es otra animación: con «both», el fotograma final de la entrada
+     ganaría a un simple «opacity: 0» y la transición nunca llegaría a verse */
+  .finale.out { animation: fx-fade-out 300ms var(--ease-in) both; pointer-events: none; }
+  @keyframes fx-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .finale-sheet {
+    box-sizing: border-box;
+    width: min(680px, 100%);
+    max-height: 100%;
+    overflow: hidden;
+    padding: clamp(16px, min(5vw, 5vh), 40px) clamp(16px, 5vw, 40px) clamp(14px, min(4vw, 4vh), 32px);
+    border-radius: var(--r-md);
+    background: var(--paper);
+    box-shadow: var(--e3);
+    text-align: center;
+    animation: fx-sheet-in 240ms var(--ease-out) both;
+  }
+  .finale.is-last .finale-sheet { border-top: 6px solid var(--gold); }
+  @keyframes fx-sheet-in {
+    from { opacity: 0; translate: 0 18px; rotate: -1deg; }
+    to { opacity: 1; translate: 0 0; rotate: 0deg; }
+  }
+  .finale-k {
+    margin: 0 0 clamp(10px, min(4vw, 4vh), 24px);
+    color: var(--ink-3);
+    font: 600 var(--fs-cap)/1.3 var(--ui);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .finale-stamp {
+    --rot: -4deg;
+    box-sizing: border-box;
+    max-width: 100%;
+    /* clamp(28px, 9vw, 72px) de la spec, limitado también por el alto (móvil en horizontal) */
+    font-size: clamp(28px, min(9vw, 11vh), 72px);
+    line-height: 1.05;
+    white-space: normal;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    border-width: max(4px, .08em);
+  }
+  .finale-reg {
+    margin: clamp(10px, min(4vw, 4vh), 24px) 0 0;
+    color: var(--ink-3);
+    font: 500 var(--fs-cap)/1.3 var(--mono);
+    letter-spacing: .04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Papeles al aire: 18 trocitos de CSS, fuera a los 2,6 s */
+  .fx-confetti {
+    z-index: 91;
+    inset: 0;
+    overflow: hidden;
+    contain: strict;
+  }
+  .fx-confetti i {
+    position: absolute;
+    left: var(--x, 50%);
+    top: 0;
+    font: normal 400 var(--s, 24px)/1 var(--emoji);
+    translate: 0 -12vh;
+    rotate: var(--r0, 0deg);
+    animation: fx-fall var(--d, 1800ms) cubic-bezier(.35, .1, .6, 1) var(--dl, 0ms) both;
+    will-change: translate, rotate;
+  }
+  @keyframes fx-fall {
+    0% { translate: 0 -12vh; rotate: var(--r0, 0deg); opacity: 1; }
+    85% { opacity: 1; }
+    100% { translate: var(--dx, 0px) 108vh; rotate: var(--r1, 180deg); opacity: 0; }
+  }
+
+  /* ==========================================================
+     6) Salida de los modales: la tarjeta se desvanece (y «CONFORME»)
+     ========================================================== */
+  .modal-ghost-scrim {
+    z-index: 76;
+    inset: 0;
+    background: var(--scrim);
+    animation: fx-fade-out 140ms var(--ease-in) var(--ghost-delay, 0ms) both;
+  }
+  .modal-ghost {
+    z-index: 77;
+    margin: 0;
+    overflow: visible;
+    animation: fx-ghost-out 140ms var(--ease-in) both;
+  }
+  .modal-ghost.is-ok { --ghost-delay: 380ms; animation-delay: var(--ghost-delay); }
+  /* «CONFORME» ligero (gama baja, movimiento reducido): solo las casillas, con un papel tenue detrás */
+  .modal-ghost .fx-lite-card {
+    position: absolute;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--e3);
+  }
+  .modal-ghost-scrim.is-ok { --ghost-delay: 380ms; }
+  @keyframes fx-ghost-out {
+    from { opacity: 1; translate: 0 0; }
+    to { opacity: 0; translate: 0 8px; }
+  }
+  .modal-ghost .fx-conforme {
+    --rot: -6deg;
+    position: absolute;
+    left: 50%;
+    top: var(--cy, 50%);
+    z-index: 2;
+    margin: 0;
+    translate: -50% -50%;
+    font-size: 1.125rem;
+    background: var(--green-bg);
+    mix-blend-mode: normal;
+    box-shadow: 0 2px 6px rgba(26, 24, 20, .12);
+    animation: k-stamp-hit 300ms var(--ease-out) both;
+  }
+
+  /* ==========================================================
+     Movimiento reducido: equivalentes estáticos (ui-fx.js los
+     mantiene 900 ms / 1,5 s / 2,4 s, el «CONFORME» 380 ms, y no
+     lanza vuelos ni confeti)
+     ========================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    .slot.arrived, .slot.arrived .slot-emoji, #scene .hs.hs-tapped, #scene .hs.glint, #btnHint.nudge .ico,
+    .coach, .finale, .finale-sheet, .modal-ghost, .modal-ghost-scrim, .modal-ghost .fx-conforme { animation: none; }
+    .finale.out { animation: none; opacity: 0; }
+    .tap-ring { animation: none; opacity: .9; }
+    .slot.arrived { outline: 3px solid var(--marker); outline-offset: 2px; }
+    #scene .hs.hs-tapped { outline: 2px solid var(--ink); outline-offset: 3px; }
+    #scene .hs.glint { outline: 3px solid var(--marker); outline-offset: 3px; }
+    #btnHint.nudge { outline: 3px solid var(--marker); outline-offset: 2px; }
+  }
+
+  /* Colores forzados: el pósit y el final siguen siendo legibles */
+  @media (forced-colors: active) {
+    .coach { border-color: CanvasText; background: Canvas; color: CanvasText; forced-color-adjust: none; }
+    .coach.is-above::before { border-top-color: CanvasText; }
+    .coach.is-below::before { border-bottom-color: CanvasText; }
+    .coach.is-above::after { border-top-color: Canvas; }
+    .coach.is-below::after { border-bottom-color: Canvas; }
+    .tap-ring, .fx-halo { border-color: Highlight; }
+    .slot.arrived, #scene .hs.glint, #btnHint.nudge { outline-color: Highlight; }
+  }
+}
