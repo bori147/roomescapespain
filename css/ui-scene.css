@@ -1,1 +1,440 @@
-/* Vacío: lo rellena su paquete (ver spec de rediseño) */
+/* ==========================================================
+   VUELVA USTED MAÑANA — La sala («lámina»)
+   Pared, suelo, zócalo, luz, fluorescente, decorado, carteles,
+   etiquetas y objetos tocables (hotspots). Solo el aspecto de la sala:
+   su tamaño en cada pantalla lo decide ui-play.css.
+   Todo vive en @layer scene; las animaciones llevan el prefijo scene-.
+   Unidades cqw = ancho de la sala (.scene es contenedor inline-size).
+   ========================================================== */
+
+@layer scene {
+
+  /* ---------------- Lámina ---------------- */
+  .scene {
+    --wall: #ddd;
+    --floor: #888;
+    --floorH: 32%;
+    container-type: inline-size;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--wall);
+    color: var(--ink);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    /* Los colores de la sala son parte del dibujo: el modo de alto contraste no los toca */
+    forced-color-adjust: none;
+  }
+  .scene.using .hs { cursor: crosshair; }
+
+  /* Luz cenital: por encima del decorado, por debajo de los objetos (z 2). Sin viñeta. */
+  .scene::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(110% 80% at 50% 0, rgba(255, 248, 225, .10), transparent 55%);
+  }
+
+  /* Pared: zócalo + luz + listones + color de la temporada */
+  .scene .wall {
+    position: absolute;
+    inset: 0 0 var(--floorH) 0;
+    background:
+      linear-gradient(to top, color-mix(in srgb, var(--wall) 82%, #000) 0 3cqw, transparent 3cqw),
+      linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(0, 0, 0, .08)),
+      repeating-linear-gradient(90deg, transparent 0 7cqw, rgba(0, 0, 0, .025) 7cqw 7.2cqw),
+      var(--wall);
+  }
+  /* Franja de techo */
+  .scene .wall::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 5%;
+    background: linear-gradient(rgba(0, 0, 0, .16), transparent);
+  }
+  /* Fluorescente de oficina: un único parpadeo al entrar (≤ 3 destellos por segundo, poco contraste) */
+  .scene.tube .wall::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 3%;
+    width: 18cqw;
+    height: .7cqw;
+    translate: -50% 0;
+    border-radius: .35cqw;
+    background: #fffbe8;
+    box-shadow: 0 0 3cqw 1cqw rgba(255, 250, 220, .45), 0 .15cqw 0 rgba(0, 0, 0, .12);
+    animation: scene-tube 600ms linear 1 both;
+  }
+  @keyframes scene-tube {
+    0% { opacity: 1; }
+    20% { opacity: .82; }
+    40% { opacity: 1; }
+    70% { opacity: .9; }
+    100% { opacity: 1; }
+  }
+
+  /* Rodapié */
+  .scene .baseboard {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--floorH);
+    height: 1.1cqw;
+    background: linear-gradient(rgba(255, 255, 255, .18) 0 18%, rgba(0, 0, 0, .4) 18%);
+  }
+
+  /* Suelo: el patrón de la temporada con sombra de horizonte (sin rotateX ni z-index) */
+  .scene .floor {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--floorH);
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0) 42%, rgba(255, 255, 255, .04)),
+      var(--floor);
+  }
+  .floor-tiles .floor {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, .32), rgba(0, 0, 0, 0) 45%, rgba(255, 255, 255, .05)),
+      repeating-linear-gradient(90deg, transparent 0 6cqw, rgba(0, 0, 0, .14) 6cqw 6.2cqw),
+      repeating-linear-gradient(0deg, transparent 0 3.5cqw, rgba(0, 0, 0, .14) 3.5cqw 3.7cqw),
+      var(--floor);
+  }
+  .floor-wood .floor {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, .32), rgba(0, 0, 0, 0) 45%, rgba(255, 255, 255, .04)),
+      repeating-linear-gradient(0deg, transparent 0 2.6cqw, rgba(0, 0, 0, .18) 2.6cqw 2.75cqw),
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, .03) 0 11cqw, rgba(0, 0, 0, .04) 11cqw 22cqw),
+      var(--floor);
+  }
+  .floor-carpet .floor {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, .36), rgba(0, 0, 0, 0) 45%, rgba(255, 255, 255, .03)),
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .06) 0 .3cqw, transparent .35cqw) 0 0 / 1.4cqw 1.4cqw,
+      var(--floor);
+  }
+
+  /* ---------------- Decorado (no se toca: pointer-events none) ---------------- */
+  .deco {
+    position: absolute;
+    z-index: 0;              /* contexto propio: las sombras ::before/::after (z -1) quedan sobre el suelo */
+    pointer-events: none;
+  }
+  /* Emoji de decorado: algo desaturados para que los objetos tocables manden */
+  .deco-emoji {
+    translate: -50% -50%;
+    line-height: 1;
+    font-family: var(--emoji);
+    white-space: nowrap;
+    filter: saturate(.8) brightness(.97) drop-shadow(0 .2cqw .2cqw rgba(0, 0, 0, .2));
+  }
+
+  /* Mostrador: tablero, canto, frente con dos paneles y sombra de contacto */
+  .deco-counter {
+    border-radius: .5cqw .5cqw .25cqw .25cqw;
+    background: linear-gradient(180deg, #a07c56 0 13%, #5a4330 13% 15%, #7a5b3e 15% 90%, #3a2a1c 90%);
+    box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .28);
+  }
+  .deco-counter::before {
+    content: '';
+    position: absolute;
+    inset: 24% 4% 16%;
+    border-radius: .3cqw;
+    background: linear-gradient(90deg, transparent calc(50% - .18cqw), rgba(0, 0, 0, .28) calc(50% - .18cqw) calc(50% + .18cqw), transparent calc(50% + .18cqw));
+    box-shadow: inset 0 0 0 .2cqw rgba(0, 0, 0, .16), inset 0 .25cqw 0 rgba(255, 255, 255, .07);
+  }
+  .deco-counter::after {
+    content: '';
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: -1cqw;
+    height: 1.8cqw;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, .36), transparent);
+  }
+
+  /* Estantería: canto con brillo y sombra proyectada */
+  .deco-shelf {
+    border-radius: .3cqw;
+    background: linear-gradient(180deg, #8a6a4a 0 22%, #6d5238 22% 80%, #4d3926 80%);
+    box-shadow: 0 .8cqw 1cqw -.3cqw rgba(0, 0, 0, .45);
+  }
+
+  /* Ventana: alféizar de 1,2cqw y reflejo */
+  .deco-window {
+    background:
+      linear-gradient(115deg, transparent 0 22%, rgba(255, 255, 255, .45) 22% 30%, transparent 30% 36%, rgba(255, 255, 255, .25) 36% 39%, transparent 39%),
+      linear-gradient(180deg, #9fd3f5, #d8eefc);
+    border: .7cqw solid #f4f1ea;
+    border-bottom-width: 0;
+    box-shadow: inset 0 0 0 .25cqw rgba(0, 0, 0, .15), 0 .4cqw .8cqw rgba(0, 0, 0, .22), 0 1.2cqw 0 -.1cqw #e6e0d2, 0 1.6cqw .6cqw -.2cqw rgba(0, 0, 0, .25);
+  }
+  .deco-window::before, .deco-window::after { content: ''; position: absolute; background: #f4f1ea; }
+  .deco-window::before { left: 50%; top: 0; bottom: 0; width: .5cqw; translate: -50% 0; }
+  .deco-window::after { top: 50%; left: 0; right: 0; height: .5cqw; translate: 0 -50%; }
+
+  /* Bandera de España: pliegues, mástil con remate dorado y peana */
+  .deco-flag {
+    border-radius: .2cqw;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, .14), rgba(255, 255, 255, .14) 28%, rgba(0, 0, 0, .1) 55%, rgba(255, 255, 255, .1) 80%, rgba(0, 0, 0, .12)),
+      linear-gradient(180deg, #c2161f 0 25%, #f1bf00 25% 75%, #c2161f 75%);
+    box-shadow: 0 .3cqw .6cqw rgba(0, 0, 0, .3);
+  }
+  .deco-flag::before {
+    content: '';
+    position: absolute;
+    left: -1.25cqw;
+    top: -1cqw;
+    width: 1.6cqw;
+    height: 16cqw;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, #5a4630, #9a7a52 45%, #5a4630) center top / .35cqw calc(100% - .45cqw) no-repeat,
+      linear-gradient(180deg, #4d3926, #2e2117) center bottom / 1.6cqw .5cqw no-repeat;
+    border-radius: .2cqw;
+  }
+  .deco-flag::after {
+    content: '';
+    position: absolute;
+    left: -.45cqw;
+    top: -1.55cqw;
+    width: .7cqw;
+    height: .7cqw;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #f3dd84, var(--gold) 55%, #8a6d17);
+    box-shadow: 0 .1cqw .2cqw rgba(0, 0, 0, .35);
+  }
+
+  /* Bandera de la UE: 12 estrellas en círculo (SVG en línea) */
+  .deco-flag-eu {
+    border-radius: .2cqw;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cg fill='%23FFD84D'%3E%3Cpath id='s' d='M30 7.2l.67 2.06h2.17l-1.75 1.27.67 2.06L30 11.32l-1.76 1.27.67-2.06-1.75-1.27h2.17z'/%3E%3Cuse href='%23s' transform='rotate(30 30 20)'/%3E%3Cuse href='%23s' transform='rotate(60 30 20)'/%3E%3Cuse href='%23s' transform='rotate(90 30 20)'/%3E%3Cuse href='%23s' transform='rotate(120 30 20)'/%3E%3Cuse href='%23s' transform='rotate(150 30 20)'/%3E%3Cuse href='%23s' transform='rotate(180 30 20)'/%3E%3Cuse href='%23s' transform='rotate(210 30 20)'/%3E%3Cuse href='%23s' transform='rotate(240 30 20)'/%3E%3Cuse href='%23s' transform='rotate(270 30 20)'/%3E%3Cuse href='%23s' transform='rotate(300 30 20)'/%3E%3Cuse href='%23s' transform='rotate(330 30 20)'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat,
+      linear-gradient(90deg, rgba(0, 0, 0, .12), rgba(255, 255, 255, .1) 30%, rgba(0, 0, 0, .08) 60%, rgba(255, 255, 255, .08) 85%, rgba(0, 0, 0, .1)),
+      var(--eu-blue);
+    box-shadow: 0 .3cqw .6cqw rgba(0, 0, 0, .3);
+  }
+
+  /* Hemiciclo: filas de escaños alternas, pasillos y remate dorado */
+  .deco-arc {
+    left: 2%;
+    right: 2%;
+    top: 38%;
+    height: 110%;
+    border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+    background:
+      repeating-conic-gradient(from -90deg at 50% 100%, transparent 0 14deg, rgba(0, 0, 0, .28) 14deg 15.2deg),
+      repeating-radial-gradient(ellipse at 50% 100%, #3f6b3f 0 2.2cqw, #2f552f 2.2cqw 2.5cqw, #4a7a48 2.5cqw 4.4cqw, #2f552f 4.4cqw 4.8cqw);
+    box-shadow: inset 0 0 0 .35cqw rgba(201, 162, 39, .85), inset 0 1.2cqw 2cqw rgba(0, 0, 0, .35);
+  }
+
+  /* Resto de primitivas (sin cambios de forma) */
+  .deco-board { background: #a87b4f; border: .6cqw solid #6d4c2f; border-radius: .4cqw; box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .3), inset 0 0 0 .15cqw rgba(0, 0, 0, .12); }
+  .deco-screen { background: linear-gradient(160deg, #24313f, #0f161d); border: .5cqw solid #333; border-radius: .6cqw; box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .35); }
+  .deco-rug { background: var(--c, #8c2f2f); border-radius: 50%; box-shadow: inset 0 0 0 .5cqw rgba(255, 255, 255, .15); filter: saturate(.85); }
+  .deco-column { background: linear-gradient(90deg, #cfcabf, #f4f1ea 40%, #bdb7aa); border-radius: .3cqw; box-shadow: 0 .3cqw .6cqw rgba(0, 0, 0, .25); }
+  .deco-box { background: var(--c, #6d5238); border-radius: .4cqw; box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .3), inset 0 .3cqw 0 rgba(255, 255, 255, .08); }
+
+  /* Sombra de contacto de lo que está en el suelo (objetos y decorado) */
+  .hs.on-floor::before, .deco-emoji.on-floor::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -.06em;
+    width: .9em;
+    height: .16em;
+    translate: -50% 0;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, .38), transparent);
+    pointer-events: none;
+  }
+
+  /* ---------------- Objetos tocables ---------------- */
+  .hs {
+    position: absolute;
+    z-index: 2;
+    translate: -50% -50%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: .8cqw;
+    background: none;
+    color: inherit;
+    font-family: var(--ui);
+    line-height: 1;
+    cursor: pointer;
+    filter: drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35));
+    transition: scale var(--d-fast) var(--ease-out), filter var(--d-fast) var(--ease-out);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hs.on-floor { filter: drop-shadow(0 .12cqw .2cqw rgba(0, 0, 0, .25)); }
+  .hs-emoji { display: block; font-family: var(--emoji); white-space: nowrap; }
+  .hs:active { scale: .94; }
+
+  /* Silueta troquelada (pantallas táctiles con potencia de sobra): 3 sombras como máximo, estática */
+  .scene.halo .hs:not(.sign) {
+    filter: drop-shadow(0 0 max(1px, .12cqw) rgba(255, 255, 255, .95)) drop-shadow(0 0 max(1px, .1cqw) rgba(26, 24, 20, .55)) drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35));
+  }
+  .scene.halo .hs.on-floor:not(.sign) {
+    filter: drop-shadow(0 0 max(1px, .12cqw) rgba(255, 255, 255, .95)) drop-shadow(0 0 max(1px, .1cqw) rgba(26, 24, 20, .55)) drop-shadow(0 .12cqw .2cqw rgba(0, 0, 0, .25));
+  }
+
+  /* Ratón: zona útil de al menos 24 px (los del suelo la amplían con relleno del emoji) */
+  @media (pointer: fine) {
+    .hs:not(.on-floor)::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: max(100%, 24px);
+      height: max(100%, 24px);
+      translate: -50% -50%;
+    }
+    .hs.on-floor .hs-emoji { padding: max(0px, calc((24px - 1em) / 2)); }
+  }
+
+  /* Encima o enfocado: crece un poco y brilla en cálido */
+  @media (hover: hover) {
+    .hs:hover {
+      z-index: 5;
+      scale: 1.08;
+      filter: drop-shadow(0 0 .7cqw rgba(255, 238, 150, .95)) drop-shadow(0 .45cqw .3cqw rgba(0, 0, 0, .35));
+    }
+    .hs.sign:hover { filter: drop-shadow(0 0 .6cqw rgba(255, 238, 150, .9)); }
+  }
+  /* Anillo de foco: tinta discontinua sobre halo blanco → ≥ 3:1 sobre cualquier pared */
+  .hs:focus-visible {
+    z-index: 6;
+    scale: 1.08;
+    outline: max(3px, .3cqw) dashed var(--ink);
+    outline-offset: max(4px, .45cqw);
+    box-shadow: 0 0 0 max(7px, .7cqw) rgba(255, 255, 255, .92);
+    filter: drop-shadow(0 0 .7cqw rgba(255, 238, 150, .95));
+  }
+  .hs.sign:focus-visible { box-shadow: 0 0 0 max(7px, .7cqw) rgba(255, 255, 255, .92), var(--e1); filter: none; }
+
+  /* Etiqueta: al pasar el ratón, con foco de teclado (en todo dispositivo), .show-label y la Lupa */
+  .hs::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    z-index: 10;
+    translate: -50% max(4px, .4cqw);
+    padding: .38em .7em;
+    border-radius: var(--r-xs);
+    background: rgba(20, 18, 16, .92);
+    color: #fff;
+    font: 600 max(12px, 1.15cqw)/1.2 var(--ui);
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--d-fast) var(--ease-out);
+  }
+  .hs:focus-visible::after, .hs.show-label::after { opacity: 1; }
+  @media (hover: hover) {
+    .hs:hover::after { opacity: 1; }
+  }
+  @media (hover: none) {
+    .hs:not(:focus-visible):not(.show-label)::after { display: none; }
+  }
+
+  /* Lupa: todo lo tocable se señala durante 2,5 s; lo no visto lleva un punto amarillo */
+  .scene.reveal .hs::after { display: block; opacity: 1; }
+  .scene.reveal .hs:not(.sign) { filter: drop-shadow(0 0 .8cqw var(--marker)) drop-shadow(0 0 .25cqw var(--marker)); }
+  .scene.reveal .hs.sign { box-shadow: 0 0 0 max(3px, .35cqw) var(--marker), var(--e1); }
+  .scene.reveal .hs.unseen > :first-child::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: max(10px, 1cqw);
+    height: max(10px, 1cqw);
+    translate: 35% -35%;
+    border-radius: 50%;
+    background: var(--marker);
+    box-shadow: 0 0 0 2px var(--ink);
+    pointer-events: none;
+  }
+
+  /* ---------------- Carteles (placas de señalética) ---------------- */
+  .hs.sign {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: max(2px, .3cqw);
+    width: max-content;
+    min-width: var(--sw, 12cqw);
+    max-width: max(26cqw, 150px);
+    padding: max(4px, .55cqw) max(6px, .7cqw);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-xs);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--e1), 0 .45cqw .8cqw rgba(0, 0, 0, .22);
+    text-align: center;
+    filter: none;
+  }
+  .hs.sign b {
+    display: block;
+    font: 700 max(11px, 1.35cqw)/1.15 var(--ui);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+  .hs.sign span {
+    display: block;
+    color: var(--ink-2);
+    font: 500 max(10.5px, 1.15cqw)/1.2 var(--ui);
+    overflow-wrap: anywhere;
+  }
+  .hs.sign span.sub-emoji {
+    color: inherit;
+    font-family: var(--emoji);
+    font-size: max(22px, 3.6cqw);
+    line-height: 1;
+  }
+
+  /* Etiqueta pegada a un objeto (p. ej. «DNI», «CERRADO») */
+  .hs-tag {
+    display: block;
+    width: max-content;
+    margin: .3cqw auto 0;
+    padding: .2em .45em;
+    border-radius: var(--r-xs);
+    background: rgba(20, 18, 16, .8);
+    color: #fff;
+    font: 800 max(10px, 1.1cqw)/1.1 var(--ui);
+    letter-spacing: .05em;
+    white-space: nowrap;
+  }
+
+  /* ---------------- Estados de la sala ---------------- */
+  /* Con un objeto en la mano: la sala lleva un marco de rotulador (estático) */
+  #sceneBox.using .scene-wrap {
+    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), 0 0 0 3px var(--marker), var(--e2);
+  }
+  /* Trámite completado: la sala se apaga y deja de recibir toques */
+  #sceneBox.won .scene { filter: saturate(.4) brightness(.92); transition: filter .4s var(--ease-std); }
+  #sceneBox.won .hs { pointer-events: none; }
+
+  /* ---------------- Colores forzados ---------------- */
+  @media (forced-colors: active) {
+    .hs:focus-visible, .hs:hover { outline: 2px solid Highlight; outline-offset: 2px; box-shadow: none; }
+    .hs.sign { border-color: CanvasText; }
+    .hs::after { forced-color-adjust: none; }
+    #sceneBox.using .scene-wrap { outline: 3px solid Highlight; }
+  }
+}

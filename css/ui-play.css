@@ -1,1 +1,1355 @@
-/* Vacío: lo rellena su paquete (ver spec de rediseño) */
+/* ==========================================================
+   VUELVA USTED MAÑANA — Juego: barra superior y mesa de trabajo
+   Barra superior (todas las pantallas), maquetación del juego en cada
+   formato, objetivo, barra de la sala (plano, flechas, «Usando», Lupa),
+   sello de trámite completado, ventanilla (diálogo) y bandeja.
+   Formatos (spec §6):
+     · apilado ............ por defecto (vertical, tabletas, ventanas pequeñas)
+     · apilado con plano .. (max-width:760px) and (orientation:portrait): sala desplazable
+     · horizontal ......... (orientation:landscape) and (max-height:520px): HUD a la derecha
+     · escritorio ......... (min-width:1024px) and (min-height:521px): HUD de 340 px
+   El juego nunca desplaza la página. Todo vive en @layer play;
+   las animaciones llevan el prefijo play-.
+   ========================================================== */
+
+@layer play {
+
+  /* ======================================================
+     1. BARRA SUPERIOR
+     ====================================================== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: calc(48px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) max(8px, env(safe-area-inset-right, 0px)) 0 max(8px, env(safe-area-inset-left, 0px));
+    border-bottom: 1px solid var(--line);
+    background: var(--canvas);
+    color: var(--ink);
+  }
+  /* Filete del Estado: la única franja institucional de la casa */
+  .topbar::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red) 0 25%, var(--marker) 25% 75%, var(--red) 75%);
+    pointer-events: none;
+  }
+  @supports ((-webkit-backdrop-filter: blur(12px)) or (backdrop-filter: blur(12px))) {
+    .topbar {
+      background: color-mix(in srgb, var(--canvas) 86%, transparent);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+  }
+  .topbar .tb { flex: none; }
+
+  /* Volver (pantallas de papel) */
+  .tb-back { padding: 0 12px 0 8px; color: var(--ink); }
+  .topbar .tb-back .tb-l {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: nowrap;
+  }
+
+  /* Marca: sello + «Vuelva usted mañana» */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin-right: auto;
+    padding-left: 4px;
+  }
+  .brand .seal-mini { width: 22px; height: 22px; color: var(--red); }
+  .wm-sm {
+    overflow: hidden;
+    color: var(--ink);
+    font: 700 15px/1 var(--ui);
+    letter-spacing: -.01em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .wm-m {
+    margin-left: .1em;
+    color: var(--red);
+    font: 400 18px/1 var(--stamp-f);
+    letter-spacing: 0;
+  }
+
+  /* Datos de la partida */
+  .game-info { display: none; align-items: center; gap: 6px; min-width: 0; flex: none; }
+  .season-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: var(--r-xs);
+    background: var(--accent);
+    color: var(--on-accent);
+    font: 700 13px/1 var(--ui);
+    letter-spacing: .02em;
+    white-space: nowrap;
+  }
+  .lvl-count {
+    color: var(--ink-2);
+    font: 600 14px/1 var(--ui);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .lvl-title, .timer { display: none; }
+
+  /* Chip del objetivo: 32 px a la vista, 44 px de zona útil */
+  .obj-chip {
+    position: relative;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 32px;
+    padding: 0 12px 0 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    box-shadow: var(--e1);
+    color: var(--ink);
+    font: 500 13px/1.2 var(--ui);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-std), border-color var(--d-fast) var(--ease-std);
+  }
+  .obj-chip::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 44px;
+    translate: 0 -50%;
+  }
+  .obj-chip .ico { width: 18px; height: 18px; color: var(--accent); }
+  .obj-chip .obj-t { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .obj-chip[aria-expanded="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  @media (hover: hover) {
+    .obj-chip:hover { background: var(--sunken); }
+  }
+
+  /* Acciones */
+  .game-actions { display: flex; align-items: center; gap: 2px; flex: none; }
+
+  /* Pista: píldora de rotulador con contador «1/3» */
+  .tb-hint { isolation: isolate; padding: 0 12px; color: var(--ink); }
+  .tb-hint::before {
+    content: '';
+    position: absolute;
+    inset: 5px 0;
+    z-index: -1;
+    border: 1px solid rgba(26, 24, 20, .18);
+    border-radius: var(--r-pill);
+    background: var(--marker-soft);
+    transition: background-color var(--d-fast) var(--ease-std);
+  }
+  .tb-hint.used::before { border: 1.5px solid var(--marker); box-shadow: inset 0 0 0 1px rgba(26, 24, 20, .1); }
+  @media (hover: hover) {
+    .topbar .tb-hint:hover { background: transparent; }
+    .tb-hint:hover::before { background: var(--marker); }
+  }
+  .tb-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: #fff;
+    font: 700 12px/1 var(--ui);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .02em;
+  }
+  /* Etiqueta «Pista» visible desde 361 px */
+  @media (min-width: 361px) {
+    .topbar .tb-hint .tb-l {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip-path: none;
+      font: 600 var(--fs-sm)/1 var(--ui);
+    }
+  }
+
+  /* Sonido: activado / silenciado (el motor cambia el icono) */
+  #btnMute[aria-pressed="true"] { color: var(--ink-3); }
+
+  /* Café en la barra (horizontal: icono; escritorio: con etiqueta) */
+  .topbar .kofi-chip { border-color: transparent; background: transparent; box-shadow: none; padding: 0 6px; }
+  .topbar .kofi-chip .kofi-cup { width: 30px; height: 30px; font-size: 17px; }
+  @media (hover: hover) {
+    .topbar .kofi-chip:hover { background: var(--sunken); }
+  }
+
+  /* --- Pantallas de papel: volver + marca + sonido --- */
+  .topbar:not(.in-game) :is(.game-info, .obj-chip) { display: none; }
+  .topbar:not(.in-game) .game-actions { margin-left: auto; }
+  .topbar:not(.in-game) .game-actions > :not(#btnMute) { display: none; }
+  @media (max-width: 380px) {
+    .topbar .tb-back .tb-l {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .tb-back { padding: 0; }
+  }
+  @media (max-width: 340px) {
+    .brand .seal-mini { display: none; }
+  }
+
+  /* --- En juego (vertical y por defecto): [T3 6/10] [🎯 objetivo…] [💡 Pista] [📂] --- */
+  .topbar.in-game .brand { display: none; }
+  .topbar.in-game .game-info { display: flex; }
+  .topbar.in-game .obj-chip { display: flex; margin-inline: 4px; }
+  .topbar.in-game :is(#btnSave, #btnHelp2, #btnMute, #kofiPlay) { display: none; }
+
+  /* ======================================================
+     2. PÁGINA DE JUEGO: una pantalla fija, sin desplazamiento
+     ====================================================== */
+  html[data-screen="play"] { overscroll-behavior: none; }
+  body[data-screen="play"] {
+    /* Medidas compartidas (la bandeja y el aviso las leen) */
+    --trayH: calc(76px + env(safe-area-inset-bottom, 0px));
+    --dlgH: clamp(84px, 16vh, 132px);
+    --dlgMax: 220px;
+    --barH: 40px;
+    --sceneMin: 200px;
+    --sceneMax: calc((100vw - 2 * var(--gutter)) * 9 / 16);
+    --hudW: 0px;
+    --toast-x: 50%;
+    --toast-bottom: calc(var(--trayH) + 8px + var(--cc-h, 0px));
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-auto-rows: 0;
+  }
+  @supports (height: 1dvh) {
+    body[data-screen="play"] { --dlgH: clamp(84px, 16dvh, 132px); }
+  }
+  /* Con un modal abierto la sala se congela (el teclado no la reordena) */
+  body.room-frozen[data-screen="play"] { height: var(--freezeH, 100dvh); }
+  /* Con el aviso de cookies a la vista, el juego termina encima de él */
+  body.cc-open[data-screen="play"] { height: calc(100vh - var(--cc-h, 0px)); height: calc(100dvh - var(--cc-h, 0px)); --sceneMin: 72px; }
+  body[data-screen="play"] > #topbar { grid-row: 1; }
+  body[data-screen="play"] > #main { grid-row: 2; }
+  body[data-screen="play"] :is(.site-footer, #kofiFloat) { display: none; }
+
+  body[data-screen="play"] #main {
+    min-height: 0;
+    padding: 6px max(var(--gutter), env(safe-area-inset-right, 0px)) 0 max(var(--gutter), env(safe-area-inset-left, 0px));
+  }
+  #screen-play { height: 100%; min-height: 0; }
+
+  /* --- Apilado (por defecto): objetivo / sala / barra / ventanilla / bandeja abajo --- */
+  .stage {
+    --gap: 6px;
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--gap);
+    grid-template-areas: "obj" "scene" "bar" "dialog" "tray";
+    /* La sala manda: crece hasta su máximo y la ventanilla se queda con lo que sobra (hasta 220 px) */
+    grid-template-rows:
+      auto
+      minmax(var(--sceneMin), var(--sceneMax))
+      var(--barH)
+      minmax(var(--dlgH), max(var(--dlgH), min(var(--dlgMax), calc(100% - var(--sceneMax) - var(--barH) - var(--trayH) - 4 * var(--gap) - 46px))))
+      minmax(var(--trayH), 1fr);
+  }
+
+  /* ======================================================
+     3. SALA
+     ====================================================== */
+  .scene-box {
+    grid-area: scene;
+    position: relative;
+    container-type: size;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Marco de la lámina: separa las paredes claras del lienzo */
+  .scene-wrap {
+    position: relative;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    background: var(--ink);
+    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), var(--e2);
+  }
+  .scene {
+    height: 100cqh;
+    width: calc(100cqh * 16 / 9);
+    max-width: none;
+    aspect-ratio: auto;
+    margin-inline: auto;
+  }
+  @supports not (height: 1cqh) {
+    .scene { height: clamp(200px, calc(100dvh - var(--topH, 48px) - 324px), var(--sceneMax)); }
+  }
+
+  /* Sombras de borde: queda sala a un lado */
+  .scene-box::before, .scene-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    width: 24px;
+    pointer-events: none;
+    transition: opacity var(--d-fast) var(--ease-std);
+  }
+  .scene-box::before {
+    left: 0;
+    border-radius: var(--r-lg) 0 0 var(--r-lg);
+    background: linear-gradient(to right, rgba(20, 18, 16, .42), rgba(20, 18, 16, 0));
+    opacity: var(--fadeL, 0);
+  }
+  .scene-box::after {
+    right: 0;
+    border-radius: 0 var(--r-lg) var(--r-lg) 0;
+    background: linear-gradient(to left, rgba(20, 18, 16, .42), rgba(20, 18, 16, 0));
+    opacity: var(--fadeR, 0);
+  }
+
+  /* Ficha del objetivo sobre la sala */
+  .obj-slip {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 9;
+    max-width: min(calc(100% - 16px), 440px);
+    padding: 10px 14px 2px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--e3);
+    animation: k-fade-up var(--d-fast) var(--ease-out);
+  }
+  .obj-k {
+    display: block;
+    color: var(--ink-3);
+    font: 600 var(--fs-cap)/1.3 var(--ui);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .obj-slip p { margin: 2px 0 0; color: var(--ink); font: 500 15px/1.45 var(--ui); text-wrap: pretty; }
+  .obj-slip .linklike {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ink-2);
+    font: 600 var(--fs-sm)/1.2 var(--ui);
+  }
+
+  /* Sello «TRÁMITE COMPLETADO» en el centro de la sala */
+  .won-stamp {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    z-index: 8;
+    translate: -50% -50%;
+    font-size: clamp(22px, 7.5cqw, 64px);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    mix-blend-mode: normal;
+    opacity: .95;
+    box-shadow: 0 6px 18px rgba(26, 24, 20, .18);
+  }
+  #sceneBox.won { animation: play-thud 160ms var(--ease-out) 231ms 1 both; }
+  @keyframes play-thud {
+    0%, 100% { translate: 0 0; }
+    35% { translate: 0 3px; }
+    70% { translate: 0 -2px; }
+  }
+  /* «Continuar ▶» bajo el sello (solo táctil; el motor lo muestra u oculta) */
+  .won-cta {
+    position: absolute;
+    left: 50%;
+    top: 62%;
+    z-index: 9;
+    translate: -50% 0;
+    box-shadow: var(--e3);
+    animation: play-cta-in var(--d-base) var(--ease-out) 520ms both;
+  }
+  @keyframes play-cta-in {
+    from { opacity: 0; translate: -50% 6px; }
+    to { opacity: 1; translate: -50% 0; }
+  }
+  /* Con el trámite ganado, la barra de la sala se aparta */
+  #sceneBox.won + #roomBar { visibility: hidden; }
+
+  /* ======================================================
+     4. OBJETIVO (panel: escritorio y apilado ancho)
+     ====================================================== */
+  .objective {
+    grid-area: obj;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 0;
+    min-height: 40px;
+    padding: 7px 14px 8px 12px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--e1);
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-std);
+  }
+  .objective .obj-t {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font: 500 14px/1.4 var(--ui);
+    text-wrap: pretty;
+  }
+  .objective[aria-expanded="true"] { border-color: var(--line-strong); border-left-color: var(--accent); }
+  .objective[aria-expanded="true"] .obj-t { display: block; -webkit-line-clamp: unset; line-clamp: none; overflow: visible; }
+  @media (hover: hover) {
+    .objective:hover { background: var(--paper); }
+  }
+  /* Destello al empezar o recuperar el trámite: color fijo 1,2 s; con movimiento, se desvanece */
+  .obj-chip.flash, .objective.flash { background: var(--marker-soft); }
+  @media (prefers-reduced-motion: no-preference) {
+    .obj-chip.flash, .objective.flash { animation: play-flash 1200ms var(--ease-out) both; }
+  }
+  @keyframes play-flash {
+    0%, 55% { background-color: var(--marker-soft); }
+    100% { background-color: var(--surface); }
+  }
+
+  /* ======================================================
+     5. BARRA DE LA SALA: ‹ plano › 🔍 · «Usando…» · Lupa
+     ====================================================== */
+  .room-bar {
+    grid-area: bar;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "l mid r lupa";
+    align-items: center;
+    column-gap: 6px;
+    min-width: 0;
+    height: var(--barH);
+  }
+  .pan-l { grid-area: l; }
+  .pan-r { grid-area: r; }
+  .plano, .pan-hint, .use-chip { grid-area: mid; }
+  .lupa-btn { grid-area: lupa; }
+
+  .pan, .lupa-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    min-width: 48px;
+    padding: 0 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--e1);
+    color: var(--ink);
+    font: 600 var(--fs-sm)/1 var(--ui);
+    cursor: pointer;
+    transition: background-color var(--d-fast) var(--ease-std), scale var(--d-press) var(--ease-out);
+  }
+  .pan { padding: 0; }
+  /* Zona útil de 44 px de alto */
+  .pan::before, .lupa-btn::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 44px;
+    translate: 0 -50%;
+  }
+  .pan:active:not(:disabled), .lupa-btn:active { scale: .96; }
+  @media (hover: hover) {
+    .pan:hover:not(:disabled), .lupa-btn:hover { background: var(--sunken); }
+  }
+  .pan:disabled {
+    border-style: dashed;
+    background: var(--sunken);
+    box-shadow: none;
+    color: var(--ink-3);
+    cursor: default;
+  }
+  /* Objetos al otro lado: insignia con el número */
+  .pan[data-count]::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -7px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: var(--r-pill);
+    background: var(--marker);
+    box-shadow: 0 0 0 1.5px var(--canvas), 0 0 0 2.5px rgba(26, 24, 20, .25);
+    color: var(--ink);
+    font: 800 12px/18px var(--ui);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+  /* Algo nuevo apareció a ese lado: dos pulsos del rotulador */
+  .pan.ping { animation: play-ping 700ms var(--ease-out) 2; }
+  @keyframes play-ping {
+    0% { box-shadow: 0 0 0 0 rgba(255, 216, 77, .95), var(--e1); }
+    100% { box-shadow: 0 0 0 10px rgba(255, 216, 77, 0), var(--e1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pan.ping { box-shadow: 0 0 0 3px var(--marker), var(--e1); }
+  }
+
+  /* Plano: dónde estás dentro de la sala (tocarlo salta a ese punto) */
+  .plano {
+    position: relative;
+    height: 40px;
+    min-width: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .plano::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 6px;
+    translate: 0 -50%;
+    border-radius: 3px;
+    background: repeating-linear-gradient(90deg, var(--line-strong) 0 1px, transparent 1px 10%), var(--sunken);
+    box-shadow: inset 0 1px 1px rgba(26, 24, 20, .08);
+  }
+  .plano-thumb {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: var(--thumbW, 50%);
+    height: 8px;
+    margin-top: -4px;
+    border-radius: 4px;
+    background: var(--ink);
+    translate: var(--thumbX, 0%) 0;
+  }
+  .pan-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    height: 40px;
+    margin: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    font: 600 13px/1.2 var(--ui);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+  .room-bar.hinting .plano { visibility: hidden; }
+  .room-bar[data-pan="off"] :is(.pan, .plano, .pan-hint) { display: none; }
+
+  /* «Usando: 🪪 DNI nuevo ✕» sustituye al plano (nunca tapa la sala) */
+  .room-bar.using :is(.plano, .pan-hint) { display: none; }
+  .use-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    height: 40px;
+    padding: 0 0 0 14px;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--r-pill);
+    background: var(--marker);
+    color: var(--ink);
+    font: 600 13px/1.2 var(--ui);
+    white-space: nowrap;
+    animation: k-pop var(--d-fast) var(--ease-out);
+  }
+  .use-k { flex: none; font-weight: 700; }
+  .use-k::after { content: ':'; }
+  .use-i { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .use-drop {
+    position: relative;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 37px;
+    height: 37px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .use-drop::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    translate: -50% -50%;
+  }
+  .use-drop .ico { width: 18px; height: 18px; stroke-width: 2.2; }
+  @media (hover: hover) {
+    .use-drop:hover { background: rgba(26, 24, 20, .1); }
+  }
+
+  /* Lupa */
+  .lupa-btn[aria-pressed="true"] { border-color: var(--ink); background: var(--marker); }
+
+  /* ======================================================
+     6. VENTANILLA (diálogo)
+     ====================================================== */
+  #dialog {
+    grid-area: dialog;
+    container: dlg / size;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "head tool" "body body" "act act" "fin fin";
+    min-width: 0;
+    min-height: 0;
+    padding: 10px 14px 12px 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--line-strong);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+  }
+  #dialog[data-skin="speech"] { border-left-color: var(--accent); }
+  #dialog[data-skin="narration"] { border-left-color: color-mix(in srgb, var(--accent) 45%, var(--paper)); background: var(--paper); }
+  #dialog[data-skin="item"] { border-left-color: var(--ink-2); background: var(--sunken); }
+  #dialog[data-skin="system"] { border-left-color: var(--marker); }
+
+  /* Mensaje nuevo: entra desde abajo y el filete destella de rotulador al color de la piel */
+  #dialog.fresh { animation: play-dlg-flash 400ms var(--ease-out); }
+  #dialog.fresh .dlg-body { animation: k-fade-up var(--d-fast) var(--ease-out); }
+  @keyframes play-dlg-flash {
+    from { border-left-color: var(--marker); }
+  }
+
+  /* Cabecera: cara + quién habla + ‹ › si está fuera de la vista + registro */
+  .dlg-head {
+    grid-area: head;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    min-height: 32px;
+    padding-right: 38px;
+    pointer-events: none;
+  }
+  .dlg-face {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--sunken);
+    font: 20px/1 var(--emoji);
+  }
+  .dlg-who {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    font: 600 13px/1.25 var(--ui);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .dlg-face:empty, .dlg-who:empty, .dlg-side:empty { display: none; }
+  #dialog[data-skin="speech"] .dlg-who::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 6px 2px 0;
+    border-radius: 50%;
+    background: var(--accent);
+    vertical-align: middle;
+  }
+  #dialog[data-skin="narration"] .dlg-face { border-radius: var(--r-sm); background: var(--sunken); }
+  #dialog[data-skin="narration"] .dlg-who {
+    color: var(--ink-3);
+    font: 600 var(--fs-cap)/1.3 var(--ui);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  #dialog[data-skin="item"] .dlg-face { background: var(--surface); }
+  /* «Seleccionado» mientras el objeto sigue en la mano */
+  .stage:has(#inventory.has-sel) #dialog[data-skin="item"] .dlg-who::after {
+    content: 'Seleccionado' / '';
+    display: inline-block;
+    margin-left: 8px;
+    padding: 3px 8px;
+    border-radius: var(--r-pill);
+    background: var(--marker);
+    color: var(--ink);
+    font: 700 12px/1 var(--ui);
+    vertical-align: 1px;
+  }
+  .stage:not(:has(#inventory.has-sel)) .dlg-use { display: none; }
+  .dlg-side {
+    flex: none;
+    color: var(--accent);
+    font: 800 20px/1 var(--ui);
+  }
+
+  /* Registro de entrada: icono de 44 px en la esquina */
+  .dlg-log {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 0 var(--r-lg) 0 var(--r-md);
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background-color var(--d-fast) var(--ease-std), color var(--d-fast) var(--ease-std);
+  }
+  @media (hover: hover) {
+    .dlg-log:hover { background: var(--sunken); color: var(--ink); }
+  }
+
+  /* Texto: 16/24, con desplazamiento propio y degradado si no cabe */
+  .dlg-body {
+    grid-area: body;
+    min-width: 0;
+    min-height: 0;
+    margin-top: 6px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+    color: var(--ink);
+    font: 400 16px/1.5 var(--ui);
+    overflow-wrap: break-word;
+  }
+  .dlg-body:empty { display: none; }
+  .dlg-body > :first-child { margin-top: 0; }
+  .dlg-body > :last-child { margin-bottom: 0; }
+  .dlg-body p { margin: .4em 0; }
+  #dialog.overflows .dlg-body {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+    padding-bottom: 14px;
+  }
+  /* Después de describir un objeto: cómo usarlo */
+  .dlg-body .dlg-use {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 8px 0 0;
+    padding: 5px 10px;
+    border-radius: var(--r-md);
+    background: var(--marker-soft);
+    color: var(--ink-2);
+    font: 500 14px/1.4 var(--ui);
+  }
+  /* En reposo: el objetivo o el consejo, sin cursiva */
+  .dlg-idle {
+    grid-area: body;
+    margin: 6px 0 0;
+    color: var(--ink-2);
+    font: 400 15px/1.45 var(--ui);
+    font-style: normal;
+    text-wrap: pretty;
+  }
+  #dialog[data-skin="idle"] .dlg-head { min-height: 0; }
+  #dialog[data-skin="idle"] .dlg-idle { grid-row: 1 / 3; grid-column: 1 / -1; align-self: start; margin-top: 2px; padding-right: 36px; overflow-y: auto; max-height: 100%; }
+
+  /* Cola de mensajes: «Saltar» + «Siguiente · 1/3» abajo a la derecha */
+  .dlg-actions {
+    grid-area: act;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .dlg-actions .btn { position: relative; }
+  .dlg-skip { padding: 0 10px; font-size: 15px; }
+  .dlg-continue {
+    min-height: 44px;
+    padding: 0 18px;
+    border-color: var(--ink);
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: #fff;
+    font: 600 15px/1 var(--ui);
+    white-space: nowrap;
+    /* Un empujoncito (2 veces) cada vez que empieza una cola */
+    animation: play-nudge 340ms var(--ease-std) 2;
+  }
+  @media (hover: hover) {
+    .dlg-continue:hover { background: #2E2A24; border-color: #2E2A24; }
+  }
+  .dlg-count { color: #E9E4DA; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .dlg-count:empty { display: none; }
+  /* Tocar la sala o la bandeja con mensajes pendientes: otro empujoncito */
+  #btnNextMsg.nudge { animation: play-nudge-again 340ms var(--ease-std) 2; }
+  @keyframes play-nudge {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 4px 0; }
+  }
+  @keyframes play-nudge-again {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 4px 0; }
+  }
+  .dlg-finish { grid-area: fin; width: 100%; margin-top: 8px; }
+
+  /* Ventanilla baja (móviles con poca altura): cabecera de 26 px y la cola dentro de ella */
+  @container dlg (max-height: 159px) {
+    .dlg-head { min-height: 26px; gap: 6px; padding-right: 30px; }
+    .dlg-face { width: 24px; height: 24px; font-size: 15px; }
+    .dlg-who { font-size: 12px; }
+    .dlg-side { font-size: 17px; }
+    .dlg-log { width: 36px; height: 36px; border-radius: 0 var(--r-lg) 0 var(--r-sm); }
+    .dlg-log::before { content: ''; position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; translate: -50% -50%; }
+    .dlg-body { margin-top: 4px; }
+    .dlg-actions { grid-area: tool; margin: 0 0 0 6px; gap: 2px; align-self: center; }
+    .dlg-actions .btn { --btn-h: 30px; min-height: 30px; }
+    .dlg-actions .btn::before { content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: 44px; translate: -50% -50%; }
+    .dlg-skip { padding: 0 8px; font-size: 13px; }
+    .dlg-continue { padding: 0 12px; font-size: 13px; }
+    #dialog.queued .dlg-log { display: none; }
+    #dialog.queued .dlg-head { padding-right: 0; }
+    .dlg-finish { --btn-h: 44px; min-height: 44px; margin-top: 6px; }
+  }
+  @media (max-width: 360px) {
+    .dlg-body { font-size: 15px; line-height: 1.45; }
+  }
+
+  /* ======================================================
+     7. BANDEJA
+     ====================================================== */
+  #tray {
+    grid-area: tray;
+    align-self: end;
+    min-width: 0;
+    min-height: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  /* En vertical el título solo lo leen los lectores (el número va en #invCount) */
+  .inv-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .inv-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 76px;
+    min-width: 0;
+  }
+  .inventory {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    height: 100%;
+    padding: 4px 2px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 2px;
+    scrollbar-width: none;
+  }
+  .inventory::-webkit-scrollbar { display: none; }
+  /* Bandeja desbordada (ui-fx marca los lados con más objetos) */
+  #tray.ovf-r .inventory {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  }
+  #tray.ovf-l .inventory {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 28px);
+    mask-image: linear-gradient(to right, transparent, #000 28px);
+  }
+  #tray.ovf-l.ovf-r .inventory {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  }
+
+  /* Casilla: 4,6 por fila para que siempre asome la siguiente */
+  .slot {
+    position: relative;
+    flex: 0 0 clamp(48px, calc((100% - 4 * 6px) / 4.6), 96px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+    height: 68px;
+    padding: 5px 4px 4px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--e1);
+    color: var(--ink);
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: translate var(--d-fast) var(--ease-out), background-color var(--d-fast) var(--ease-std), box-shadow var(--d-fast) var(--ease-std), border-color var(--d-fast) var(--ease-std);
+  }
+  .slot-emoji { flex: none; font: 26px/1 var(--emoji); }
+  .slot-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    max-width: 100%;
+    overflow: hidden;
+    font: 500 12px/1.2 var(--ui);
+    text-align: center;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    overflow-wrap: anywhere;
+  }
+  @media (hover: hover) {
+    .slot:not(.empty):not(.sel):hover { border-color: var(--line-strong); box-shadow: var(--e2); translate: 0 -1px; }
+  }
+  .slot:not(.empty):active { scale: .97; }
+  /* En la mano: anillo de tinta, rotulador y un poco levantada */
+  .slot.sel {
+    translate: 0 -3px;
+    border-color: var(--ink);
+    background: var(--marker-soft);
+    box-shadow: 0 0 0 1px var(--ink), var(--e2);
+  }
+  /* Con un objeto en la mano, los demás llevan «+» (se pueden combinar) */
+  .inventory.has-sel .slot:not(.sel):not(.empty)::after {
+    content: '+';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font: 700 14px/1 var(--ui);
+    pointer-events: none;
+  }
+  /* Recién llegado: «Nuevo» hasta que lo tocas */
+  .slot.is-new::before {
+    content: 'Nuevo';
+    position: absolute;
+    top: -3px;
+    right: -1px;
+    padding: 2px 5px;
+    border-radius: var(--r-pill);
+    background: var(--marker);
+    box-shadow: 0 0 0 1.5px var(--surface);
+    color: var(--ink);
+    font: 800 11px/1.1 var(--ui);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  /* Huecos vacíos: hundidos, sin trazos discontinuos */
+  .slot.empty {
+    border-color: transparent;
+    background: var(--sunken);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, .08);
+    cursor: default;
+  }
+  /* En la fila: solo un hueco, y solo si la bandeja está vacía */
+  .inventory .slot.empty { display: none; }
+  .inventory .inv-empty + .slot.empty { display: flex; order: -1; }
+  .inv-empty {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding-left: 4px;
+    color: var(--ink-3);
+    font: 500 13px/1.35 var(--ui);
+  }
+
+  /* «+3 ›»: quedan objetos fuera de la vista (lo rellena ui-fx) */
+  .tray-more {
+    position: relative;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 44px;
+    padding: 0 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    box-shadow: var(--e1);
+    color: var(--ink);
+    font: 700 13px/1 var(--ui);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .tray-more::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: max(100%, 44px);
+    height: 44px;
+    translate: -50% 0;
+  }
+  /* Café al final de la fila: 44 × 44 */
+  #kofiTray { flex: none; width: 44px; height: 44px; min-width: 44px; padding: 0; }
+
+  /* Colores forzados */
+  @media (forced-colors: active) {
+    .slot.sel { outline: 3px solid Highlight; }
+    .use-chip, .pan, .lupa-btn, .obj-chip, .objective, #dialog, .slot { border-color: CanvasText; }
+    .tb-hint::before { border-color: CanvasText; }
+    .plano-thumb { background: Highlight; forced-color-adjust: none; }
+  }
+
+  /* Aviso «Justificante» en vertical: justo encima de la bandeja */
+  body[data-screen="play"] { --toast-maxw: min(420px, calc(100vw - 32px)); }
+
+  /* ======================================================
+     8. APILADO CON PLANO: móviles en vertical (sala desplazable)
+     ====================================================== */
+  @media (max-width: 760px) and (orientation: portrait) {
+    body[data-screen="play"] {
+      /* La sala nunca mide más del doble de ancho que la pantalla */
+      --sceneMax: calc((100vw - 20px) * 1.125);
+    }
+    body[data-screen="play"] #main {
+      padding: 6px max(10px, env(safe-area-inset-right, 0px)) 0 max(10px, env(safe-area-inset-left, 0px));
+    }
+    .stage {
+      grid-template-areas: "scene" "bar" "dialog" "tray";
+      grid-template-rows:
+        minmax(var(--sceneMin), var(--sceneMax))
+        var(--barH)
+        minmax(var(--dlgH), max(var(--dlgH), min(var(--dlgMax), calc(100% - var(--sceneMax) - var(--barH) - var(--trayH) - 3 * var(--gap)))))
+        minmax(var(--trayH), 1fr);
+    }
+    .objective { display: none; }
+    .scene-wrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .scene-wrap::-webkit-scrollbar { display: none; }
+    .room-bar { grid-template-columns: 48px minmax(0, 1fr) 48px 48px; }
+    .lupa-btn { padding: 0; }
+    .lupa-btn .tb-l {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    /* «Usando…» ocupa el sitio del plano entre las flechas */
+    .room-bar[data-pan="off"] .use-chip { grid-column: 1 / 4; }
+  }
+
+  /* ======================================================
+     9. APILADO ANCHO (tableta en vertical, ventanas medianas):
+        sala entera, objetivo en panel, sin chip en la barra
+     ====================================================== */
+  @media not all and (max-width: 760px) and (orientation: portrait) {
+    .topbar.in-game .obj-chip { display: none; }
+    .objective { display: flex; }
+    .room-bar .use-chip { grid-column: 1 / 4; }
+  }
+
+  /* ======================================================
+     10. MÓVIL EN HORIZONTAL (≤ 520 px de alto): HUD a la derecha
+     ====================================================== */
+  @media (orientation: landscape) and (max-height: 520px) {
+    body[data-screen="play"] {
+      --hudW: clamp(208px, 30vw, 260px);
+      --hudR: max(8px, env(safe-area-inset-right, 0px));
+      /* El aviso, en la columna del HUD (nunca sobre la sala) */
+      --toast-x: calc(100vw - var(--hudR) - var(--hudW) / 2);
+      --toast-bottom: 40dvh;
+      --toast-maxw: calc(var(--hudW) - 8px);
+      grid-template-rows: 0 minmax(0, 1fr);
+    }
+    body.cc-open[data-screen="play"] { --toast-bottom: calc(40dvh + var(--cc-h, 0px)); }
+    /* La barra superior se recoge en la columna del HUD: fila 1 acciones, fila 2 objetivo */
+    .topbar.in-game {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: auto;
+      width: calc(var(--hudW) + var(--hudR) + 8px);
+      min-height: 0;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      row-gap: 2px;
+      column-gap: 2px;
+      padding: max(6px, env(safe-area-inset-top, 0px)) var(--hudR) 4px 8px;
+      border-bottom: 0;
+      background: var(--canvas);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .topbar.in-game .game-info { margin-right: auto; gap: 5px; }
+    .topbar.in-game .obj-chip { display: flex; order: 9; flex: 1 0 100%; margin: 0; }
+    .topbar.in-game #kofiPlay { display: inline-flex; }
+    .topbar.in-game .tb-hint .tb-l {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .topbar.in-game .tb-hint { padding: 0 9px; }
+
+    body[data-screen="play"] #main {
+      padding: 8px var(--hudR) max(8px, env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+    }
+    .stage {
+      grid-template-columns: minmax(0, 1fr) var(--hudW);
+      column-gap: 12px;
+      row-gap: 6px;
+      grid-template-areas: "scene ." "scene bar" "scene dialog" "scene tray";
+      grid-template-rows: max(0px, calc(var(--topH, 88px) - 10px)) auto minmax(120px, 1fr) minmax(0, auto);
+    }
+    .objective { display: none; }
+    .scene-box { grid-row: 1 / -1; align-items: flex-start; }
+    .scene { width: min(100cqw, 100cqh * 16 / 9); height: auto; aspect-ratio: 16 / 9; }
+
+    /* Barra de la sala: solo «Usando…» y la Lupa */
+    .room-bar { display: flex; gap: 8px; height: auto; }
+    .room-bar :is(.pan, .plano, .pan-hint) { display: none; }
+    .room-bar .use-chip { flex: 1 1 auto; }
+    .lupa-btn { margin-left: auto; }
+
+    .dlg-body { font-size: 15px; line-height: 1.45; }
+
+    /* Bandeja: cabecera visible y rejilla de 3 con desplazamiento propio */
+    #tray {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      max-height: 38dvh;
+      padding-bottom: 0;
+    }
+    .inv-row { flex: 1 1 auto; min-height: 0; height: auto; display: flex; flex-direction: column; align-items: stretch; }
+    .inventory {
+      flex: 1 1 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 58px;
+      align-content: start;
+      height: auto;
+      min-height: 0;
+      padding: 4px 2px 2px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scroll-snap-type: none;
+      scrollbar-width: thin;
+    }
+    .slot { height: auto; gap: 3px; padding: 4px 3px 3px; }
+    .slot-emoji { font-size: 22px; }
+    .inventory .slot.empty { display: flex; }
+    .inventory .inv-empty { grid-column: 1 / -1; padding: 2px 2px 4px; }
+    .inventory .inv-empty + .slot.empty { order: 0; }
+    .tray-more, #kofiTray { display: none; }
+  }
+
+  /* Título «Bandeja · 7» visible en horizontal y escritorio */
+  @media (orientation: landscape) and (max-height: 520px), (min-width: 1024px) and (min-height: 521px) {
+    .inv-title {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0 0 2px 2px;
+      overflow: visible;
+      clip-path: none;
+      color: var(--ink-3);
+      font: 600 var(--fs-cap)/1.3 var(--ui);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .inv-title #invCount { font-variant-numeric: tabular-nums; }
+  }
+
+  /* ======================================================
+     11. ESCRITORIO (≥ 1024 × ≥ 521): HUD de 340 px
+     ====================================================== */
+  @media (min-width: 1024px) and (min-height: 521px) {
+    .topbar { min-height: calc(56px + env(safe-area-inset-top, 0px)); gap: 6px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+    /* En juego: sello + T3 6/10 · título · ⏱ … acciones con etiqueta */
+    .topbar.in-game .brand { display: flex; flex: none; margin-right: 6px; padding-left: 0; }
+    .topbar.in-game .brand .wm-sm { display: none; }
+    .topbar.in-game .game-info { flex: 1 1 auto; gap: 10px; }
+    .topbar.in-game .lvl-title {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      color: var(--ink);
+      font: 600 15px/1.2 var(--ui);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .topbar.in-game .timer {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex: none;
+      padding-left: 10px;
+      border-left: 1px solid var(--line);
+      color: var(--ink-2);
+      font: 600 14px/1 var(--ui);
+      font-variant-numeric: tabular-nums;
+    }
+    .topbar.in-game .timer .ico { width: 18px; height: 18px; color: var(--ink-3); }
+    .topbar.in-game :is(#btnSave, #btnHelp2, #btnMute, #kofiPlay) { display: inline-flex; }
+    .topbar.in-game .game-actions { gap: 4px; }
+    .topbar.in-game .game-actions :is(.tb-hint, #kofiPlay, #btnSave, #btnHelp2, #btnMenu) .tb-l {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip-path: none;
+      font: 600 var(--fs-sm)/1 var(--ui);
+    }
+    .topbar.in-game .game-actions :is(#btnSave, #btnHelp2, #btnMenu) { padding: 0 12px; color: var(--ink); }
+    .topbar.in-game #kofiPlay { padding: 0 12px 0 6px; }
+    .topbar.in-game #btnMenu { border: 1px solid var(--line-strong); background: var(--surface); box-shadow: var(--e1); }
+    @media (hover: hover) {
+      .topbar.in-game #btnMenu:hover { background: var(--sunken); }
+    }
+
+    body[data-screen="play"] {
+      --toast-x: calc((100vw + min(100vw, 1480px)) / 2 - 24px - 170px);
+      --toast-bottom: 40dvh;
+      --toast-maxw: 332px;
+    }
+    body[data-screen="play"] #main { padding: 0; }
+    .stage {
+      max-width: 1480px;
+      margin-inline: auto;
+      padding: 24px;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      column-gap: 24px;
+      row-gap: 12px;
+      grid-template-areas: "scene obj" "scene bar" "scene dialog" "scene tray";
+      grid-template-rows: auto auto minmax(140px, 1fr) minmax(0, auto);
+    }
+    .scene-box { grid-row: 1 / -1; align-items: flex-start; }
+    .scene { width: min(100cqw, 100cqh * 16 / 9); height: auto; aspect-ratio: 16 / 9; }
+    .objective { display: flex; padding: 10px 16px 11px 14px; }
+
+    .room-bar { display: flex; gap: 8px; height: auto; }
+    .room-bar :is(.pan, .plano, .pan-hint) { display: none; }
+    .room-bar .use-chip { flex: 1 1 auto; }
+    .lupa-btn { margin-left: auto; }
+
+    /* La ventanilla no crece más de lo que se lee; la bandeja queda abajo, quieta */
+    #dialog { align-self: start; height: 100%; max-height: 320px; padding: 12px 16px 14px 14px; }
+
+    #tray {
+      align-self: end;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 0;
+    }
+    .stage #tray { max-height: calc((100dvh - var(--topH, 56px) - 48px) * .5); }
+    .inv-row { flex: 1 1 auto; min-height: 0; height: auto; display: flex; flex-direction: column; align-items: stretch; }
+    .inventory {
+      flex: 1 1 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 92px;
+      align-content: start;
+      gap: 8px;
+      height: auto;
+      min-height: 0;
+      padding: 4px 2px 2px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scroll-snap-type: none;
+      scrollbar-width: thin;
+    }
+    .slot { height: auto; gap: 6px; padding: 8px 6px 6px; }
+    .slot-emoji { font-size: 32px; }
+    .slot-name { font-size: 13px; }
+    .inventory .slot.empty { display: flex; }
+    .inventory .inv-empty { grid-column: 1 / -1; padding: 2px 2px 4px; }
+    .inventory .inv-empty + .slot.empty { order: 0; }
+    .tray-more, #kofiTray { display: none; }
+  }
+}
