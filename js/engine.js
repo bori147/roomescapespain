@@ -334,11 +334,12 @@
     else renderDialog();
   }
   function nextMsg() {
+    const inActs = actsFocused(); // antes de renderDialog: al ocultarse .dlg-actions el foco cae a <body>
     current = queue.shift() || null;
     if (current) { batchIdx++; pushLog(current, false); } else { batchIdx = 0; batchTotal = 0; }
     idleSecs = 0;
     renderDialog();
-    if (!queue.length) endKeyboardQueue();
+    if (!queue.length) endKeyboardQueue(inActs);
   }
   function clearQueue() {
     queue.forEach((m) => pushLog(m, true));
@@ -348,16 +349,30 @@
   // «Saltar»: salta a la última línea; las intermedias quedan «Sin leer» en el registro
   function skipQueue() {
     if (!queue.length) return;
+    const inActs = actsFocused();
     const last = queue.pop();
     queue.forEach((m) => pushLog(m, true));
     queue = [];
     current = last; pushLog(last, false);
     batchIdx = batchTotal;
     renderDialog();
-    endKeyboardQueue();
+    endKeyboardQueue(inActs);
   }
-  function endKeyboardQueue() {
-    if (!kbOrigin) return;
+  function actsFocused() {
+    const a = document.activeElement;
+    return !!(a && a.closest && a.closest('#dialog .dlg-actions'));
+  }
+  // Fin de cola: el foco nunca se queda en <body>. Con origen de teclado vuelve al objeto o casilla
+  // que la abrió; si no (cola abierta con ratón o dedo) y el foco estaba en «Siguiente»/«Saltar»,
+  // va al objeto que habla o al título de la sala.
+  function endKeyboardQueue(inActs) {
+    if (!kbOrigin) {
+      if (!inActs && !actsFocused()) return;
+      if (pendingWin && isFine()) { focusEl($('#btnFinish')); return; }
+      const src = current && current.srcId;
+      focusEl((src && visibleHs(src)) || $('#playTitle'));
+      return;
+    }
     const o = kbOrigin; kbOrigin = null;
     const a = document.activeElement;
     if (a && a !== document.body && !(a.closest && a.closest('#dialog'))) return; // el jugador ya está en otra parte
@@ -517,6 +532,8 @@
       else if (op.kind === 'slot') t = invNodes.get(op.id) || firstSlot();
       else if (op.el && op.el.isConnected && !op.el.disabled && !op.el.closest('[hidden]')) t = op.el;
     }
+    // Trámite ganado desde un botón de la temporada: el objeto que abrió el modal ya no admite toques
+    if (screen === 'play' && pendingWin && isFine() && !$('#btnFinish').hidden) t = $('#btnFinish');
     if (!t && screen === 'play') t = $('#playTitle');
     if (!t) { const a = document.activeElement; if (a && a !== document.body) return; t = $(HEADINGS[screen]); }
     focusEl(t);
@@ -1057,6 +1074,7 @@
     const w = $('#sceneWrap');
     if (!w) return;
     const max = w.scrollWidth - w.clientWidth;
+    panIntent = false; // un desplazamiento programado no cuenta como gesto del jugador
     w.scrollLeft = max > 0 ? max / 2 : 0;
     updatePan();
   }
@@ -1069,6 +1087,7 @@
   // Aviso «↔ Desliza la sala»: hasta que el jugador desplace la sala por su cuenta
   let hintT = null; let panIntent = false; let panStart = 0;
   function startPanHint() {
+    panIntent = false;
     if (!panOverflow() || meta.ui.panned) { hidePanHint(); return; }
     $('#panHint').hidden = false;
     $('#roomBar').classList.add('hinting');
@@ -1246,7 +1265,8 @@
       if (name === 'menu') { if (menuShown) $('#menuTitle').classList.add('played'); menuShown = true; }
       if (name !== 'play') { hidePanHint(); setObjOpen(false); }
       if (o.after) o.after();
-      if (booted) focusEl(o.focus || $(HEADINGS[name]));
+      const ft = typeof o.focus === 'function' ? o.focus() : o.focus;
+      if (booted) focusEl(ft || $(HEADINGS[name]));
       emit('screen', { name, prev });
     };
     const vt = booted && name !== prev && typeof document.startViewTransition === 'function' && !RM() && !document.hidden;
@@ -1420,7 +1440,7 @@
       endNext = () => startSeasonLevel(nxt.id, 1, false);
     } else {
       bn.textContent = '🔁 Repetir una temporada';
-      endNext = () => { goMenu(); focusSeasonList(); };
+      endNext = () => goMenu({ focus: () => $('#seasonList .season-card'), after: scrollSeasonList });
     }
     renderTasa($('#endDonate'));
     show('end', {
@@ -1523,10 +1543,12 @@
 
   // ---------------- Menú ----------------
   let heroAction = null;
-  function focusSeasonList() {
+  function scrollSeasonList() {
     const c = $('#seasonList .season-card');
-    if (c) { try { c.scrollIntoView({ block: 'center', behavior: RM() ? 'auto' : 'smooth' }); } catch (e) { /* nada */ } focusEl(c); }
+    if (c) { try { c.scrollIntoView({ block: 'center', behavior: RM() ? 'auto' : 'smooth' }); } catch (e) { /* nada */ } }
+    return c;
   }
+  function focusSeasonList() { const c = scrollSeasonList(); if (c) focusEl(c); }
   function shake(node) { node.classList.remove('shake'); void node.offsetWidth; node.classList.add('shake'); later(() => node.classList.remove('shake'), 450); }
 
   function renderMenu() {
@@ -1613,9 +1635,12 @@
     if (unlockedNow) { save(); if (booted) later(() => sfx('stamp'), RM() ? 0 : 531); }
   }
 
-  function goMenu() {
+  // goMenu({ focus, after }): destino del foco y tarea tras pintar; se pasan a show() porque con
+  // View Transitions apply() corre más tarde y enfocaría #menuTitle por encima.
+  function goMenu(o) {
+    const opt = o || {};
     renderMenu();
-    show('menu', { title: TITLE_MENU });
+    show('menu', { title: TITLE_MENU, focus: opt.focus, after: opt.after });
     needsGuard = false;
     if (guardArmed) {
       guardArmed = false;
@@ -1788,7 +1813,7 @@
       const idx = S.hintIdx; const total = hs.length;
       const nextIsSol = idx === total - 1;
       const shown = hs.slice(0, idx);
-      box.innerHTML = `<div class="turno-head${fresh >= 0 ? ' is-new' : ''}"><span class="turno-n">Turno A-${pad2(idx)}</span><span class="turno-c">${idx ? `Pista ${idx} de ${total}` : `${total} pistas disponibles`}</span><span class="pips" aria-hidden="true">${hs.map((_, i) => `<i class="${[i < idx && 'on', i === total - 1 && 'sol'].filter(Boolean).join(' ')}"></i>`).join('')}</span></div>
+      box.innerHTML = `<div class="turno-head${fresh >= 0 ? ' is-new' : ''}"><span class="turno-n">Turno A-${pad2(Math.min(idx + 1, total) || 1)}</span><span class="turno-c">${idx ? `Pista ${idx} de ${total}` : `${total} pistas disponibles`}</span><span class="pips" aria-hidden="true">${hs.map((_, i) => `<i class="${[i < idx && 'on', i === total - 1 && 'sol'].filter(Boolean).join(' ')}"></i>`).join('')}</span></div>
         <p class="turno-lead">Cada pista queda anotada en tu expediente y cuenta para tu categoría final.</p>
         ${shown.length ? `<ol class="hint-list">${shown.map((h, i) => `<li class="hint${i === total - 1 ? ' sol' : ''}${i === fresh ? ' is-new' : ''}"${i === fresh ? ' tabindex="-1"' : ''}><span class="hint-k">${i === total - 1 ? 'Solución' : `Pista ${i + 1}`}</span> ${h}</li>`).join('')}</ol>` : '<p class="hint-none">Aún no has pedido ninguna pista en este trámite.</p>'}
         ${idx < total ? `<div class="turno-actions"><button type="button" id="moreHint" class="btn${nextIsSol ? ' cost' : ''}" data-sys${nextIsSol ? ' aria-expanded="false" aria-controls="solConfirm"' : ''}>${nextIsSol ? '⚠ Ver la solución…' : `🎟️ Sacar número <small>(pista ${idx + 1} de ${total})</small>`}</button></div>
@@ -1958,7 +1983,10 @@
   }
 
   // ---------------- Botón «atrás» del sistema (guardia de historial) ----------------
-  let guardArmed = !!(history.state && history.state.vum);
+  // Tras recargar con la guardia como entrada actual, la guardia ya está puesta pero nadie la usó:
+  // el primer «atrás» en el menú la consumiría sin efecto visible, así que entonces se sigue atrás.
+  let bootGuard = !!(history.state && history.state.vum);
+  let guardArmed = bootGuard;
   let needsGuard = false;
   let ignoreNextPop = false;
   function armGuard() {
@@ -1967,13 +1995,15 @@
   }
   function onPopState() {
     guardArmed = false;
+    const stale = bootGuard; bootGuard = false;
     if (ignoreNextPop) { ignoreNextPop = false; return; }
     const C = window.Consent;
     if (C && typeof C.isOpen === 'function' && C.isOpen()) { try { C.close(); } catch (e) { /* nada */ } needsGuard = true; return; }
     if (!$('#modal').hidden) { closeModal('back'); needsGuard = true; return; }
     if (screen === 'play') { pauseModal(); needsGuard = true; return; }
     if (screen === 'intro' || screen === 'win') { openSeason(S ? S.season : (viewSeason || 1)); needsGuard = true; return; }
-    if (screen === 'season' || screen === 'end') { renderMenu(); show('menu', { title: TITLE_MENU }); needsGuard = false; }
+    if (screen === 'season' || screen === 'end') { renderMenu(); show('menu', { title: TITLE_MENU }); needsGuard = false; return; }
+    if (stale && screen === 'menu') { try { history.back(); } catch (e) { /* nada */ } }
   }
 
   // ---------------- Arranque ----------------
@@ -2046,7 +2076,13 @@
       try { wrap.scrollTo({ left, behavior: RM() ? 'auto' : 'smooth' }); } catch (x) { wrap.scrollLeft = left; }
     });
     $('#btnLupa').onclick = lupa;
-    $('#useDrop').onclick = () => { sfx('click'); setSelected(null); refresh(); };
+    $('#useDrop').onclick = () => {
+      sfx('click');
+      const id = selected;
+      setSelected(null); refresh();
+      // #useChip se oculta con el botón enfocado dentro: el foco vuelve a la casilla soltada
+      focusEl((id && invNodes.get(id)) || firstSlot() || $('#playTitle'));
+    };
     $('#scene').addEventListener('click', (e) => {
       if (e.target.closest('.hs')) return;
       const b = nearestHotspot(e.clientX, e.clientY);
