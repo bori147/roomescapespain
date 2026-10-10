@@ -254,6 +254,21 @@ function probePage(o) {
       const lines = db.clientHeight / lh;
       if (lines < 2.95) F.push(`la ventanilla (.dlg-body) solo enseña ${lines.toFixed(1)} líneas (${db.clientHeight}px con líneas de ${Math.round(lh)}px; mínimo 3)`);
     }
+    // 2c) Si el texto visible de la ventanilla (mensaje o reposo) no cabe, lo dice el degradado (#dialog.overflows)
+    const dlg = document.getElementById('dialog');
+    const vis = dlg && [...dlg.querySelectorAll('.dlg-body, .dlg-idle')].find((e) => !e.hidden && shown(e) && e.textContent.trim());
+    if (vis && vis.scrollHeight > vis.clientHeight + 2 && !dlg.classList.contains('overflows')) {
+      F.push(`la ventanilla (${short(vis)}) corta el texto sin degradado (${vis.clientHeight}/${vis.scrollHeight}px, sin #dialog.overflows)`);
+    }
+  }
+  // 2d) Hojas de puzle: las tiras de la trituradora caben enteras; el cuadro ancho avisa de que se desliza
+  for (const s of document.querySelectorAll('#modal .strips')) {
+    if (shown(s) && s.scrollWidth > s.clientWidth + 1) F.push(`las tiras (.strips) no caben: ${s.scrollWidth}px en ${s.clientWidth}px`);
+  }
+  for (const s of document.querySelectorAll('#modal .s5-scroll')) {
+    if (!shown(s) || !s.querySelector(':scope > .s5-bud') || s.scrollWidth <= s.clientWidth + 2 || s.scrollLeft > 0) continue;
+    const cue = s.previousElementSibling;
+    if (!s.classList.contains('more-r') || !cue || !cue.classList.contains('slide-cue') || !shown(cue)) F.push('el cuadro de créditos no cabe y no avisa de que se desliza (.more-r + .slide-cue)');
   }
 
   // 3) Pantallas de papel en el teléfono: el botón principal a la vista y sin tapar

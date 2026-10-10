@@ -74,6 +74,29 @@
     .cc-btn { flex: 1 1 0; min-width: 0; padding: 0 6px; }
   }
 
+  /* Móvil en vertical: hoja a sangre pegada al borde inferior. Una tarjeta flotante dejaba
+     ver el texto de la página por sus márgenes al desplazarse por detrás. */
+  @media (max-width: 599px) and (orientation: portrait) {
+    .cc-banner {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-width: none;
+      border-width: 1px 0 0;
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+      padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+      padding-left: max(12px, env(safe-area-inset-left, 0px));
+      padding-right: max(12px, env(safe-area-inset-right, 0px));
+    }
+  }
+  /* Móvil bajo (≤ 620 px): título y texto en un mismo párrafo, para dejar más página legible */
+  @media (max-width: 599px) and (max-height: 620px) and (orientation: portrait) {
+    .cc-banner { padding-top: 12px; }
+    .cc-title { display: inline; margin: 0 .35em 0 0; font-size: .875rem; line-height: 1.4; }
+    .cc-banner p { display: inline; font-size: .8125rem; line-height: 1.4; }
+    .cc-actions { margin-top: 10px; }
+  }
+
   /* Móvil en horizontal: una sola franja de unos 80 px */
   @media (orientation: landscape) and (max-height: 520px) {
     .cc-banner {

@@ -404,12 +404,24 @@
         ? 'Toca los objetos de la sala para examinarlos. Para usar algo de tu bandeja, tócalo y luego toca dónde usarlo.'
         : 'Haz clic en los objetos de la sala para examinarlos. Para usar algo de tu bandeja, selecciónalo y luego haz clic donde quieras usarlo.';
     }
-    return `🎯 ${goalOf(L)}`;
+    return `🎯 ${capFirst(goalOf(L))}`;
   }
   function updateIdle() {
     const e = $('#dlgIdle'); if (!e) return;
     const t = idleText();
-    if (e.textContent !== t) e.textContent = t;
+    if (e.textContent !== t) { e.textContent = t; raf(measureDlg); }
+  }
+  // ¿El texto visible de la ventanilla (mensaje o reposo) no cabe? → degradado inferior (.overflows)
+  function measureDlg() {
+    const d = $('#dialog'); if (!d) return;
+    const box = d.dataset.skin === 'idle' ? $('#dlgIdle') : $('#dlgMsg');
+    if (!box || box.hidden || !box.getClientRects().length) { d.classList.remove('overflows'); return; }
+    // Alto real del texto (un Range no depende del relleno que añade el propio degradado ni del recorte)
+    let h = 0;
+    try { const r = document.createRange(); r.selectNodeContents(box); h = r.getBoundingClientRect().height; } catch (e) { h = 0; }
+    if (!(h > 0)) h = box.scrollHeight - (d.classList.contains('overflows') ? 14 : 0);
+    const room = box.clientHeight - (parseFloat(getComputedStyle(box).paddingTop) || 0);
+    d.classList.toggle('overflows', h > room + 1);
   }
   const useLine = () => `👉 ${tap(true)} algo de la sala para usarlo, o ${tap()} otro objeto para combinarlos.`;
 
@@ -438,7 +450,7 @@
     $('.dlg-count', d).textContent = queue.length ? `· ${batchIdx}/${batchTotal}` : '';
     d.classList.toggle('queued', !!queue.length);
     $('#btnFinish').hidden = !(pendingWin && !queue.length);
-    raf(() => { d.classList.toggle('overflows', msg.scrollHeight > msg.clientHeight + 1); });
+    raf(measureDlg);
     schedulePan();
   }
 
@@ -504,7 +516,11 @@
     const now = Date.now();
     const all = now - giveToast.at < 60 ? giveToast.ids.concat(ids.filter((id) => !giveToast.ids.includes(id))) : ids;
     giveToast = { ids: all, at: now };
-    toast(`<span class="toast-k">Añadido a tu bandeja</span><span class="toast-b">${all.map((id) => `${ITEMS[id].emoji} <b>${ITEMS[id].name}</b>`).join(' · ')}</span>`, 1800 + 400 * (all.length - 1));
+    // Como mucho tres nombres (+ «y N más»): en un móvil bajo el aviso tapa la bandeja y la ventanilla.
+    // El «·» va pegado al objeto anterior (nunca abre línea) y el emoji, a su nombre.
+    const shown = all.slice(0, all.length > 3 ? 2 : 3);
+    const more = all.length - shown.length;
+    toast(`<span class="toast-k">Añadido a tu bandeja</span><span class="toast-b">${shown.map((id) => `${ITEMS[id].emoji}\u00A0<b>${ITEMS[id].name}</b>`).join('\u00A0· ')}${more ? ` <span class="toast-more">y ${more}\u00A0más</span>` : ''}</span>`, 1800 + 400 * (Math.min(all.length, 4) - 1));
     announce(`Añadido a tu bandeja: ${all.map((id) => strip(ITEMS[id].name)).join(', ')}`);
   }
 
@@ -967,6 +983,9 @@
     return i >= 0 ? lv.intro.slice(i + OBJ_MARK.length).trim() : '';
   }
   const goalOf = (lv) => strip(goalHtmlOf(lv));
+  // El objetivo de las temporadas va en minúscula (se escribió para ir tras «Objetivo:»); en sus cajas propias
+  // se muestra con mayúscula inicial. Solo cambia la presentación: el texto de la temporada no se toca.
+  const capFirst = (s) => String(s || '').replace(/^((?:\s|<[^>]*>)*)(\p{Ll})/u, (m, a, b) => a + b.toUpperCase());
   function introBefore(lv) {
     const s = String(lv.intro || '');
     const i = s.indexOf(OBJ_MARK);
@@ -1004,7 +1023,7 @@
     $('#lvlTitle').textContent = plainTitle(L.title) || L.title;
     $('#timer').textContent = fmtTime(S.elapsed);
     syncMute(); syncHint();
-    const goal = goalOf(L);
+    const goal = capFirst(goalOf(L));
     for (const s of ['#objChipText', '#objText', '#objSlipText']) { const e = $(s); if (e && e.textContent !== goal) e.textContent = goal; }
   }
 
@@ -1357,7 +1376,7 @@
     $('#introStars').innerHTML = stars(L.stars) + (SEA.badge ? ` <span class="badge">${SEA.badge}</span>` : '');
     $('#introText').innerHTML = introBefore(L);
     const gh = goalHtmlOf(L);
-    $('#introObjText').innerHTML = gh;
+    $('#introObjText').innerHTML = capFirst(gh);
     $('#introObj').hidden = !gh;
     $('#introCarry').innerHTML = carryHtml(L, 'Traes contigo');
     show('intro', { title: `Trámite ${S.level}/${n}: «${plainTitle(L.title)}» — ${BRAND}` });
@@ -1388,7 +1407,7 @@
       focus: () => (rewin && pendingWin && isFine() && !$('#btnFinish').hidden ? $('#btnFinish') : null),
     });
     track('level_start', { season: S.season, level: S.level, level_id: `T${S.season}-N${S.level}`, title: L.title, resumed: !!resumed });
-    if (resumed && !rewin) say(`Expediente recuperado: «${plainTitle(L.title)}». 🎯 ${goalOf(L)}`, '💾 Partida cargada', { kind: 'system', srcId: null });
+    if (resumed && !rewin) say(`Expediente recuperado: «${plainTitle(L.title)}». 🎯 ${capFirst(goalOf(L))}`, '💾 Partida cargada', { kind: 'system', srcId: null });
   }
 
   function finishLevel() {
@@ -1432,7 +1451,8 @@
     const note = $('#winIosNote');
     note.hidden = !ios;
     if (ios) note.textContent = 'En iPhone, Safari puede archivar tu partida si pasas una semana sin jugar: guarda este código.';
-    $('#btnNext').textContent = `Siguiente: «${plainTitle(L.title) || L.title}» ▶`;
+    // «Siguiente ▶» arriba y el título debajo, en pequeño (como el botón de la portada): sin cortes raros
+    $('#btnNext').innerHTML = `Siguiente&nbsp;▶ <small>«${esc(plainTitle(L.title) || L.title)}»</small>`;
     const ws = $('#winStamp'); ws.classList.remove('go');
     show('win', {
       title: `Trámite ${done} completado — ${BRAND}`,
@@ -1595,7 +1615,7 @@
     const cont3 = (sid, sv) => {
       const sea = seasonById(sid); const lv = sea.levels[sv.level - 1];
       cont.innerHTML = `▶ Continuar <small>T${sea.id} · Trámite ${sv.level}: ${lv.title}</small>`;
-      goalP.textContent = `🎯 ${goalOf(lv)}`; goalP.hidden = !goalOf(lv);
+      goalP.textContent = `🎯 ${capFirst(goalOf(lv))}`; goalP.hidden = !goalOf(lv);
       heroAction = { leaves: true, run: () => continueGame(sid) };
     };
     const last = meta.last && readSave(meta.last);
@@ -1953,7 +1973,7 @@
     const row = (act, icon, label, value, cls, extra) => `<button type="button" class="sheet-row${cls ? ' ' + cls : ''}" id="pause${act}" data-act="${act}" data-sys${extra || ''}>${ico(icon)}<span class="sheet-l">${label}</span>${value != null ? `<span class="sheet-v">${value}</span>` : ''}</button>`;
     const card = modal({
       title: '⏸ Expediente en pausa', kind: 'system', cls: 'pause', sys: true, pauseClock: true, buttons: [],
-      html: `<div class="obj-box pause-obj"><span class="obj-stamp">OBJETIVO</span><p>${goalHtmlOf(L)}</p></div>
+      html: `<div class="obj-box pause-obj"><span class="obj-stamp">OBJETIVO</span><p>${capFirst(goalHtmlOf(L))}</p></div>
         <p class="pause-clock">⏱ <b>${fmtTime(S.elapsed)}</b> en esta temporada · T${S.season} · Trámite ${S.level} de ${SEA.levels.length}</p>
         <div class="sheet-rows">
           ${row('Resume', 'i-play', 'Seguir jugando', null, 'primary')}
@@ -2108,7 +2128,9 @@
       if (panIntent && !meta.ui.panned && Math.abs(wrap.scrollLeft - panStart) > 24) { meta.ui.panned = true; save(); }
     }, { passive: true });
     ['pointerdown', 'touchstart', 'wheel'].forEach((t) => wrap.addEventListener(t, panIntentStart, { passive: true }));
-    window.addEventListener('resize', () => { if (screen === 'play') schedulePan(); });
+    window.addEventListener('resize', () => { if (screen === 'play') { schedulePan(); raf(measureDlg); } });
+    // La ventanilla cambia de alto sin «resize» (se cierra el aviso de cookies, gira el móvil…)
+    if (typeof window.ResizeObserver === 'function') { try { new ResizeObserver(() => raf(measureDlg)).observe($('#dialog')); } catch (e) { /* nada */ } }
     $('#panL').onclick = () => { panIntentStart(); scrollRoom(-1); };
     $('#panR').onclick = () => { panIntentStart(); scrollRoom(1); };
     $('#plano').addEventListener('click', (e) => {

@@ -1073,6 +1073,7 @@
   }
   .toast-b { font: 500 .9375rem/1.4 var(--ui); text-wrap: balance; }
   .toast-b b { font-weight: 700; }
+  .toast-more { color: var(--ink-2); white-space: nowrap; }
   @media (forced-colors: active) {
     .toast { border: 2px solid CanvasText; }
   }

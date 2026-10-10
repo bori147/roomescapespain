@@ -302,8 +302,12 @@
     bottom: 10px;
     z-index: 4;
     width: 100%;
-    box-shadow: 0 0 0 10px var(--card-bg, var(--surface));
+    /* Banda opaca de borde a borde del cuerpo (12 px por encima, hasta el pie por debajo) con
+       un filete arriba: el formulario pasa por detrás y no asoman trozos de desplegables */
+    box-shadow: 0 12px 0 24px var(--card-bg, var(--surface)), 0 11px 0 24px var(--line-strong);
   }
+  /* Un desplegable enfocado con el teclado no se queda debajo del botón */
+  .modal-body:has(#sede > .btn.primary) { scroll-padding-bottom: 96px; }
 
   /* ---------------- Coalición ---------------- */
   .party-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
@@ -363,6 +367,7 @@
     container-type: inline-size;
     display: flex;
     justify-content: center;
+    justify-content: safe center; /* si algo no cabe, se puede desplazar hasta la primera tira */
     gap: 3px;
     margin: 14px 0;
     padding: 10px 0 8px;
@@ -387,6 +392,11 @@
   .strip.pick { transform: translateY(-8px) rotate(-1.5deg); outline: 3px dashed var(--marker); outline-offset: 2px; box-shadow: var(--e2); }
   .strip.solved { border-color: transparent; box-shadow: none; margin: 0 -1.5px; cursor: default; }
   .strips:has(.solved) { gap: 0; }
+  /* Móvil de 320 px: las seis tiras caben enteras (nada se recorta por los bordes) */
+  @container mbody (max-width: 340px) {
+    .strips { gap: 2px; }
+    .strip { padding-inline: 1px; }
+  }
 
   /* ---------------- Disco de cifrado ---------------- */
   /* Texto cifrado suelto: descripciones de objetos (code.cipher en S1, S4, S5) y oficio «Orden del día» (p.cipher, S5-N9) */
@@ -828,6 +838,30 @@
   }
   #modal .s5-bud th { font: 600 var(--fs-cap)/1.25 var(--ui); background: var(--sunken); }
   #modal .s5-bud .s5-stain input { width: 5.2em; min-height: 44px; font-size: max(16px, 1rem); padding: 6px 8px; border: 1.5px dashed #7A4E2A; }
+  /* Queda tabla a la derecha (ui-puzzles.js): el borde derecho se funde y un aviso lo dice */
+  #modal .s5-scroll.more-r:has(> .s5-bud) {
+    -webkit-mask-image: linear-gradient(to left, transparent, #000 36px);
+    mask-image: linear-gradient(to left, transparent, #000 36px);
+  }
+  #modal .slide-cue {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    margin: 10px 0 6px;
+    color: var(--ink-2);
+    font: 600 var(--fs-cap)/1.3 var(--ui);
+  }
+  #modal .slide-cue[hidden] { display: none; }
+  #modal .slide-cue.at-end { visibility: hidden; }
+  #modal .slide-cue span { font-size: 1.25em; line-height: 1; }
+  /* Móviles de 360–390 px: primera columna más estrecha, para que «Cap. 6» asome cortada
+     (con 8,5em el corte caía justo en el borde de «Cap. 2» y la tabla parecía completa).
+     En 320 y en 412 px la columna original ya deja una columna cortada a media celda. */
+  @container mbody (min-width: 300px) and (max-width: 370px) {
+    #modal .s5-bud { min-width: 0; }
+    #modal .s5-bud :is(th, td):first-child { width: 7em; min-width: 7em; max-width: 7em; hyphens: auto; }
+  }
 
   /* ---------------- Tablas → fichas (contenedor estrecho) ----------------
      ui-puzzles.js marca la tabla con .tbl-stack, la fila de cabecera con .tbl-head

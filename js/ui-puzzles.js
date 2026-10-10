@@ -66,6 +66,12 @@
         if (Object.prototype.hasOwnProperty.call(SHY, k)) n.nodeValue = n.nodeValue.replace(k, SHY[k]);
       });
     });
+    // Primera columna (estrecha en móvil) del cuadro de créditos S5-N3
+    $$('.s5-bud td:first-child', body).forEach((c) => {
+      Array.prototype.forEach.call(c.childNodes, (n) => {
+        if (n.nodeType === 3 && /\bAdministrativa\b/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace('Administrativa', 'Adminis­trativa');
+      });
+    });
   }
   function mountDefaults(body) {
     $$(TEXTISH, body).forEach((inp) => {
@@ -126,6 +132,36 @@
         });
       });
       t.classList.add('tbl-stack');
+    });
+  }
+
+  // ---------------- 1b. Tabla ancha que se desliza (S5-N3) ----------------
+  // El cuadro de créditos no cabe en un móvil: mientras quede algo a la derecha,
+  // el borde derecho se funde (.more-r) y un aviso «desliza la tabla →» lo dice.
+  const SLIDE = '.s5-scroll:has(> .s5-bud)';
+  function slideCue(body) {
+    let boxes = [];
+    try { boxes = $$(SLIDE, body); } catch (e) { boxes = $$('.s5-bud', body).map((t) => t.parentElement).filter((p) => p && p.classList.contains('s5-scroll')); }
+    boxes.forEach((box) => {
+      if (box._slide) return;
+      const cue = make('p', 'slide-cue', 'Hay más columnas: desliza la tabla <span aria-hidden="true">→</span>');
+      cue.hidden = true;
+      box.parentNode.insertBefore(cue, box);
+      const sync = () => {
+        if (!box.isConnected) return;
+        const fits = box.scrollWidth - box.clientWidth <= 2;
+        const more = !fits && box.scrollWidth - box.clientWidth - box.scrollLeft > 2;
+        if (box.classList.contains('more-r') !== more) box.classList.toggle('more-r', more);
+        if (cue.hidden !== fits) cue.hidden = fits;
+        // Al llegar al final el aviso se apaga pero conserva su sitio (la tabla no salta mientras se desliza)
+        if (cue.classList.contains('at-end') !== (!fits && !more)) cue.classList.toggle('at-end', !fits && !more);
+      };
+      box._slide = sync;
+      box.addEventListener('scroll', sync, { passive: true });
+      if (typeof window.ResizeObserver === 'function') {
+        try { const ro = new window.ResizeObserver(() => { if (!box.isConnected) ro.disconnect(); else sync(); }); ro.observe(box); } catch (e) { /* nada */ }
+      }
+      sync();
     });
   }
 
@@ -419,6 +455,7 @@
         softHyphens(body);
         lupa(card, body);
         fichas(body);
+        slideCue(body);
         teleprompter(body);
         cafe(body);
         syncStates(body);

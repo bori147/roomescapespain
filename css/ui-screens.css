@@ -1138,6 +1138,7 @@
       width: 100%;
       min-width: 0;
       margin: 0;
+      padding-block: 6px;
       padding-inline: 12px;
       font-size: var(--fs-md);
       line-height: 1.2;
@@ -1212,8 +1213,9 @@
     /* Los enlaces del menú dejan libre la columna de la taza: «Tengo un código» no queda debajo */
     body.cc-open[data-screen="menu"] .menu-links { padding-right: 56px; }
   }
-  /* Teléfono bajo (320×568, 375×553…): en el menú, siempre solo la taza y arrimada al borde */
-  @media (max-width: 599px) and (max-height: 620px) {
+  /* Teléfono (cualquier alto): en el menú, siempre solo la taza y arrimada al borde. La píldora
+     «¡Invítame a un café!» tapaba títulos y sellos de las tarjetas de temporada. */
+  @media (max-width: 599px) {
     body[data-screen="menu"] #kofiFloat {
       right: max(8px, env(safe-area-inset-right, 0px));
       width: 48px;

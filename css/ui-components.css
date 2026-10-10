@@ -296,10 +296,14 @@
     -webkit-user-select: all;
     font-variant-numeric: tabular-nums;
   }
-  .code-box .btn { --btn-h: 44px; padding: 0 16px; }
+  /* Icono y texto siempre en la misma línea («Enviármelo» no apila el icono encima) */
+  .code-box .btn { --btn-h: 44px; flex-wrap: nowrap; column-gap: 6px; padding: 0 16px; white-space: nowrap; }
   @media (max-width: 560px) {
     .code-box code { flex-basis: 100%; }
-    .code-box .btn { flex: 1 1 0; }
+    .code-box .btn { flex: 1 1 0; min-width: 0; padding-inline: 10px; }
+  }
+  @container mbody (max-width: 300px) {
+    .code-box .btn .ico { display: none; }
   }
 
   /* ---------------- Café (Ko-fi): solo el aspecto ----------------
