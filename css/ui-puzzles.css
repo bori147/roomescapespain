@@ -617,8 +617,9 @@
     .modal-body :has(> .party-grid) > .party-grid .party { min-height: 48px; }
     /* El calendario cuelga a veces directamente del cuerpo (S4-N8): sin anchura
        explícita, la columna «auto» lo dejaría en su min-content (celdas de 23 px). */
-    .modal-body:has(> .cal-grid) > .cal-grid,
-    .modal-body :has(> .cal-grid) > .cal-grid { width: min(50cqi, 340px); min-width: 332px; }
+    /* #modal: la regla de columnas de arriba lleva #s3-lo dentro del :is() (especificidad de id) */
+    #modal .modal-body:has(> .cal-grid) > .cal-grid,
+    #modal .modal-body :has(> .cal-grid) > .cal-grid { width: min(50cqi, 340px); min-width: 332px; }
     /* Sede: los tres desplegables del paso 1 en una fila */
     #sede:has(> label:nth-of-type(3)) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 12px; }
     #sede:has(> label:nth-of-type(3)) > :not(label) { grid-column: 1 / -1; }
@@ -728,8 +729,12 @@
   #modal .s2-row > .btn { flex: none; white-space: nowrap; margin-left: auto; }
   /* S2-N5: el plano del local (6 × 48 px + rótulos) no cabe en 320 px: casillas fluidas */
   @container mbody (max-width: 340px) {
-    #modal .s2-grid { grid-template-columns: 16px repeat(6, minmax(0, 1fr)); gap: 3px; }
+    #modal .s2-grid { grid-template-columns: 14px repeat(6, minmax(0, 1fr)); gap: 2px; }
     #modal .s2-grid .tile { width: auto; height: auto; aspect-ratio: 1; font-size: 1.125rem; }
+  }
+  /* Calendarios en 320 px: 7 columnas de ≥ 42 px comiéndose parte del relleno del cuerpo */
+  @container mbody (max-width: 320px) {
+    #modal .cal-grid { gap: 2px; margin-inline: -10px; }
   }
 
   /* Sin opacidad para atenuar texto */
