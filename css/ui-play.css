@@ -306,7 +306,7 @@
     align-items: center;
     justify-content: center;
   }
-  /* Marco de la lámina: separa las paredes claras del lienzo */
+  /* Ventana de la sala (el marco de la lámina y el de «Usando…» los dibuja ui-scene.css) */
   .scene-wrap {
     position: relative;
     flex: 0 1 auto;
@@ -314,9 +314,6 @@
     max-width: 100%;
     max-height: 100%;
     overflow: hidden;
-    border-radius: var(--r-lg);
-    background: var(--ink);
-    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), var(--e2);
   }
   .scene {
     height: 100cqh;
@@ -866,6 +863,9 @@
     50% { translate: 4px 0; }
   }
   .dlg-finish { grid-area: fin; width: 100%; margin-top: 8px; }
+  /* Trámite ganado y sin mensajes por leer: la ventanilla solo lleva «continuar», centrado */
+  #dialog[data-skin="idle"]:has(> .dlg-finish:not([hidden])) { grid-template-rows: repeat(4, auto); align-content: center; }
+  #dialog[data-skin="idle"] > .dlg-finish:not([hidden]) { margin-top: 0; }
 
   /* Ventanilla baja (móviles con poca altura): cabecera de 26 px y la cola dentro de ella */
   /* Ventanilla holgada: algo más de aire */
@@ -1167,6 +1167,13 @@
     }
     /* «Usando…» ocupa el sitio del plano entre las flechas */
     .room-bar[data-pan="off"] .use-chip { grid-column: 1 / 4; }
+    /* Pantallas bajas con el aviso de cookies a la vista: la sala se queda en una miniatura que ya
+       cabe entera, así que la barra (flechas, plano, Lupa) espera a que se decida y le cede su fila.
+       Con un objeto en la mano, «Usando…» se queda. */
+    @media (max-height: 700px) {
+      body.cc-open[data-screen="play"]:has(#roomBar:not(.using)) { --barH: 0px; }
+      body.cc-open[data-screen="play"] .room-bar:not(.using) { display: none; }
+    }
   }
 
   /* ======================================================
@@ -1220,13 +1227,13 @@
       top: 0;
       right: 0;
       left: auto;
-      width: calc(var(--hudW) + var(--hudR) + 8px);
+      width: calc(var(--hudW) + var(--hudR) + 4px);
       min-height: 0;
       flex-wrap: wrap;
       align-content: flex-start;
       row-gap: 2px;
       column-gap: 2px;
-      padding: max(6px, env(safe-area-inset-top, 0px)) var(--hudR) 4px 8px;
+      padding: max(6px, env(safe-area-inset-top, 0px)) var(--hudR) 4px 4px;
       border-bottom: 0;
       background: var(--canvas);
       -webkit-backdrop-filter: none;
@@ -1250,7 +1257,8 @@
     }
     .stage {
       grid-template-columns: minmax(0, 1fr) var(--hudW);
-      column-gap: 12px;
+      /* 8 px en 667 de ancho, 12 px desde 775: cada píxel de ancho es sala */
+      column-gap: clamp(8px, 4vw - 19px, 12px);
       row-gap: 6px;
       grid-template-areas: "scene ." "scene bar" "scene dialog" "scene tray";
       /* La bandeja nunca baja de cabecera + una fila (82 px); la ventanilla se queda el resto */
@@ -1276,8 +1284,21 @@
     /* Barra de la sala: solo «Usando…» y la Lupa */
     .room-bar { display: flex; gap: 8px; height: auto; }
     .room-bar :is(.pan, .plano, .pan-hint) { display: none; }
-    .room-bar .use-chip { flex: 1 1 auto; }
+    .room-bar .use-chip { flex: 1 1 auto; padding-left: 12px; }
     .lupa-btn { margin-left: auto; }
+    /* Con un objeto en la mano la columna (≤ 260 px) no da para todo: la Lupa se queda en icono y
+       «Usando:» pasa a los lectores (el chip amarillo, la casilla y «Seleccionado» ya lo dicen),
+       para que se lea qué objeto llevas */
+    .room-bar.using .lupa-btn { flex: none; width: 48px; padding: 0; }
+    .room-bar.using .lupa-btn .tb-l, .room-bar .use-k {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
 
     .dlg-body { font-size: 15px; line-height: 1.45; }
     /* Ventanilla del HUD: la columna es estrecha (≤ 240 px de contenido) y aquí la altura no decide.

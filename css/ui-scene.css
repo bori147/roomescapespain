@@ -10,6 +10,14 @@
 @layer scene {
 
   /* ---------------- Lámina ---------------- */
+  /* Marco: un filete oscuro y --e2 separan las paredes claras (#ddd6c1 es 1,29:1 sobre el lienzo).
+     Va en .scene-wrap, la ventana que recorta la sala: en horizontal y escritorio la caja
+     (#sceneBox) es más grande que la lámina. */
+  .scene-wrap {
+    border-radius: var(--r-lg);
+    background: var(--ink);
+    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), var(--e2);
+  }
   .scene {
     --wall: #ddd;
     --floor: #888;
@@ -345,6 +353,8 @@
     transition: opacity var(--d-fast) var(--ease-out);
   }
   .hs:focus-visible::after, .hs.show-label::after { opacity: 1; }
+  /* Con foco, la etiqueta baja por debajo del anillo (desplazamiento + grosor) para no taparlo */
+  .hs:focus-visible::after { translate: -50% calc(max(4px, .45cqw) + max(3px, .3cqw) + 3px); }
   @media (hover: hover) {
     .hs:hover::after { opacity: 1; }
   }
@@ -438,9 +448,12 @@
   }
 
   /* ---------------- Estados de la sala ---------------- */
-  /* Con un objeto en la mano: la sala lleva un marco de rotulador (estático) */
+  /* Con un objeto en la mano: la sala lleva un marco de rotulador por dentro (estático). Es un
+     contorno con desplazamiento negativo: se pinta encima de la lámina y no se mueve al deslizarla. */
   #sceneBox.using .scene-wrap {
-    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), 0 0 0 3px var(--marker), var(--e2);
+    outline: 3px solid var(--marker);
+    outline-offset: -3px;
+    box-shadow: 0 0 0 1px rgba(26, 24, 20, .35), 0 0 0 3px var(--marker), 0 0 0 4px rgba(26, 24, 20, .3), var(--e2);
   }
   /* Trámite completado: la sala se apaga y deja de recibir toques */
   #sceneBox.won .scene { filter: saturate(.4) brightness(.92); transition: filter .4s var(--ease-std); }
