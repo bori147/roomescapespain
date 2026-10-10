@@ -858,7 +858,7 @@
   .code-details > :not(summary) { margin-inline: 12px; }
   .code-details .code-box { margin-top: 4px; }
   .code-details .small { margin: 0 0 12px; }
-  .copy-hint { color: var(--green); font-weight: 600; }
+  .code-details .copy-hint { color: var(--ink); font-weight: 600; }
 
   /* ---------------- Final de temporada ---------------- */
   .ending .res-head { justify-items: center; }
