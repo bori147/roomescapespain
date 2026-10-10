@@ -26,8 +26,10 @@
   /* ==========================================================
      1) «Justificante de entrega»: el objeto vuela a su casilla
      ========================================================== */
+  /* Por encima del fantasma de los modales (76/77): tras un «CONFORME» el objeto
+     se ve despegar de la tarjeta verde en vez de viajar bajo el velo */
   .fly-item {
-    z-index: 60;
+    z-index: 78;
     width: 0;
     height: 0;
     contain: layout style;
@@ -293,6 +295,12 @@
     animation: fx-ghost-out 140ms var(--ease-in) both;
   }
   .modal-ghost.is-ok { --ghost-delay: 380ms; animation-delay: var(--ghost-delay); }
+  /* «CONFORME» ligero (gama baja, movimiento reducido): solo las casillas, con un papel tenue detrás */
+  .modal-ghost.is-lite {
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    box-shadow: 0 0 0 12px var(--surface), 0 0 0 13px var(--line), var(--e3);
+  }
   .modal-ghost-scrim.is-ok { --ghost-delay: 380ms; }
   @keyframes fx-ghost-out {
     from { opacity: 1; translate: 0 0; }

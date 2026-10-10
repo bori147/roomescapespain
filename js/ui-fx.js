@@ -397,10 +397,16 @@
     let hit = null; try { hit = D.elementFromPoint(x, y); } catch (e) { return true; }
     return !!hit && (hit === target || target.contains(hit) || hit.contains(target));
   }
+  // El aviso «Añadido a tu bandeja» va en la capa superior (popover): ningún z-index lo supera
+  function toastShown() {
+    const t = D.getElementById('toast'); if (!t || !rectOf(t)) return false;
+    let open = false; try { open = t.matches(':popover-open'); } catch (e) { /* sin popover */ }
+    return t.classList.contains('show') || open;
+  }
   const overlaps = (a, b, m) => a.left < b.right + m && a.right > b.left - m && a.top < b.bottom + m && a.bottom > b.top - m;
   /** Coloca un pósit junto a target sin taparlo: encima o debajo, donde quepa mejor. Si no cabe sin taparlo, no sale
       (y no cuenta como visto). No recibe toques: cualquier toque lo retira y llega igualmente a lo que haya debajo. */
-  function showCoach(key, target) {
+  function showCoach(key, target, avoid) {
     if (!V() || seen(key) || coach || !quiet()) return false;
     const t = rectOf(target);
     if (!t || !onScreen(target, t)) return false; // no cuenta como visto: saldrá la próxima vez que se vea
@@ -419,13 +425,20 @@
     const roomUp = t.top - gap - top0; const roomDown = H0 - m - (t.bottom + gap);
     const fitsUp = roomUp >= cr.height; const fitsDown = roomDown >= cr.height;
     // Sala: preferimos debajo (no tapa la mitad de arriba de la sala); resto: encima (bandeja, ventanilla, chip de uso)
-    let up = key === 'room' ? !fitsDown && (fitsUp || roomUp > roomDown) : fitsUp || (!fitsDown && roomUp > roomDown);
-    let top = up ? t.top - gap - cr.height : t.bottom + gap;
-    top = clamp(top, top0, Math.max(top0, H0 - cr.height - m));
+    const pref0 = key === 'room' ? !fitsDown && (fitsUp || roomUp > roomDown) : fitsUp || (!fitsDown && roomUp > roomDown);
     const cx = t.left + t.width / 2;
     const left = clamp(cx - cr.width / 2, m, Math.max(m, W0 - cr.width - m));
-    const box = { left, top, right: left + cr.width, bottom: top + cr.height };
-    if (overlaps(box, t, 2)) { c.remove(); return false; }
+    const place = (isUp) => {
+      const top = clamp(isUp ? t.top - gap - cr.height : t.bottom + gap, top0, Math.max(top0, H0 - cr.height - m));
+      return { up: isUp, left, top, right: left + cr.width, bottom: top + cr.height };
+    };
+    // Lo que no se debe tapar (el texto que se está leyendo, el aviso de la bandeja): se elige el lado que menos lo pisa
+    const nogo = (avoid || []).map(rectOf).concat(toastShown() ? [rectOf(D.getElementById('toast'))] : []).filter(Boolean);
+    const area = (b) => nogo.reduce((a, r) => a + Math.max(0, Math.min(b.right, r.right) - Math.max(b.left, r.left)) * Math.max(0, Math.min(b.bottom, r.bottom) - Math.max(b.top, r.top)), 0);
+    const opts = [place(pref0), place(!pref0)].filter((b) => !overlaps(b, t, 2));
+    if (!opts.length) { c.remove(); return false; }
+    const box = opts.reduce((a, b) => (area(b) < area(a) ? b : a));
+    const up = box.up; const top = box.top;
     c.style.left = Math.round(left) + 'px';
     c.style.top = Math.round(top) + 'px';
     c.style.setProperty('--ax', Math.round(clamp(cx - left, 18, cr.width - 18)) + 'px');
@@ -459,8 +472,13 @@
     });
     if (best) showCoach('room', best);
   }
-  function coachGive(ids) {
+  // Espera a que se retire el aviso de la bandeja (1800 ms + 400 por objeto extra): debajo de él no se leería
+  function coachGive(ids, tries) {
     if (seen('give') || !ids || !ids.length) return;
+    tries = tries || 0;
+    const inv = D.getElementById('inventory');
+    if (inv && inv.classList.contains('has-sel')) return; // ya ha seleccionado algo: el consejo llega tarde
+    if (toastShown() && tries < 30) { later(safe(() => coachGive(ids, tries + 1)), 200); return; }
     const slot = slotOf(ids[ids.length - 1]);
     if (slot) showCoach('give', slot);
   }
@@ -477,7 +495,7 @@
     if (!d.queued || seen('queue')) return;
     later(safe(() => {
       const b = D.getElementById('btnNextMsg');
-      if (b && !b.closest('[hidden]')) showCoach('queue', b);
+      if (b && !b.closest('[hidden]')) showCoach('queue', b, [D.getElementById('dlgMsg')]);
     }), 80);
   });
 
@@ -540,7 +558,7 @@
       if (!f.impact) { later(() => { sfx('stamp'); haptic('season'); }, f.rm ? 0 : 231); later(() => sfx('season'), f.rm ? 150 : 381); }
       f.overlay.remove();
     } else if (f.rm || !canAnimate(f.overlay)) f.overlay.remove();
-    else { f.overlay.classList.add('out'); later(() => f.overlay.remove(), 320); }
+    else { f.overlay.classList.add('out'); later(() => f.overlay.remove(), 300); }
     if (!f.rm && screen === 'end') countUp();
     else if (countItems) { countItems.forEach((it) => { if (it.n.isConnected) it.n.textContent = it.final; }); countItems = null; }
   }
