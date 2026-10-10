@@ -1887,12 +1887,15 @@ Sigue aquí: ${SITE_URL}`;
       kind: 'system', cls: 'load', sys: true, pauseClock: true,
       html: `<p>Escribe el código de expediente que obtuviste al guardar o al completar un trámite.</p>
         <label class="field" for="codeIn">Código de expediente</label>
-        <div class="code-load"><input type="text" id="codeIn" placeholder="EXP-XXXXX-X" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go" maxlength="13" aria-describedby="codeMsg"><button type="button" class="btn primary" id="codeGo" data-sys disabled>Cargar</button></div>
+        <div class="code-load"><input type="text" id="codeIn" placeholder="EXP-XXXXX-X" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" enterkeyhint="go" maxlength="200" aria-describedby="codeMsg"><button type="button" class="btn primary" id="codeGo" data-sys disabled>Cargar</button></div>
         <p class="msg bad" id="codeMsg" role="alert" hidden></p>`,
       buttons: [{ label: 'Cancelar', cls: 'ghost' }],
     });
     const inp = $('#codeIn', card); const go = $('#codeGo', card); const msg = $('#codeMsg', card);
     inp.addEventListener('input', (e) => {
+      // Si se pega el mensaje completo («Mi código de expediente…: EXP-…»), quedarse solo con el código
+      const found = String(inp.value).toUpperCase().match(/EXP[s-]*[0-9A-Z]{4,5}[s-]*[A-Z](?![0-9A-Z])/);
+      if (found && found[0] !== inp.value) inp.value = found[0];
       if (!(e.inputType && e.inputType.startsWith('delete'))) {
         const f = fmtCode(inp.value);
         if (f !== inp.value) { inp.value = f; try { inp.setSelectionRange(f.length, f.length); } catch (x) { /* nada */ } }
@@ -2330,7 +2333,7 @@ Sigue aquí: ${SITE_URL}`;
       if (screen !== 'play' || !S) return;
       const t = e.target;
       const inField = !!(t && t.closest && t.closest('input, select, textarea, a, [contenteditable]'));
-      if (e.key === 'Escape') { e.preventDefault(); if (objOpen) setObjOpen(false); else pauseModal(); return; }
+      if (e.key === 'Escape') { e.preventDefault(); if (objOpen) setObjOpen(false); else if (selected) $('#useDrop').click(); else pauseModal(); return; }
       if ((e.key === 'h' || e.key === 'H') && !inField && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); hintModal(); return; }
       if ((e.key === 'Enter' || e.key === ' ') && queue.length && !inField) {
         // En botones (objetos, bandeja, Siguiente…) manda su propio clic
