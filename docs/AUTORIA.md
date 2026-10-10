@@ -312,7 +312,8 @@ Las temporadas publicadas tienen alguno: no se cambian (el contenido está conge
 
 **Cómo se ve el juego en un móvil en vertical** (de arriba abajo, todo en una pantalla, sin desplazar la página):
 1. **Barra superior**: temporada y trámite («T3 · 6/10»), el chip 🎯 con el objetivo (se despliega al tocarlo),
-   💡 Pista y 📂 Expediente (pausa: código, ayuda, sonido, vibración, reiniciar, salir).
+   💡 Pista y 📂 Expediente (pausa: código, ayuda, sonido, vibración, reiniciar, salir, y también
+   «Configurar cookies» y las páginas legales, porque el pie de página no se ve mientras juegas).
 2. **La sala**, hasta 2 veces más ancha que la pantalla, que se desliza con el dedo.
 3. **Barra de la sala** (40 px): ‹ plano › y 🔍 Lupa. El plano dice qué parte de la sala estás viendo; las flechas
    avisan con un número si hay cosas nuevas fuera de la vista. Con un objeto en la mano, la barra muestra
