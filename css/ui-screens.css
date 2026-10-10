@@ -127,7 +127,7 @@
     position: relative;
     container: hero / inline-size;
   }
-  .menu-hero .kicker { margin-bottom: 12px; color: var(--ink-2); }
+  .menu-hero .kicker { margin-bottom: 12px; }
 
   /* «Vuelva usted» en Inter 800 + «mañana» como sello de caucho */
   .wordmark {
@@ -272,14 +272,18 @@
       align-items: end;
     }
     .menu-hero > * { grid-column: 1; }
-    .menu-hero .kicker { grid-row: 1; }
+    .menu-hero .kicker { grid-column: 1 / -1; grid-row: 1; margin-bottom: 4px; }
     .wordmark { grid-row: 2; font-size: clamp(32px, 8vh, 48px); }
     .seal-full { position: static; grid-column: 1; grid-row: 2; justify-self: end; align-self: center; margin: 0 4px 0 0; --seal: 64px; }
     .menu-hero .tag { grid-row: 3; font-size: var(--fs-md); margin-top: 12px; }
-    .btn.hero { grid-column: 2; grid-row: 1 / span 2; align-self: end; margin-top: 0; }
+    .btn.hero { grid-column: 2; grid-row: 2; align-self: end; margin-top: 0; }
     .hero-goal { grid-column: 2; grid-row: 3; align-self: start; }
     .menu-links { grid-column: 2; grid-row: 4; }
     .menu-progress { grid-column: 1; grid-row: 4; align-self: center; }
+  }
+  /* Horizontal estrecho: el sello grande no cabe al lado del título (ya está el pequeño en la barra) */
+  @media (orientation: landscape) and (max-height: 520px) and (max-width: 799px) {
+    .seal-full { display: none; }
   }
 
 
@@ -487,6 +491,7 @@
   /* Esqueletos mientras se pintan las tarjetas */
   .season-card.skel {
     min-height: 104px;
+    background: var(--sunken);
     border-color: transparent;
     box-shadow: none;
   }
@@ -881,7 +886,7 @@
       justify-items: start;
       align-content: center;
       min-height: 7rem;
-      padding-inline-end: 12rem;
+      padding-inline-end: 13rem;
       text-align: left;
     }
     #endStamp {
@@ -889,7 +894,7 @@
       position: absolute;
       top: calc(var(--pad-t) + 6px);
       right: calc(var(--pad) - 6px);
-      max-width: 11rem;
+      max-width: 12.5rem;
       margin: 0;
     }
     #endTitle { margin-bottom: 20px; }
@@ -1224,6 +1229,18 @@
     ::view-transition-group(*),
     ::view-transition-old(*),
     ::view-transition-new(*) { animation: none; }
+  }
+
+  /* ---------------- Colores forzados (Windows, alto contraste) ---------------- */
+  @media (forced-colors: active) {
+    .paper { border: 1px solid CanvasText; }
+    .redact, .sc-cells, .steps { forced-color-adjust: none; }
+    .sc-cells i, .steps i { background: Canvas; box-shadow: inset 0 0 0 1px CanvasText; }
+    .sc-cells i.done, .steps i.done { background: CanvasText; }
+    .sc-cells i.cur, .steps i.next { background: Highlight; box-shadow: none; }
+    .season-card.cur, .lvl.cur { outline: 3px solid Highlight; outline-offset: -3px; }
+    .season-card::before { background: CanvasText; }
+    .row-actions.talon, .season-actions { border-top-color: CanvasText; }
   }
 
   /* ---------------- Animaciones propias ---------------- */
