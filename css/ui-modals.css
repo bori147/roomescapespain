@@ -899,6 +899,36 @@
     .pause .pause-legal { grid-area: legal; align-self: end; }
     .pause .sheet-rows { grid-area: rows; margin: 0; }
   }
+  /* Con altura para ello (≥ 340 px), todo a la vista sin desplazar: «Seguir jugando» pasa a la
+     columna izquierda, anclado bajo el reloj (anchor positioning: sigue al reloj aunque el
+     objetivo ocupe más líneas o el cuerpo desplace), y Sonido + Vibración comparten fila.
+     Sin soporte de anclaje se queda la maqueta de arriba (la columna derecha desplaza). */
+  @supports (anchor-name: --a) {
+    @media (orientation: landscape) and (max-height: 520px) and (min-height: 340px) {
+      .pause .modal-body { position: relative; padding-top: 8px; padding-bottom: 8px; }
+      .pause .pause-obj { margin-bottom: 8px; padding: 8px 12px 8px 14px; }
+      .pause .pause-obj p { font-size: var(--fs-sm); line-height: 1.4; }
+      .pause .pause-clock { margin-bottom: 68px; font-size: .8125rem; anchor-name: --pause-clock; }
+      .pause .pause-legal { padding-top: 0; column-gap: 12px; }
+      .pause .sheet-row.primary {
+        position: absolute;
+        top: calc(anchor(--pause-clock bottom) + 10px);
+        left: anchor(--pause-clock left);
+        width: anchor-size(--pause-clock width);
+        min-height: 48px;
+        margin: 0;
+      }
+      .pause .sheet-rows { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start; align-self: start; }
+      .pause .sheet-rows > .sheet-row { grid-column: 1 / -1; }
+      .pause .sheet-rows > .sheet-row:not(.primary) { min-height: 44px; padding-block: 2px; font-size: .9375rem; }
+      .pause .sheet-rows > #pauseSound:has(+ #pauseVibe),
+      .pause .sheet-rows > #pauseSound + #pauseVibe { grid-column: auto; grid-template-columns: 20px minmax(0, 1fr) auto; column-gap: 8px; padding-inline: 6px; font-size: var(--fs-sm); }
+      .pause .sheet-rows > :is(#pauseSound, #pauseVibe) .sheet-l { overflow-wrap: normal; }
+      .pause .sheet-rows > #pauseSound:has(+ #pauseVibe) .sheet-v,
+      .pause .sheet-rows > #pauseSound + #pauseVibe .sheet-v { display: none; }
+      .pause .sheet-rows > #pauseSound + #pauseVibe { border-left: 1px solid var(--line); }
+    }
+  }
   @media (min-width: 761px) and (min-height: 521px) {
     .modal-card.pause { width: min(520px, 100%); }
   }

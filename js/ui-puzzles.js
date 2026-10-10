@@ -54,6 +54,19 @@
 
   // ---------------- 7. Atributos de teclado por defecto ----------------
   const TEXTISH = 'input:not([type]), input[type="text"], input[type="number"], input[type="search"], input[type="tel"], input[type="password"]';
+  // Guiones blandos en las casillas estrechas del plano S3-N6: sin diccionario de
+  // separación (Chrome en Windows) «Contadores» se partía letra a letra.
+  const SHY = { Contadores: 'Conta­dores', Ascensor: 'Ascen­sor', Caldera: 'Cal­dera', Trastero: 'Tras­tero', Pasillo: 'Pa­sillo' };
+  function softHyphens(body) {
+    $$('.s3-fach > br', body).forEach((br) => br.replaceWith(document.createTextNode(' ')));
+    $$('.s3-cell', body).forEach((c) => {
+      Array.prototype.forEach.call(c.childNodes, (n) => {
+        if (n.nodeType !== 3) return;
+        const k = n.nodeValue.trim();
+        if (Object.prototype.hasOwnProperty.call(SHY, k)) n.nodeValue = n.nodeValue.replace(k, SHY[k]);
+      });
+    });
+  }
   function mountDefaults(body) {
     $$(TEXTISH, body).forEach((inp) => {
       const t = (inp.getAttribute('type') || 'text').toLowerCase();
@@ -403,6 +416,7 @@
     pause(() => {
       try {
         mountDefaults(body);
+        softHyphens(body);
         lupa(card, body);
         fichas(body);
         teleprompter(body);
