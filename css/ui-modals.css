@@ -443,19 +443,17 @@
   }
 
   /* ---------------- Tamaño 3: tarjeta centrada (tableta y escritorio) ---------------- */
-  @media (min-width: 761px) and (orientation: portrait), (min-width: 761px) and (min-height: 521px), (orientation: landscape) and (min-height: 521px) {
-    @media all {
-      .modal { --mbp: 20px; padding: 24px; }
-      .modal-body { padding: var(--mbp) 24px; }
-      .modal-head { padding: 16px 10px 12px 24px; }
-      .modal-masthead { padding: 12px 24px 14px; }
-      .modal-masthead::after { left: 24px; right: 24px; }
-      .modal-foot { padding: 14px 24px 18px; }
-      .modal-status.is-visible { padding: 8px 24px; }
-      /* El oficio entra como un papel que cae en la mesa */
-      .modal-card[data-kind="doc"] { animation: modal-paper-in var(--d-slow) var(--ease-out) both; transition: none; }
-      .modal-card.is-swap { animation: modal-fade-in var(--d-fast) var(--ease-out) both; transition: none; }
-    }
+  @media (min-width: 761px) and (orientation: portrait), (orientation: landscape) and (min-height: 521px) {
+    .modal { --mbp: 20px; padding: 24px; }
+    .modal-body { padding: var(--mbp) 24px; }
+    .modal-head { padding: 16px 10px 12px 24px; }
+    .modal-masthead { padding: 12px 24px 14px; }
+    .modal-masthead::after { left: 24px; right: 24px; }
+    .modal-foot { padding: 14px 24px 18px; }
+    .modal-status.is-visible { padding: 8px 24px; }
+    /* El oficio entra como un papel que cae en la mesa */
+    .modal-card[data-kind="doc"] { animation: modal-paper-in var(--d-slow) var(--ease-out) both; transition: none; }
+    .modal-card.is-swap { animation: modal-fade-in var(--d-fast) var(--ease-out) both; transition: none; }
   }
   @media (min-width: 1024px) and (min-height: 521px) {
     .modal { --mbp: 24px; }
