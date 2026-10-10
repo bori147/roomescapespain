@@ -312,7 +312,9 @@
     idleT45 = later(safe(glint), 45000);
     idleT120 = later(safe(hintNudge), 120000);
   }
-  function quiet() { const st = state(); return inPlay() && !modalOpen() && visible() && !st.pendingWin && !D.body.classList.contains('finale-on'); }
+  // Sin modal del juego ni el de «Configurar cookies» abiertos, sin final en curso y con la pestaña a la vista
+  const ccOpen = () => !!D.querySelector('dialog.cc-dialog[open]');
+  function quiet() { const st = state(); return inPlay() && !modalOpen() && !ccOpen() && visible() && !st.pendingWin && !D.body.classList.contains('finale-on'); }
   // Anillo efímero alrededor de un rectángulo (destello de inactividad, aviso en 💡). Nunca recibe toques.
   function halo(r, cls, ms) {
     if (!r || RM()) return;
@@ -440,11 +442,12 @@
     const gap = 14; const m = 8; const W0 = vw(); const H0 = vh();
     // Bajo la barra superior no se ve bien: el borde útil empieza debajo de ella
     const top0 = Math.max(m, ((rectOf(D.getElementById('topbar')) || { bottom: 0 }).bottom || 0) + 4);
-    // Lo que no se debe tapar: el texto de la ventanilla, el objetivo, el aviso «Añadido a tu bandeja» y el café
+    // Lo que no se debe tapar: el texto de la ventanilla, el objetivo, el aviso «Añadido a tu bandeja», el café y el
+    // aviso de cookies
     const nogo = ['dlgMsg', 'dlgIdle'].map((id) => inkRect(D.getElementById(id)))
       .concat(['objective', 'objChip', 'objSlip'].map((id) => { const n = D.getElementById(id); return n && !n.hidden ? rectOf(n) : null; }))
       .concat((avoid || []).map(rectOf), toastShown() ? [rectOf(D.getElementById('toast'))] : [])
-      .concat($$('[data-kofi]').filter((a) => !a.hidden).map(rectOf))
+      .concat($$('[data-kofi]').filter((a) => !a.hidden).map(rectOf), [rectOf($('.cc-banner'))])
       .filter(Boolean);
     const area = (b, extra) => nogo.concat(extra).reduce((a, r) => a + Math.max(0, Math.min(b.right, r.right) - Math.max(b.left, r.left)) * Math.max(0, Math.min(b.bottom, r.bottom) - Math.max(b.top, r.top)), 0);
     let best = null;
