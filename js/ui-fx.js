@@ -593,7 +593,7 @@
     '-webkit-mask-image', 'mask-image', '-webkit-mask-size', 'mask-size', 'outline-style', 'outline-width', 'outline-color',
     'outline-offset', '-webkit-line-clamp', '-webkit-box-orient'];
   const STRIP = /^(id|for|name|href|role|tabindex|autofocus|title|popover|aria-.+|data-.+|on.+)$/i;
-  const MAX_GHOST_NODES = 400;
+  const MAX_GHOST_NODES = 220;
   function copyStyles(src, dst) {
     let cs; try { cs = W.getComputedStyle(src); } catch (e) { return; }
     let txt = '';
@@ -602,7 +602,7 @@
   }
   /** Construye (sin insertarlo) el fantasma de la tarjeta que se cierra. Debe llamarse con la tarjeta aún maquetada. */
   function buildGhost(card, keypadOk) {
-    if (RM() || !card || !card.isConnected) return null;
+    if (RM() || !card || !card.isConnected || (lowEnd() && !keypadOk)) return null; // gama baja: solo el «CONFORME»
     const r = rectOf(card);
     if (!r || r.bottom < 0 || r.top > vh()) return null;
     const src = [card].concat($$('*', card));
@@ -614,7 +614,7 @@
       const s = src[i]; const c = dst[i];
       if (!s.ownerSVGElement) copyStyles(s, c); // el interior de un <svg> hereda de su <svg>
       if (s === D.activeElement) { c.style.outline = 'none'; c.style.boxShadow = 'none'; } // sin anillo de foco en el fantasma
-      for (const a of Array.prototype.slice.call(c.attributes)) if (STRIP.test(a.name)) c.removeAttribute(a.name);
+      for (const a of Array.prototype.slice.call(c.attributes)) if (STRIP.test(a.name) && !(a.name === 'href' && s.ownerSVGElement)) c.removeAttribute(a.name); // <use href> se queda
       if (s.scrollTop || s.scrollLeft) scrolls.push([c, s.scrollTop, s.scrollLeft]);
       if (c.tagName === 'INPUT' || c.tagName === 'TEXTAREA') { try { c.value = s.value; } catch (e) { /* nada */ } }
       if (c.tagName === 'SELECT') { try { c.selectedIndex = s.selectedIndex; } catch (e) { /* nada */ } }
@@ -649,14 +649,29 @@
     if (keypadOk) {
       const disp = $('.kp-display', card) || $('.kp-text', card);
       const dr = rectOf(disp);
+      // El sello cae sobre el borde inferior de las casillas (o de la casilla de texto), sin tapar las cifras
       const st = el('span', 'stamp sm ok fx-conforme', 'CONFORME');
-      st.style.setProperty('--cy', Math.round(dr ? dr.top + dr.height / 2 - box.top : r.top - box.top + r.height / 2) + 'px');
+      st.style.setProperty('--cy', Math.round(dr ? dr.bottom - box.top + 4 : r.top - box.top + r.height / 2) + 'px');
       g.append(st);
-      // Candado de texto (sin casillas): la casilla se queda en verde, como las .kp-box.ok del teclado
-      $$('.kp-text input', clone).forEach((i) => { i.style.borderColor = 'var(--green)'; i.style.boxShadow = '0 0 0 2px var(--green)'; i.style.color = 'var(--green)'; });
+      // Las casillas se pintan en verde a mano: el .ok recién puesto puede estar aún en plena transición
+      const okBox = (n) => { n.style.borderColor = 'var(--green)'; n.style.backgroundColor = 'var(--green-bg)'; n.style.color = 'var(--green)'; };
+      $$('.kp-box', clone).forEach((b, i) => { const s = $$('.kp-box', card)[i]; if (s && s.classList.contains('ok')) okBox(b); });
+      $$('.kp-text input', clone).forEach((i) => { okBox(i); i.style.boxShadow = '0 0 0 2px var(--green)'; });
     }
     const scrim = el('div', 'modal-ghost-scrim' + (keypadOk ? ' is-ok' : ''));
     scrim.setAttribute('aria-hidden', 'true');
+    // El velo imita el real: el ::backdrop del <dialog>, o el propio <dialog> cuando ocupa toda la pantalla
+    // y hace de velo (color y desenfoque de ui-modals). Si no, el de la casa (--scrim).
+    try {
+      const veil = (st2) => {
+        scrim.style.backgroundColor = st2.backgroundColor;
+        const bf = st2.getPropertyValue('backdrop-filter') || st2.getPropertyValue('-webkit-backdrop-filter');
+        if (bf && bf !== 'none') { scrim.style.setProperty('backdrop-filter', bf); scrim.style.setProperty('-webkit-backdrop-filter', bf); }
+      };
+      const bd = dlg && dlg.id === 'modal' ? W.getComputedStyle(dlg, '::backdrop') : null;
+      if (bd && !clear(bd.backgroundColor)) veil(bd);
+      else if (!sheet && dcs && dr0 && !clear(dcs.backgroundColor) && dr0.width >= vw() - 2 && dr0.height >= vh() - 2) veil(dcs);
+    } catch (e) { /* sin ::backdrop: el velo de la casa */ }
     return { g, scrim, scrolls, keypadOk };
   }
   function showGhost(gh) {

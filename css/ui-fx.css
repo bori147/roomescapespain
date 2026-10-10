@@ -305,6 +305,8 @@
     translate: -50% -50%;
     font-size: 1.125rem;
     background: var(--green-bg);
+    mix-blend-mode: normal;
+    box-shadow: 0 2px 6px rgba(26, 24, 20, .12);
     animation: k-stamp-hit 300ms var(--ease-out) both;
   }
 
