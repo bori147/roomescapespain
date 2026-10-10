@@ -709,8 +709,14 @@
   }
   .hint-list li.sol { border-color: color-mix(in srgb, var(--red) 30%, transparent); border-left-color: var(--red); background: var(--red-bg); }
   .hint-list li.sol .hint-k { color: var(--red-ink); }
-  .hint-list li.is-new { animation: modal-hint-new 1.2s var(--ease-std) both; }
-  /* Con movimiento reducido: resalte fijo durante 1,2 s (lo pone y lo quita ui-puzzles.js) */
+  /* Pista recién revelada: rotulador que se desvanece hacia el fondo propio de la fila
+     (--surface, o --red-bg en li.sol). Sin paso final en el keyframe y con relleno
+     solo «backwards»: al acabar manda otra vez el background de la regla. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hint-list li.is-new { animation: modal-hint-new 1.2s var(--ease-std) backwards; }
+  }
+  /* Con movimiento reducido: resalte fijo durante 1,2 s (lo pone y lo quita ui-puzzles.js);
+     sin animación, quitar .hl-static no relanza nada. */
   .hint-list li.is-new.hl-static { animation: none; background: var(--marker-soft); }
   .hint-none { margin: 0 0 16px; color: var(--ink-2); font-style: italic; }
   .turno-actions { display: flex; }
@@ -1078,7 +1084,6 @@
   }
   @keyframes modal-hint-new {
     0%, 35% { background-color: var(--marker-soft); }
-    100% { background-color: var(--surface); }
   }
   @keyframes modal-caret {
     0% { opacity: 1; }
