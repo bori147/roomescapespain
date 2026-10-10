@@ -5,8 +5,12 @@
          node tests/run.js 2 3      (solo las temporadas 2 y 3)
    Cada temporada N necesita js/seasons/sN.js y tests/solutions/sN.js
    Qué comprueba (ver docs/AUTORIA.md §7):
-   - Globales: CSS en capas (@layer), contraste de las fichas de color,
-     grafía de la marca, juego no instalable, ?v= coherente, scripts enlazados.
+   - Globales: CSS en capas (@layer, también los <style> incrustados), contraste
+     de las fichas de color, grafía de la marca, juego no instalable, ?v= coherente,
+     scripts enlazados y orden de carga de hojas y scripts.
+   - Contrato de QA (spec §13): ganchos de index.html, API window.RoomEscape,
+     g.give / g.win / closeModal síncronos, teclado, y las hojas del sistema
+     (pistas, código, ayuda, registro, pausa, cargar) abren y cierran sin errores.
    - Por temporada: datos bien formados, avisos de emoji modernos y hotspots
      pequeños, códigos de expediente, cada nivel resoluble con su solución,
      guardas de los arreglos de CSS sobre contenido congelado y etiquetas de
@@ -380,8 +384,38 @@ function globalChecks() {
   warns.push(...ORDER.notes);
   if (ORDER.broken.length) errs.push(`index.html enlaza scripts que no existen: ${ORDER.broken.join(', ')}`);
 
-  // 6. Enlaces opcionales del rediseño: informar si aún son «placeholder»
-  const pending = ['css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css', 'css/ui-fx.css', 'js/ui-puzzles.js', 'js/ui-fx.js'].filter((f) => !hasCode(f));
+  // 6. Orden de carga de index.html (spec §4): las capas las declara la primera hoja; los realzadores
+  //    (ui-puzzles, ui-fx) se cargan después de las temporadas y antes del motor, como scripts clásicos.
+  const cssOrder = [...idx.matchAll(/<link\b[^>]*rel=["']?stylesheet[^>]*>/gi)].map((m) => (/href=["']([^"'?#]+)/.exec(m[0]) || [])[1]).filter(Boolean);
+  const CSS_WANT = ['css/tokens.css', 'css/style.css', 'css/ui-components.css', 'css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css', 'css/ui-fx.css', 'css/consent.css'];
+  const cssKnown = cssOrder.filter((f) => CSS_WANT.includes(f));
+  const cssExpected = CSS_WANT.filter((f) => cssKnown.includes(f));
+  if (cssKnown.join() !== cssExpected.join()) strictOr(`index.html: las hojas de estilo deben ir en el orden ${CSS_WANT.map((f) => f.slice(4, -4)).join(', ')} (tiene: ${cssKnown.map((f) => f.slice(4, -4)).join(', ')})`);
+  else if (FOUNDATION && cssOrder[0] !== 'css/tokens.css') errs.push(`index.html: la primera hoja de estilo debe ser css/tokens.css (declara el orden de capas); es ${cssOrder[0] || 'ninguna'}`);
+  else if (cssKnown.length) oks.push(`Orden de las hojas: ${cssKnown.length} en el orden del spec, empezando por ${cssOrder[0]}`);
+  const scriptTags = [...idx.matchAll(/<script\b[^>]*\bsrc=["']([^"'?#]+)[^>]*>/g)].map((m) => ({ f: m[1].replace(/^\.\//, ''), tag: m[0] }));
+  const JS_RANK = (f) => {
+    const order = ['js/config.js', 'js/consent.js', 'js/analytics.js', 'js/core.js', 'SEASON', 'js/ui-puzzles.js', 'js/ui-fx.js', 'js/engine.js'];
+    return order.indexOf(/^js\/seasons\/s\d+\.js$/.test(f) ? 'SEASON' : f);
+  };
+  const ranked = scriptTags.filter((s) => JS_RANK(s.f) >= 0);
+  const outOfOrder = ranked.filter((s, i) => i && JS_RANK(s.f) < JS_RANK(ranked[i - 1].f));
+  if (outOfOrder.length) errs.push(`index.html: scripts fuera de orden (${outOfOrder.map((s) => s.f).join(', ')}); el orden es config, consent, analytics, core, temporadas, ui-puzzles, ui-fx, engine`);
+  const nonClassic = ranked.filter((s) => /\b(async|defer)\b|type=["']?module/i.test(s.tag));
+  if (nonClassic.length) errs.push(`index.html: ${nonClassic.map((s) => s.f).join(', ')} debe(n) cargarse como script clásico (sin async, defer ni type="module")`);
+  if (!outOfOrder.length && !nonClassic.length) oks.push(`Orden de los scripts: ${ranked.length} scripts clásicos en el orden del spec (realzadores antes de engine.js)`);
+
+  // 7. Hojas <style> incrustadas en las páginas HTML: también en capas
+  const htmlFiles = ['index.html', '404.html', ...fs.readdirSync(path.join(ROOT, 'legal')).filter((f) => f.endsWith('.html')).map((f) => 'legal/' + f)].filter(exists);
+  for (const f of htmlFiles) {
+    for (const m of read(f).matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)) {
+      const e = unlayeredRules(m[1]);
+      if (e.length) strictOr(`CSS sin capa → ${f} (<style> incrustado): ${e.length} regla(s); p. ej. ${e.slice(0, 2).join('; ')}`);
+    }
+  }
+
+  // 8. Enlaces opcionales del rediseño: informar si aún son «placeholder»
+  const pending =['css/ui-scene.css', 'css/ui-play.css', 'css/ui-screens.css', 'css/ui-modals.css', 'css/ui-puzzles.css', 'css/ui-fx.css', 'js/ui-puzzles.js', 'js/ui-fx.js'].filter((f) => !hasCode(f));
   if (pending.length) skips.push(`Pendientes de rellenar (sus guardas se omiten): ${pending.join(', ')}`);
   return { errs, warns, oks, skips };
 }
@@ -521,6 +555,125 @@ const GUARDS = [
     } },
 ];
 
+// ---------------- Contrato de QA (spec §13) y hojas del sistema ----------------
+// Ganchos que usan las pruebas y las capturas: si alguno desaparece o deja de ser síncrono, falla aquí con un mensaje claro
+// (y no 50 niveles más abajo con un «No existe el elemento»).
+const HOOK_IDS = ['modal', 'dialog', 'scene', 'btnHint', 'btnSave', 'btnHelp2', 'btnMute', 'btnMenu', 'panL', 'panR', 'winCode', 'levelGrid'];
+const API = ['g', 'state', 'level', 'season', 'items', 'makeCode', 'readCode', 'meta', 'start', 'click', 'item', 'finish', 'pending', 'screen', 'openSeason', 'renderMenu', 'show'];
+async function contractChecks() {
+  const errs = []; const oks = []; const skips = [];
+  const { w, doc, errors, sys } = makeDom();
+  const R = w.RoomEscape;
+  if (!R) return { errs: ['El motor no se ha cargado: ' + errors.join(' | ')], oks, skips, labels: sys };
+  const $ = (s) => doc.querySelector(s);
+  const $$ = (s) => [...doc.querySelectorAll(s)];
+  const isOpen = () => !$('#modal').hidden;
+  const shut = () => { const x = $('#modal .modal-x'); if (x) x.click(); if (isOpen() && R.g.closeModal) R.g.closeModal(); };
+  const need = (cond, msg) => { if (!cond) throw new Error(msg); };
+  const passed = [];
+  const step = async (name, fn) => {
+    try {
+      await fn();
+      if (errors.length) throw new Error(errors.splice(0).join(' | '));
+      passed.push(name);
+    } catch (e) {
+      errs.push(`Contrato de QA «${name === 'SHEETS' ? 'hojas del sistema' : name}»: ${e.message}`);
+      errors.splice(0);
+      try { if (isOpen()) shut(); } catch (x) { /* nada */ }
+    }
+  };
+
+  await step('ganchos de index.html y API window.RoomEscape', () => {
+    const miss = HOOK_IDS.filter((id) => !doc.getElementById(id));
+    need(!miss.length, `faltan ${miss.map((i) => '#' + i).join(', ')}`);
+    need($('#modal').hidden, '#modal debe arrancar con el atributo hidden (las pruebas lo leen)');
+    const api = API.filter((k) => R[k] == null);
+    need(!api.length, `a window.RoomEscape le faltan ${api.join(', ')}`);
+  });
+  await step('.lvl hijos directos de #levelGrid', () => {
+    R.openSeason(1);
+    const n = $$('#levelGrid > .lvl').length;
+    need(n === w.SEASONS[0].levels.length, `#levelGrid tiene ${n} .lvl como hijos directos (se esperan ${w.SEASONS[0].levels.length}; tests/shots.js usa .lvl:nth-child(4))`);
+  });
+  await step('sala: #scene .floor y .hs[data-id]', () => {
+    R.start(1, 1);
+    need($('#scene .floor'), 'no existe #scene .floor');
+    need($$('#scene .hs[data-id]').length > 0, 'no hay .hs[data-id] en #scene');
+  });
+  await step('g.give síncrono y .slot en la bandeja', () => {
+    R.start(1, 1);
+    const items = R.items();
+    const id = Object.keys(items).find((k) => !R.state().inv.includes(k));
+    R.g.give(id);
+    need(R.state().inv.includes(id), `tras g.give('${id}') el objeto no está en el inventario en el mismo instante`);
+    R.item(id); R.item(id); // seleccionar y soltar: repinta la bandeja (fuera de una acción, give no tiene por qué repintar)
+    const slot = $(`.slot[data-id="${id}"]`) || $$('.slot').find((s) => s.textContent.includes(items[id].name));
+    need(slot, `no hay ningún .slot con «${items[id].name}» en la bandeja`);
+  });
+  await step('teclado: .kp-grid, .kp-key[data-k] (0-9, ⌫, OK), .kp-msg y cierre síncrono', () => {
+    R.start(1, 3); R.click('archivo');
+    need(isOpen() && $('#modal .kp-grid'), 'S1-N3 «archivo» no abre el teclado numérico');
+    const keys = $$('#modal .kp-key[data-k]').map((k) => k.dataset.k);
+    const miss = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '⌫', 'OK'].filter((k) => !keys.includes(k));
+    need(!miss.length, `faltan teclas .kp-key[data-k] ${miss.join(', ')}`);
+    need($('#modal .kp-msg'), 'falta .kp-msg');
+    need($('#modal .modal-x'), 'falta .modal-x');
+    R.g.closeModal();
+    need($('#modal').hidden, 'g.closeModal() no deja #modal[hidden] en el mismo instante');
+  });
+  await step('g.win síncrono, #btnFinish y #winCode', () => {
+    R.start(2, 3); R.g.win();
+    need(R.pending() === true, 'tras g.win() pending() no es true en el mismo instante');
+    need($('#btnFinish'), 'no existe #btnFinish tras g.win()');
+    R.finish();
+    need(R.screen() === 'win', `tras finish() la pantalla es «${R.screen()}», no «win»`);
+    need(/^EXP-/.test(($('#winCode').textContent || '').trim()), '#winCode no muestra el código EXP-…');
+  });
+
+  // Hojas del sistema: se abren y se cierran sin errores en jsdom (camino sin showModal), y sus botones [data-sys]
+  // entran en el control de agujas. Nada de esto lo tocan las soluciones de las temporadas.
+  const sheets = [];
+  const openClose = async (label, open) => {
+    if (isOpen()) shut();
+    await open();
+    await settle();
+    if (!isOpen()) return false;
+    sheets.push(label);
+    shut(); await settle();
+    need(!isOpen(), `«${label}» no se cierra con ✕ / g.closeModal()`);
+    return true;
+  };
+  await step('SHEETS', async () => {
+    R.start(1, 6);
+    const click = (sel) => () => { const b = $(sel); if (b) b.click(); };
+    await openClose('Pistas', () => { $('#btnHint').click(); const mh = $('#modal #moreHint'); need(mh, 'la Ventanilla de Pistas no tiene #moreHint'); mh.click(); });
+    await openClose('Código', click('#btnSave'));
+    await openClose('Ayuda', click('#btnHelp2'));
+    if ($('#btnLog')) await openClose('Registro', click('#btnLog'));
+    // Pausa («Expediente en pausa») y sus filas, si #btnMenu abre una hoja (antes del rediseño salía al menú)
+    $('#btnMenu').click(); await settle();
+    if (isOpen()) {
+      sheets.push('Pausa');
+      for (const [row, label] of [['#pauseSave', 'Pausa › Código'], ['#pauseHelp', 'Pausa › Cómo jugar'], ['#pauseRestart', 'Pausa › Reiniciar (sin confirmar)']]) {
+        if (!isOpen()) { $('#btnMenu').click(); await settle(); }
+        const r = $('#modal ' + row);
+        if (!r) continue;
+        r.click(); await settle();
+        if (isOpen()) sheets.push(label);
+        shut(); await settle();
+      }
+      need(R.screen() === 'play', `cerrar la pausa no vuelve al juego (pantalla «${R.screen()}»)`);
+    }
+    R.renderMenu(); R.show('menu');
+    if ($('#btnCode')) await openClose('Cargar código', click('#btnCode'));
+  });
+  passed.forEach((n) => oks.push(n === 'SHEETS' ? `hojas del sistema: se abren y se cierran sin errores (${sheets.join(', ') || 'ninguna'})` : n));
+  const lab = [...sys];
+  if (lab.length) oks.push(`botones del sistema vistos en esas hojas: ${lab.length} etiquetas distintas (pasan al control de agujas)`);
+  await sleep(5);
+  return { errs, oks, skips, labels: sys };
+}
+
 async function runGuards(sid, out, sysLabels) {
   const mine = GUARDS.filter((g) => g.sid === sid);
   const { w, errors, sys } = makeDom();
@@ -653,6 +806,18 @@ async function runSeason(sid) {
     const { w } = makeDom();
     const old = w.RoomEscape && w.RoomEscape.readCode('EXP-03T2-C');
     if (!old || old.season !== 1 || old.level !== 1) { console.log('✗ Los códigos antiguos (EXP-03T2-C) ya no funcionan'); allOk = false; }
+  }
+
+  // Contrato de QA (ganchos, API, síncronos) y hojas del sistema, con su control de agujas
+  {
+    const c = await contractChecks();
+    const hits = needleCollisions(c.labels);
+    if (hits.length) c.errs.push(`Botones del sistema ([data-sys]) de las hojas del motor que chocan con textos de las soluciones: ${hits.join('; ')}`);
+    console.log(`${c.errs.length ? '❌' : '✅'} Contrato de QA (spec §13)`);
+    c.oks.forEach((l) => console.log('  ✓ ' + l));
+    c.errs.forEach((l) => console.log('  ✗ ' + l));
+    c.skips.forEach((l) => console.log('  ⏭ ' + l));
+    if (c.errs.length) allOk = false;
   }
   for (const sid of list) {
     const r = await runSeason(sid);

@@ -354,15 +354,29 @@ que en horizontal pero más amplio.
 | No instalable | hay manifest, `apple-touch-icon`, iconos PNG de app, service worker, Wake Lock o «Añadir a pantalla de inicio» | |
 | Versionado | `index.html` mezcla números `?v=` o enlaza CSS/JS sin `?v=` | |
 | Scripts enlazados | `index.html` enlaza un script local que no existe (p. ej. se borra `js/ui-puzzles.js`): falla, no se convierte en «guarda omitida» | |
+| Orden de carga | las hojas de `index.html` no van en el orden `tokens, style, ui-components, ui-scene, ui-play, ui-screens, ui-modals, ui-puzzles, ui-fx, consent` (la primera, `tokens.css`, declara las capas), o los scripts no van en el orden `config, consent, analytics, core, temporadas, ui-puzzles, ui-fx, engine` como scripts clásicos (sin `async`, `defer` ni `type="module"`) | `js/ui-fx.js` después de `js/engine.js` → «scripts fuera de orden» (el motor dispararía eventos sin nadie escuchando) |
+| `<style>` incrustado | un `<style>` de `index.html`, `404.html` o `legal/*.html` tiene reglas fuera de `@layer` | |
 
 Solo **avisan**: una temporada `js/seasons/sN.js` que `index.html` no enlaza (la prueba la carga igualmente, antes de
 `js/ui-puzzles.js`) y las hojas de `css/` que `index.html` no enlaza. Ojo: el versionado `?v=` solo se comprueba en
 `index.html`; las páginas de `legal/` y `404.html` hay que revisarlas a mano al publicar (`docs/PUBLICAR.md`).
 
-Mientras `css/tokens.css` esté **vacío** (solo comentarios), las comprobaciones del rediseño (capas, contraste, marca
-fuera del README, `@layer seasons`) se informan como omitidas o avisos. En cuanto tenga cualquier contenido son
+Mientras `css/tokens.css` esté **vacío** (solo comentarios), las comprobaciones del rediseño (capas, `<style>` incrustados,
+contraste, marca fuera del README, orden de las hojas, `@layer seasons`) se informan como omitidas o avisos. En cuanto tenga cualquier contenido son
 **estrictas**: no se mira una línea concreta para decidirlo, así que si la declaración `@layer reset, tokens, …;`
 falta, cambia de orden o se borra, la comprobación de capas falla en lugar de volver al modo aviso.
+
+**Contrato de QA** (spec §13, una vez, en un DOM aparte): lo que usan las soluciones y las capturas sigue en su sitio,
+y si falta falla aquí con un mensaje claro en lugar de 50 niveles más abajo.
+
+| Comprobación | Falla si… |
+|---|---|
+| Ganchos y API | falta alguno de `#modal`, `#dialog`, `#scene`, `#btnHint`, `#btnSave`, `#btnHelp2`, `#btnMute`, `#btnMenu`, `#panL`, `#panR`, `#winCode`, `#levelGrid`; `#modal` no arranca con `hidden`; o a `window.RoomEscape` le falta alguna función (`start`, `click`, `item`, `finish`, `pending`, `screen`, `openSeason`, `show`…) |
+| Índice de trámites | los `.lvl` no son hijos directos de `#levelGrid` (las capturas usan `.lvl:nth-child(4)`) |
+| Sala y bandeja | no hay `#scene .floor` ni `.hs[data-id]`; `g.give` no mete el objeto en el inventario en el mismo instante, o no aparece su `.slot` |
+| Teclado | T1-N3 «archivo» no abre `.kp-grid` con `.kp-key[data-k]` de 0 a 9, `⌫` y `OK`, `.kp-msg` y `.modal-x`; o `g.closeModal()` no deja `#modal[hidden]` al instante |
+| Victoria | tras `g.win()`, `pending()` no es `true` al instante o falta `#btnFinish`; tras `finish()` no se ve la resolución con `#winCode` = `EXP-…` |
+| Hojas del sistema | la Ventanilla de Pistas (y su `#moreHint`), Código, Ayuda, Registro, «Expediente en pausa» (y sus filas Código, Cómo jugar y Reiniciar, sin confirmar) o «Tengo un código» dan un error en jsdom o no se cierran con ✕. Sus botones `[data-sys]` también pasan el control de agujas |
 
 **Por temporada:** datos bien formados, ids únicos, objetos existentes, combos en orden alfabético, `carry`,
 códigos de expediente y que la solución completa los 10 niveles. Además, **avisos** (no fallan) de solapamientos,
@@ -407,6 +421,7 @@ cada captura, pasa estas **sondas** (un fallo da salida 1; los avisos solo se li
 | Toast | el justificante «Añadido a tu bandeja» tapa la sala |
 | Objetivos táctiles | en vistas táctiles, un botón, enlace o campo fuera de la sala mide menos de 44 × 44, contando la zona ampliada con `::before`/`::after`. Solo se libran los enlaces dentro de un texto y, con un aviso si miden ≥ 24, las casillas de los tableros densos que no caben a 44 px en 320 px de ancho (`.cal-grid`, `.tile-grid`, `.s2-grid`, `#s5-maze`, `.s5-cal-g`, `.s3-lo-grid`). El teclado (`.kp-grid`, 56 px de alto), las filas de partidos y las opciones son botones normales: por debajo de 44 px fallan |
 | Sello | el sello «APROBADO» o el del final pisa el título |
+| Capas en el navegador | alguna regla de nuestras hojas (o de un `<style>` que inyecte el código) queda fuera de `@layer` según el propio navegador, o la CSS de una temporada no es un único bloque `@layer seasons{…}`. Es la confirmación real de la guarda de texto de `tests/run.js`, que en jsdom no puede verlo |
 
 Opciones útiles: `--escenas=05,23-27` (solo esas), `--motion` (con animaciones), `--estricto` (que las sondas
 fallen aunque el rediseño esté a medias). El detalle de cada captura queda en `<carpeta>/informe.json`.

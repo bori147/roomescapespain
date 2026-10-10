@@ -76,10 +76,10 @@ function serve() {
 // ---------------- Estados iniciales (localStorage) ----------------
 const CONSENT = `localStorage.setItem('roomescapespain.consent.v1', JSON.stringify({ v: 1, analytics: false, date: Date.now() }));`;
 // meta.ui: preferencias de interfaz que el motor recuerda. panned = ya sabe deslizar la sala.
-// Si el paquete de efectos añade más avisos de primera vez (coachmarks), sus marcas van aquí para que no tapen las capturas.
-// OJO: el motor (P5) guarda meta.ui.tips como mapa por aviso ({}); si P6 lee meta.ui.tips[clave], hay que poner aquí
-// sus claves (p. ej. tips: { pan: true, … }) o las capturas saldrán con coachmarks encima de los hotspots.
-const META_UI = { panned: true, coach: true, coachDone: true, tips: true };
+// tips: avisos de primera vez ya vistos (coachmarks de js/ui-fx.js, que lee VUM.pref('tips')[clave]); el motor guarda
+// meta.ui.tips como mapa y «Repetir los consejos» lo vacía. Si ui-fx.js añade un aviso con otra clave, ponla aquí
+// o las capturas saldrán con pósits encima de los hotspots. panned: ya sabe deslizar la sala (sin aviso ni «peek»).
+const META_UI = { panned: true, tips: { room: true, give: true, select: true, queue: true } };
 // Progreso desbloqueado y cookies rechazadas (salvo en las escenas «fresh» o «consent»)
 const UNLOCK = `(() => { try {
   ${CONSENT}
@@ -368,6 +368,35 @@ function probePage(o) {
       const ix = Math.min(A.right, B.right) - Math.max(A.left, B.left); const iy = Math.min(A.bottom, B.bottom) - Math.max(A.top, B.top);
       if (ix > 1 && iy > 1) F.push(`el sello ${pairs[0]} pisa el título ${pairs[1]} (${Math.round(ix)}×${Math.round(iy)} px)`);
     }
+  }
+  // 9) Capas en un navegador real (jsdom no entiende @layer): ninguna regla de nuestras hojas fuera de @layer y la CSS
+  //    de cada temporada inyectada como un único bloque «@layer seasons{…}» (si no, ganaría a @layer overrides).
+  if (typeof CSSLayerBlockRule === 'function') {
+    const isA = (r, ctor) => typeof window[ctor] === 'function' && r instanceof window[ctor];
+    const topOk = (r) => isA(r, 'CSSLayerBlockRule') || isA(r, 'CSSLayerStatementRule') || isA(r, 'CSSFontFaceRule') || isA(r, 'CSSPropertyRule')
+      || (r.constructor && r.constructor.name === 'CSSViewTransitionRule') || (isA(r, 'CSSImportRule') && r.layerName != null);
+    const wrapper = (r) => isA(r, 'CSSSupportsRule') || isA(r, 'CSSMediaRule') || isA(r, 'CSSContainerRule');
+    const loose = [];
+    const walk = (rules, where) => {
+      for (const r of rules) {
+        if (topOk(r)) continue;
+        if (wrapper(r)) { walk(r.cssRules, where); continue; }
+        loose.push(`${where}: ${r.cssText.replace(/\s+/g, ' ').slice(0, 50)}`);
+      }
+    };
+    for (const sh of document.styleSheets) {
+      if (sh.href && !sh.href.startsWith(location.origin)) continue;
+      let rules; try { rules = sh.cssRules; } catch (e) { continue; }
+      const own = sh.ownerNode;
+      const where = sh.href ? sh.href.slice(location.origin.length + 1).split('?')[0] : (own && own.dataset && own.dataset.season ? `<style data-season="${own.dataset.season}">` : '<style>');
+      walk(rules, where);
+    }
+    if (loose.length) F.push(`CSS fuera de @layer en el navegador (${loose.length}): ${loose.slice(0, 3).join('; ')}${loose.length > 3 ? '…' : ''}`);
+    const notSeasons = [...document.querySelectorAll('style[data-season]')].filter((st) => {
+      const rs = st.sheet ? [...st.sheet.cssRules] : [];
+      return !(rs.length === 1 && isA(rs[0], 'CSSLayerBlockRule') && rs[0].name === 'seasons');
+    }).map((st) => st.dataset.season);
+    if (notSeasons.length) F.push(`CSS de temporada fuera de un único «@layer seasons{…}» (temporadas ${notSeasons.join(', ')}; lo inyecta js/core.js)`);
   }
   return { screen, fails: F, warns: W };
 }
