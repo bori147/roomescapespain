@@ -429,7 +429,7 @@
     align-items: flex-start;
     gap: 2px;
     min-width: 0;
-    min-height: 40px;
+    min-height: max(44px, min-content); /* nunca menos que su contenido: con el aviso de cookies abierto se comía el texto */
     padding: 7px 14px 8px 12px;
     border: 1px solid var(--line);
     border-left: 3px solid var(--accent);

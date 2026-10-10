@@ -1041,7 +1041,7 @@
     flex-direction: column;
     gap: 2px;
     width: max-content;
-    max-width: min(420px, calc(100vw - 32px));
+    max-width: var(--toast-maxw, min(420px, calc(100vw - 32px)));
     margin: 0;
     padding: 10px 16px 11px 14px;
     border: 0;
