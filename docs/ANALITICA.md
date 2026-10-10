@@ -1,7 +1,8 @@
 # Analítica de producto
 
-El juego envía eventos anónimos a **PostHog** (servidores en la UE) **solo si el jugador acepta
-la analítica** en el aviso de cookies. Si la rechaza, no se carga nada.
+El juego envía eventos de uso a **PostHog** (servidores en la UE) **solo si el jugador acepta la analítica** en el aviso
+de cookies. Si la rechaza, no se carga nada. Los eventos llevan un identificador aleatorio: es un dato seudónimo
+(nunca el nombre del jugador), así que no lo describas como «anónimo» en textos legales ni en el aviso.
 
 **Panel:** https://eu.posthog.com/project/290656/dashboard/989505 (proyecto «Vuelva usted mañana», región UE,
 IP descartada, hora de Madrid, sin grabación de sesiones ni captura automática).
@@ -34,9 +35,30 @@ Todos llevan `season` (1-5), `level` (1-10) y `level_id` (`T2-N7`) cuando aplica
 | `season_complete` | Al terminar una temporada | `seconds`, `hints` (totales) |
 | `wrong_answer` | Código o respuesta incorrecta en un teclado/campo | `puzzle` (nombre del candado) |
 | `hint_request` | Al pedir una pista | `hint` (1, 2, 3…), `is_solution` |
-| `back_to_menu` | Al salir al menú en mitad de un trámite (señal de abandono) | `seconds_in_level` |
+| `back_to_menu` | Al salir al menú en mitad de un trámite (señal de abandono): «Salir al menú principal» de «Expediente en pausa» | `seconds_in_level` |
 | `save_code_shown` / `code_loaded` | Guardar con código / cargar un código | — |
-| `donate_click` | Clic en «Invítame a un café» | `where` (pantalla) |
+| `donate_click` | Clic en cualquier botón de Ko-fi («Invítame a un café») | `where` (ver tabla siguiente) |
+| `share_click` | Al pulsar «📤 Compartir resultado» al final de una temporada | — |
+| `reveal_used` | Al pulsar 🔍 **Lupa** en la sala (señala todo lo que se puede tocar) | — |
+| `hint_nudge` | Cuando, tras 120 s sin avanzar, el juego sugiere la Ventanilla de Pistas (💡 da dos pulsos y la ventanilla lo dice). No abre nada solo | — |
+| `level_restart` | Al confirmar «Reiniciar este trámite» en «Expediente en pausa» | — |
+| `log_open` | Al abrir el «Registro de entrada» (historial de mensajes de la ventanilla) | — |
+| `pause_open` | Al abrir «Expediente en pausa» (botón 📂, Esc o el botón «atrás» del móvil en el juego) | — |
+
+### `donate_click.where`: dónde estaba el botón
+
+| Valor | Botón |
+|---|---|
+| `float` | Botón flotante: menú (en todas partes) y pantallas de papel en escritorio |
+| `tray` | Chip ☕ al final de la bandeja (juego, móvil en vertical) |
+| `topbar` | ☕ de la barra superior en el juego (HUD en horizontal, botón «Café» en escritorio) |
+| `talon-intro` | Talón inferior de la intro del trámite (móvil) |
+| `talon-win` | Talón inferior de la resolución del trámite (móvil) |
+| `talon-end` | Talón inferior del final de temporada (móvil) |
+| `end-slip` | «Tasa voluntaria · Modelo 0-CAFÉ», la papeleta del final de temporada |
+
+Antes del rediseño, `where` valía el nombre de la pantalla (`menu`, `play`, `win`…) o `season_end`.
+Al comparar periodos, agrupa `season_end` con `end-slip`, y `play` con `tray` + `topbar`.
 
 ## Panel recomendado (Dashboard en PostHog)
 
@@ -50,5 +72,10 @@ Todos llevan `season` (1-5), `level` (1-10) y `level_id` (`T2-N7`) cuando aplica
 | ¿Vuelven otro día? | *Retention* · `app_open` → `app_open` |
 | ¿De dónde vienen? | *Web analytics* (integrado en PostHog) |
 | ¿Funciona el café? | *Trends* · `donate_click` y desglose por `where` |
+| ¿Se comparte? | *Trends* · `share_click` por `season`; *Funnel* `season_complete` → `share_click` |
+| ¿Ayuda la Lupa o el empujón? | *Trends* · `reveal_used` y `hint_nudge` por `level_id`; compáralos con `hint_request` |
+| ¿Se atascan hasta reiniciar? | *Trends* · `level_restart` por `level_id` |
+| ¿Se usa la pausa y el registro? | *Trends* · `pause_open` y `log_open` (usuarios únicos) |
 
-Este panel ya está creado en PostHog (14 gráficos) con estos mismos nombres.
+Los 14 primeros gráficos ya están creados en PostHog con estos mismos nombres; los de `share_click`, `reveal_used`,
+`hint_nudge`, `level_restart`, `pause_open` y `log_open` hay que añadirlos cuando se publique el rediseño.
