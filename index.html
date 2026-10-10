@@ -1,27 +1,26 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-screen="menu">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-  <title>Vuelva Usted Mañana — Room Escape</title>
+  <title>Vuelva usted mañana — Un room escape por la burocracia española</title>
   <meta name="description" content="Un room escape satírico por las entrañas de la burocracia y la política española. 5 temporadas de 10 trámites, cada una más difícil que la anterior.">
-  <meta name="theme-color" content="#1e1b18">
   <link rel="canonical" href="https://bori147.github.io/roomescapespain/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:site_name" content="Vuelva Usted Mañana">
+  <meta property="og:site_name" content="Vuelva usted mañana">
   <meta property="og:url" content="https://bori147.github.io/roomescapespain/">
-  <meta property="og:title" content="Vuelva Usted Mañana — Room Escape">
+  <meta property="og:title" content="Vuelva usted mañana — Room escape satírico">
   <meta property="og:description" content="¿Serás capaz de renovar el DNI? Un room escape satírico y gratuito sobre la burocracia española: 5 temporadas, 50 trámites.">
   <meta property="og:image" content="https://bori147.github.io/roomescapespain/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Vuelva usted mañana: un room escape por la burocracia española">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Vuelva Usted Mañana — Room Escape">
+  <meta name="twitter:title" content="Vuelva usted mañana — Room escape satírico">
   <meta name="twitter:description" content="Un room escape satírico y gratuito sobre la burocracia española: 5 temporadas, 50 trámites.">
   <meta name="twitter:image" content="https://bori147.github.io/roomescapespain/img/og.png">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📂</text></svg>">
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/special-elite-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css?v=7">
   <link rel="stylesheet" href="css/style.css?v=7">
@@ -33,123 +32,217 @@
   <link rel="stylesheet" href="css/ui-puzzles.css?v=7">
   <link rel="stylesheet" href="css/ui-fx.css?v=7">
   <link rel="stylesheet" href="css/consent.css?v=7">
+  <link rel="icon" type="image/svg+xml" href="img/sello.svg">
+  <meta name="theme-color" content="#F4F1EA">
 </head>
-<body>
+<body data-screen="menu">
+  <svg class="sprite" aria-hidden="true" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" focusable="false">
+    <defs>
+      <symbol id="i-bulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 17.2h5.6M10 20.6h4"/><path d="M12 3.2a6 6 0 0 0-3.7 10.7c.7.6 1 1.3 1 2.1v1.2h5.4V16c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3.2z"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.2c0-1 .8-1.8 1.8-1.8h3.9l2 2.1h7.5c1 0 1.8.8 1.8 1.8v8c0 1-.8 1.8-1.8 1.8H5.3c-1 0-1.8-.8-1.8-1.8z"/><path d="M3.5 10.2h17"/></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.8"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.9.7c0 1.7-2.5 2.1-2.5 3.8"/><path d="M12 17h.01"/></symbol>
+      <symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 7.3c0-.6.5-1.1 1.1-1.1h14.2c.6 0 1.1.5 1.1 1.1v2.5a2.2 2.2 0 0 0 0 4.4v2.5c0 .6-.5 1.1-1.1 1.1H4.9c-.6 0-1.1-.5-1.1-1.1v-2.5a2.2 2.2 0 0 0 0-4.4z"/><path d="M14.5 6.4v1.6M14.5 11.2v1.6M14.5 16v1.6"/></symbol>
+      <symbol id="i-speaker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.4h3.4L12 5.6v12.8l-4.6-3.8H4z"/><path d="M15.6 9.2a4 4 0 0 1 0 5.6M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></symbol>
+      <symbol id="i-speaker-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.4h3.4L12 5.6v12.8l-4.6-3.8H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+      <symbol id="i-vibrate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="8" height="16" rx="1.6"/><path d="M11 17h2M4.8 9v6M19.2 9v6M2.4 10.6v2.8M21.6 10.6v2.8"/></symbol>
+      <symbol id="i-restart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 13a7.6 7.6 0 1 0 2.2-6.2L4.4 9.2"/><path d="M4.4 4.6v4.6H9"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4.6 6.5h.01M4.6 12h.01M4.6 17.5h.01"/></symbol>
+      <symbol id="i-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.2h4.6c.6 0 1.1.5 1.1 1.1v13.4c0 .6-.5 1.1-1.1 1.1h-4.6"/><path d="M9.6 8 5.6 12l4 4M5.6 12h9.4"/></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5.4M11 6l-6 6 6 6"/></symbol>
+      <symbol id="i-chev-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 5.6 8.2 12l6.4 6.4"/></symbol>
+      <symbol id="i-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.4 5.6 15.8 12l-6.4 6.4"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.4 6.4l11.2 11.2M17.6 6.4 6.4 17.6"/></symbol>
+      <symbol id="i-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.4" cy="10.4" r="6"/><path d="m14.8 14.8 5.4 5.4"/><path d="M7.9 9.2a2.8 2.8 0 0 1 2.2-1.6"/></symbol>
+      <symbol id="i-log" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 3.6h11.2c.6 0 1.1.5 1.1 1.1v14.6c0 .6-.5 1.1-1.1 1.1H6.2a1.9 1.9 0 0 1-1.9-1.9V5.5c0-1 .8-1.9 1.9-1.9z"/><path d="M8.4 8h6.4M8.4 11.6h6.4M8.4 15.2h4"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="8.4" y="8.4" width="11.6" height="11.6" rx="1.8"/><path d="M15.6 8.4V5.8c0-1-.8-1.8-1.8-1.8H5.8c-1 0-1.8.8-1.8 1.8v8c0 1 .8 1.8 1.8 1.8h2.6"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6v11.2M8 7.4l4-3.8 4 3.8"/><path d="M5.2 11.6v7c0 1 .8 1.8 1.8 1.8h10c1 0 1.8-.8 1.8-1.8v-7"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8.2 5.6v12.8L18.4 12z"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.6"/><path d="M12 9v4l2.6 1.8M9.6 2.8h4.8"/></symbol>
+      <symbol id="i-seal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="7.2" stroke-width="1.1"/><path d="M8.6 16.4v-4a3.4 3.4 0 0 1 6.8 0v4z"/><path d="M7.6 16.4h8.8"/><circle cx="12" cy="13" r=".7" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-seal-full" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path id="sealRing" d="M60 60m-43 0a43 43 0 1 1 86 0a43 43 0 1 1-86 0" stroke="none"/>
+        <circle cx="60" cy="60" r="56"/>
+        <circle cx="60" cy="60" r="52.5" stroke-width="1.2"/>
+        <circle cx="60" cy="60" r="34"/>
+        <text fill="currentColor" stroke="none" font-family="'Special Elite','Courier New',monospace" font-size="8.6" letter-spacing="1.05"><textPath href="#sealRing" startOffset="0">MINISTERIO DE ASUNTOS PENDIENTES · REGISTRO DE SALIDA ·</textPath></text>
+        <path d="M45 78V58a15 15 0 0 1 30 0v20z"/>
+        <path d="M40 78h40M40 83.5h40" stroke-width="2"/>
+        <circle cx="60" cy="61" r="2.6" fill="currentColor" stroke="none"/>
+        <circle cx="53.5" cy="61" r="1.3" fill="currentColor" stroke="none"/>
+        <circle cx="66.5" cy="61" r="1.3" fill="currentColor" stroke="none"/>
+        <path d="M51 36.5l9-4.5 9 4.5" stroke-width="2"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <header id="topbar" class="topbar">
-    <div class="brand">📂 <span>Vuelva Usted Mañana</span></div>
+    <button class="tb tb-back" id="btnBack" type="button" hidden aria-label="Volver a Temporadas"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-back"/></svg><span class="tb-l" id="btnBackLabel">Temporadas</span></button>
+    <div class="brand" id="brand"><svg class="seal-mini" width="22" height="22" aria-hidden="true" focusable="false"><use href="#i-seal"/></svg><span class="wm-sm">Vuelva usted <span class="wm-m">mañana</span></span></div>
     <div class="game-info">
-      <span id="lvlInfo"></span>
-      <span class="timer">⏱ <span id="timer">00:00</span></span>
+      <span class="season-chip" id="seasonChip">T1</span><span class="lvl-count" id="lvlInfo"></span><span class="lvl-title" id="lvlTitle"></span>
+      <span class="timer" role="timer" aria-label="Tiempo de juego"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span id="timer">00:00</span></span>
     </div>
-    <nav class="game-actions">
-      <button class="tb" id="btnHint" title="Pedir pista">💡<span>Pista</span></button>
-      <button class="tb" id="btnSave" title="Guardar partida">💾<span>Guardar</span></button>
-      <button class="tb" id="btnHelp2" title="Cómo jugar">❔<span>Ayuda</span></button>
-      <button class="tb" id="btnMute" title="Sonido">🔊</button>
-      <button class="tb" id="btnMenu" title="Menú principal">☰<span>Menú</span></button>
+    <button class="obj-chip" id="objChip" type="button" aria-expanded="false" aria-controls="objSlip"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span class="sr-only">Objetivo: </span><span class="obj-t" id="objChipText"></span></button>
+    <nav class="game-actions" aria-label="Partida">
+      <button class="tb tb-hint" id="btnHint" type="button" aria-label="Pedir pista"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-bulb"/></svg><span class="tb-l">Pista</span><b class="tb-badge" id="hintBadge" aria-hidden="true" hidden></b></button>
+      <a class="tb kofi-chip" id="kofiPlay" data-kofi="topbar" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup" aria-hidden="true">☕</span><span class="tb-l">Café</span></a>
+      <button class="tb" id="btnSave" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-ticket"/></svg><span class="tb-l">Código</span></button>
+      <button class="tb" id="btnHelp2" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-help"/></svg><span class="tb-l">Ayuda</span></button>
+      <button class="tb" id="btnMute" type="button" aria-pressed="false"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-speaker"/></svg><span class="tb-l">Silenciar sonido</span></button>
+      <button class="tb tb-pause" id="btnMenu" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-folder"/></svg><span class="tb-l">Expediente</span></button>
     </nav>
   </header>
 
-  <main>
+  <main id="main">
     <!-- MENÚ -->
-    <section id="screen-menu" class="screen">
+    <section id="screen-menu" class="screen" aria-labelledby="menuTitle">
       <div class="paper menu">
-        <div class="gov-strip"><span></span><span></span><span></span></div>
-        <p class="kicker">Gobierno de lo Imposible · Ministerio de Asuntos Pendientes</p>
-        <h1>Vuelva usted<br>mañana</h1>
-        <p class="tag">Un <i>room escape</i> por las entrañas de la burocracia española</p>
-        <div class="menu-actions">
-          <button class="btn primary big" id="btnContinue" hidden></button>
+        <div class="menu-hero">
+          <p class="kicker">Gobierno de lo Imposible · Ministerio de Asuntos Pendientes</p>
+          <h1 class="wordmark" id="menuTitle" tabindex="-1">Vuelva usted <span class="wm-stamp">mañana</span></h1>
+          <svg class="seal-full" width="96" height="96" aria-hidden="true" focusable="false"><use href="#i-seal-full"/></svg>
+          <p class="tag">Un <i lang="en">room escape</i> por las entrañas de la burocracia española</p>
+          <button class="btn primary big hero" id="btnContinue" type="button">▶ Empezar a jugar <small>Temporada 1 · El DNI · 10 trámites</small></button>
+          <p class="hero-goal" id="heroGoal" hidden></p>
+          <div class="menu-links">
+            <button class="btn ghost" id="btnHelp" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-help"/></svg>Cómo jugar</button>
+            <button class="btn ghost" id="btnCode" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-ticket"/></svg>Tengo un código</button>
+          </div>
+          <p class="menu-progress" id="menuProgress"></p>
         </div>
-        <h3 class="grid-title">Temporadas</h3>
-        <div class="season-list" id="seasonList"></div>
-        <div class="menu-actions secondary">
-          <button class="btn" id="btnCode">📂 Tengo un código de expediente</button>
-          <button class="btn" id="btnHelp">📘 Cómo jugar</button>
+        <div class="menu-seasons">
+          <h2 class="grid-title">Temporadas</h2>
+          <div class="season-list" id="seasonList">
+            <div class="season-card skel" aria-hidden="true"></div>
+            <div class="season-card skel" aria-hidden="true"></div>
+            <div class="season-card skel" aria-hidden="true"></div>
+            <div class="season-card skel" aria-hidden="true"></div>
+            <div class="season-card skel" aria-hidden="true"></div>
+          </div>
         </div>
         <p class="disclaimer">Sátira. Todos los personajes, partidos y organismos son ficticios. Cualquier parecido con la realidad es pura coincidencia (o no).</p>
       </div>
     </section>
 
     <!-- TEMPORADA -->
-    <section id="screen-season" class="screen" hidden>
-      <div class="paper intro-card">
-        <div class="intro-num" id="seaNum"></div>
-        <h2 id="seaTitle"></h2>
-        <div class="intro-text" id="seaIntro"></div>
-        <div class="menu-actions season-actions">
-          <button class="btn primary big" id="btnSeaPlay"></button>
+    <section id="screen-season" class="screen" hidden aria-labelledby="seaTitle">
+      <div class="paper season-sheet">
+        <p class="intro-num" id="seaNum"></p>
+        <h2 id="seaTitle" tabindex="-1"></h2>
+        <div class="intro-text read" id="seaIntro"></div>
+        <div class="season-actions">
+          <button class="btn primary big" id="btnSeaPlay" type="button"></button>
         </div>
         <h3 class="grid-title">Trámites</h3>
         <div class="level-grid" id="levelGrid"></div>
         <div class="row-actions">
-          <button class="btn" id="btnSeaBack">◀ Temporadas</button>
+          <button class="btn ghost" id="btnSeaBack" type="button">‹ Temporadas</button>
         </div>
       </div>
     </section>
 
     <!-- INTRO DE NIVEL -->
-    <section id="screen-intro" class="screen" hidden>
+    <section id="screen-intro" class="screen" hidden aria-labelledby="introTitle">
       <div class="paper intro-card">
-        <div class="intro-num" id="introNum"></div>
-        <h2 id="introTitle"></h2>
-        <div class="intro-place" id="introPlace"></div>
+        <p class="intro-num" id="introNum"></p>
+        <h2 id="introTitle" tabindex="-1"></h2>
+        <p class="intro-place" id="introPlace"></p>
         <div class="stars" id="introStars"></div>
-        <div class="intro-text" id="introText"></div>
+        <div class="intro-text read" id="introText"></div>
+        <div class="obj-box" id="introObj"><span class="obj-stamp">OBJETIVO</span><p id="introObjText"></p></div>
         <div id="introCarry"></div>
-        <div class="row-actions">
-          <button class="btn" id="btnIntroMenu">☰ Menú</button>
-          <button class="btn primary big" id="btnStart">Empezar trámite ▶</button>
+        <div class="row-actions talon">
+          <button class="btn ghost" id="btnIntroMenu" type="button">‹ Trámites</button>
+          <a class="kofi-chip" data-kofi="talon-intro" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup" aria-hidden="true">☕</span><span class="tb-l">Café</span></a>
+          <button class="btn primary big" id="btnStart" type="button">Empezar trámite ▶</button>
         </div>
       </div>
     </section>
 
     <!-- JUEGO -->
-    <section id="screen-play" class="screen" hidden>
-      <div class="stage">
-        <div class="scene-box">
-          <div class="scene-wrap" id="sceneWrap"><div id="scene" class="scene"></div></div>
-          <button class="pan pan-l" id="panL" aria-label="Ver la parte izquierda de la sala" hidden>‹</button>
-          <button class="pan pan-r" id="panR" aria-label="Ver la parte derecha de la sala" hidden>›</button>
-          <div class="pan-hint" id="panHint" hidden>↔ Desliza para ver toda la sala</div>
+    <section id="screen-play" class="screen" hidden aria-labelledby="playTitle">
+      <h2 id="playTitle" class="sr-only" tabindex="-1"></h2>
+      <div class="stage" id="stage">
+        <button class="objective" id="objective" type="button" aria-expanded="false" aria-controls="objSlip"><span class="obj-k">Objetivo</span><span class="obj-t" id="objText"></span></button>
+        <div class="scene-box" id="sceneBox">
+          <div class="scene-wrap" id="sceneWrap"><div id="scene" class="scene" role="group" aria-labelledby="playTitle" aria-describedby="dlgIdle"></div></div>
+          <div class="obj-slip" id="objSlip" hidden><span class="obj-k">Objetivo</span><p id="objSlipText"></p><button class="linklike" id="btnBrief" type="button">Ver presentación del trámite</button></div>
+          <div class="won-stamp stamp lg" id="wonStamp" aria-hidden="true" hidden>TRÁMITE COMPLETADO</div>
+          <button class="btn primary won-cta" id="btnWonCta" type="button" hidden>Continuar ▶</button>
         </div>
-        <div id="dialog" class="dialog" aria-live="polite"></div>
-        <div class="inv-wrap">
-          <div class="inv-title">🎒 Inventario</div>
-          <div id="inventory" class="inventory"></div>
+        <div class="room-bar" id="roomBar" data-pan="off">
+          <button class="pan pan-l" id="panL" type="button" aria-label="Ver la parte izquierda de la sala"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-chev-l"/></svg></button>
+          <div class="plano" id="plano" aria-hidden="true"><span class="plano-thumb"></span></div>
+          <p class="pan-hint" id="panHint" hidden>↔ Desliza la sala</p>
+          <div class="use-chip" id="useChip" role="status" hidden><span class="use-k">Usando</span> <span class="use-i" id="useItem"></span><button class="use-drop" id="useDrop" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-close"/></svg><span class="sr-only">Soltar</span></button></div>
+          <button class="pan pan-r" id="panR" type="button" aria-label="Ver la parte derecha de la sala"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-chev-r"/></svg></button>
+          <button class="lupa-btn" id="btnLupa" type="button" aria-pressed="false"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-lupa"/></svg><span class="tb-l">Lupa</span></button>
+        </div>
+        <div id="dialog" class="dialog" data-skin="idle">
+          <div class="dlg-head">
+            <span class="dlg-face" id="dlgFace" aria-hidden="true"></span><span class="dlg-who" id="dlgWho"></span><span class="dlg-side" id="dlgSide" aria-hidden="true"></span>
+            <button class="dlg-log" id="btnLog" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-log"/></svg><span class="sr-only">Registro de entrada</span></button>
+          </div>
+          <div class="dlg-body" id="dlgMsg" role="log" aria-live="polite" aria-atomic="true"></div>
+          <p class="dlg-idle" id="dlgIdle"></p>
+          <div class="dlg-actions" hidden>
+            <button class="btn ghost dlg-skip" id="btnSkip" type="button">Saltar</button>
+            <button class="btn dlg-continue" id="btnNextMsg" type="button">Siguiente <span class="dlg-count"></span></button>
+          </div>
+          <button class="btn primary dlg-finish" id="btnFinish" type="button" hidden>📨 Trámite completado — continuar ▶</button>
+        </div>
+        <div class="inv-wrap" id="tray">
+          <p class="inv-title" id="invTitle">Bandeja <span id="invCount"></span></p>
+          <div class="inv-row">
+            <div id="inventory" class="inventory" role="toolbar" aria-label="Bandeja de objetos"></div>
+            <button class="tray-more" id="trayMore" type="button" hidden></button>
+            <a class="kofi-chip" id="kofiTray" data-kofi="tray" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup" aria-hidden="true">☕</span><span class="sr-only">Invítame a un café</span></a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- NIVEL COMPLETADO -->
-    <section id="screen-win" class="screen" hidden>
+    <section id="screen-win" class="screen" hidden aria-labelledby="winTitle">
       <div class="paper resolution">
-        <div class="res-head">MINISTERIO DE ASUNTOS PENDIENTES<br><small>Resolución nº <span id="resNum"></span></small></div>
-        <h2 id="winTitle"></h2>
-        <p id="winText"></p>
+        <div class="res-head"><span>MINISTERIO DE ASUNTOS PENDIENTES</span><small>Resolución nº <span id="resNum"></span></small><span class="chip ok" id="savedChip">✔ Guardado</span></div>
+        <h2 id="winTitle" tabindex="-1"></h2>
+        <div class="res-text read" id="winText"></div>
+        <p class="res-stats" id="winStats"></p>
+        <div class="steps" id="winSteps"></div>
         <div id="winCarry"></div>
-        <div class="stamp">APROBADO</div>
-        <div class="code-box"><span class="small">Tu código de expediente:</span> <code id="winCode"></code><button class="btn" id="winCopy">📋 Copiar</button></div>
-        <p class="small">La partida se ha guardado automáticamente. Puedes salir y continuar cuando quieras.</p>
-        <div class="row-actions">
-          <button class="btn" id="btnWinMenu">☰ Menú</button>
-          <button class="btn primary big" id="btnNext">Siguiente trámite ▶</button>
+        <div class="res-sign"><span class="res-sign-l">El Jefe de Negociado</span><span class="res-sign-f">Firma ilegible</span><div class="stamp md" id="winStamp">APROBADO</div></div>
+        <details class="code-details" id="winCodeBox">
+          <summary>Código de expediente <small>para seguir en otro dispositivo</small></summary>
+          <div class="code-box"><code id="winCode"></code><button class="btn" id="winCopy" type="button">Copiar</button><button class="btn" id="winShare" type="button">Enviármelo</button></div>
+          <p class="small copy-hint" id="winCopyHint" hidden></p>
+          <p class="small ios-note" id="winIosNote" hidden></p>
+        </details>
+        <div class="row-actions talon">
+          <button class="btn ghost" id="btnWinMenu" type="button">‹ Trámites</button>
+          <a class="kofi-chip" data-kofi="talon-win" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup" aria-hidden="true">☕</span><span class="tb-l">Café</span></a>
+          <button class="btn primary big" id="btnNext" type="button">Siguiente ▶</button>
         </div>
       </div>
     </section>
 
     <!-- FINAL DE TEMPORADA -->
-    <section id="screen-end" class="screen" hidden>
+    <section id="screen-end" class="screen" hidden aria-labelledby="endTitle">
       <div class="paper resolution ending">
         <div class="res-head" id="endHead"></div>
-        <h2 id="endTitle"></h2>
+        <h2 id="endTitle" tabindex="-1"></h2>
+        <div class="stamp md" id="endStamp"></div>
         <div id="endBody"></div>
         <div class="end-stats" id="endStats"></div>
-        <div class="stamp" id="endStamp"></div>
-        <div class="donate-box" id="endDonate" hidden></div>
-        <div class="row-actions">
-          <button class="btn" id="btnEndMenu">☰ Menú</button>
-          <button class="btn primary big" id="btnEndNext" hidden></button>
+        <div class="rank-slip" id="endRank"></div>
+        <button class="btn share" id="btnShare" type="button"><svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#i-share"/></svg>Compartir resultado</button>
+        <p class="end-final" id="endFinal" hidden>Has completado los 50 trámites. De momento.</p>
+        <div class="tasa" id="endDonate" hidden></div>
+        <div class="row-actions talon">
+          <button class="btn ghost" id="btnEndMenu" type="button">‹ Menú</button>
+          <a class="kofi-chip" data-kofi="talon-end" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup" aria-hidden="true">☕</span><span class="tb-l">Café</span></a>
+          <button class="btn primary big" id="btnEndNext" type="button"></button>
         </div>
       </div>
     </section>
@@ -161,13 +254,15 @@
     <a href="legal/privacidad.html">Privacidad</a>
     <a href="legal/cookies.html">Cookies</a>
     <a href="legal/descargo.html">Descargo de responsabilidad</a>
-    <button data-open-consent>Configurar cookies</button>
+    <button type="button" data-open-consent>Configurar cookies</button>
   </footer>
 
-  <a id="kofiFloat" class="kofi-btn kofi-float" href="#" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup">☕</span><span class="kofi-label"></span></a>
+  <a id="kofiFloat" class="kofi-btn kofi-float" data-kofi="float" target="_blank" rel="noopener noreferrer" hidden><span class="kofi-cup" aria-hidden="true">☕</span><span class="kofi-label"></span></a>
 
-  <div id="modal" class="modal" hidden></div>
-  <div id="toast" class="toast" role="status"></div>
+  <dialog id="modal" class="modal" aria-labelledby="modalTitle" hidden></dialog>
+  <div id="toast" class="toast" role="status" popover="manual"></div>
+  <div id="srPolite" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  <div id="srAlert" class="sr-only" role="alert"></div>
 
   <script src="js/config.js?v=7"></script>
   <script src="js/consent.js?v=7"></script>
