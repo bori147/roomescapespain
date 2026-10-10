@@ -199,8 +199,11 @@
     return actx;
   }
   const jit = (x, p) => x * (1 + (Math.random() * 2 - 1) * p);
+  // Variación por sonido (no por nota, para que los acordes no desafinen entre sí)
+  let pJit = 1; let gJit = 1;
   function tone(freq, dur, type = 'sine', vol = 0.07, delay = 0) {
     const t = actx.currentTime + delay;
+    freq *= pJit; vol *= gJit;
     const o = actx.createOscillator(); const gn = actx.createGain();
     o.type = type; o.frequency.setValueAtTime(freq, t);
     gn.gain.setValueAtTime(vol, t); gn.gain.exponentialRampToValueAtTime(0.0001, t + dur);
@@ -213,6 +216,7 @@
       for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
     }
     const t = actx.currentTime + delay;
+    f0 *= pJit; if (f1) f1 *= pJit; vol *= gJit;
     const src = actx.createBufferSource(); src.buffer = noiseBuf;
     const f = actx.createBiquadFilter(); f.type = type; f.Q.value = q;
     f.frequency.setValueAtTime(f0, t); if (f1) f.frequency.exponentialRampToValueAtTime(f1, t + dur);
@@ -228,6 +232,8 @@
     if (meta.muted) return;
     try {
       if (!audio()) return;
+      pJit = kind === 'click' || kind === 'type' ? 1 : jit(1, 0.025);
+      gJit = kind === 'click' || kind === 'type' ? 1 : jit(1, 0.08);
       switch (kind) {
         case 'click': tone(jit(520, 0.04), 0.04, 'square', jit(0.03, 0.1)); break;
         case 'type': noise(0.02, { type: 'bandpass', f0: jit(3000, 0.04), q: 1.4, vol: jit(0.12, 0.1) }); tone(jit(1200, 0.04), 0.025, 'square', jit(0.018, 0.1)); break;
@@ -323,7 +329,8 @@
       const sp = splitEmoji(strip(who));
       if (sp.emoji) { face = firstGlyph(sp.emoji); w = sp.rest || w; }
     }
-    if (!face && ctx) face = ctx.face; // quien habla desde un objeto de la sala lleva su emoji
+    // Quien habla desde un objeto de la sala lleva su emoji (solo si es ese mismo hablante)
+    if (!face && ctx && (who === undefined || (who && ctx.who && strip(who) === strip(ctx.who)))) face = ctx.face;
     const kind = o.kind || (/^[—–]/.test(strip(text)) ? 'speech' : 'narration');
     const srcId = o.srcId !== undefined ? o.srcId : (ctx ? ctx.srcId : null);
     queue.push({ text, who: w, face, kind, srcId, seq: ++msgSeq });
@@ -454,7 +461,8 @@
     later(() => c.remove(), 2400);
   }
   function notify(text) {
-    if (!$('#modal').hidden) { modalChip(text); announce(text); } else toast(`<span class="toast-b">${esc(text)}</span>`, 2600);
+    if (!$('#modal').hidden) modalChip(text); else toast(`<span class="toast-b">${esc(text)}</span>`, 2600);
+    announce(text); // el aviso es un popover que aparece ya relleno: los lectores no siempre lo leen
   }
 
   // Objetos recibidos: se agrupan los de una misma acción (un solo sonido y un solo aviso)
@@ -493,6 +501,7 @@
     const all = now - giveToast.at < 60 ? giveToast.ids.concat(ids.filter((id) => !giveToast.ids.includes(id))) : ids;
     giveToast = { ids: all, at: now };
     toast(`<span class="toast-k">Añadido a tu bandeja</span><span class="toast-b">${all.map((id) => `${ITEMS[id].emoji} <b>${ITEMS[id].name}</b>`).join(' · ')}</span>`, 1800 + 400 * (all.length - 1));
+    announce(`Añadido a tu bandeja: ${all.map((id) => strip(ITEMS[id].name)).join(', ')}`);
   }
 
   // ---------------- Modal (<dialog>) ----------------
@@ -959,7 +968,19 @@
     return i >= 0 ? s.slice(0, i).replace(/(\s*<br\s*\/?>\s*)+$/i, '') : s;
   }
   let objOpen = false;
+  // Control visible del objetivo: #objective (escritorio) o #objChip (móvil)
+  let objCtl = null; // el que abrió la ficha
+  function objControl() {
+    if (objCtl && objCtl.isConnected && !objCtl.closest('[hidden]') && objCtl.getClientRects().length) return objCtl;
+    for (const s of ['#objective', '#objChip']) { const e = $(s); if (e && !e.closest('[hidden]') && e.getClientRects().length) return e; }
+    return null;
+  }
   function setObjOpen(v) {
+    const slip0 = $('#objSlip');
+    const a = document.activeElement;
+    // Si la ficha se cierra con el foco dentro (Esc, «Ver presentación»), el foco vuelve al control
+    // del objetivo: así no cae a <body> y el modal de la presentación vuelve ahí al cerrarse.
+    if (!v && slip0 && !slip0.hidden && a && slip0.contains(a)) { const c = objControl(); if (c) focusEl(c); }
     objOpen = !!v;
     ['#objChip', '#objective'].forEach((s) => { const e = $(s); if (e) e.setAttribute('aria-expanded', objOpen ? 'true' : 'false'); });
     const slip = $('#objSlip'); if (slip) slip.hidden = !objOpen;
@@ -1624,7 +1645,9 @@
       b.addEventListener('click', () => {
         if (!open) {
           sfx('bad'); shake(b);
-          toast(`<span class="toast-b">🔒 Expediente bloqueado. Requisito previo: completar «${prevSea ? prevSea.title : ''}».</span>`, 3200);
+          const txt = `🔒 Expediente bloqueado. Requisito previo: completar «${prevSea ? prevSea.title : ''}».`;
+          toast(`<span class="toast-b">${txt}</span>`, 3200);
+          announce(strip(txt));
           return;
         }
         sfx('click'); armGuard(); openSeason(sea.id);
@@ -1664,8 +1687,10 @@
     const grid = $('#levelGrid');
     grid.innerHTML = '';
     const prog = progressOf(sid);
-    const curN = saved && !saved.finished ? saved.level : (done ? 0 : prog);
-    const maxL = done ? sea.levels.length : prog;
+    // Temporada abierta sin progreso (T1 en la primera visita, o recién desbloqueada): el 01 nunca
+    // está bloqueado, sale «En curso».
+    const curN = saved && !saved.finished ? saved.level : (done ? 0 : Math.max(1, prog));
+    const maxL = done ? sea.levels.length : Math.max(1, prog, curN);
     const recs = meta.records[sid] || {};
     sea.levels.forEach((lv, i) => {
       const k = i + 1;
@@ -1682,7 +1707,9 @@
       b.onclick = () => {
         if (state === 'locked') {
           sfx('bad'); shake(b);
-          toast(`<span class="toast-b">🔒 Trámite bloqueado. Antes hay que completar el trámite ${pad2(k - 1)}.</span>`, 3000);
+          const txt = `🔒 Trámite bloqueado. Antes hay que completar el trámite ${pad2(k - 1)}.`;
+          toast(`<span class="toast-b">${txt}</span>`, 3000);
+          announce(txt);
           return;
         }
         sfx('click'); startFromLevel(sid, k);
@@ -2036,7 +2063,7 @@
     $('#btnMute').onclick = () => { meta.muted = !meta.muted; save(); syncMute(); sfx('click'); };
 
     // Objetivo: chip (móvil) y panel (escritorio) comparten estado
-    const toggleObj = () => { sfx('click'); setObjOpen(!objOpen); };
+    const toggleObj = (e) => { sfx('click'); if (!objOpen) objCtl = e.currentTarget; setObjOpen(!objOpen); };
     $('#objChip').onclick = toggleObj;
     $('#objective').onclick = toggleObj;
     $('#btnBrief').onclick = () => { sfx('click'); briefModal(); };
@@ -2111,7 +2138,8 @@
     // Modal: Esc (cancel), cierre nativo, telón y deslizar hacia abajo
     const m = $('#modal');
     m.addEventListener('cancel', (e) => { e.preventDefault(); closeModal('esc'); });
-    m.addEventListener('close', () => { if (!m.open && !m.hidden) closeModal('esc'); });
+    // Sin 'cancel' previo solo llega aquí el «atrás» de Android (CloseWatcher)
+    m.addEventListener('close', () => { if (!m.open && !m.hidden) closeModal('back'); });
     let backdropDown = false; let swipe = null;
     m.addEventListener('pointerdown', (e) => {
       backdropDown = e.target === m;
