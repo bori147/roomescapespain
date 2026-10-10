@@ -661,9 +661,17 @@
     const g = el('div', 'modal-ghost is-ok is-lite');
     g.setAttribute('aria-hidden', 'true'); g.setAttribute('inert', '');
     g.style.left = dr.left + 'px'; g.style.top = dr.top + 'px'; g.style.width = dr.width + 'px'; g.style.height = dr.height + 'px';
-    g.append(clone);
+    // Un papel tenue justo detrás de las casillas (no de toda la franja): así no flotan sueltas sobre la sala
+    const boxes = $$('.kp-box', disp).map(rectOf).filter(Boolean);
+    const u = boxes.length ? boxes.reduce((a, b) => ({ left: Math.min(a.left, b.left), top: Math.min(a.top, b.top), right: Math.max(a.right, b.right), bottom: Math.max(a.bottom, b.bottom) }))
+      : { left: dr.left, top: dr.top, right: dr.right, bottom: dr.bottom };
+    const back = el('div', 'fx-lite-card');
+    const pad = 12;
+    back.style.left = Math.round(u.left - dr.left - pad) + 'px'; back.style.top = Math.round(u.top - dr.top - pad) + 'px';
+    back.style.width = Math.round(u.right - u.left + pad * 2) + 'px'; back.style.height = Math.round(u.bottom - u.top + pad * 2) + 'px';
+    g.append(back, clone);
     const st = el('span', 'stamp sm ok fx-conforme', 'CONFORME');
-    st.style.setProperty('--cy', Math.round(dr.height + 4) + 'px');
+    st.style.setProperty('--cy', Math.round(u.bottom - dr.top + 4) + 'px');
     g.append(st);
     const scrim = el('div', 'modal-ghost-scrim is-ok');
     scrim.setAttribute('aria-hidden', 'true');

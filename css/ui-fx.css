@@ -296,10 +296,12 @@
   }
   .modal-ghost.is-ok { --ghost-delay: 380ms; animation-delay: var(--ghost-delay); }
   /* «CONFORME» ligero (gama baja, movimiento reducido): solo las casillas, con un papel tenue detrás */
-  .modal-ghost.is-lite {
-    border-radius: var(--r-sm);
+  .modal-ghost .fx-lite-card {
+    position: absolute;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
     background: var(--surface);
-    box-shadow: 0 0 0 12px var(--surface), 0 0 0 13px var(--line), var(--e3);
+    box-shadow: var(--e3);
   }
   .modal-ghost-scrim.is-ok { --ghost-delay: 380ms; }
   @keyframes fx-ghost-out {
