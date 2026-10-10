@@ -465,6 +465,11 @@
     .modal-card { max-height: min(calc(100dvh - 64px), 860px); }
   }
 
+  /* Respuesta incorrecta (el motor pone .shake en la tarjeta): manda sobre la entrada de cada
+     tamaño (si no, la hoja inferior no se movería). Con movimiento reducido, base.css lo
+     convierte en el destello rojo con !important. */
+  .modal .modal-card.shake { animation: k-shake 300ms var(--ease-std); }
+
   /* ---------------- Teclado «Casillas del Modelo 790» ---------------- */
   #kpPrompt { margin: 0 0 14px; color: var(--ink-2); font-size: var(--fs-md); line-height: 1.5; }
   .kp-display {
