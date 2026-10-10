@@ -159,6 +159,9 @@
     line-height: 1.25;
     text-wrap: balance;
     background: var(--card-bg);
+    /* Grapado ENCIMA del papel: sin multiplicar (si no, el membrete se transparenta y se leen los dos) */
+    mix-blend-mode: normal;
+    --ink-floor: rgba(0, 0, 0, .94);
     animation: modal-staple var(--d-slow) var(--ease-out) both;
   }
   .modal-chips > .chip { box-shadow: var(--e1); animation: modal-fade-in var(--d-base) var(--ease-out) both; }
