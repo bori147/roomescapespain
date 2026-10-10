@@ -15,11 +15,12 @@
      ====================================================== */
   .paper {
     --pad: 16px;
+    --pad-t: 20px;
     --sheet: var(--paper);
     position: relative;
     width: 100%;
     margin: 0 auto;
-    padding: 20px var(--pad) 32px;
+    padding: var(--pad-t) var(--pad) 32px;
     background: var(--sheet);
     color: var(--ink);
     /* Teléfono: el papel ocupa la pantalla y llega hasta el pie */
@@ -32,12 +33,13 @@
   @media (min-width: 600px) {
     .paper {
       --pad: 40px;
+      --pad-t: 36px;
       --sheet: var(--paper);
       width: calc(100% - 2 * var(--gutter));
       max-width: 720px;
       min-height: 0;
       margin: 24px auto 32px;
-      padding: 36px var(--pad) 40px;
+      padding: var(--pad-t) var(--pad) 40px;
       border: 1px solid var(--line);
       border-radius: var(--r-lg);
       box-shadow: var(--e2);
@@ -49,7 +51,8 @@
   }
   /* Móvil en horizontal: poco alto, papel más apretado */
   @media (orientation: landscape) and (max-height: 520px) {
-    .paper { --pad: 22px; margin-block: 12px 16px; padding-block: 18px 22px; }
+    .paper { --pad: 22px; --pad-t: 18px; margin-block: 12px 16px; padding-bottom: 22px; }
+    .paper h2:not(.grid-title) { font-size: clamp(24px, 4vw, 34px); }
   }
   @media (max-width: 360px) {
     .paper { --pad: 16px; }
@@ -71,7 +74,7 @@
     text-wrap: balance;
   }
   .paper h2 [aria-hidden="true"] { font-family: var(--emoji); font-weight: 400; letter-spacing: 0; }
-  .paper :is(h2, h1)[tabindex="-1"]:focus { outline: none; }
+  .paper :is(h1, h2)[tabindex="-1"] { scroll-margin-top: calc(var(--topH, 48px) + 16px); border-radius: var(--r-xs); }
   .paper h3 { margin: 0; }
 
   /* Lectura larga: serif del sistema con negrita de verdad */
@@ -88,7 +91,7 @@
   @media (max-width: 360px) { .read { font-size: 1rem; line-height: 1.625; } }
 
   /* Título de sección con filete fino */
-  .grid-title {
+  .paper .grid-title {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -98,7 +101,7 @@
     letter-spacing: .08em;
     text-transform: uppercase;
   }
-  .grid-title::after {
+  .paper .grid-title::after {
     content: '';
     flex: 1 1 auto;
     height: 1px;
@@ -204,7 +207,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0 8px;
-    margin: 8px 0 0 -12px;
+    margin: 8px 0 0;
   }
   .menu-links .btn.ghost { gap: 8px; }
   .menu-links .btn.ghost .ico { width: 20px; height: 20px; }
@@ -216,7 +219,7 @@
   }
 
   .menu-seasons { margin-top: 8px; }
-  .menu-seasons .grid-title { margin-top: 32px; }
+  .paper .menu-seasons .grid-title { margin-top: 32px; }
   .disclaimer {
     max-width: 62ch;
     margin: 28px 0 0;
@@ -256,7 +259,7 @@
       padding-top: 8px;
     }
     .menu-seasons { margin-top: 0; }
-    .menu-seasons .grid-title { margin-top: 8px; }
+    .paper .menu-seasons .grid-title { margin-top: 8px; }
     .disclaimer { grid-column: 1 / -1; }
   }
 
@@ -271,7 +274,7 @@
     .menu-hero > * { grid-column: 1; }
     .menu-hero .kicker { grid-row: 1; }
     .wordmark { grid-row: 2; font-size: clamp(32px, 8vh, 48px); }
-    .seal-full { grid-column: 1; grid-row: 2; top: auto; bottom: 0; right: 0; margin: 0; --seal: 64px; }
+    .seal-full { position: static; grid-column: 1; grid-row: 2; justify-self: end; align-self: center; margin: 0 4px 0 0; --seal: 64px; }
     .menu-hero .tag { grid-row: 3; font-size: var(--fs-md); margin-top: 12px; }
     .btn.hero { grid-column: 2; grid-row: 1 / span 2; align-self: end; margin-top: 0; }
     .hero-goal { grid-column: 2; grid-row: 3; align-self: start; }
@@ -419,6 +422,13 @@
     filter: grayscale(1);
   }
   .season-card.locked .sc-kicker { color: var(--ink-2); }
+  /* En estrecho el chip «Bloqueada» repite la línea del candado: fuera, la tarjeta queda compacta */
+  @container seasons (max-width: 499px) {
+    .season-card.locked { grid-template-areas: "tile main"; }
+    .season-card.locked .sc-status { display: none; }
+  }
+  /* «Sin empezar»: neutro (el amarillo de marcador es solo para lo que está en curso) */
+  .season-card.open:not(.cur):not(.done) .sc-status { background: var(--surface); border-color: var(--line-strong); color: var(--ink-2); }
   .season-card.locked .sc-sub { color: var(--ink); }
 
   /* Barra de censura «PENDIENTE DE TRÁMITE» (11 px en mayúsculas, documentado) */
@@ -577,19 +587,35 @@
   }
   .lvl.locked .lvl-s { font-family: var(--emoji); font-size: 1rem; }
 
-  /* Teléfono: el botón de jugar viaja pegado abajo (y arriba si se sube la lista) */
+  /* Teléfono: el botón de jugar es un talón. Va al final del papel (después de la lista
+     y de «‹ Temporadas») y se pega abajo, así está a la vista al llegar, aunque el motor
+     desplace la página hasta el trámite en curso. Deja sitio a la derecha para la taza. */
   @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
+    .paper.season-sheet {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 0;
+    }
+    .season-sheet > .row-actions { margin-bottom: 8px; }
     .season-actions {
+      order: 10;
       position: sticky;
       z-index: 20;
-      top: var(--topH, 48px);
       bottom: var(--cc-h, 0px);
-      margin-inline: calc(-1 * var(--pad));
+      margin: auto calc(-1 * var(--pad)) 0;
       padding: 12px calc(var(--pad) + 60px) calc(12px + env(safe-area-inset-bottom, 0px)) var(--pad);
       border-top: 1px dashed var(--line-strong);
       background: var(--sheet);
     }
-    .season-actions .btn.primary { width: 100%; min-width: 0; }
+    .season-actions::before {
+      content: '';
+      position: absolute;
+      inset: auto 0 calc(100% + 1px) 0;
+      height: 16px;
+      background: linear-gradient(color-mix(in srgb, var(--sheet) 0%, transparent), var(--sheet));
+      pointer-events: none;
+    }
+    .season-actions .btn.primary { width: 100%; min-width: 0; padding-inline: 12px; font-size: var(--fs-md); line-height: 1.2; }
   }
 
 
@@ -749,7 +775,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: min(100%, 340px);
+    width: min(100%, 420px);
     margin: 36px 0 8px auto;
   }
   .res-sign-f {
@@ -848,15 +874,22 @@
     text-wrap: balance;
   }
   #endStamp:empty { display: none; }
+  /* Ancho (≥ 560 px de papel): el sello cae arriba a la derecha, en la franja del membrete,
+     que reserva su sitio (ancho y alto). Así nunca pisa el título, ni con «TE HA VUELTO A TOCAR MESA». */
   @container res (min-width: 560px) {
-    .ending .res-head { justify-items: start; text-align: left; padding-inline-end: 10.5rem; }
-    .ending h2 { padding-inline-end: 10.5rem; }
+    .ending .res-head {
+      justify-items: start;
+      align-content: center;
+      min-height: 7rem;
+      padding-inline-end: 12rem;
+      text-align: left;
+    }
     #endStamp {
-      --rot: -8deg;
+      --rot: -7deg;
       position: absolute;
-      top: 34px;
-      right: 28px;
-      max-width: 9.5rem;
+      top: calc(var(--pad-t) + 6px);
+      right: calc(var(--pad) - 6px);
+      max-width: 11rem;
       margin: 0;
     }
     #endTitle { margin-bottom: 20px; }
@@ -1038,6 +1071,9 @@
   }
 
   @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
+    /* El foco y los desplazamientos del motor dejan libre el talón (y el aviso de cookies) */
+    html:not([data-screen="play"]) { scroll-padding-bottom: calc(var(--cc-h, 0px) + 96px); }
+
     /* El papel se estira y el talón queda al pie aunque haya poco texto */
     .paper:is(.intro-card, .resolution) {
       display: flex;
@@ -1105,17 +1141,24 @@
   @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
     /* Teléfono: el flotante solo en el menú y en la temporada (que no tiene talón) */
     body:is([data-screen="intro"], [data-screen="win"], [data-screen="end"]) #kofiFloat { display: none; }
-    /* En la temporada, solo la taza (44 px) para no tapar el botón de jugar */
-    body[data-screen="season"] #kofiFloat {
-      bottom: calc(max(20px, env(safe-area-inset-bottom, 0px) + 12px) + var(--cc-h, 0px));
+    /* En la temporada, centrada en la franja de su talón (12 + 52 + 12 px) */
+    body[data-screen="season"] #kofiFloat { bottom: calc(14px + env(safe-area-inset-bottom, 0px) + var(--cc-h, 0px)); }
+  }
+  /* Solo la taza (48 px): en la temporada, para no tapar el botón de jugar, y en el menú mientras
+     el aviso de cookies está abierto (tapa menos papel en un teléfono bajo) */
+  @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
+    body[data-screen="season"] #kofiFloat,
+    body.cc-open[data-screen="menu"] #kofiFloat {
       width: 48px;
       height: 48px;
       min-height: 48px;
       padding: 0;
       justify-content: center;
     }
-    body[data-screen="season"] #kofiFloat .kofi-cup { width: 36px; height: 36px; font-size: 20px; }
-    body[data-screen="season"] #kofiFloat .kofi-label {
+    body[data-screen="season"] #kofiFloat .kofi-cup,
+    body.cc-open[data-screen="menu"] #kofiFloat .kofi-cup { width: 36px; height: 36px; font-size: 20px; }
+    body[data-screen="season"] #kofiFloat .kofi-label,
+    body.cc-open[data-screen="menu"] #kofiFloat .kofi-label {
       position: absolute;
       width: 1px; height: 1px;
       overflow: hidden;
