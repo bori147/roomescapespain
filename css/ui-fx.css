@@ -200,11 +200,11 @@
     place-items: center;
     padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
     background: var(--scrim);
-    opacity: 1;
     animation: fx-fade-in 160ms var(--ease-out) both;
-    transition: opacity 300ms var(--ease-in);
   }
-  .finale.out { opacity: 0; }
+  /* La salida es otra animación: con «both», el fotograma final de la entrada
+     ganaría a un simple «opacity: 0» y la transición nunca llegaría a verse */
+  .finale.out { animation: fx-fade-out 300ms var(--ease-in) both; pointer-events: none; }
   @keyframes fx-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -315,17 +315,18 @@
 
   /* ==========================================================
      Movimiento reducido: equivalentes estáticos (ui-fx.js los
-     mantiene 900 ms / 1,5 s / 2,4 s y no lanza vuelos ni confeti)
+     mantiene 900 ms / 1,5 s / 2,4 s, el «CONFORME» 380 ms, y no
+     lanza vuelos ni confeti)
      ========================================================== */
   @media (prefers-reduced-motion: reduce) {
     .slot.arrived, .slot.arrived .slot-emoji, #scene .hs.hs-tapped, #scene .hs.glint, #btnHint.nudge .ico,
-    .coach, .finale, .finale-sheet, .modal-ghost, .modal-ghost-scrim { animation: none; }
+    .coach, .finale, .finale-sheet, .modal-ghost, .modal-ghost-scrim, .modal-ghost .fx-conforme { animation: none; }
+    .finale.out { animation: none; opacity: 0; }
     .tap-ring { animation: none; opacity: .9; }
     .slot.arrived { outline: 3px solid var(--marker); outline-offset: 2px; }
     #scene .hs.hs-tapped { outline: 2px solid var(--ink); outline-offset: 3px; }
     #scene .hs.glint { outline: 3px solid var(--marker); outline-offset: 3px; }
     #btnHint.nudge { outline: 3px solid var(--marker); outline-offset: 2px; }
-    .finale { transition: none; }
   }
 
   /* Colores forzados: el pósit y el final siguen siendo legibles */

@@ -389,13 +389,21 @@
     const t = e && e.target;
     if (!t || t === D || t === D.documentElement || t === D.body || t.id === 'sceneWrap' || t.id === 'inventory') dismissCoach();
   }
+  /** Lo señalado ha de verse: su centro dentro de la pantalla y sin nada encima (p. ej. una casilla de la bandeja
+      que ha quedado fuera de su recorte, o la bandeja bajo el pliegue en horizontal). */
+  function onScreen(target, t) {
+    const x = t.left + t.width / 2; const y = t.top + t.height / 2;
+    if (x < 0 || y < 0 || x > vw() || y > vh()) return false;
+    let hit = null; try { hit = D.elementFromPoint(x, y); } catch (e) { return true; }
+    return !!hit && (hit === target || target.contains(hit) || hit.contains(target));
+  }
   const overlaps = (a, b, m) => a.left < b.right + m && a.right > b.left - m && a.top < b.bottom + m && a.bottom > b.top - m;
   /** Coloca un pósit junto a target sin taparlo: encima o debajo, donde quepa mejor. Si no cabe sin taparlo, no sale
       (y no cuenta como visto). No recibe toques: cualquier toque lo retira y llega igualmente a lo que haya debajo. */
   function showCoach(key, target) {
     if (!V() || seen(key) || coach || !quiet()) return false;
     const t = rectOf(target);
-    if (!t) return false;
+    if (!t || !onScreen(target, t)) return false; // no cuenta como visto: saldrá la próxima vez que se vea
     const c = el('div', 'coach');
     c.setAttribute('aria-hidden', 'true'); // se anuncia aparte (VUM.announce), sin duplicar
     c.dataset.k = key;
@@ -496,18 +504,26 @@
     later(() => box.remove(), 2600);
     return box;
   }
-  function countUp() {
+  // Las cifras se ponen a cero al empezar el final (no se ven las definitivas a través del velo) y suben al acabar
+  let countItems = null;
+  const fmtCount = (it, v) => (it.time ? fmtTime(v) : String(Math.round(v)));
+  function zeroCounts() {
     const nodes = $$('#screen-end [data-count]');
-    if (!nodes.length || RM()) return;
-    const items = nodes.map((n) => ({ n, to: +n.dataset.count || 0, time: n.dataset.fmt === 'time', final: n.textContent }));
-    const fmt = (it, v) => (it.time ? fmtTime(v) : String(Math.round(v)));
+    if (!nodes.length || RM()) { countItems = null; return; }
+    countItems = nodes.map((n) => ({ n, to: +n.dataset.count || 0, time: n.dataset.fmt === 'time', final: n.textContent }));
+    countItems.forEach((it) => { it.n.textContent = fmtCount(it, 0); });
+  }
+  function countUp() {
+    if (!countItems) zeroCounts();
+    const items = (countItems || []).filter((it) => it.n.isConnected); countItems = null;
+    if (!items.length) return;
+    const fmt = fmtCount;
     const t0 = now(); const ms = 900;
     const step = () => {
       const t = clamp((now() - t0) / ms, 0, 1); const k = 1 - Math.pow(1 - t, 3);
       items.forEach((it) => { if (it.n.isConnected) it.n.textContent = t >= 1 ? it.final : fmt(it, it.to * k); });
       if (t < 1) raf(step);
     };
-    items.forEach((it) => { it.n.textContent = fmt(it, 0); });
     raf(step);
   }
   function endFinale(skipped) {
@@ -526,6 +542,7 @@
     } else if (f.rm || !canAnimate(f.overlay)) f.overlay.remove();
     else { f.overlay.classList.add('out'); later(() => f.overlay.remove(), 320); }
     if (!f.rm && screen === 'end') countUp();
+    else if (countItems) { countItems.forEach((it) => { if (it.n.isConnected) it.n.textContent = it.final; }); countItems = null; }
   }
   // La capa no recibe toques (las sondas y lo de debajo la atraviesan): el toque se recoge aquí, salta el final
   // y el clic que lo sigue no llega a lo que hubiera debajo.
@@ -551,6 +568,7 @@
     D.body.classList.add('finale-on');
     dismissCoach();
     const rm = RM();
+    if (!rm) zeroCounts();
     const ov = el('div', 'finale' + (rm ? ' is-static' : '') + (d.last ? ' is-last' : ''));
     ov.setAttribute('aria-hidden', 'true');
     const sheet = el('div', 'finale-sheet');
@@ -558,7 +576,7 @@
     sheet.append(el('p', 'finale-k', d.last ? 'Ministerio de Asuntos Pendientes · Los 50 trámites' : `Ministerio de Asuntos Pendientes${n ? ' · ' + n : ''}`));
     const st = el('div', 'stamp finale-stamp', d.stampText || 'EXPEDIENTE CERRADO');
     sheet.append(st);
-    sheet.append(el('p', 'finale-reg', `Reg. salida nº T${d.season || 0}-FIN/2026 · Archívese`));
+    sheet.append(el('p', 'finale-reg', `Reg. salida nº T${d.season || 0}-FIN/${new Date().getFullYear()} · Archívese`));
     ov.append(sheet);
     D.body.append(ov);
     fin = { overlay: ov, timers: [], impact: false, rm };
@@ -583,7 +601,7 @@
   // ==========================================================
   // Se copia el estilo calculado de cada nodo: así el fantasma se ve igual fuera del <dialog> (las reglas de ui-modals
   // dependen de #modal) sin conocer esas reglas. Sin animaciones ni transiciones.
-  const GHOST_PROPS = ['display', 'position', 'top', 'right', 'bottom', 'left', 'box-sizing', 'width', 'height', 'min-height',
+  const GHOST_PROPS = ['display', 'position', 'top', 'right', 'bottom', 'left', 'box-sizing', 'width', 'height',
     'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
     'border-top', 'border-right', 'border-bottom', 'border-left', 'border-radius', 'background-color', 'background-image',
     'background-size', 'background-position', 'background-repeat', 'color', 'font-family', 'font-size', 'font-weight', 'font-style',
@@ -591,11 +609,12 @@
     'white-space', 'text-shadow', 'box-shadow', 'opacity', 'transform', 'rotate', 'scale', 'translate', 'flex-direction', 'flex-wrap',
     'flex-grow', 'flex-shrink', 'flex-basis', 'align-items', 'align-self', 'justify-content', 'row-gap', 'column-gap',
     'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row', 'order', 'overflow-x', 'overflow-y', 'visibility',
-    'vertical-align', 'list-style-type', 'object-fit', 'fill', 'stroke', 'stroke-width', 'mix-blend-mode', 'z-index',
-    '-webkit-mask-image', 'mask-image', '-webkit-mask-size', 'mask-size', 'outline-style', 'outline-width', 'outline-color',
-    'outline-offset', '-webkit-line-clamp', '-webkit-box-orient'];
+    'vertical-align', 'list-style-type', 'fill', 'stroke', 'mix-blend-mode', 'z-index',
+    '-webkit-mask-image', 'mask-image', '-webkit-mask-size', 'mask-size', '-webkit-line-clamp', '-webkit-box-orient'];
   const STRIP = /^(id|for|name|href|role|tabindex|autofocus|title|popover|aria-.+|data-.+|on.+)$/i;
-  const MAX_GHOST_NODES = 220;
+  // Copiar el estilo cuesta ~0,5 ms por nodo en un móvil medio y se paga dentro del toque de cerrar (spec §1.5):
+  // por encima de este tope la tarjeta se cierra sin fantasma
+  const MAX_GHOST_NODES = 80;
   function copyStyles(src, dst) {
     let cs; try { cs = W.getComputedStyle(src); } catch (e) { return; }
     let txt = '';
@@ -603,8 +622,39 @@
     dst.setAttribute('style', txt + 'animation:none;transition:none;pointer-events:none;');
   }
   /** Construye (sin insertarlo) el fantasma de la tarjeta que se cierra. Debe llamarse con la tarjeta aún maquetada. */
+  const okBox = (n) => { n.style.borderColor = 'var(--green)'; n.style.backgroundColor = 'var(--green-bg)'; n.style.color = 'var(--green)'; };
+  /** Versión ligera (gama baja o movimiento reducido): solo las casillas en verde y el «CONFORME», sin copiar la tarjeta.
+      Con movimiento reducido queda quieta 380 ms y se retira sin fundido. */
+  function buildConforme(card) {
+    const disp = $('.kp-display', card) || $('.kp-text', card);
+    const dr = rectOf(disp);
+    if (!dr || dr.bottom < 0 || dr.top > vh()) return null;
+    const clone = disp.cloneNode(true);
+    const src = [disp].concat($$('*', disp)); const dst = [clone].concat($$('*', clone));
+    for (let i = 0; i < src.length && i < dst.length; i++) {
+      if (!src[i].ownerSVGElement) copyStyles(src[i], dst[i]);
+      for (const a of Array.prototype.slice.call(dst[i].attributes)) if (STRIP.test(a.name)) dst[i].removeAttribute(a.name);
+      if (dst[i].tagName === 'INPUT') { try { dst[i].value = src[i].value; } catch (e) { /* nada */ } }
+    }
+    const cs = clone.style; cs.position = 'relative'; cs.inset = 'auto'; cs.margin = '0'; cs.width = '100%'; cs.height = '100%';
+    $$('.kp-box', clone).forEach(okBox);
+    if (clone.tagName === 'INPUT') okBox(clone);
+    $$('input', clone).forEach(okBox);
+    const g = el('div', 'modal-ghost is-ok is-lite');
+    g.setAttribute('aria-hidden', 'true'); g.setAttribute('inert', '');
+    g.style.left = dr.left + 'px'; g.style.top = dr.top + 'px'; g.style.width = dr.width + 'px'; g.style.height = dr.height + 'px';
+    g.append(clone);
+    const st = el('span', 'stamp sm ok fx-conforme', 'CONFORME');
+    st.style.setProperty('--cy', Math.round(dr.height + 4) + 'px');
+    g.append(st);
+    const scrim = el('div', 'modal-ghost-scrim is-ok');
+    scrim.setAttribute('aria-hidden', 'true');
+    return { g, scrim, scrolls: [], keypadOk: true, rm: RM() };
+  }
   function buildGhost(card, keypadOk) {
-    if (RM() || !card || !card.isConnected || (lowEnd() && !keypadOk)) return null; // gama baja: solo el «CONFORME»
+    if (!card || !card.isConnected) return null;
+    // Gama baja o movimiento reducido: sin fantasma de la tarjeta; el teclado, solo su «CONFORME»
+    if (RM() || lowEnd()) return keypadOk ? buildConforme(card) : null;
     const r = rectOf(card);
     if (!r || r.bottom < 0 || r.top > vh()) return null;
     const src = [card].concat($$('*', card));
@@ -656,7 +706,6 @@
       st.style.setProperty('--cy', Math.round(dr ? dr.bottom - box.top + 4 : r.top - box.top + r.height / 2) + 'px');
       g.append(st);
       // Las casillas se pintan en verde a mano: el .ok recién puesto puede estar aún en plena transición
-      const okBox = (n) => { n.style.borderColor = 'var(--green)'; n.style.backgroundColor = 'var(--green-bg)'; n.style.color = 'var(--green)'; };
       $$('.kp-box', clone).forEach((b, i) => { const s = $$('.kp-box', card)[i]; if (s && s.classList.contains('ok')) okBox(b); });
       $$('.kp-text input', clone).forEach((i) => { okBox(i); i.style.boxShadow = '0 0 0 2px var(--green)'; });
     }
@@ -674,10 +723,10 @@
       if (bd && !clear(bd.backgroundColor)) veil(bd);
       else if (!sheet && dcs && dr0 && !clear(dcs.backgroundColor) && dr0.width >= vw() - 2 && dr0.height >= vh() - 2) veil(dcs);
     } catch (e) { /* sin ::backdrop: el velo de la casa */ }
-    return { g, scrim, scrolls, keypadOk };
+    return { g, scrim, scrolls, keypadOk, rm: false };
   }
   function showGhost(gh) {
-    const { g, scrim, scrolls, keypadOk } = gh;
+    const { g, scrim, scrolls, keypadOk, rm } = gh;
     D.body.append(scrim, g);
     scrolls.forEach(([c, t, l]) => { c.scrollTop = t; c.scrollLeft = l; });
     let gone = false;
@@ -687,7 +736,7 @@
       W.removeEventListener('pointerdown', kill, true);
     };
     g.addEventListener('animationend', (e) => { if (e.target === g) kill(); });
-    later(kill, (keypadOk ? 380 : 0) + 140 + 200);
+    later(kill, rm ? 380 : (keypadOk ? 380 : 0) + 140 + 200);
     // Un toque durante la salida no espera: el fantasma se va
     W.addEventListener('pointerdown', kill, { capture: true, passive: true });
   }
