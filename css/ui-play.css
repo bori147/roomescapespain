@@ -1209,14 +1209,13 @@
     body[data-screen="play"] {
       --hudW: clamp(208px, 30vw, 260px);
       --hudR: max(8px, env(safe-area-inset-right, 0px));
-      /* El aviso, abajo en la columna del HUD (nunca sobre la sala; si es largo crece hacia arriba) */
+      /* El justificante, abajo en la columna del HUD y encima del aviso de cookies si está a la
+         vista: nunca sobre la sala ni sobre los botones del aviso (si es largo crece hacia arriba) */
       --toast-x: calc(100vw - var(--hudR) - var(--hudW) / 2);
-      --toast-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+      --toast-bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + var(--cc-h, 0px));
       --toast-maxw: calc(var(--hudW) - 8px);
       grid-template-rows: 0 minmax(0, 1fr);
     }
-    /* Con el aviso de cookies a la vista el justificante sigue abajo: tapa un momento el aviso
-       (no deja de recibir toques: el justificante no los captura), nunca la sala */
     /* Muy bajas (≤ 380 px) y con el aviso: el objetivo se recoge (sigue en la ventanilla en reposo
        y en «Expediente en pausa») para que quepan ventanilla y bandeja */
     @media (max-height: 380px) {
@@ -1425,7 +1424,7 @@
 
     body[data-screen="play"] {
       --toast-x: calc((100vw + min(100vw, 1480px)) / 2 - 24px - 170px);
-      --toast-bottom: 24px;
+      --toast-bottom: calc(24px + var(--cc-h, 0px));
       --toast-maxw: 332px;
     }
     body[data-screen="play"] #main { padding: 0; }
