@@ -433,6 +433,8 @@
 
   /* ---------------- Colores forzados ---------------- */
   @media (forced-colors: active) {
+    /* Los objetos son botones, pero forman parte del dibujo: conservan sus colores */
+    .scene .hs { forced-color-adjust: none; }
     .hs:focus-visible, .hs:hover { outline: 2px solid Highlight; outline-offset: 2px; box-shadow: none; }
     .hs.sign { border-color: CanvasText; }
     .hs::after { forced-color-adjust: none; }

@@ -727,6 +727,7 @@
   #dialog[data-skin="item"] .dlg-face { background: var(--surface); }
   /* «Seleccionado» mientras el objeto sigue en la mano */
   .stage:has(#inventory.has-sel) #dialog[data-skin="item"] .dlg-who::after {
+    content: 'Seleccionado';
     content: 'Seleccionado' / '';
     display: inline-block;
     margin-left: 8px;
