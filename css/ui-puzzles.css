@@ -505,7 +505,8 @@
   /* S5-N8: contador de candidatos marcados en el botón de votar */
   .s5-cands { counter-reset: sel; }
   .s5-cand.on { counter-increment: sel; }
-  #s5-vote::after { content: ' (' counter(sel) '/4)'; font-variant-numeric: tabular-nums; }
+  /* El .btn es flex con column-gap de 8 px: sin espacio delante y con el hueco de un espacio (no «votación  (2/4)») */
+  #s5-vote::after { content: '(' counter(sel) '/4)'; margin-left: -4px; font-variant-numeric: tabular-nums; }
   .modal-body:has(.s5-cands) { counter-reset: sel; }
 
   /* ---------------- Teleprompter: tarjetas de frase (ui-puzzles.js) ---------------- */

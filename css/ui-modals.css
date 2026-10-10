@@ -563,6 +563,14 @@
     .kp-key { height: 48px; font-size: 1.375rem; }
     .kp-msg { margin-top: 10px; }
   }
+  /* 320 × 568 y 375 × 553 con un enunciado largo (S3-N2, S3-N10): teclas al mínimo táctil */
+  @media (orientation: portrait) and (max-height: 600px) {
+    #kpPrompt { margin-bottom: 8px; }
+    .kp-display { margin-bottom: 10px; }
+    .kp-box { height: 44px; }
+    .kp-key { height: 44px; }
+    .kp-msg { margin-top: 8px; }
+  }
 
   /* Candado de texto */
   .kp-text { display: flex; gap: 8px; align-items: stretch; }
