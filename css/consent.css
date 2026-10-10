@@ -84,13 +84,13 @@
       padding: 10px 12px 10px 16px;
       bottom: max(8px, env(safe-area-inset-bottom, 0px));
     }
-    .cc-text { flex: 1 1 auto; min-width: 0; }
-    .cc-title { font-size: var(--fs-sm); margin-bottom: 2px; }
-    .cc-banner p { font-size: .8125rem; line-height: 1.35; }
+    .cc-text { flex: 1 1 auto; min-width: 0; font-size: .8125rem; line-height: 1.4; }
+    /* Título y texto en el mismo párrafo visual: una franja de unos 80 px */
+    .cc-title { display: inline; margin: 0 .35em 0 0; font-size: .8125rem; line-height: 1.4; }
+    .cc-banner p { display: inline; font-size: .8125rem; line-height: 1.4; }
     .cc-banner > .cc-actions { flex: none; display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 0; }
-    .cc-banner .cc-btn { padding: 0 14px; white-space: nowrap; }
+    .cc-banner .cc-btn { padding: 0 12px; white-space: nowrap; }
   }
-
   /* Escritorio: texto a la izquierda, los tres botones (iguales) a la derecha */
   @media (min-width: 900px) and (min-height: 521px) {
     .cc-banner {

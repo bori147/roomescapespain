@@ -10,6 +10,8 @@
     padding: 0 0 max(32px, env(safe-area-inset-bottom, 0px));
     background: var(--canvas);
   }
+  /* Con el aviso de cookies abierto, el final de la página sigue alcanzable */
+  body.legal-page.cc-open { padding-bottom: calc(var(--cc-h, 0px) + 16px); }
 
   /* ---------------- Cabecera: sello + marca + volver ---------------- */
   .lg-top {

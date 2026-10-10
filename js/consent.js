@@ -43,10 +43,12 @@
 
   function measure() {
     if (!banner) return;
+    // Alto ocupado abajo = alto del aviso + su separación del borde.
+    // offsetHeight no cambia con la animación de entrada (transform).
     let h = 0;
     try {
-      const r = banner.getBoundingClientRect();
-      if (r.height > 0) h = Math.max(0, Math.ceil(window.innerHeight - r.top));
+      const oh = banner.offsetHeight;
+      if (oh > 0) h = Math.ceil(oh + (parseFloat(getComputedStyle(banner).bottom) || 0));
     } catch (e) { h = 0; }
     root.style.setProperty('--cc-h', h + 'px');
   }

@@ -31,7 +31,7 @@
     scrollbar-color: color-mix(in srgb, var(--ink-3) 70%, transparent) transparent;
     /* El foco nunca queda debajo de la barra superior ni del talón / café */
     scroll-padding-top: calc(var(--topH, 48px) + 16px);
-    scroll-padding-bottom: 96px;
+    scroll-padding-bottom: max(96px, calc(var(--cc-h, 0px) + 16px));   /* ni tapado por el aviso de cookies */
     overflow-x: clip;
   }
   body {
@@ -58,12 +58,17 @@
     padding-right: env(safe-area-inset-right, 0px);
   }
 
-  h1, h2, h3 { line-height: var(--lh-head); text-wrap: balance; }
-  p, li, dd { text-wrap: pretty; }
+  h1, h2, h3 { line-height: var(--lh-head); }
+  /* Ajuste de líneas (spec §3): titulares equilibrados, párrafos sin viudas */
+  :is(h1, h2, h3, .sc-title, .modal-head h2) { text-wrap: balance; }
+  :is(p, li, dd, .dlg-text, .intro-text) { text-wrap: pretty; }
+  /* Nombres largos en casillas estrechas: se cortan con guion, nunca desbordan */
+  :is(.slot-name, .lvl-t, .p-name) { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
   b, strong { font-weight: 700; }
   small { font-size: max(12px, .8125em); }
   code, kbd, samp, pre { font-family: var(--mono); }
-  :is(time, .num) { font-variant-numeric: tabular-nums; }
+  /* Cifras de ancho fijo: cronómetro, contadores, códigos, teclado, estadísticas */
+  :is(time, .num, .timer, #timer, .lvl-n, .tb-badge, .kp-box, .kp-key, .res-stats, .end-stats, .sc-best, code) { font-variant-numeric: tabular-nums; }
 
   a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   a:hover { text-decoration-thickness: 2px; }
@@ -111,9 +116,8 @@
     }
     .shake, .flash-bad { animation: k-flash-bad .4s 1 !important; }
   }
-  @media (prefers-reduced-motion: no-preference) {
-    html:focus-within { scroll-behavior: smooth; }
-  }
+  /* Sin scroll-behavior:smooth global: el motor decide (RM() ? 'auto' : 'smooth')
+     y el scrollTo(0,0) de cada cambio de pantalla debe ser instantáneo. */
 
   /* Transparencia reducida: fuera desenfoques */
   @media (prefers-reduced-transparency: reduce) {
