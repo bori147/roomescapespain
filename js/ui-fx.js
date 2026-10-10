@@ -529,23 +529,25 @@
     }), 80);
   });
   // «Siguiente»: espera a que se retire el aviso de la bandeja (suele llegar a la vez y taparía el botón)
+  let queueWait = false; // una sola espera aunque lleguen varias líneas en cola
   function coachQueue(tries) {
+    queueWait = false;
     if (seen('queue') || !(state().queue > 0)) return;
-    tries = tries || 0;
     const b = D.getElementById('btnNextMsg');
     if (!b || b.closest('[hidden]')) return;
-    if ((toastShown() || coach) && tries < 20) { later(safe(() => coachQueue(tries + 1)), 200); return; }
+    if ((toastShown() || coach) && tries < 20) { queueWait = true; later(safe(() => coachQueue(tries + 1)), 200); return; }
     showCoach('queue', b);
   }
   on('say', (d) => {
-    if (!d.queued || seen('queue')) return;
+    if (!d.queued || seen('queue') || queueWait) return;
+    queueWait = true;
     later(safe(() => coachQueue(0)), 80);
   });
 
   // ==========================================================
   // 7) Final de temporada «EXPEDIENTE CERRADO» (spec §9.6) — ≤ 1600 ms, se salta con un toque
   // ==========================================================
-  let fin = null; // { overlay, timers[], impact, rm }
+  let fin = null; // { overlay, timers[], impact, fanfare, rm }
   const BITS = ['📄', '🧾', '📎', '✉️', '🖇️'];
   function confetti(n) {
     const box = el('div', 'fx-confetti'); box.setAttribute('aria-hidden', 'true');
@@ -598,7 +600,7 @@
       // El sello de la esquina aterriza ya (y suena aquí si el del final no llegó a sonar)
       const st = D.getElementById('endStamp');
       if (st && st.classList.contains('go')) { st.style.setProperty('--stamp-delay', '0ms'); st.classList.remove('go'); void st.offsetWidth; st.classList.add('go'); }
-      if (!f.impact) { later(() => { sfx('stamp'); haptic('season'); }, f.rm ? 0 : 231); later(() => sfx('season'), f.rm ? 150 : 381); }
+      if (!f.impact) { later(() => { sfx('stamp'); haptic('season'); }, f.rm ? 0 : 231); later(() => sfx('season'), f.rm ? 150 : 381); } else if (!f.fanfare) sfx('season');
       f.overlay.remove();
     } else if (f.rm || !canAnimate(f.overlay)) f.overlay.remove();
     else { f.overlay.classList.add('out'); later(() => f.overlay.remove(), 300); }
@@ -644,7 +646,7 @@
     sheet.append(el('p', 'finale-reg', `Reg. salida nº T${d.season || 0}-FIN/${new Date().getFullYear()} · Archívese`));
     ov.append(sheet);
     D.body.append(ov);
-    fin = { overlay: ov, timers: [], impact: false, rm };
+    fin = { overlay: ov, timers: [], impact: false, fanfare: false, rm };
     const T = (fn, ms) => fin.timers.push(later(safe(fn), ms));
     const STAMP_DELAY = 200; // la hoja entra; el sello impacta al 55 % de 420 ms
     const impact = rm ? 0 : STAMP_DELAY + 231;
@@ -655,7 +657,7 @@
       sfx('stamp'); haptic('season');
       if (!rm) confetti(lowEnd() ? 10 : 18);
     }, impact);
-    T(() => sfx('season'), impact + 150);
+    T(() => { if (fin) fin.fanfare = true; sfx('season'); }, impact + 150);
     T(() => endFinale(false), rm ? 900 : 1300); // + 300 ms de fundido = 1600 ms en total
     W.addEventListener('pointerdown', onFinaleTap, true);
     W.addEventListener('keydown', onFinaleKey, true);
@@ -724,7 +726,15 @@
     scrim.setAttribute('aria-hidden', 'true');
     return { g, scrim, scrolls: [], keypadOk: true, rm: RM() };
   }
-  function buildGhost(card, keypadOk) {
+  // Cerrar arrastrando la hoja hacia abajo: el motor devuelve la tarjeta a su sitio justo antes de cerrar, así que el
+  // desplazamiento se anota al soltar (en captura, antes que el motor) y el fantasma sale desde donde se soltó
+  let swipeDy = 0;
+  W.addEventListener('pointerup', () => {
+    const c = $('#modal .modal-card');
+    const t = c && c.style.translate ? String(c.style.translate).trim().split(/\s+/) : [];
+    swipeDy = t.length > 1 ? Math.max(0, parseFloat(t[1]) || 0) : 0;
+  }, { capture: true, passive: true });
+  function buildGhost(card, keypadOk, dy) {
     if (!card || !card.isConnected) return null;
     // Gama baja o movimiento reducido: sin fantasma de la tarjeta; el teclado, solo su «CONFORME»
     if (RM() || lowEnd()) return keypadOk ? buildConforme(card) : null;
@@ -755,7 +765,7 @@
     const clear = (c) => !c || c === 'transparent' || /rgba\([^)]*,\s*0\)$/.test(c);
     const sheet = !!(dcs && ccs && clear(ccs.backgroundColor) && !clear(dcs.backgroundColor));
     const box = sheet ? dr0 : r;
-    g.style.left = box.left + 'px'; g.style.top = box.top + 'px';
+    g.style.left = box.left + 'px'; g.style.top = (box.top + (dy || 0)) + 'px';
     g.style.width = box.width + 'px'; g.style.height = box.height + 'px';
     const cs = clone.style;
     if (sheet) {
@@ -824,7 +834,7 @@
       && (!!$('.kp-box.ok', card) || (!$('.kp-display', card) && !!$('.kp-text input', card) && !$('.kp-text input[aria-invalid="true"]', card)));
     // El fantasma se construye ahora (tarjeta aún maquetada) y se inserta cuando closeModal ha terminado, solo si el
     // modal no se ha vuelto a abrir ni ha cambiado la pantalla (sería un fantasma encima de otra cosa).
-    const gh = (d.reason && d.reason !== 'commit') || kpOk ? buildGhost(card, kpOk) : null;
+    const gh = (d.reason && d.reason !== 'commit') || kpOk ? buildGhost(card, kpOk, d.reason === 'swipe' ? swipeDy : 0) : null;
     const scr = screenNow();
     if (gh) {
       const go = safe(() => { if (!modalOpen() && screenNow() === scr) showGhost(gh); });
