@@ -1345,7 +1345,7 @@
     .inventory .slot.empty { display: flex; }
     .inventory .inv-empty { grid-column: 1 / -1; padding: 2px 2px 4px; }
     .inventory .inv-empty + .slot.empty { order: 0; }
-    .tray-more, #kofiTray { display: none; }
+    #kofiTray { display: none; }
   }
 
   /* Título «Bandeja · 7» visible en horizontal y escritorio */
@@ -1372,6 +1372,25 @@
     .inventory > .slot.empty:nth-child(3n+1):not(:first-child) ~ .slot.empty { display: none; }
     /* Bandeja vacía: basta con el texto */
     .inventory > .inv-empty ~ .slot.empty { display: none; }
+
+    /* Aquí la rejilla se desplaza en vertical: ui-fx marca .ovf-l (queda arriba) y .ovf-r (queda
+       abajo) y rellena «+N ▾». Sombras arriba y abajo, y la píldora flota en la esquina de la bandeja
+       (sobre la casilla que ya asoma a medias) sin quitarle una fila a la rejilla. */
+    #tray { position: relative; }
+    #tray.ovf-r .inventory {
+      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+      mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+    }
+    #tray.ovf-l .inventory {
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 24px);
+      mask-image: linear-gradient(to bottom, transparent, #000 24px);
+    }
+    #tray.ovf-l.ovf-r .inventory {
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+      mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    }
+    .tray-more { position: absolute; right: 6px; bottom: 4px; z-index: 2; height: 32px; box-shadow: var(--e2); }
+    .tray-more::before { top: 50%; translate: -50% -50%; }
   }
 
   /* ======================================================
@@ -1486,6 +1505,6 @@
     .inventory .slot.empty { display: flex; }
     .inventory .inv-empty { grid-column: 1 / -1; padding: 2px 2px 4px; }
     .inventory .inv-empty + .slot.empty { order: 0; }
-    .tray-more, #kofiTray { display: none; }
+    #kofiTray { display: none; }
   }
 }
