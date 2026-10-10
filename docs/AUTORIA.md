@@ -380,7 +380,7 @@ tiene una **guarda** en `tests/run.js` que falla si el marcado de la temporada c
 | Tablas a fichas en el móvil: Pisos (T3-N1), Caja de facturas y CAFÉ-MRR (T5-N4) | reciben `table.tbl-stack` y `td[data-label]` |
 | Clasificación de CAFÉ-MRR con chips en lugar de `<select>` | los `#s5-f1…#s5-f11` siguen existiendo y aceptan `h.setValue` |
 | El cuadro de créditos de T5-N3 (`.s5-bud`) **no** se convierte en fichas (tiene columna fija) | T5-N3 «cuadro»: `.s5-bud` sin `.tbl-stack` |
-| CSS de temporada dentro de `@layer seasons` (para que `overrides` gane) | el `<style data-season>` empieza por `@layer seasons{` |
+| CSS de temporada dentro de `@layer seasons` (para que `overrides` gane) | el `<style data-season>` empieza por `@layer seasons{` (en jsdom, que no entiende `@layer`, basta con que `js/core.js` lo haga en los navegadores que sí) |
 | Textos mínimos de temporada (`.s2-wall`, `.s5-cal-g b`, `.s5-mz small` ≥ 11 px en mayúsculas; carnés finales), monoespaciada para cifrados y tiras | sondas de tamaño de texto de `tests/shots.js` |
 
 Las guardas que dependen de un fichero aún vacío (`js/ui-puzzles.js`) se marcan como omitidas (⏭) hasta que exista.
