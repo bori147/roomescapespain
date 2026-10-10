@@ -1096,14 +1096,34 @@
     margin-top: 32px;
   }
   .row-actions.talon .btn.primary { margin-left: auto; text-wrap: balance; }
+  /* El foco y los desplazamientos del motor dejan libres el talón pegado, el café flotante y el aviso
+     de cookies, en cualquier tamaño (la base pone 96 px; el talón de escritorio mide ~84 px + desvanecido) */
+  html:not([data-screen="play"]) { scroll-padding-bottom: calc(var(--cc-h, 0px) + 104px); }
   /* Escritorio y tableta: fila normal; el café va en el flotante */
   @media (min-width: 761px) and (min-height: 521px), (min-width: 761px) and (orientation: portrait) {
     .row-actions.talon .kofi-chip { display: none; }
+    /* También pegado abajo: en una ventana baja (1366×650) o con el aviso de cookies abierto el botón
+       principal sigue a la vista. Si el papel cabe entero no se nota: es la última fila del papel. */
+    .row-actions.talon {
+      position: sticky;
+      z-index: 20;
+      bottom: var(--cc-h, 0px);
+      margin-inline: calc(-1 * var(--pad));
+      padding: 16px var(--pad);
+      border-top: 1px dashed var(--line-strong);
+      background: var(--sheet);
+    }
+    .row-actions.talon::before {
+      content: '';
+      position: absolute;
+      inset: auto 0 calc(100% + 1px) 0;
+      height: 16px;
+      background: linear-gradient(color-mix(in srgb, var(--sheet) 0%, transparent), var(--sheet));
+      pointer-events: none;
+    }
   }
 
   @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
-    /* El foco y los desplazamientos del motor dejan libre el talón (y el aviso de cookies) */
-    html:not([data-screen="play"]) { scroll-padding-bottom: calc(var(--cc-h, 0px) + 96px); }
 
     /* El papel se estira y el talón queda al pie aunque haya poco texto */
     .paper:is(.intro-card, .resolution) {
@@ -1175,6 +1195,18 @@
     transition: bottom var(--d-base) var(--ease-out), background-color var(--d-fast) var(--ease-std), scale var(--d-press) var(--ease-out);
   }
   body[data-screen="play"] #kofiFloat { display: none; }
+  /* En el final, la «tasa» ya lleva su propio botón de café: el flotante no se le pone encima.
+     En escritorio el café pasa a la taza del talón, que no tapa nada (en el teléfono ya es así). */
+  body[data-screen="end"]:has(#endDonate:not([hidden])) #kofiFloat { display: none; }
+  @media (min-width: 761px) and (min-height: 521px), (min-width: 761px) and (orientation: portrait) {
+    body[data-screen="end"]:has(#endDonate:not([hidden])) .row-actions.talon .kofi-chip:not([hidden]) { display: inline-flex; }
+  }
+  /* Tableta y portátil estrecho: el papel (720 px) llega casi al borde y el flotante caería sobre el
+     botón principal del talón pegado. Como en el teléfono, el café va en el talón. */
+  @media (min-width: 761px) and (max-width: 1199px) and (min-height: 521px), (min-width: 761px) and (max-width: 1199px) and (orientation: portrait) {
+    body:is([data-screen="intro"], [data-screen="win"], [data-screen="end"]) #kofiFloat { display: none; }
+    body:is([data-screen="intro"], [data-screen="win"], [data-screen="end"]) .row-actions.talon .kofi-chip:not([hidden]) { display: inline-flex; }
+  }
 
   @media (max-width: 760px), (orientation: landscape) and (max-height: 520px) {
     /* Teléfono: el flotante solo en el menú y en la temporada (que no tiene talón) */
@@ -1203,6 +1235,28 @@
       clip-path: inset(50%);
       white-space: nowrap;
     }
+    /* Los enlaces del menú dejan libre la columna de la taza: «Tengo un código» no queda debajo */
+    body.cc-open[data-screen="menu"] .menu-links { padding-right: 56px; }
+  }
+  /* Teléfono bajo (320×568, 375×553…): en el menú, siempre solo la taza y arrimada al borde */
+  @media (max-width: 599px) and (max-height: 620px) {
+    body[data-screen="menu"] #kofiFloat {
+      right: max(8px, env(safe-area-inset-right, 0px));
+      width: 48px;
+      height: 48px;
+      min-height: 48px;
+      padding: 0;
+      justify-content: center;
+    }
+    body[data-screen="menu"] #kofiFloat .kofi-cup { width: 36px; height: 36px; font-size: 20px; }
+    body[data-screen="menu"] #kofiFloat .kofi-label {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    body[data-screen="menu"] .menu-links { padding-right: 56px; }
   }
 
 
