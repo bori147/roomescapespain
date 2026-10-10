@@ -750,13 +750,10 @@
     scroll-margin: 12px;
     animation: modal-fade-in var(--d-fast) var(--ease-out) both;
   }
-  .turno-confirm p { margin: 0 0 10px; font-weight: 600; font-size: var(--fs-sm); }
-  .turno-confirm .row-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; }
-  .turno-confirm .row-btns .btn { padding: 0 10px; }
-  @container mbody (max-width: 400px) {
-    .turno-confirm .row-btns { grid-template-columns: minmax(0, 1fr); }
-    .turno-confirm .row-btns .btn.cost { order: -1; }
-  }
+  /* «Mejor lo intento» · «Sí, ver la solución» en el orden del motor (el coste, último).
+     .row-btns (flex, con su margen) lo pone @layer puzzles; aquí solo el reparto. */
+  .turno-confirm p { margin: 0; font-weight: 600; font-size: var(--fs-sm); }
+  .turno-confirm .row-btns .btn { flex: 1 1 auto; padding: 0 12px; }
 
   /* ---------------- Manual del ciudadano ---------------- */
   .help-cards {
