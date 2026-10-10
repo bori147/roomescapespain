@@ -567,6 +567,17 @@
   /* ---------------- S4: votantes, en filas sin scroll propio en el móvil ---------------- */
   .s4-voter .s4-vbtns { display: flex; flex-direction: row; gap: 6px; }
 
+  /* ---------------- Colores forzados: la selección se ve con el color del sistema ---------------- */
+  @media (forced-colors: active) {
+    :is(.opt.on, .tile.on, .party.on, .strip.pick, .cal-d.cur, .seg-opt[aria-checked="true"], .choice-card[aria-checked="true"], .s4-vbtns .btn.on) {
+      outline: 3px solid Highlight;
+      outline-offset: 1px;
+    }
+    :is(.msg, .coal-msg, .sede-msg, .sede-err, .sede-ok):not(:empty) { border: 2px solid CanvasText; }
+    .opt::before, .choice-card::before { border-color: CanvasText; }
+    .opt.on::before, .choice-card[aria-checked="true"]::before { background: Highlight; }
+  }
+
   /* ---------------- Tableros en horizontal: instrucciones a la izquierda, tablero a la derecha ----------------
      El contenedor es el padre directo del tablero (o el propio cuerpo). Las filas
      «min-content» apilan arriba lo de la izquierda y la última (1fr) se queda el resto,

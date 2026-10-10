@@ -726,7 +726,12 @@
     animation: modal-fade-in var(--d-fast) var(--ease-out) both;
   }
   .turno-confirm p { margin: 0 0 10px; font-weight: 600; font-size: var(--fs-sm); }
-  .turno-confirm .row-btns { justify-content: flex-end; margin: 0; }
+  .turno-confirm .row-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; }
+  .turno-confirm .row-btns .btn { padding: 0 10px; }
+  @container mbody (max-width: 400px) {
+    .turno-confirm .row-btns { grid-template-columns: minmax(0, 1fr); }
+    .turno-confirm .row-btns .btn.cost { order: -1; }
+  }
 
   /* ---------------- Manual del ciudadano ---------------- */
   .help-cards {
@@ -1002,6 +1007,16 @@
   .toast-b b { font-weight: 700; }
   @media (forced-colors: active) {
     .toast { border: 2px solid CanvasText; }
+  }
+
+  /* ---------------- Colores forzados: sin sombras, con bordes ---------------- */
+  @media (forced-colors: active) {
+    .modal-card { border: 2px solid CanvasText; }
+    .modal-head, .modal-foot { border-color: CanvasText; }
+    .modal-status.is-visible { border-top: 2px solid CanvasText; }
+    .kp-box { border-color: CanvasText; }
+    .kp-box.next { outline: 2px solid Highlight; }
+    .modal-lupa[aria-pressed="true"] { outline: 2px solid Highlight; }
   }
 
   /* ---------------- Animaciones ---------------- */
