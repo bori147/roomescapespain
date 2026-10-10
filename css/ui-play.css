@@ -324,7 +324,7 @@
     margin-inline: auto;
   }
   @supports not (height: 1cqh) {
-    .scene { height: clamp(200px, calc(100dvh - var(--topH, 48px) - 324px), var(--sceneMax)); }
+    .scene { width: auto; height: clamp(200px, calc(100dvh - var(--topH, 48px) - 324px), var(--sceneMax)); aspect-ratio: 16 / 9; }
   }
 
   /* Sombras de borde: queda sala a un lado */
