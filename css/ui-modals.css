@@ -387,6 +387,11 @@
     .modal { --mbp: 14px; }
     .modal-head { padding-left: 14px; }
   }
+  /* 320 px: «Cancelar» + «🇪🇺 Enviar a Bruselas» caben en una fila (si no, el pie se come 120 px) */
+  @media (max-width: 340px) and (orientation: portrait) {
+    .modal-foot { gap: 6px; padding-inline: 12px; }
+    .modal-foot .btn { padding: 0 10px; }
+  }
 
   /* ---------------- Tamaño 2: horizontal bajo (≤ 520 px de alto) ---------------- */
   @media (orientation: landscape) and (max-height: 520px) {
@@ -988,7 +993,7 @@
     background: var(--marker-soft);
     color: var(--ink);
   }
-  label.field { display: block; margin: 12px 0 6px; font: 600 .8125rem/1.3 var(--ui); color: var(--ink); }
+  /* label.field vive en ui-puzzles.css (un único estilo para todos los campos) */
   .code-load { display: flex; gap: 8px; align-items: stretch; }
   .code-load input { flex: 1 1 auto; min-width: 0; font-family: var(--stamp-f); letter-spacing: .06em; text-transform: uppercase; }
   .code-load .btn { flex: none; --btn-h: 48px; }

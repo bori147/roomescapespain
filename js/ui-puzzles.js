@@ -296,10 +296,10 @@
     cur.statusText = text;
     cur.verdict = el;
     const mine = cur;
-    mine.timers.push(setTimeout(() => {
+    later(mine, () => {
       if (cur !== mine || mine.verdict !== el) return;
       pause(() => { st.textContent = text; });
-    }, 50));
+    }, 50);
     // La tira visible solo se decide cuando el desplazamiento ha terminado (si no, la tira
     // aparece a mitad del scroll suave, encoge el cuerpo y el veredicto se queda a medias)
     let done = false;
@@ -318,7 +318,7 @@
       });
     };
     if ('onscrollend' in window) mine.body.addEventListener('scrollend', settle);
-    mine.timers.push(setTimeout(settle, rm() ? 80 : 520));
+    later(mine, settle, rm() ? 80 : 520);
   }
   function watchVerdict(el) {
     if (!cur) return;
@@ -395,7 +395,7 @@
     if (!box) return;
     const c = make('span', 'chip draft', '<span aria-hidden="true">📝</span> Borrador conservado');
     box.append(c);
-    cur.timers.push(setTimeout(() => { if (c.isConnected) c.remove(); }, 3200));
+    later(cur, () => { if (c.isConnected) c.remove(); }, 3200);
   }
 
   // ---------------- Ciclo de vida de cada hoja ----------------
@@ -477,8 +477,12 @@
     enhance(true);
     if (cur && cur.mo) observe(cur);
     schedule(); // por si restaurar un borrador hizo que la temporada repintara algo
+    // Membrete del oficio: el punto separador se queda al final de la primera línea, nunca encabeza la segunda
+    const mast = card.querySelector('.modal-masthead');
+    if (mast && mast.childNodes.length === 1 && mast.firstChild.nodeType === 3) mast.firstChild.nodeValue = mast.firstChild.nodeValue.replace(/ · /g, '\u00a0· ');
     const st = card.querySelector('.modal-status');
-    if (st) {
+    if (st && !st.hasAttribute('data-tap')) {
+      st.setAttribute('data-tap', '');
       // Atajo solo de puntero (la tira es un <p role=status>, no un control): el teclado y los
       // lectores ya reciben el veredicto entero en la propia tira y en el cuerpo.
       st.addEventListener('click', () => {
@@ -486,6 +490,15 @@
         if (v && v.isConnected && typeof v.scrollIntoView === 'function') { try { v.scrollIntoView({ block: 'nearest', behavior: rm() ? 'auto' : 'smooth' }); } catch (e) { /* nada */ } }
       });
     }
+  }
+  /** setTimeout que se borra solo de c.timers al dispararse (la lista no crece veredicto a veredicto) */
+  function later(c, fn, ms) {
+    const id = setTimeout(() => {
+      const i = c.timers.indexOf(id);
+      if (i >= 0) c.timers.splice(i, 1);
+      fn();
+    }, ms);
+    c.timers.push(id);
   }
   function teardown() {
     if (!cur) return;

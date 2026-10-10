@@ -389,6 +389,29 @@
   .strips:has(.solved) { gap: 0; }
 
   /* ---------------- Disco de cifrado ---------------- */
+  /* Texto cifrado suelto: descripciones de objetos (code.cipher en S1, S4, S5) y oficio «Orden del día» (p.cipher, S5-N9) */
+  .cipher {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink);
+    font: 500 .9375em/1.5 var(--mono);
+    letter-spacing: .06em;
+    overflow-wrap: anywhere;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  p.cipher {
+    padding: 10px 12px;
+    border: 2px dashed var(--ink-2);
+    border-radius: var(--r-sm);
+    box-shadow: none;
+    font-size: 1rem;
+    text-align: center;
+    user-select: text;
+    -webkit-user-select: text;
+  }
   .cipher-box { text-align: center; }
   .cipher-in, .cipher-out {
     padding: 12px;
@@ -735,7 +758,7 @@
   }
   /* Calendarios en 320 px: 7 columnas de ≥ 42 px comiéndose parte del relleno del cuerpo */
   @container mbody (max-width: 320px) {
-    #modal .cal-grid { gap: 2px; margin-inline: -10px; }
+    #modal .cal-grid { gap: 1px; margin-inline: calc(2px - var(--mbp, 14px)); }
   }
 
   /* Sin opacidad para atenuar texto */
