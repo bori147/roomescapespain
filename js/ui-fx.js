@@ -423,7 +423,7 @@
     c.style.setProperty('--ax', Math.round(clamp(cx - left, 18, cr.width - 18)) + 'px');
     c.classList.add(up ? 'is-above' : 'is-below');
     c.style.visibility = '';
-    coach = c;
+    coach = c; coachVW = W0; coachVH = H0;
     markSeen(key);
     announce(text.replace(/^[^\p{L}«]+/u, ''));
     D.addEventListener('scroll', onCoachScroll, { capture: true, passive: true });
@@ -433,7 +433,9 @@
   // Cualquier toque o tecla lo cierra (sin tragarse el toque: lo de debajo responde)
   W.addEventListener('pointerdown', () => { if (coach) dismissCoach(); }, { capture: true, passive: true });
   W.addEventListener('keydown', () => { if (coach) dismissCoach(); }, { capture: true });
-  W.addEventListener('resize', () => { if (coach) dismissCoach(); }, { passive: true });
+  // Girar el móvil o cambiar el ancho lo retira; la barra de direcciones que sube y baja (solo el alto, poco) no
+  let coachVW = 0; let coachVH = 0;
+  W.addEventListener('resize', () => { if (coach && (vw() !== coachVW || Math.abs(vh() - coachVH) > 140)) dismissCoach(); }, { passive: true });
 
   function coachRoom() {
     if (seen('room') || !quiet()) return;
