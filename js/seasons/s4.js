@@ -657,8 +657,6 @@
         { kind: 'bench', id: 'banco', l: 11, t: 62.4, w: 14, h: 20.6 },
         { kind: 'shelf', id: 'soporte', l: 41.5, t: 22.3, w: 6.5, h: 1.4 },
         { kind: 'counter', id: 'mostrador', l: 42, t: 48.85, w: 34, h: 23.15 },
-        { emoji: '👩‍💼', x: 60, y: 43.6, s: 11.5, behind: 'mostrador' },
-        { emoji: '📦', x: 71, y: 43.52, s: 6, on: 'mostrador' },
         { emoji: '🧍‍♀️', x: 40, y: 57.51, s: 24.17 },
       ],
       hotspots: [
@@ -752,7 +750,7 @@
           look(g) { g.say('—Yo vine a recoger un paquete en marzo. Me dieron número de Giros. Desde entonces solo hago giros.', 'Señor de la cola'); } },
         { id: 'buzon', x: 85, y: 65.09, emoji: '📮', s: 14.5, label: 'Buzón amarillo',
           look(g) { g.say('Un buzón amarillo con un cartel: «NO introduzca aquí su voto por correo. Sí, ya sabemos que es un buzón de correos».'); } },
-        { id: 'paquete', x: 94, y: 80.67, emoji: '📦', s: 6, label: 'Paquete retenido',
+        { id: 'paquete', x: 71, y: 43.52, emoji: '📦', s: 6, on: 'mostrador', label: 'Paquete retenido',
           look(g) { g.say('«Paquete retenido en aduana: pague 1,99 €». Es de 2023. Nadie lo ha reclamado. Probablemente sea una estafa en sí mismo.'); } },
       ],
       combos: {
