@@ -1358,17 +1358,20 @@
       scene: { wall: '#efe7d6', floor: '#7a5a3c', floorH: 36, pattern: 'wood' },
       carry: ['nombramiento'],
       decor: [
-        { kind: 'flag', l: 51, t: 14, w: 8.5, h: 10.1 },
-        { kind: 'flag-eu', l: 61.5, t: 14, w: 8.5, h: 10.1 },
-        { kind: 'desk', id: 'mesaSecretario', l: 23, t: 54.25, w: 19, h: 15.75 },
-        { kind: 'table', id: 'mesaConsejo', l: 45.5, t: 56, w: 30, h: 16 },
-        { emoji: '☕', x: 54.5, y: 53.3, s: 3, on: 'mesaConsejo' },
-        { emoji: '🪑', x: 50, y: 66.53, s: 11.78 }, { emoji: '🪑', x: 57, y: 66.53, s: 11.78 },
-        { emoji: '🪑', x: 64, y: 66.53, s: 11.78 }, { emoji: '🪑', x: 71, y: 66.53, s: 11.78 },
-        { emoji: '🧍‍♂️', x: 86, y: 52.1, s: 23.5 },
+        { kind: 'door', l: 1.5, t: 22, w: 10, h: 42, color: '#6e4f35' },
+        { kind: 'flag', l: 63, t: 8.5, w: 8, h: 9.5 },
+        { kind: 'flag-eu', l: 73, t: 8.5, w: 8, h: 9.5 },
+        { kind: 'desk', id: 'mesaSecretario', l: 29, t: 53.37, w: 16.5, h: 15.63 },
+        { kind: 'table', id: 'mesaConsejo', l: 47.5, t: 56, w: 41.5, h: 16 },
+        { emoji: '👩‍💼', x: 53, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '👨‍💼', x: 61, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '👩‍💼', x: 77, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '👨‍💼', x: 85, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '☕', x: 87.5, y: 53.33, s: 3, on: 'mesaConsejo' },
+        { emoji: '🧍‍♂️', x: 24.5, y: 49.58, s: 22.97 },
       ],
       hotspots: [
-        { id: 'presidente', x: 60.5, y: 50.6, emoji: '🤵', s: 10, behind: 'mesaConsejo', label: 'Presidente del Gobierno',
+        { id: 'presidente', x: 69, y: 49.05, emoji: '🤵', s: 9.5, behind: 'mesaConsejo', label: 'Presidente del Gobierno',
           look(g) {
             g.say('—Empezamos cuando alguien descifre el orden del día. El Real Decreto está en la cartera roja; la combinación, en el orden del día. Así lo dispuso un ministro en 1898 y nadie se ha atrevido a cambiarlo.', 'Presidente');
           },
@@ -1381,19 +1384,19 @@
               g.win();
             },
           } },
-        { id: 'gobierno', x: 85, y: 25, sign: 'COMPOSICIÓN DEL GOBIERNO', sub: '🏛️', w: 22, label: 'Composición del Gobierno',
+        { id: 'gobierno', x: 88, y: 29.3, sign: 'COMPOSICIÓN DEL GOBIERNO', sub: '🏛️', w: 22, label: 'Composición del Gobierno',
           look(g) {
             g.doc('🏛️ Composición del Gobierno', `<p>Ministros asistentes (además de ti, que no tienes asiento asignado: estás de pie, como corresponde a los nuevos):</p>
               <ul><li><b>Dña.</b> Nuria Dietas</li><li><b>Dña.</b> Pilar Escalafón</li><li><b>D.</b> Tomás Quórum</li><li><b>D.</b> Luis Trienio</li></ul>
               <p>Carteras: <b>C</b>ultura, <b>A</b>suntos Pendientes, <b>F</b>omento y <b>E</b>conomía. (Nadie recuerda quién lleva cuál: ha habido tres remodelaciones este mes.)</p>`);
           } },
-        { id: 'protocolo', x: 9, y: 25, sign: 'PROTOCOLO', sub: '🪑', w: 13, z: 250, label: 'Plano de protocolo (medio quemado)',
+        { id: 'protocolo', x: 55, y: 29.3, sign: 'PROTOCOLO', sub: '🪑', w: 13, label: 'Plano de protocolo (medio quemado)',
           look(g) {
             g.doc('🪑 Plano de protocolo', `<p>Los cuatro asientos se numeran del <b>1 al 4</b> en el sentido de las agujas del reloj, empezando a la derecha del Presidente. El Presidente queda entre el 4 y el 1, así que solo los asientos 1 y 4 están «junto al Presidente» (los extremos).</p>
               <p>Por antigüedad de la cartera, el asiento de <b>Cultura</b> tiene un número menor que el de <b>Asuntos Pendientes</b>.</p>
               <p class="small"><i>El resto del plano se quemó con una vela aromática en una reunión de crisis.</i></p>`);
           } },
-        { id: 'secretario', x: 37, y: 48.1, emoji: '🧑‍💼', s: 10, behind: 'mesaSecretario', label: 'Secretario del Consejo',
+        { id: 'secretario', x: 33, y: 49.37, emoji: '🧑‍💼', s: 9, behind: 'mesaSecretario', label: 'Secretario del Consejo',
           look(g) {
             if (!g.flag('acred')) return g.say('—¿Y usted quién es? Aquí no se queda nadie sin nombramiento publicado en el BOE. Enséñemelo y le explico cómo funciona la máquina de cifra.', 'Secretario del Consejo');
             g.say('—La máquina de cifra se configura con la clave del día: las iniciales de las cuatro carteras, en el orden de los asientos, del 1 al 4. Yo no me acuerdo de quién se sienta dónde. Nadie se acuerda.', 'Secretario del Consejo');
@@ -1407,37 +1410,37 @@
               g.say('—La máquina se configura con la clave del día: las iniciales de las cuatro carteras, en el orden de los asientos, del 1 al 4. Yo no me acuerdo de quién se sienta dónde. Nadie se acuerda. Lo que sí sé es que Don Tomás Quórum no duerme nunca en los Consejos.', 'Secretario del Consejo');
             },
           } },
-        { id: 'maquina', x: 27.5, y: 49.8, emoji: '📠', s: 5, on: 'mesaSecretario', label: 'Máquina de cifra (1898)',
+        { id: 'maquina', x: 43.5, y: 48.93, emoji: '📠', s: 5, on: 'mesaSecretario', label: 'Máquina de cifra (1898)',
           look(g) {
             if (!g.flag('acred')) return g.say('La máquina de cifra tiene un candado de latón con una placa: «Solo para miembros del Gobierno acreditados ante el Secretario del Consejo». Lleva así desde 1898.');
             vigModal(g);
           } },
-        { id: 'orden', x: 28, y: 25, sign: 'ORDEN DEL DÍA', sub: '🔒', w: 14, label: 'Orden del día (cifrado)',
+        { id: 'orden', x: 37, y: 29.3, sign: 'ORDEN DEL DÍA', sub: '🔒', w: 14, label: 'Orden del día (cifrado)',
           look(g) { g.doc('🔒 Orden del día', `<p class="small">Cifrado por razones de seguridad nacional (y de costumbre).</p><p class="cipher">${CIPHER9}</p>`); } },
-        { id: 'manual', x: 32.5, y: 49.8, emoji: '📓', s: 5, on: 'mesaSecretario', label: 'Manual de cifra',
+        { id: 'manual', x: 50.5, y: 51.55, emoji: '📓', s: 5, on: 'mesaConsejo', label: 'Manual de cifra',
           look(g) {
             g.doc('📓 Manual de cifra del Consejo (edición de 1898)', `<p>Cada letra del texto cifrado se <b>retrasa</b> en el alfabeto (A-Z, sin Ñ, dando la vuelta de la A a la Z) tantas posiciones como vale la letra correspondiente de la clave: <b>A = 0, B = 1, C = 2…</b></p>
               <p>La clave se repite tantas veces como haga falta. Los espacios no consumen letras de la clave.</p>
               <p>Ejemplo: con la clave <b>BCD</b>, el texto cifrado «BDF» se descifra como «ABC».</p>
               <p class="small">La máquina de cifra lo hace sola si se le da la clave correcta. Si se le da una incorrecta, también lo hace, pero sale una tontería.</p>`);
           } },
-        { id: 'acta', x: 49, y: 51.55, emoji: '📄', s: 5, on: 'mesaConsejo', label: 'Acta del Consejo anterior',
+        { id: 'acta', x: 57, y: 51.55, emoji: '📄', s: 5, on: 'mesaConsejo', label: 'Acta del Consejo anterior',
           look(g) {
             g.doc('📄 Acta del Consejo anterior (extracto)', `<p>…La ministra de Asuntos Pendientes solicitó aplazar el punto 3 al próximo Consejo, como viene siendo habitual.</p>
               <p>El titular de Fomento consultó el móvil durante toda la sesión y, preguntado al respecto, respondió que estaba «fomentando».</p>
               <p>Se levanta la sesión sin que conste que nadie se haya enterado de nada.</p>`);
           } },
-        { id: 'ujier', x: 11.6, y: 53.54, emoji: '🧍', s: 23.02, label: 'Ujier veterano',
+        { id: 'ujier', x: 10.8, y: 46.8, emoji: '🧍', s: 21.6, label: 'Ujier veterano',
           look(g) {
             g.say('—Cuarenta años sirviendo cafés aquí. Le cuento: la de Economía no deja de tomar notas, y se sienta siempre en un extremo, pegadita al Presidente.', 'Ujier veterano');
             g.say('—Y Doña Nuria Dietas nunca se sienta en un extremo: dice que junto al Presidente le da corriente.', 'Ujier veterano');
           } },
-        { id: 'prensa', x: 86, y: 41.5, emoji: '📸', s: 5, z: 137, label: 'Fotógrafo de prensa',
+        { id: 'prensa', x: 24.5, y: 39, emoji: '📸', s: 5, z: 125, label: 'Fotógrafo de prensa',
           look(g) {
             g.say('—Tengo una foto buenísima del último Consejo: el ministro Trienio sentado justo en el asiento siguiente al de quien dormía la siesta. Siguiente en número, digo.', 'Fotógrafo');
             g.say('—Y el del crucigrama estaba en un extremo, junto al Presidente: lo pillé con el «nueve horizontal: trámite eterno».', 'Fotógrafo');
           } },
-        { id: 'cartera', x: 71, y: 51.1, emoji: '💼', s: 5.5, on: 'mesaConsejo', label: 'Cartera roja (4 cifras)',
+        { id: 'cartera', x: 81, y: 51.11, emoji: '💼', s: 5.5, on: 'mesaConsejo', label: 'Cartera roja (4 cifras)',
           look(g) {
             if (g.flag('cart')) return g.say('La cartera roja, vacía. Huele a cuero y a secreto oficial.');
             g.input({
