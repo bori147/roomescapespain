@@ -695,30 +695,32 @@
       scene: { wall: '#cfd9e3', floor: '#9aa3a8', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'shelf', id: 'soporte', l: 64.25, t: 11.5, w: 6.5, h: 1.4 },
-        { kind: 'counter', id: 'ventanillas', l: 21.5, t: 48.85, w: 69.5, h: 23.15 },
-        { emoji: '🧑‍💼', x: 26.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '👩‍💼', x: 45.3, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '🧑‍💻', x: 61, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '👩‍💼', x: 74, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '👨‍💼', x: 86.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { kind: 'pedestal', id: 'pieTurnos', l: 92.5, t: 54.68, w: 4.5, h: 29.32, color: '#5d6670' },
-        { kind: 'bench', id: 'banco', l: 30, t: 62.4, w: 16, h: 20.6 },
+        { kind: 'counter', id: 'ventanillas', l: 25.5, t: 48.85, w: 69.5, h: 23.15 },
+        { emoji: '🧑‍💼', x: 30.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '💁‍♀️', x: 49.8, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '🧑‍💻', x: 66, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '👩‍💼', x: 77.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '🙎‍♂️', x: 90.4, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { kind: 'pedestal', id: 'pieTurnos', l: 19.5, t: 51.63, w: 4.5, h: 28.37, color: '#5d6670' },
+        { kind: 'bench', id: 'banco', l: 29.75, t: 65.72, w: 16.5, h: 21.28 },
         { kind: 'table', id: 'mesaTurnos', l: 79, t: 62.27, w: 11, h: 17.73 },
+        { kind: 'counter', id: 'garita', l: 0.5, t: 64.67, w: 12, h: 27.33 },
+        { emoji: '👮', x: 6.75, y: 58.2, s: 13.5, behind: 'garita' },
       ],
       hotspots: [
-        { id: 'pantalla', x: 67.5, y: 6.17, emoji: '📺', s: 6, on: 'soporte', label: (g) => `Pantalla de turnos: A-${pad(g.flag('turno'), 3)}`,
+        { id: 'pantalla', x: 67.5, y: 6.6, emoji: '📺', s: 5.5, on: 'soporte', label: (g) => `Pantalla de turnos: A-${pad(g.flag('turno'), 3)}`,
           look(g) { g.say(`TURNO: A-${pad(g.flag('turno'), 3)}. ${g.flag('turno') === 12 ? 'Lleva así desde las 8:00. El encargado de los turnos está en un curso de «Gestión eficiente de turnos».' : '¡Ha cambiado!'}`); } },
-        { id: 'dispensador', x: 94.75, y: 50.01, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
+        { id: 'dispensador', x: 21.75, y: 46.96, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
           look(g) {
             if (g.flag('ticketTaken')) return g.say('Ya tienes número. Coger otro sería ilegal. O peor: de mala educación.');
             g.set('ticketTaken'); g.say('Te toca el A-347. En pantalla van por el A-012. Haces cuentas y te entra frío.'); g.give('ticket');
           } },
-        { id: 'v_registro', x: 26.5, y: 23.5, sign: 'REGISTRO', sub: '🧑‍💼', w: 10, z: 250, label: 'Ventanilla de Registro', look: (g) => ventanilla(g, 'registro') },
-        { id: 'v_info', x: 45.3, y: 23.5, sign: 'INFORMACIÓN', sub: '👩‍💼', w: 12, label: 'Ventanilla de Información', look: (g) => ventanilla(g, 'info') },
-        { id: 'v_caja', x: 61, y: 23.5, sign: 'CAJA', sub: '🧔', w: 9, label: 'Ventanilla de Caja', look: (g) => ventanilla(g, 'caja') },
-        { id: 'v_firma', x: 74, y: 23.5, sign: 'FIRMA', sub: '👩‍🦳', w: 8, label: 'Ventanilla de Firma', look: (g) => ventanilla(g, 'firma') },
-        { id: 'v_sellos', x: 86.5, y: 23.5, sign: 'SELLOS', sub: '👨‍🦲', w: 8, label: 'Ventanilla de Sellos', look: (g) => ventanilla(g, 'sellos') },
-        { id: 'folleto', x: 53, y: 44.4, emoji: '📑', s: 5, on: 'ventanillas', label: 'Folleto informativo',
+        { id: 'v_registro', x: 30.5, y: 24.5, sign: 'REGISTRO', sub: '🧑‍💼', w: 10, z: 250, label: 'Ventanilla de Registro', look: (g) => ventanilla(g, 'registro') },
+        { id: 'v_info', x: 49.8, y: 24.5, sign: 'INFORMACIÓN', sub: '💁‍♀️', w: 12, label: 'Ventanilla de Información', look: (g) => ventanilla(g, 'info') },
+        { id: 'v_caja', x: 66, y: 24.5, sign: 'CAJA', sub: '🧑‍💻', w: 9, label: 'Ventanilla de Caja', look: (g) => ventanilla(g, 'caja') },
+        { id: 'v_firma', x: 77.5, y: 24.5, sign: 'FIRMA', sub: '👩‍💼', w: 8, label: 'Ventanilla de Firma', look: (g) => ventanilla(g, 'firma') },
+        { id: 'v_sellos', x: 90.4, y: 24.5, sign: 'SELLOS', sub: '🙎‍♂️', w: 8, label: 'Ventanilla de Sellos', look: (g) => ventanilla(g, 'sellos') },
+        { id: 'folleto', x: 58.5, y: 44.4, emoji: '📑', s: 5, on: 'ventanillas', label: 'Folleto informativo',
           look(g) {
             g.doc('📑 Cómo obtener su número de afiliación', `<p>Estimado/a usuario/a: el procedimiento consta de <b>cinco ventanillas</b>, que deberá visitar en el orden reglamentario. Para no facilitar las cosas, lo describimos así:</p>
               <ol>
@@ -742,7 +744,7 @@
               },
             });
           } },
-        { id: 'puerta', x: 13.25, y: 44.94, emoji: '🚪', s: 26.5, label: 'Salida',
+        { id: 'puerta', x: 12, y: 47.16, emoji: '🚪', s: 24, label: 'Salida',
           look(g) { g.say('—Sin número de afiliación no sale nadie. Ni entra. Bueno, entrar sí.', 'Vigilante'); },
           use: { numeroSS(g) { g.say('El vigilante mira tu número, lo compara con una lista, asiente y abre la puerta. Libertad (provisional).', 'Vigilante'); g.win(); } } },
       ],
