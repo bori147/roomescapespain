@@ -706,16 +706,18 @@
       carry: ['dni'],
       scene: { wall: '#d9e0d0', floor: '#8a8f7f', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'window', l: 3, t: 8, w: 12, h: 26 },
-        { kind: 'shelf', l: 20, t: 34, w: 14, h: 2 },
-        { kind: 'flag-eu', l: 88, t: 5, w: 6, h: 8 },
-        { kind: 'counter', l: 56, t: 56, w: 28, h: 9 },
-        { kind: 'counter', l: 26, t: 66, w: 16, h: 5 },
-        { emoji: '📗', x: 22, y: 30, s: 3, o: 0.9 }, { emoji: '📘', x: 31, y: 30, s: 3, o: 0.9 },
-        { emoji: '🪑', x: 24, y: 86, s: 4, o: 0.8 }, { emoji: '🪑', x: 30, y: 86, s: 4, o: 0.8 },
+        { kind: 'window', l: 1.5, t: 19.1, w: 10, h: 29.8 },
+        { kind: 'flag', l: 64.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 75.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'shelf', id: 'soporte', l: 53, t: 22.3, w: 6.5, h: 1.4 },
+        { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
+        { kind: 'table', id: 'mesaImpresos', l: 20, t: 58.9, w: 20, h: 17.1 },
+        { kind: 'counter', id: 'ventanilla', l: 60.5, t: 48.85, w: 23, h: 23.15 },
+        { kind: 'cabinet', id: 'archivador', l: 89, t: 44.08, w: 9, h: 28.92, color: '#8a8f96' },
+        { emoji: '🧍‍♀️', x: 58, y: 57.02, s: 24.7 },
       ],
       hotspots: [
-        { id: 'guia', x: 42, y: 20, sign: 'GUÍA DEL 036', sub: '📋', w: 12, label: 'Guía para rellenar el 036',
+        { id: 'guia', x: 20.5, y: 31.3, sign: 'GUÍA DEL 036', sub: '📋', w: 12, label: 'Guía para rellenar el 036',
           look(g) {
             g.doc('📋 Cómo rellenar su declaración censal', `<ol>
               <li>Use <b>siempre el modelo 036</b>. El 037 («simplificado») se suprimió en 2025. Los ejemplares del expositor son decorativos, como el horario de verano.</li>
@@ -724,15 +726,15 @@
               <li><b>Epígrafe del IAE:</b> consulte las Normas del IAE y el tomo de Tarifas.</li></ol>
               <p class="small">Rellene el impreso en la mesa habilitada. El bolígrafo está encadenado por su seguridad (la del bolígrafo).</p>`);
           } },
-        { id: 'normas', x: 58, y: 20, sign: 'NORMAS DEL IAE', sub: '⚖️', w: 12, label: 'Normas del IAE',
+        { id: 'normas', x: 38, y: 31.3, sign: 'NORMAS DEL IAE', sub: '⚖️', w: 14, z: 250, label: 'Normas del IAE',
           look(g) {
             g.doc('⚖️ Normas para elegir epígrafe', `<p>Usted se dará de alta en un <b>único epígrafe</b>: el de su <b>actividad principal</b>, que es la que genera <b>más facturación</b>.</p>
               <p>Para comparar, <b>sume primero todas las ventas que correspondan a un mismo epígrafe</b>. Un mismo epígrafe puede incluir productos muy distintos; y un mismo producto puede ir a epígrafes distintos según se sirva.</p>
               <p class="small">No vale elegir el epígrafe que más le guste, ni el que suene mejor en las cenas de empresa. Bueno, de empresa no: usted no tiene empresa todavía.</p>`);
           } },
-        { id: 'pantalla', x: 80, y: 16, emoji: '📺', s: 5, label: 'Pantalla de turnos',
+        { id: 'pantalla', x: 56.25, y: 16.2, emoji: '📺', s: 6.9, on: 'soporte', label: 'Pantalla de turnos',
           look(g) { g.say('«TURNO: C-001». Es el tuyo. Llegaste el primero y SIN cita previa: aquí se atiende por orden de llegada. Después de lo del DNI, te tiembla el pulso de la emoción.'); } },
-        { id: 'tarifas', x: 27, y: 29, emoji: '📕', s: 5, label: 'Tarifas del IAE (tomo I de XIV)',
+        { id: 'tarifas', x: 35.5, y: 54.45, emoji: '📕', s: 5, on: 'mesaImpresos', label: 'Tarifas del IAE (tomo I de XIV)',
           look(g) {
             g.doc('📕 Tarifas del Impuesto sobre Actividades Económicas (extracto)', `<table class="tbl">
               <tr><td><b>033.3</b> Explotación de belenes vivientes (temporada navideña).</td><td>Sec. 1</td></tr>
@@ -744,7 +746,7 @@
               <tr><td><b>999</b> Otros servicios no clasificados en otras partes (el epígrafe de quien no ha leído esta lista).</td><td>Sec. 1</td></tr></table>
               <p class="small">Tomos II a XIV: en el sótano. El sótano está inundado desde 2011.</p>`);
           } },
-        { id: 'funcionario', x: 69, y: 48, emoji: '👨‍💼', s: 8, label: 'Funcionario de Censos',
+        { id: 'funcionario', x: 70.5, y: 43.6, emoji: '👨‍💼', s: 11.5, behind: 'ventanilla', label: 'Funcionario de Censos',
           look(g) {
             g.say('—Alta de actividad. Muy bien. Primero, identifíquese: DNI original. Luego tráigame el modelo 036 relleno: NIF, causa, epígrafe y domicilio de la actividad. Las instrucciones, en los carteles. Los impresos, en el expositor.', 'Funcionario');
             g.say('—Y no me pregunte qué epígrafe es el suyo. Si se lo digo yo y me equivoco, la culpa es mía. Si se equivoca usted, la culpa es suya. Prefiero lo segundo.', 'Funcionario');
@@ -769,7 +771,7 @@
             plan(g) { g.say('—No me cuente su plan de empresa. Yo solo quiero el impreso. Su plan, cuénteselo al banco.', 'Funcionario'); },
             contrato(g) { g.say('—El contrato no lo necesito. Lo que necesito es lo que pone el contrato, escrito en el 036.', 'Funcionario'); },
           } },
-        { id: 'expositor', x: 91, y: 52, emoji: '🗂️', s: 7, label: 'Expositor de impresos',
+        { id: 'expositor', x: 93.5, y: 38.3, emoji: '🗂️', s: 6.5, on: 'archivador', label: 'Expositor de impresos',
           look(g) {
             g.choice({
               title: '🗂️ Expositor de impresos', text: 'Hay dos montones. El del 036 es altísimo. El del 037 tiene polvo y una etiqueta que pone «¡NOVEDAD!».',
@@ -785,14 +787,14 @@
               ],
             });
           } },
-        { id: 'mesa', x: 34, y: 61, emoji: '📝', s: 6, label: 'Mesa para rellenar impresos',
+        { id: 'mesa', x: 29.5, y: 54.45, emoji: '📝', s: 5, on: 'mesaImpresos', label: 'Mesa para rellenar impresos',
           look(g) { g.say('Una mesa con un bolígrafo encadenado. Tiene tinta: un milagro administrativo. Aquí se rellenan los impresos (selecciona uno y úsalo aquí).'); },
           use: {
             modelo036: l1Form,
             modelo037(g) { g.say('Empiezas a rellenar el 037... y en la última página pone, en letra diminuta: «MODELO SUPRIMIDO». Cuatro páginas perdidas. Al menos eran pocas.'); },
             modelo036Relleno(g) { g.say('Ya está relleno y firmado. No lo toques más, que lo estropeas.'); },
           } },
-        { id: 'mochila', x: 10, y: 82, emoji: '🎒', s: 6, label: 'Tu mochila',
+        { id: 'mochila', x: 6, y: 78.69, emoji: '🎒', s: 7.1, label: 'Tu mochila',
           look(g) {
             if (!g.flag('mochila')) {
               g.set('mochila');
@@ -800,7 +802,7 @@
               g.give('plan'); g.give('contrato');
             } else g.say('Solo queda el bocadillo. No te lo comas: es un fósil.');
           } },
-        { id: 'cola', x: 52, y: 80, emoji: '🧍‍♂️🧍‍♀️', s: 5, label: 'Cola de futuros autónomos',
+        { id: 'cola', x: 51.5, y: 60.44, emoji: '🧍', s: 26.5, label: 'Cola de futuros autónomos',
           look(g) {
             g.say(rand([
               '—Yo me di de alta como «belén viviente» por error. Ahora tengo que poner un belén cada diciembre o me inspeccionan.',
@@ -809,9 +811,9 @@
               '—Yo vengo de renovar el DNI: diez trámites y tres fotocopias, una torcida. Después de eso, el 036 me parece un crucigrama de los fáciles.',
             ]), 'Alguien de la cola');
           } },
-        { id: 'folleto', x: 76, y: 84, emoji: '📰', s: 5, label: 'Folleto «Emprende en 24 horas»',
+        { id: 'folleto', x: 23.5, y: 54.45, emoji: '📰', s: 5, on: 'mesaImpresos', label: 'Folleto «Emprende en 24 horas»',
           look(g) { g.say('«¡EMPRENDE EN 24 HORAS!». Debajo, en letra pequeña: «hábiles, no consecutivas, y sin contar los trámites previos, posteriores ni intermedios».'); } },
-        { id: 'planta', x: 95, y: 80, emoji: '🪴', s: 5, label: 'Planta',
+        { id: 'planta', x: 87.5, y: 82.33, emoji: '🪴', s: 12, label: 'Planta',
           look(g) { g.say('Un ficus dado de alta en el epígrafe 999. Nadie sabe a qué se dedica, pero cotiza.'); } },
       ],
       hints: [

@@ -463,3 +463,92 @@ proporciones se pueden ajustar de verdad. Reglas:
 - Los objetos que aparecen más tarde (`show`) también deben quedar bien colocados.
 - Los textos de la sala (carteles) deben seguir leyéndose; los carteles miden lo que su `w` indica.
 - Comprueba con **`node tests/room.js S-N --debug`** (caja, base y cm reales de cada objeto) y **`node tests/realism.js S-N`**.
+
+### 7.4 Lecciones del piloto (T2-N1 «El epígrafe»)
+La sala piloto es la referencia: ábrela (`js/seasons/s2.js`, nivel 1) y copia sus medidas. Todas las cifras son para
+`floorH: 32` (horizonte en 68 %); con otro `floorH`, recalcúlalas con la calculadora.
+
+**Medidas que funcionan (floorH 32).** En la pared, 1 % del alto ≈ 4,7 cm y 1 % del ancho ≈ 8,4 cm.
+
+| Pieza | Receta | Notas |
+|---|---|---|
+| Mostrador 105 cm | `counter`, `t: 48.85, h: 23.15` (pie en 72 %), `w` 20–25 | Pegado al fondo. |
+| Funcionario (busto) | `👨‍💼 s: 11.5, y = t_mostrador − 5.25` (43.6), `behind: '<mostrador>'` | ~82 cm: un 17 % más que el catálogo para que su cabeza iguale a la de la gente de pie; la cabeza queda a ~170 cm. |
+| Mesa 75 cm | `table`, `t: 58.9, h: 17.1` (pie en 76 %) | Objetos encima: `on`, `y = t − 0.889·s` (con `s: 5`, `y = t − 4.45`). |
+| Archivador 130 cm | `cabinet`, pie en 73 %: `t: 44.08, h: 28.92`, `w: 9` | Encima, `🗂️ s: 6.5, y = t − 5.78`. |
+| Banco de espera | `bench`, `t: 62.4, h: 20.6` (pie en 83 %), `w: 16` (3 plazas) | Sustituye a las sillas 🪑 sueltas, que salen diminutas o gigantes. |
+| Persona de pie | `🧍 s: 26.5, y: 60.44` (170 cm, base 84 %) | — |
+| Segunda persona de la cola | `🧍‍♀️ s: 24.7, y: 57.02` (165 cm, base 79 %), unos 6,5 % hacia el mostrador | Solo es decorado. |
+| Tele / pantalla de turnos | balda `shelf`, `t: 22.3, w: 6.5, h: 1.4` (~215 cm) y `📺 s: 6.9, y: 16.2, on: '<balda>'` | Nunca `bracket` alto: su poste cuelga en la pared vacía y parece un pie en T. |
+| Carteles | `y: 31.3` (borde inferior ≈ 145 cm), `w` ≥ largo del texto | Unas 12 mayúsculas por cada 12 de `w`: «NORMAS DEL IAE» pide `w: 14`. |
+| Ventana | `window`, `t: 19.1, h: 29.8` (alféizar a 90 cm, 140 cm de alto), `w` 10–12 | — |
+| Banderas | `flag` y `flag-eu`, `t: 14.9, h: 10.7, w: 9` (~190 cm), 2 % entre ellas, sobre el mostrador | España a la IZQUIERDA del observador (Ley 39/1981; con tres banderas, España en el centro). Así el mástil queda por fuera. |
+| Mochila | `🎒 s: 7.1, y: 78.69` (45 cm, base 85 %) | Apoyada en las patas del banco, no suelta en el borde inferior. |
+| Planta | `🪴` como mucho 75 cm (`s: 12`, base 93 %) | El catálogo dice 60 cm y la tolerancia es ×1,25. Si el texto la llama «ficus», queda como un ficus joven. |
+
+**Reglas nuevas, por orden de gravedad**
+1. **Borde derecho:** `x + s·nº_de_emoji ≤ 100`. No basta con `x + s/2`. El botón solo dispone de `(100 − x)` % de ancho, y
+   si el objeto es más ancho, la imagen se encoge y queda flotando por encima de su apoyo. Ni `realism.js` ni `--debug`
+   lo detectan, porque dibujan la caja teórica. Por la izquierda basta con `x ≥ s/2`. Si algo grande debe ir a la
+   derecha (planta, puerta, cola), su centro va como mucho en `100 − s`.
+2. **Gente:** las personas de pie van con la base en ≤ 84 %, en la mitad trasera del suelo. En primera fila, una
+   persona es lo más grande de la sala y llena el móvil. Pon una sola persona tocable (`🧍` neutro: los emoji con
+   género cuentan como dos en `run.js`) y el resto de la cola como decorado detrás. La cola va al lado de la
+   ventanilla, nunca entre el jugador y la cara del funcionario. La cuadrícula táctil de una persona es todo el
+   cuadrado `s × s·16/9`, unas 3,4 veces más ancho que su cuerpo. Ningún objeto tocable de menor `z` puede quedar
+   dentro de ese cuadrado: ni lo que hay encima de una mesa, ni el funcionario, ni la mitad del mostrador. Un cartel
+   que caiga dentro de la caja de una persona, pero lejos de su cuerpo visible, lleva `z: 250`, que queda por encima
+   de cualquier cosa del suelo (z ≤ 240).
+3. **El interlocutor, visible al entrar en el móvil.** El móvil abre en el centro de la sala (x ≈ 27–73 en 390×844).
+   El funcionario u objeto que nombra el objetivo debe tener la cara dentro: centro en x ≤ 70–71 (el piloto lo tiene
+   en 70,5) y ≥ 30. Lo secundario (mochila, planta, archivador) va en los extremos, y las flechas lo señalan con su
+   número.
+4. **Carteles en móviles pequeños:** en 360×640, un cartel mide al menos `máx(w + 4, 16,2)` % de ancho y crece hacia
+   arriba y hacia abajo (y 21–41 %). Separa sus centros al menos `(w₁ + w₂)/2 + 4,5` (17,5 con dos de `w: 12–14`). Nada
+   de baldas, libros ni cabezas debajo de ese cartel crecido.
+5. **Sin tangencias:** dos muebles contiguos dejan al menos 1,5 % de aire entre ellos o se solapan con una diferencia
+   de profundidad clara. El piloto tenía el banco pegado a la pata de la mesa y una balda colándose bajo un cartel.
+   Dos muebles de casi la misma altura juntos (mostrador de 105 cm y archivador de 100 cm) parecen un único mueble
+   mal hecho: o enrasa techo y pie, o haz que difieran ≥ 15 cm y sepáralos.
+6. **El apoyo va con su carga:** si mueves una mesa, balda o archivador, mueve lo que lleva encima la misma
+   distancia. Lo de encima debe quedar dentro de `l … l+w`.
+7. **Tamaño según lo que dice el texto:** si el texto describe algo mayor o menor que la entrada del catálogo, usa
+   el tamaño real del texto, dentro de la tolerancia (×0,75–1,25; hasta ×2,5 para objetos < 30 cm). Por ejemplo,
+   un «tomo» puede ser mayor que un libro. Si no cabe en la tolerancia, cambia el emoji por uno que muestre lo
+   mismo, o avisa.
+8. **Tocable en móvil:** todo hotspot lleva `s ≥ 5`, que da 26 px en 360×640. Un objeto real pequeño se exagera
+   (hasta ×2,5) antes que bajar de 5. `s: 3–4` solo sirve para decorado.
+
+**Cómo no acabar con una sala abarrotada al poner la escala real.** A escala real, una persona ocupa ~27 % del ancho
+y un mostrador ~23 %.
+- Menos decorado: el piloto quitó la balda con libros y las sillas sueltas. Cada objeto de decorado tiene que
+  justificar su sitio.
+- Lleva los muebles al fondo: pies entre 72 y 76 %. La franja delantera (base > 88 %) queda casi vacía, salvo uno o
+  dos objetos bajos en las esquinas (mochila, planta).
+- Agrupa por zonas: ventana y banco a la izquierda, mesa con sus carteles encima, cola, y mostrador con el
+  funcionario, las banderas y la pantalla encima.
+- Subir `floorH` a 36–40 achica todo un 6–12 % y da más fondo para escalonar objetos en el suelo. Hazlo solo si
+  hay muchos objetos en el suelo; con `floorH: 32` la gente apenas cambia de tamaño.
+
+**Errores típicos del piloto:**
+- objetos pegados al borde derecho, encogidos y flotando;
+- `w` de un cartel menor que su texto;
+- dos banderas con el mástil entre ellas;
+- una tele sobre un poste en T;
+- un busto más pequeño que las cabezas de la gente de pie;
+- una persona en primera fila tapando el mostrador;
+- el funcionario fuera de la primera vista del móvil;
+- la caja táctil de una persona pisando un cartel u objetos de la mesa.
+
+**Fallos del motor (no los compenses sala a sala).** Las imágenes Fluent dejan un 6,25 % de margen transparente bajo
+el objeto. Por eso los pies quedan unos píxeles por encima de su sombra, y la tele y los papeles, por encima de su
+balda o mesa. Además, la sombra de suelo mide `.9em` para todo, y bajo una persona forma un charco tres veces más
+ancho que ella. Coloca con el modelo (`base = y + 0,889·s`), sin mover `y` para tapar el hueco: el arreglo va en
+`css/ui-scene.css` y vale para las 50 salas.
+
+**Revisión mínima antes de dar una sala por buena:**
+1. `node tests/realism.js S-N` sin errores.
+2. `node tests/room.js S-N --debug --movil`. Mira el PNG normal, no solo el de depuración: busca objetos encogidos,
+   huecos bajo los objetos y piezas que se tocan.
+3. En el código, comprueba a mano la regla del borde derecho y la separación de carteles.
+4. `node tests/run.js` → TODO CORRECTO.
