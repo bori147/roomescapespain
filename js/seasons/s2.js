@@ -1147,11 +1147,12 @@
         { kind: 'counter', id: 'ventanillaCaja', l: 81, t: 48.85, w: 16, h: 23.15 },
         { kind: 'flag', l: 52, t: 14.9, w: 9, h: 10.7 },
         { emoji: '🪑', x: 19.5, y: 63.85, s: 12, behind: 'tablero' },
+        { emoji: '👩‍💼', x: 88, y: 43.6, s: 11.5, behind: 'ventanillaCaja' },
       ],
       hotspots: [
         { id: 'maqueta', x: 7, y: 35.5, emoji: '🏟️', s: 5, label: 'Maqueta en el corcho',
           look(g) { g.say('Foto de la maqueta del «Nuevo Polideportivo Municipal (2009)». Debajo, a boli: «obra parada por falta de licencia». Del propio Ayuntamiento.'); } },
-        { id: 'ordenanza', x: 30.5, y: 29, sign: 'ORDENANZA DE ACTIVIDADES', sub: '📜', w: 24, label: 'Ordenanza de actividades',
+        { id: 'ordenanza', x: 28, y: 29, sign: 'ORDENANZA DE ACTIVIDADES', sub: '📜', w: 24, label: 'Ordenanza de actividades',
           look(g) {
             g.doc('📜 Ordenanza municipal de actividades (extracto)', `<p><b>Art. 1. Aforo:</b> 1 persona por cada 2 m² de <b>zona de público</b> (superficie total menos obrador y aseo), redondeando hacia abajo.</p>
               <p><b>Art. 2. Mesas:</b> de 4 personas. Número de mesas = aforo ÷ 4, redondeando hacia abajo. Ni una más ni una menos.</p>
@@ -1167,9 +1168,9 @@
               <p>Más <b>25 €</b> de tasa por la tramitación de la tasa.</p>
               <p class="small">Se abona en la Caja municipal, en efectivo, sin decimales y con cara de agradecimiento.</p>`);
           } },
-        { id: 'plazo', x: 47, y: 31.7, emoji: '🗓️', s: 5, label: 'Cartel de plazos',
+        { id: 'plazo', x: 46.5, y: 31.7, emoji: '🗓️', s: 5, label: 'Cartel de plazos',
           look(g) { g.say('«Plazo máximo de resolución: 3 meses. Transcurrido el plazo sin respuesta, se entenderá DESESTIMADA. Que tenga un buen día.»'); } },
-        { id: 'caja', x: 90, y: 29, sign: 'CAJA', sub: '💶', w: 10, z: 250, label: 'Caja municipal',
+        { id: 'caja', x: 91, y: 18, sign: 'CAJA', sub: '💶', w: 10, z: 250, label: 'Caja municipal',
           look(g) {
             if (g.has('justificanteTasa') || g.flag('tasaOK')) return g.say('—Ya ha pagado. Si quiere pagar otra vez, no se lo voy a impedir.', 'Caja');
             g.input({
@@ -1196,7 +1197,7 @@
               g.give('plano');
             } else g.say('—Recuerde: el pasillo de la puerta, libre. Los técnicos se ponen muy tontos con eso. Y con razón.', 'Arquitecta');
           } },
-        { id: 'mesaDibujo', x: 28, y: 53.57, emoji: '📐', s: 6, on: 'tablero', label: 'Mesa de dibujo',
+        { id: 'mesaDibujo', x: 28, y: 54.45, emoji: '📐', s: 5, on: 'tablero', label: 'Mesa de dibujo',
           look(g) { g.say('Una mesa de dibujo con escuadra, cartabón y un compás que alguien ha usado para pinchar el corcho. Selecciona el plano y úsalo aquí.'); },
           use: {
             plano: l5Grid,
