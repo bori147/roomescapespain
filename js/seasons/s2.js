@@ -833,14 +833,18 @@
       carry: ['dni', 'contrato', 'copia036'],
       scene: { wall: '#cfd9e3', floor: '#9aa3a8', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'window', l: 3, t: 8, w: 12, h: 24 },
-        { kind: 'counter', l: 62, t: 56, w: 26, h: 9 },
-        { kind: 'counter', l: 33, t: 58, w: 14, h: 6 },
-        { kind: 'flag', l: 54, t: 5, w: 5, h: 8 },
-        { emoji: '🪑', x: 34, y: 86, s: 4, o: 0.8 }, { emoji: '🪑', x: 40, y: 86, s: 4, o: 0.8 },
+        { kind: 'window', l: 43, t: 19.1, w: 11, h: 29.8 },
+        { kind: 'flag', l: 58.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 69.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
+        { kind: 'desk', id: 'mesaTerminal', l: 19, t: 58.9, w: 17.5, h: 17.1 },
+        { kind: 'counter', id: 'ventanilla', l: 57, t: 48.85, w: 23, h: 23.15 },
+        { kind: 'box', id: 'cajas', l: 82.5, t: 64.33, w: 11, h: 12.67, color: '#b98a5b' },
+        { kind: 'box', id: 'cajasArriba', l: 83.5, t: 51.66, w: 9.5, h: 12.67, color: '#c99a68', z: 137 },
+        { emoji: '🪴', x: 6.5, y: 80.67, s: 10.5 },
       ],
       hotspots: [
-        { id: 'tramos', x: 26, y: 20, sign: 'CUOTAS RETA', sub: '📊', w: 13, label: 'Cartel de cuotas',
+        { id: 'tramos', x: 10, y: 31.3, sign: 'CUOTAS RETA', sub: '📊', w: 13, label: 'Cartel de cuotas',
           look(g) {
             g.doc('📊 Cuota de autónomos según rendimientos (simplificada)', `<p><b>1.</b> Rendimiento neto mensual = ingresos previstos − gastos <b>necesarios para la actividad</b>. Los gastos personales no cuentan: ni el gimnasio, ni el coche de los domingos, ni la terapia.</p>
               <p><b>2.</b> Rendimiento computable = rendimiento neto <b>− 7 %</b> (deducción por gastos genéricos).</p>
@@ -848,15 +852,15 @@
               <table class="tbl"><tr><td>Hasta 700 €</td><td>200 €</td></tr><tr><td>De 700,01 a 1.000 €</td><td>230 €</td></tr><tr><td>De 1.000,01 a 1.300 €</td><td>275 €</td></tr><tr><td>De 1.300,01 a 1.700 €</td><td>310 €</td></tr><tr><td>Más de 1.700 €</td><td>390 €</td></tr></table>
               <p class="small">Si cumple los requisitos de la tarifa plana, olvide esta tabla durante 12 meses. Luego, recuérdela.</p>`);
           } },
-        { id: 'tarifa', x: 44, y: 20, sign: 'TARIFA PLANA', sub: '8️⃣0️⃣', w: 13, label: 'Cartel de la tarifa plana',
+        { id: 'tarifa', x: 28, y: 31.3, sign: 'TARIFA PLANA', sub: '8️⃣0️⃣', w: 13, z: 250, label: 'Cartel de la tarifa plana',
           look(g) {
             g.doc('8️⃣0️⃣ Tarifa plana para nuevos autónomos', `<p>Cuota reducida de <b>80 € al mes</b> durante los primeros 12 meses.</p>
               <p><b>Requisito:</b> no haber estado de alta como autónomo en ningún momento de los <b>dos años</b> inmediatamente anteriores a la nueva alta.</p>
               <p class="small">Si estuvo de alta, aunque fuera un ratito vendiendo pulseras, no insista: el sistema lo sabe todo. Menos dónde está su cita.</p>`);
           } },
-        { id: 'calendario', x: 88, y: 16, emoji: '📅', s: 5, label: 'Calendario',
+        { id: 'calendario', x: 89, y: 22.74, emoji: '📅', s: 5.5, label: 'Calendario',
           look(g) { g.say('Hoy es jueves, 14 de enero de 2027. Alguien ha rodeado el día 29 con rotulador rojo: «fin de plazo de algo». Nadie recuerda de qué.'); } },
-        { id: 'funcionaria', x: 75, y: 48, emoji: '👩‍💼', s: 8, label: 'Funcionaria del RETA',
+        { id: 'funcionaria', x: 68.5, y: 43.24, emoji: '👩‍💼', s: 11.9, behind: 'ventanilla', label: 'Funcionaria del RETA',
           look(g) {
             if (!g.flag('censo')) return g.say('—Para el alta en autónomos necesito tres cosas: la copia sellada de su alta en Hacienda (el 036), su vida laboral y que me diga qué cuota le corresponde. La vida laboral se imprime en el terminal. La cuota, en los carteles. La paciencia, en su casa.', 'Funcionaria');
             if (g.has('vidaLaboral')) return l2Cuota(g);
@@ -873,7 +877,7 @@
             dni(g) { g.say('—El DNI lo pide el terminal, no yo. Yo me fío de usted. El terminal, de nadie.', 'Funcionaria'); },
             prevision(g) { g.say('—Sus previsiones me parecen muy bien. Optimistas, pero bien. Yo lo que quiero es su vida laboral y su cuota.', 'Funcionaria'); },
           } },
-        { id: 'terminal', x: 40, y: 51, emoji: '🖥️', s: 7, label: 'Terminal Import@ss',
+        { id: 'terminal', x: 32.3, y: 52.23, emoji: '🖥️', s: 7.5, on: 'mesaTerminal', label: 'Terminal Import@ss',
           look(g) {
             if (g.has('vidaLaboral')) return g.say('Ya imprimiste tu vida laboral. Es más corta de lo que parece y, aun así, no cabe en una hoja.');
             if (!g.flag('dniLeido')) return g.say('La pantalla parpadea: «IMPORT@SS. Identifíquese: acerque su DNI al lector». Debajo del lector, a boli: «el DNI caducado no lo lee, no insista».');
@@ -888,9 +892,9 @@
               l2Terminal(g);
             },
           } },
-        { id: 'cartera', x: 8, y: 80, emoji: '👛', s: 5, label: 'Tu cartera',
+        { id: 'cartera', x: 21.8, y: 54.45, emoji: '👛', s: 5, on: 'mesaTerminal', label: 'Tu cartera',
           look(g) { g.say('En tu cartera: 3,20 €, el hueco del DNI (vacío: lo llevas en la mano, por si acaso) y la tarjeta de la Seguridad Social: «Nº de afiliación: <b>28/03471215/34</b>». La conseguiste tras cinco ventanillas, cuando renovaste el DNI. Se nota.'); } },
-        { id: 'mochila', x: 20, y: 82, emoji: '🎒', s: 6, label: 'Tu mochila',
+        { id: 'mochila', x: 14, y: 78.69, emoji: '🎒', s: 7.1, label: 'Tu mochila',
           look(g) {
             if (!g.flag('moch')) {
               g.set('moch');
@@ -898,7 +902,7 @@
               g.give('prevision'); g.give('cocheLetra');
             } else g.say('Nada más. Bueno, un caramelo de menta con pelusa. No.');
           } },
-        { id: 'repartidor', x: 54, y: 76, emoji: '👷', s: 7, label: 'Repartidor de harina',
+        { id: 'repartidor', x: 88, y: 44.2, emoji: '👷', s: 11, behind: 'cajas', label: 'Repartidor de harina',
           look(g) {
             if (!g.flag('harina')) {
               g.set('harina');
@@ -906,7 +910,7 @@
               g.give('presupuestoHarina');
             } else g.say('—Llevo aquí desde las ocho. Ya me he hecho amigo de la planta.', 'Repartidor');
           } },
-        { id: 'movil', x: 86, y: 82, emoji: '📱', s: 5, label: 'Tu móvil',
+        { id: 'movil', x: 26.8, y: 54.45, emoji: '📱', s: 5, on: 'mesaTerminal', label: 'Tu móvil',
           look(g) {
             if (!g.flag('luz')) {
               g.set('luz');
@@ -914,7 +918,7 @@
               g.give('luzEstimada');
             } else g.say('Tu cuñado ha escrito en el grupo: «Hazte una S.L., que queda más serio». Con un emoji de churro.', 'Móvil');
           } },
-        { id: 'veterano', x: 66, y: 80, emoji: '🧓', s: 6, label: 'Autónomo veterano',
+        { id: 'veterano', x: 49.3, y: 60.44, emoji: '🧍', s: 26.5, label: 'Autónomo veterano',
           look(g) {
             g.say(rand([
               '—Llevo 32 años de autónomo. Pago la cuota hasta estando de baja. Bueno, nunca he estado de baja: no me lo puedo permitir.',
