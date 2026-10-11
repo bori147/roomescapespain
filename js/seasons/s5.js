@@ -885,20 +885,21 @@
       scene: { wall: '#cdd5cf', floor: '#6f5b4b', floorH: 33, pattern: 'wood' },
       carry: ['tarjeta', 'portatilOk'],
       decor: [
-        { kind: 'counter', l: 34, t: 50, w: 32, h: 9 },
-        { kind: 'window', l: 86, t: 30, w: 10, h: 20 },
-        { kind: 'shelf', l: 3, t: 44, w: 14, h: 2 },
-        { kind: 'flag', l: 40, t: 5, w: 4, h: 6 },
-        { emoji: '🪑', x: 50, y: 74, s: 5, o: 0.85 },
+        { kind: 'window', l: 87, t: 18.85, w: 10, h: 29.31 },
+        { kind: 'flag', l: 57, t: 14.6, w: 8, h: 10.5 },
+        { kind: 'desk', id: 'mesaInterventor', l: 36, t: 57.3, w: 28, h: 16.7 },
+        { kind: 'pedestal', id: 'aparador', l: 68, t: 51.95, w: 16, h: 17.05, color: '#5e4634' },
+        { emoji: '🪑', x: 29, y: 68.29, s: 13.17 },
+        { emoji: '🪴', x: 88.5, y: 76.22, s: 11 },
       ],
       hotspots: [
-        { id: 'interventor', x: 50, y: 40, emoji: '🧐', s: 8, label: 'Interventor General',
+        { id: 'interventor', x: 50, y: 50.08, emoji: '🧑‍💼', s: 11.5, behind: 'mesaInterventor', label: 'Interventor General',
           look(g) {
             g.say('—Nadie sale de esta sala hasta que el cuadro de créditos cuadre. Al céntimo. Bueno, al millar de euros, que es como va el cuadro.', 'Interventor General');
             g.say('—Las reglas están en el acuerdo de techo de gasto, en la pared. Y lo que haga falta de 2023, en el archivo. La clave del archivo... la tiene apuntada alguien que ya se jubiló. En un pósit. Pegado al archivo. Por seguridad.', 'Interventor General');
           } },
-        { id: 'cuadro', x: 26, y: 22, sign: 'CUADRO DE CRÉDITOS', sub: '📊', w: 16, label: 'Cuadro de créditos (manchado de café)', look: budgetModal },
-        { id: 'techo', x: 74, y: 22, sign: 'TECHO DE GASTO', sub: '🧱', w: 15, label: 'Acuerdo de techo de gasto',
+        { id: 'cuadro', x: 24, y: 30.75, sign: 'CUADRO DE CRÉDITOS', sub: '📊', w: 18, label: 'Cuadro de créditos (manchado de café)', look: budgetModal },
+        { id: 'techo', x: 76, y: 30.75, sign: 'TECHO DE GASTO', sub: '🧱', w: 15, label: 'Acuerdo de techo de gasto',
           look(g) {
             g.doc('🧱 Acuerdo del Consejo de Ministros — Techo de gasto 2033', `<p>Para el ejercicio 2033, con presupuesto prorrogado (otra vez), se acuerda:</p>
               <ol><li>El límite de gasto no financiero es de <b>2,4 millones de euros</b>, que se repartirá íntegramente entre las cuatro secciones.</li>
@@ -906,9 +907,9 @@
               <li>El total del <b>Capítulo 2</b> superará al del <b>Capítulo 6</b> en exactamente <b>300.000 €</b>.</li></ol>
               <p class="small">Recuerde: el cuadro de créditos se expresa en <b>miles de euros</b>.</p>`);
           } },
-        { id: 'placa', x: 50, y: 13, sign: 'PLACA', sub: '🏅', w: 12, label: 'Placa conmemorativa',
+        { id: 'placa', x: 46, y: 21.3, sign: 'PLACA', sub: '🏅', w: 12, label: 'Placa conmemorativa',
           look(g) { g.say('«En esta sala se aprobaron los últimos Presupuestos Generales del Estado, el 14 de marzo de 2023. Desde entonces: prórroga, prórroga, prórroga.»'); } },
-        { id: 'archivo', x: 9, y: 60, emoji: '🗄️', s: 9, label: (g) => (g.flag('lector') ? 'Archivo (cerradura de 4 cifras)' : 'Archivo (lector de tarjetas y cerradura)'),
+        { id: 'archivo', x: 9.5, y: 56.17, emoji: '🗄️', s: 15, label: (g) => (g.flag('lector') ? 'Archivo (cerradura de 4 cifras)' : 'Archivo (lector de tarjetas y cerradura)'),
           look(g) {
             if (g.flag('arch')) return g.say('El archivo está abierto. Solo quedan presupuestos de 1998 que alguien guardó «por si acaso».');
             if (!g.flag('lector')) return g.say('El archivo tiene un lector de tarjetas y una cerradura de 4 cifras. La pantallita parpadea: «IDENTIFÍQUESE CON SU TARJETA DE EMPLEADO PÚBLICO. Después, la clave». Doble seguridad para unos presupuestos que nadie quiere robar.');
@@ -927,22 +928,22 @@
             },
             portatilOk(g) { g.say('Tu portátil no tiene ranura para archivos metálicos. Y el archivo no tiene USB. Incompatibles, como Hacienda y la alegría.'); },
           } },
-        { id: 'postit', x: 9, y: 37, emoji: '🗒️', s: 4, label: 'Pósit sobre el archivo',
+        { id: 'postit', x: 11, y: 51.55, emoji: '🗒️', s: 5, z: 111, label: 'Pósit sobre el archivo',
           look(g) { g.say('«Clave del archivo: día y mes en que se aprobaron los últimos Presupuestos (DDMM). Ya nadie se acuerda, así que es segurísima.»'); } },
-        { id: 'cafe', x: 62, y: 52, emoji: '☕', s: 5, label: 'Taza de café volcada',
+        { id: 'cafe', x: 61.5, y: 54.19, emoji: '☕', s: 3.5, on: 'mesaInterventor', label: 'Taza de café volcada',
           look(g) { g.say('La culpable. Una taza con el lema «I ❤ el déficit». Aún gotea sobre el suelo. Nadie la recoge: no hay partida para fregonas.'); } },
-        { id: 'calculadora', x: 38, y: 52, emoji: '🧮', s: 5, label: 'Calculadora',
+        { id: 'calculadora', x: 43, y: 52.86, emoji: '🧮', s: 5, on: 'mesaInterventor', label: 'Calculadora',
           look(g) { g.say('Una calculadora oficial. Le faltan las teclas del 7 y del 9: recortes. Tendrás que sumar de cabeza, como en 1978 (o con tu portátil, si arranca antes de 2034).'); },
           use: {
             portatilOk(g) { g.say('Abres la calculadora de tu portátil. «Instalando actualización 1 de 43». Para cuando termine, ya habrá presupuestos nuevos. Mejor de cabeza.'); },
           } },
-        { id: 'tijeras', x: 26, y: 82, emoji: '✂️', s: 5, label: 'Tijeras de los recortes',
+        { id: 'tijeras', x: 38, y: 52.86, emoji: '✂️', s: 5, on: 'mesaInterventor', label: 'Tijeras de los recortes',
           look(g) { g.say('Las tijeras de los recortes. Están melladas de tanto usarlas. Hay una solicitud para comprar unas nuevas, recortada por la mitad.'); } },
-        { id: 'hucha', x: 82, y: 78, emoji: '🐷', s: 5, label: 'Hucha «Fondo de contingencia»',
+        { id: 'hucha', x: 79.5, y: 47.51, emoji: '🐷', s: 5, on: 'aparador', label: 'Hucha «Fondo de contingencia»',
           look(g) { g.say('Fondo de contingencia del Estado: 3,20 €, un botón y un vale de descuento caducado. Para imprevistos.'); } },
-        { id: 'telefono', x: 92, y: 60, emoji: '☎️', s: 5, label: 'Teléfono rojo',
+        { id: 'telefono', x: 57, y: 52.86, emoji: '☎️', s: 5, on: 'mesaInterventor', label: 'Teléfono rojo',
           look(g) { g.say('—¿Diga? ¿Bruselas? ¿El déficit? ...Se corta. Mejor así.', 'Teléfono rojo'); } },
-        { id: 'carpetas', x: 62, y: 84, emoji: '📂', s: 5, label: 'Carpetas de enmiendas',
+        { id: 'carpetas', x: 72, y: 47.51, emoji: '📂', s: 5, on: 'aparador', label: 'Carpetas de enmiendas',
           look(g) { g.say('Enmiendas a la totalidad a los Presupuestos de 2024, 2025, 2026… y así hasta 2033. Ninguna llegó a votarse porque no hubo presupuestos que enmendar.'); } },
       ],
       hints: [
