@@ -614,12 +614,14 @@
       carry: ['nomina', 'certificadoAEAT', 'dni'],
       scene: { wall: '#e6dfcf', floor: '#9c8a74', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'shelf', id: 'balda', l: 46, t: 25.5, w: 9, h: 1.4 },
+        { kind: 'board', l: 1, t: 21.6, w: 19, h: 15.4 },
+        { kind: 'shelf', id: 'balda', l: 57.5, t: 32.9, w: 7, h: 1.4 },
         { kind: 'counter', id: 'mesaBorja', l: 33, t: 50.43, w: 24, h: 23.57 },
+        { kind: 'desk', id: 'mesaCasero', l: 63, t: 58.87, w: 14, h: 17.13 },
         { kind: 'pedestal', id: 'aparador', l: 85, t: 52.68, w: 13, h: 17.32, color: '#7a5b3e' },
       ],
       hotspots: [
-        { id: 'tablon', x: 10.5, y: 29, sign: 'PISOS EN ALQUILER', sub: '🏘️', w: 17, label: 'Tablón de anuncios', look: pisosDoc },
+        { id: 'tablon', x: 10.5, y: 29, sign: 'PISOS EN ALQUILER', sub: '🏘️', w: 17, z: 250, label: 'Tablón de anuncios', look: pisosDoc },
         { id: 'condiciones', x: 29.5, y: 29, sign: 'CONDICIONES', sub: '📜', w: 12, z: 250, label: 'Condiciones de la agencia',
           look(g) {
             g.doc('📜 Condiciones generales de contratación', `<p>El día de la firma, el inquilino abona:</p>
@@ -631,7 +633,7 @@
               <p><b>Solvencia:</b> sus ingresos netos mensuales deben ser <b>al menos</b> las veces la renta que indique el anuncio (renta sin comunidad).</p>
               <p class="tiny">Los gastos de gestión no son honorarios de agencia, que eso ya no se le puede cobrar al inquilino. Son gastos de gestión. Que es distinto. Porque lo decimos nosotros.</p>`);
           } },
-        { id: 'estanteria', x: 50.5, y: 19.72, emoji: '🗂️', s: 6.5, on: 'balda', label: 'Estantería de carpetas',
+        { id: 'estanteria', x: 61, y: 27.12, emoji: '🗂️', s: 6.5, on: 'balda', label: 'Estantería de carpetas',
           look(g) {
             if (g.flag('carp')) return g.say('Carpetas de otros candidatos. Una tiene una carta de recomendación de un obispo.');
             g.set('carp'); g.give('carpeta');
@@ -639,7 +641,7 @@
           } },
         { id: 'foto', x: 70, y: 27.98, emoji: '🖼️', s: 8, label: 'Foto del «piso piloto»',
           look(g) { g.say('La foto del piso piloto: 30 m² que, con gran angular, parecen el Palacio Real. Al fondo se intuye un pie del fotógrafo.'); } },
-        { id: 'impresora', x: 88.5, y: 47.35, emoji: '🖨️', s: 6, on: 'aparador', label: 'Impresora de la agencia',
+        { id: 'impresora', x: 91.5, y: 47.35, emoji: '🖨️', s: 6, on: 'aparador', label: 'Impresora de la agencia',
           look(g) { g.say('Una impresora con un cartel: «Solo para clientes. Imprimir cuesta 2 €. Mirarla, 1 €».'); },
           use: {
             movil(g) {
@@ -648,7 +650,7 @@
               g.say('Mandas el extracto desde la app. La impresora se lo piensa, carraspea y lo escupe. Saldo: 4.000 €. Hasta la impresora parece decepcionada.');
             },
           } },
-        { id: 'agente', x: 40.5, y: 51.15, emoji: '🕴️', s: 25.14, behind: 'mesaBorja', label: 'Borja, agente inmobiliario',
+        { id: 'agente', x: 40.5, y: 45.2, emoji: '🧑‍💼', s: 11.6, behind: 'mesaBorja', label: 'Borja, agente inmobiliario',
           look(g) {
             if (g.flag('dossierOK') && g.flag('dniOK')) return g.say('—Ya tengo su dossier y la fotocopia del DNI. Elija piso en el ordenador. Solo uno, que esto no es un buffet.', 'Borja (agente)');
             const falta = [];
@@ -676,14 +678,14 @@
             certificadoAEAT(g) { g.say('—Muy bonito el certificado. En la carpeta, por favor, con la nómina y el extracto.', 'Borja (agente)'); },
             movil(g) { g.say('—No miro móviles ajenos. Imprímalo.', 'Borja (agente)'); },
           } },
-        { id: 'ordenador', x: 54.5, y: 45.98, emoji: '💻', s: 5, on: 'mesaBorja', label: 'Ordenador de la agencia',
+        { id: 'ordenador', x: 50, y: 45.98, emoji: '💻', s: 5, on: 'mesaBorja', label: 'Ordenador de la agencia',
           look(g) {
             if (!g.flag('dossierOK')) return g.say('Borja tapa la pantalla con la mano: —Primero el dossier.', 'Borja (agente)');
             if (!g.flag('dniOK')) return g.say('Borja tapa la pantalla con la mano: —Sin fotocopia del DNI, el sistema no sabe quién es usted. Y yo tampoco.', 'Borja (agente)');
             if (g.has('solicitudAlq')) return g.say('La solicitud ya está impresa. Entrégasela al casero.');
             ordenadorL1(g);
           } },
-        { id: 'casero', x: 70, y: 58.63, emoji: '🧍‍♂️', s: 26.29, label: 'Don Ulpiano, el casero',
+        { id: 'casero', x: 70, y: 55.9, emoji: '🤵', s: 11.5, behind: 'mesaCasero', label: 'Don Ulpiano, el casero',
           look(g) {
             g.say(rand([
               '—Yo solo alquilo a gente seria. Sin niños, sin perros, sin fiestas y, a ser posible, sin vida.',
@@ -705,7 +707,7 @@
             g.set('moch'); g.give('movil');
             g.say('En la mochila: el móvil, con un mensaje de tu pareja sin leer. Léelo (selecciónalo en el inventario). La nómina y el certificado de Hacienda ya los traías en la mano, que no te fías ni de la mochila.');
           } },
-        { id: 'candidatos', x: 20, y: 60.92, emoji: '🧍', s: 25.96, label: 'Otros candidatos',
+        { id: 'candidatos', x: 18.5, y: 60.92, emoji: '🧍', s: 25.96, label: 'Otros candidatos',
           look(g) {
             g.say(rand([
               '—Yo he traído nómina, aval de mis padres, carta de mi párroco y un análisis de sangre. Por si acaso.',
@@ -713,7 +715,7 @@
               '—Llevo dos años buscando. Ya me sé de memoria todas las humedades de la ciudad.',
             ]), 'Candidato/a');
           } },
-        { id: 'agua', x: 95, y: 48.23, emoji: '🚰', s: 5, on: 'aparador', label: 'Dispensador de agua',
+        { id: 'agua', x: 94, y: 33.8, emoji: '🚰', s: 5, label: 'Dispensador de agua',
           look(g) { g.say('«Agua para clientes: 0,50 €». Es agua del grifo. Con gastos de gestión.'); } },
         { id: 'planta', x: 87, y: 82.33, emoji: '🪴', s: 12, label: 'Planta',
           look(g) { g.say('Una planta de plástico. Es lo único de la agencia que no tiene precio por metro cuadrado.'); } },
