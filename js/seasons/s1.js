@@ -993,7 +993,9 @@
         { kind: 'pedestal', id: 'bancada', l: 9, t: 53.29, w: 14, h: 19.71, color: '#3d4247' },
         { kind: 'counter', id: 'platina', l: 28, t: 49.2, w: 20, h: 22.8 },
         { kind: 'board', l: 84, t: 26.8, w: 10.4, h: 12.4 },
-        { kind: 'table', id: 'mesita', l: 83, t: 64.35, w: 12, h: 17.65 },
+        { emoji: '📄', x: 87.3, y: 32.5, s: 3.6, z: 15 }, { emoji: '📄', x: 91.4, y: 31.4, s: 3.2, z: 15 },
+        { emoji: '📰', x: 20.2, y: 48.85, s: 5, on: 'bancada' },
+        { kind: 'table', id: 'mesita', l: 83, t: 69.53, w: 12, h: 18.47 },
         { emoji: '📦', x: 3.2, y: 66.67, s: 5.43 }, { emoji: '📦', x: 6.2, y: 72.01, s: 5.61 },
       ],
       hotspots: [
@@ -1001,12 +1003,12 @@
           look(g) { g.say('«En el BOE, lo importante siempre va al principio». — Tradición de la casa, desde la Gazeta de 1661.'); } },
         { id: 'reloj', x: 63, y: 11.5, emoji: '🕛', s: 5, label: 'Reloj: 23:59',
           look(g) { g.say('23:59. El reloj lleva marcando 23:59 toda la noche. En el BOE, todo se publica a las 23:59.'); } },
-        { id: 'rotativa', x: 16, y: 47.51, emoji: '🖨️', s: 6.5, on: 'bancada', label: 'Rotativa',
+        { id: 'rotativa', x: 14.5, y: 47.51, emoji: '🖨️', s: 6.5, on: 'bancada', label: 'Rotativa',
           look(g) {
             if (!g.flag('disc')) { g.set('disc'); g.say('Entre los rodillos, atascado, hay un disco de cifrado antiguo. Probablemente de la época de Felipe IV.'); g.give('disco'); }
             else g.say('La rotativa imprime a toda velocidad: decretos, órdenes, correcciones de errores de las correcciones de errores...');
           } },
-        { id: 'linotipista', x: 33.5, y: 44.03, emoji: '👷', s: 11.33, behind: 'platina', label: 'Linotipista',
+        { id: 'linotipista', x: 33.5, y: 42, emoji: '👷', s: 11.33, behind: 'platina', label: 'Linotipista',
           look(g) { g.say('—Aquí se imprime lo que el gobierno aprueba a última hora. Este decreto trae nueve artículos. No leas solo el texto: fíjate en cómo empiezan. Como dice el lema...', 'Linotipista'); } },
         { id: 'boe', x: 43.5, y: 44.13, emoji: '📰', s: 5.7, on: 'platina', label: 'BOE recién impreso',
           look(g) {
@@ -1028,7 +1030,7 @@
           use: { disco(g) { g.say('El BOE no está cifrado. Solo lo parece.'); } } },
         { id: 'sobre', x: 59, y: 71.6, emoji: '✉️', s: 5, label: 'Sobre en el suelo', show: (g) => !g.flag('env'),
           look(g) { g.set('env'); g.say('Un sobre lacrado: «PARA EL CIUDADANO — CIFRADO POR SU SEGURIDAD». Te lo guardas.'); g.give('sobre'); } },
-        { id: 'cafe', x: 89, y: 59.9, emoji: '☕', s: 5, on: 'mesita', label: 'Café abandonado',
+        { id: 'cafe', x: 89, y: 66.06, emoji: '☕', s: 3.9, on: 'mesita', label: 'Café abandonado',
           look(g) { g.say('Un café frío con una nota: «Recordatorio: el decreto trae un regalito para el ciudadano. Lo he cifrado a la antigua, como hacía Julio».'); } },
         { id: 'puerta', x: 63, y: 42.33, emoji: '🚪', s: 27.19, label: 'Puerta con cerradura de letras',
           look(g) {
