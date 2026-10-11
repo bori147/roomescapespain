@@ -468,16 +468,19 @@
       stars: 1,
       intro: 'Tu DNI caduca mañana. Solo tienes que renovarlo. Fácil.<br><br>Pero para renovarlo necesitas <b>cita previa</b>, y en toda España no queda ni una desde 2019.<br><br><b>Objetivo:</b> consigue una cita y convence al agente de la puerta para que te deje pasar.',
       outro: 'Se le concede el acceso a la oficina. Ha logrado usted lo que millones de españoles intentan cada madrugada. Por desgracia, dentro le esperan más papeles.',
-      scene: { wall: '#ddd6c1', floor: '#8e8e86', floorH: 34, pattern: 'tiles' },
+      scene: { wall: '#ddd6c1', floor: '#8e8e86', floorH: 32, pattern: 'tiles' },
       init(g) { g.set('h', 14); g.set('m', 35); },
       decor: [
-        { kind: 'window', l: 3, t: 9, w: 13, h: 30 },
-        { kind: 'flag', l: 58, t: 7, w: 6, h: 9 },
-        { kind: 'counter', l: 21, t: 56, w: 20, h: 9 },
-        { emoji: '🧯', x: 97, y: 50, s: 3, o: 0.9 },
+        { kind: 'window', l: 1.5, t: 19.1, w: 10, h: 29.8 },
+        { kind: 'shelf', id: 'balda', l: 21.5, t: 23.37, w: 6, h: 1.4 },
+        { kind: 'pedestal', id: 'atrilTerminal', l: 33, t: 54.36, w: 8, h: 17.64, color: '#6f7780' },
+        { kind: 'flag', l: 48, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'counter', id: 'control', l: 46, t: 48.85, w: 14, h: 23.15 },
+        { emoji: '🧍‍♀️', x: 12.5, y: 57.02, s: 24.7 },
+        { emoji: '🧯', x: 92.8, y: 57.17, s: 7.2 },
       ],
       hotspots: [
-        { id: 'cartel', x: 29, y: 25, sign: 'AVISO', sub: '📢', w: 11, label: 'Cartel de avisos',
+        { id: 'cartel', x: 37, y: 31.3, sign: 'AVISO', sub: '📢', w: 10, label: 'Cartel de avisos',
           look(g) {
             g.doc('📢 AVISO IMPORTANTE', `<p>Estimado/a ciudadano/a:</p>
               <p>Las nuevas citas para la expedición y renovación del DNI se liberan <b>cada día a las 8:00 en punto</b>, según la hora oficial del reloj de esta sala.</p>
@@ -485,9 +488,9 @@
               <p>Gracias por su paciencia (que no por su comprensión).</p>
               <p class="small">— La Dirección</p>`);
           } },
-        { id: 'reloj', x: 46, y: 17, emoji: '🕰️', s: 6, label: (g) => `Reloj de pared (${pad(g.flag('h'))}:${pad(g.flag('m'))})`,
+        { id: 'reloj', x: 24.5, y: 18.93, emoji: '🕰️', s: 5, on: 'balda', label: (g) => `Reloj de pared (${pad(g.flag('h'))}:${pad(g.flag('m'))})`,
           look: clockModal },
-        { id: 'pc', x: 31, y: 51, emoji: '🖥️', s: 8, label: 'Terminal de autocita',
+        { id: 'pc', x: 37, y: 48.58, emoji: '🖥️', s: 6.5, on: 'atrilTerminal', label: 'Terminal de autocita',
           look(g) {
             if (g.flag('gotCita')) return g.say('Ya tienes tu cita. No tientes a la suerte: el sistema podría darse cuenta.');
             if (g.flag('h') === 8 && g.flag('m') === 0) {
@@ -503,7 +506,7 @@
               `Son las ${pad(g.flag('h'))}:${pad(g.flag('m'))}. Las citas de hoy ya se agotaron. Las de mañana aún no han salido.`,
             ]), 'Terminal de autocita');
           } },
-        { id: 'agente', x: 69, y: 58, emoji: '👮', s: 9, label: 'Agente de la puerta',
+        { id: 'agente', x: 53, y: 43.6, emoji: '👮', s: 11.5, behind: 'control', label: 'Agente de la puerta',
           look(g) {
             g.say(rand([
               '—Sin cita previa no se puede pasar. Con cita tampoco, pero sin cita menos.',
@@ -518,10 +521,10 @@
               g.win();
             },
           } },
-        { id: 'puerta', x: 86, y: 46, emoji: '🚪', s: 15, label: 'Puerta de la oficina',
+        { id: 'puerta', x: 70, y: 43.21, emoji: '🚪', s: 27.9, label: 'Puerta de la oficina',
           look(g) { g.say('Cerrada. El agente la vigila como si dentro guardaran las joyas de la Corona.'); },
           use: { justificante(g) { g.say('Mejor enséñaselo al agente, que para eso le pagan.'); } } },
-        { id: 'cola', x: 11, y: 75, emoji: '🧍🧍‍♀️🧍‍♂️', s: 5, label: 'Cola de ciudadanos',
+        { id: 'cola', x: 20, y: 60.44, emoji: '🧍', s: 26.5, label: 'Cola de ciudadanos',
           look(g) {
             g.say(rand([
               '—Yo vine a por la cita en 2019. Ya ni me acuerdo de para qué era.',
@@ -529,9 +532,9 @@
               '—Yo me pongo el despertador a las 7:59 cada día. Llevo tres meses. Mi mujer ya duerme en el sofá.',
             ]), 'Alguien de la cola');
           } },
-        { id: 'silla', x: 47, y: 80, emoji: '💺', s: 5, label: 'Silla de espera',
+        { id: 'silla', x: 84, y: 66.1, emoji: '💺', s: 15.6, label: 'Silla de espera',
           look(g) { g.say('Una silla atornillada al suelo. Por si alguien intentaba llevársela para esperar en casa.'); } },
-        { id: 'planta', x: 94, y: 80, emoji: '🪴', s: 5, label: 'Planta',
+        { id: 'planta', x: 6, y: 79.5, emoji: '🪴', s: 9.7, label: 'Planta',
           look(g) { g.say('Una planta de plástico. Es lo único de esta oficina que no ha pedido la baja.'); } },
       ],
       hints: [
