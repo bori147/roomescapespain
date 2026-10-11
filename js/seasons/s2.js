@@ -839,12 +839,12 @@
         { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
         { kind: 'desk', id: 'mesaTerminal', l: 19, t: 58.9, w: 19, h: 17.1 },
         { kind: 'counter', id: 'ventanilla', l: 57, t: 48.85, w: 23, h: 23.15 },
-        { kind: 'box', id: 'cajas', l: 82.5, t: 64.33, w: 11, h: 12.67, color: '#b98a5b' },
-        { kind: 'box', id: 'cajasArriba', l: 83.5, t: 51.66, w: 9.5, h: 12.67, color: '#c99a68', z: 137 },
-        { emoji: '🪴', x: 84, y: 83.67, s: 10.5 },
+        { kind: 'box', id: 'cajas', l: 83.3, t: 64.33, w: 9.2, h: 12.67, color: '#b98a5b' },
+        { kind: 'box', id: 'cajasArriba', l: 83.8, t: 51.66, w: 8.2, h: 12.67, color: '#c99a68', z: 137 },
+        { emoji: '🪴', x: 77, y: 83.67, s: 10.5 },
       ],
       hotspots: [
-        { id: 'tramos', x: 10, y: 31.3, sign: 'CUOTAS RETA', sub: '📊', w: 13, label: 'Cartel de cuotas',
+        { id: 'tramos', x: 13, y: 31.3, sign: 'CUOTAS RETA', sub: '📊', w: 13, label: 'Cartel de cuotas',
           look(g) {
             g.doc('📊 Cuota de autónomos según rendimientos (simplificada)', `<p><b>1.</b> Rendimiento neto mensual = ingresos previstos − gastos <b>necesarios para la actividad</b>. Los gastos personales no cuentan: ni el gimnasio, ni el coche de los domingos, ni la terapia.</p>
               <p><b>2.</b> Rendimiento computable = rendimiento neto <b>− 7 %</b> (deducción por gastos genéricos).</p>
@@ -852,7 +852,7 @@
               <table class="tbl"><tr><td>Hasta 700 €</td><td>200 €</td></tr><tr><td>De 700,01 a 1.000 €</td><td>230 €</td></tr><tr><td>De 1.000,01 a 1.300 €</td><td>275 €</td></tr><tr><td>De 1.300,01 a 1.700 €</td><td>310 €</td></tr><tr><td>Más de 1.700 €</td><td>390 €</td></tr></table>
               <p class="small">Si cumple los requisitos de la tarifa plana, olvide esta tabla durante 12 meses. Luego, recuérdela.</p>`);
           } },
-        { id: 'tarifa', x: 28, y: 33.2, sign: 'TARIFA PLANA', sub: '8️⃣0️⃣', w: 13, z: 250, label: 'Cartel de la tarifa plana',
+        { id: 'tarifa', x: 31, y: 33.2, sign: 'TARIFA PLANA', sub: '8️⃣0️⃣', w: 13, z: 250, label: 'Cartel de la tarifa plana',
           look(g) {
             g.doc('8️⃣0️⃣ Tarifa plana para nuevos autónomos', `<p>Cuota reducida de <b>80 € al mes</b> durante los primeros 12 meses.</p>
               <p><b>Requisito:</b> no haber estado de alta como autónomo en ningún momento de los <b>dos años</b> inmediatamente anteriores a la nueva alta.</p>
