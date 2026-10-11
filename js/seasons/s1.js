@@ -551,12 +551,12 @@
       scene: { wall: '#c9d6cf', floor: '#7b6a58', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'shelf', id: 'perchero', l: 3, t: 29.8, w: 11, h: 1.4 },
-        { kind: 'pedestal', id: 'muebleCopiadora', l: 17.75, t: 56.32, w: 7.5, h: 16.68, color: '#9aa1a8' },
+        { kind: 'pedestal', id: 'muebleCopiadora', l: 18.25, t: 56.32, w: 6.5, h: 16.68, color: '#dcd8e4' },
         { kind: 'counter', id: 'mostrador', l: 36, t: 48.85, w: 23, h: 23.15 },
         { kind: 'window', l: 76, t: 19.1, w: 9.5, h: 29.8 },
         { kind: 'vitrine', id: 'maquinaFrente', l: 87.5, t: 31.21, w: 8, h: 23.15, color: '#6b1f2a' },
         { kind: 'pedestal', id: 'maquina', l: 87.5, t: 54.36, w: 8, h: 17.64, color: '#6b1f2a' },
-        { emoji: '☕', x: 91.5, y: 51.3, s: 3.44, on: 'maquina' },
+        { kind: 'box', l: 89.5, t: 49.5, w: 4, h: 4.5, color: '#2a0d12' },
       ],
       hotspots: [
         { id: 'abrigo', x: 8.5, y: 36.24, emoji: '🧥', s: 13.45, label: 'Tu abrigo, en el perchero',
@@ -564,7 +564,7 @@
             if (!g.flag('coat')) { g.set('coat'); g.say('En el bolsillo interior encuentras tu DNI caducado. Y un tique de aparcamiento de 2016.'); g.give('dni'); }
             else g.say('Solo quedan pelusas y el tique de 2016. Algún día lo pagarás.');
           } },
-        { id: 'requisitos', x: 30, y: 31.3, sign: 'REQUISITOS', sub: '📋', w: 12, label: 'Cartel de requisitos',
+        { id: 'requisitos', x: 29, y: 31.3, sign: 'REQUISITOS', sub: '📋', w: 12, label: 'Cartel de requisitos',
           look(g) {
             g.doc('📋 DOCUMENTACIÓN NECESARIA', `<ul>
               <li>DNI original (caducado vale: total, ya lo tenemos).</li>
@@ -573,7 +573,7 @@
               <p>La fotocopiadora de esta sala solo acepta <b>monedas de 10 céntimos</b>.</p>
               <p>Esta Administración <b>no dispone de cambio</b>. Pruebe en la máquina de café.</p>`);
           } },
-        { id: 'ventanilla', x: 47.5, y: 22, sign: (g) => (g.flag('back') ? 'VENTANILLA 1' : 'DESAYUNANDO'), sub: (g) => (g.flag('back') ? '🪟' : '☕ Vuelvo en 5 min'), w: 14,
+        { id: 'ventanilla', x: 47.5, y: 22, sign: (g) => (g.flag('back') ? 'VENTANILLA 1' : 'DESAYUNANDO'), sub: (g) => (g.flag('back') ? '🪟' : '☕ Vuelvo en 5 min'), w: 16,
           label: 'Ventanilla 1',
           look(g) {
             if (!g.flag('back')) g.say('Un cartel: «DESAYUNANDO. VUELVO EN 5 MINUTOS». El celo está amarillento. Huele a 1998. Quizá algo la haga volver...');
@@ -607,7 +607,7 @@
             },
             euro(g) { g.say('Solo monedas de 10 céntimos. Un euro entero es demasiado dinero para esta máquina.'); },
           } },
-        { id: 'papelera', x: 28.5, y: 70.92, emoji: '🗑️', s: 5.71, label: 'Papelera',
+        { id: 'papelera', x: 30, y: 70.92, emoji: '🗑️', s: 5.71, label: 'Papelera',
           look(g) { g.say('Formularios del modelo 2023. Ya no valen: ahora es el modelo 2023-bis. Que es igual, pero con otro número.'); } },
         { id: 'cola2', x: 66, y: 57.02, emoji: '🧍‍♀️', s: 24.7, label: 'Señora esperando',
           look(g) { g.say('—Yo vengo cada día. La funcionaria vuelve cuando huele a café. Es como un gato, pero con trienios.', 'Señora'); } },
