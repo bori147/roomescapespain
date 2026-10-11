@@ -753,23 +753,26 @@
       stars: 3,
       intro: 'El siguiente trámite es <b>100% online</b>. Desde casa, sin colas. ¿Qué podría salir mal?<br><br>Navegadores «compatibles», versiones de Java, Autofirma, certificados digitales, Cl@ve PIN...<br><br><b>Objetivo:</b> completa el trámite en la Sede Electrónica y sal de casa con el acuse de recibo.',
       outro: 'Trámite electrónico presentado. Ha tardado solo cuatro horas y media, lo que constituye un récord nacional. Lamentablemente, al cruzar sus datos, la Agencia Tributaria ha detectado una irregularidad en su declaración de la renta.',
-      scene: { wall: '#e8dcc8', floor: '#a0764f', floorH: 30, pattern: 'wood' },
+      scene: { wall: '#e8dcc8', floor: '#a0764f', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 36, t: 60, w: 30, h: 7 },
-        { kind: 'window', l: 44, t: 8, w: 12, h: 26 },
-        { kind: 'shelf', l: 5, t: 34, w: 16, h: 2 },
-        { emoji: '🛋️', x: 12, y: 84, s: 9, o: 0.95 },
+        { kind: 'rug', id: 'alfombra', l: 3, t: 80, w: 28, h: 8, color: '#8c5a3c', z: 101 },
+        { kind: 'sofa', id: 'sofa', l: 1.5, t: 54.92, w: 23, h: 19.08 },
+        { kind: 'shelf', id: 'estante', l: 2, t: 36.1, w: 16, h: 1.4 },
+        { kind: 'window', id: 'ventana', l: 34, t: 19.1, w: 12, h: 29.8 },
+        { kind: 'board', id: 'corcho', l: 48.5, t: 29.75, w: 10.5, h: 12.75 },
+        { kind: 'table', id: 'mesa', l: 30, t: 57.17, w: 20, h: 16.83 },
+        { kind: 'pedestal', id: 'aparador', l: 85, t: 58.29, w: 13, h: 15.71, color: '#7a5a3e' },
       ],
       hotspots: [
-        { id: 'ordenador', x: 51, y: 53, emoji: '💻', s: 8, label: 'Ordenador',
+        { id: 'ordenador', x: 38.5, y: 50.5, emoji: '💻', s: 7.5, on: 'mesa', label: 'Ordenador',
           look: sedeModal,
           use: { usb(g) { g.take('usb'); g.set('usbIn'); g.say('Insertas el pendrive. Windows lo detecta tras tres minutos y dos actualizaciones obligatorias.'); } } },
-        { id: 'cajon', x: 38, y: 78, emoji: '🗄️', s: 6, label: 'Cajón del escritorio',
+        { id: 'cajon', x: 55.5, y: 63.4, emoji: '🗄️', s: 11.92, label: 'Cajón del escritorio',
           look(g) {
             if (!g.flag('usbFound')) { g.set('usbFound'); g.say('Entre cables que no sabes de qué son, aparece un pendrive: «CERTIFICADO FNMT — NO PERDER».'); g.give('usb'); }
             else g.say('Cables. Cargadores de móviles que ya no existen. Un mando de una tele que tiraste en 2014.');
           } },
-        { id: 'manual', x: 9, y: 28, emoji: '📘', s: 5, label: 'Manual oficial (estantería)',
+        { id: 'manual', x: 5, y: 31.65, emoji: '📘', s: 5, on: 'estante', label: 'Manual oficial (estantería)',
           look(g) {
             g.doc('📘 Manual de la Sede Electrónica (v. 14.2)', `<p><b>Requisitos técnicos:</b></p>
               <ul><li>Navegador: cualquier navegador moderno, excepto los que no.</li>
@@ -778,39 +781,39 @@
               <li>Paciencia: ilimitada.</li></ul>
               <p class="small">Para más información, consulte el Manual de Requisitos del Manual (v. 3.0, no disponible).</p>`);
           } },
-        { id: 'libros', x: 16, y: 28, emoji: '📚', s: 5, label: 'Libros',
+        { id: 'libros', x: 10.25, y: 31.65, emoji: '📚', s: 5, on: 'estante', label: 'Libros',
           look(g) { g.say('«Cómo sobrevivir a la Administración Electrónica», «Java para nostálgicos» y «El arte de reiniciar».'); } },
-        { id: 'perroFoto', x: 30, y: 22, emoji: '🖼️', s: 6, label: 'Foto enmarcada',
+        { id: 'perroFoto', x: 23, y: 34.35, emoji: '🖼️', s: 8, label: 'Foto enmarcada',
           look(g) { g.say('Una foto de tu perro de cachorro. Detrás pone: «Tobi, el día que llegó a casa. Verano de 2015».'); } },
-        { id: 'postit', x: 68, y: 26, emoji: '🗒️', s: 5, label: 'Pósit en el corcho',
+        { id: 'postit', x: 53.75, y: 36.1, emoji: '🗒️', s: 5, label: 'Pósit en el corcho',
           look(g) {
             g.doc('🗒️ Pósit de tu cuñado («que sabe de informática»)', `<p>¡OJO!</p>
               <p>La Autofirma 1.9 <b>SOLO</b> funciona con <b>Java 8</b>. ¡Nada de Java 17 ni 21, que se rompe todo!</p>
               <p>La 1.8.3 con Java 21 tampoco va.</p>
               <p>Hazme caso, que yo de esto sé. Ya me invitarás a una caña.</p>`);
           } },
-        { id: 'foro', x: 78, y: 62, emoji: '🖨️', s: 6, label: 'Impresora (con un papel)',
+        { id: 'foro', x: 89, y: 53.4, emoji: '🖨️', s: 5.5, on: 'aparador', label: 'Impresora (con un papel)',
           look(g) {
             g.doc('📄 forodeafectados.es — «¿¿ALGUIEN HA CONSEGUIDO FIRMAR??»', `<p><b>Mari_Loli_62:</b> Con Chrome, imposible. Con Firefox, tampoco. Safari, ni lo intentes.</p>
               <p><b>Paco_Autónomo:</b> Yo al final lo logré con <b>Edge en modo Internet Explorer</b>. En 2026. Lloré.</p>
               <p><b>Anónimo:</b> Confirmo lo de Edge en modo IE. Con lo demás, error inesperado.</p>
               <p><b>Emigrado_a_Portugal:</b> Yo desistí. Aquí se vive muy bien.</p>`);
           } },
-        { id: 'movil', x: 61, y: 77, emoji: '📱', s: 5, label: 'Móvil',
+        { id: 'movil', x: 45.5, y: 52.72, emoji: '📱', s: 5, on: 'mesa', label: 'Móvil',
           look(g) {
             if (g.flag('pinReq')) g.say('SMS de «Cl@ve»: «Su Cl@ve PIN es <b>842</b>. Válido 10 minutos. No lo comparta con nadie». Justo debajo, otro SMS: «Correos: su paquete está retenido, pague 1,99 € aquí». (Eso es una estafa. No lo toques.)', 'Móvil');
             else g.say('Sin mensajes nuevos. Bueno, catorce de «Posible spam».', 'Móvil');
           } },
-        { id: 'cuaderno', x: 86, y: 79, emoji: '📓', s: 5, label: 'Cuaderno de contraseñas',
+        { id: 'cuaderno', x: 15, y: 31.65, emoji: '📓', s: 5, on: 'estante', label: 'Cuaderno de contraseñas',
           look(g) {
             g.doc('📓 Cuaderno de contraseñas (muy seguro)', `<ul><li>Banco: la de siempre.</li><li>Netflix: la del primo.</li><li>Wifi: debajo del router.</li>
               <li><b>Certificado digital:</b> nombre del perro + año en que llegó a casa (todo junto).</li></ul>`);
           } },
-        { id: 'perro', x: 24, y: 83, emoji: '🐕', s: 6, label: 'Tobi',
+        { id: 'perro', x: 20, y: 77.44, emoji: '🐕', s: 8.5, label: 'Tobi',
           look(g) { g.say('Tobi te mira. Él tampoco entiende la Sede Electrónica. Pero al menos no lo intenta.'); } },
-        { id: 'gato', x: 72, y: 44, emoji: '🐈', s: 5, label: 'Gato sobre el router',
+        { id: 'gato', x: 95, y: 53.84, emoji: '🐈', s: 5, on: 'aparador', label: 'Gato sobre el router',
           look(g) { g.say('El gato duerme encima del router porque está calentito. Por eso internet va lento. No lo muevas: no te lo perdonaría.'); } },
-        { id: 'puerta', x: 94, y: 46, emoji: '🚪', s: 14, label: 'Puerta de casa',
+        { id: 'puerta', x: 71, y: 43.21, emoji: '🚪', s: 27.9, label: 'Puerta de casa',
           look(g) { g.say('No sales de casa hasta terminar el trámite online. Así lo manda la transformación digital.'); },
           use: { acuse(g) { g.say('Con el acuse de recibo en la mano, sales de casa sintiéndote un hacker del Estado.'); g.win(); } } },
       ],
