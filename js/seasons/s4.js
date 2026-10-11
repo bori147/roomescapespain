@@ -1359,28 +1359,28 @@
       scene: { wall: '#6d2b2b', floor: '#4f3526', floorH: 40, pattern: 'carpet' },
       carry: ['actaProcl', 'resolucion'],
       decor: [
-        { kind: 'curtain', l: 31, t: 18, w: 38, h: 42, color: '#4a1a20', z: 11 },
-        { kind: 'flag', l: 36, t: 19.5, w: 7, h: 9.4 },
-        { kind: 'flag-eu', l: 45, t: 19.5, w: 7, h: 9.4 },
-        { kind: 'platform', id: 'estrado', l: 31, t: 50.6, w: 38, h: 9.4, color: '#5a3b28' },
-        { kind: 'counter', id: 'mesaPresidencia', l: 33, t: 30.9, w: 34, h: 19.7 },
-        { kind: 'seats', id: 'bancadaIzq', l: 2, t: 43.71, w: 26.5, h: 31.29, color: '#2f4a74' },
-        { kind: 'seats', id: 'bancadaDer', l: 71.5, t: 43.71, w: 26.5, h: 31.29, color: '#2f4a74' },
+        { kind: 'curtain', l: 33, t: 0, w: 34, h: 60, color: '#4a1a20', z: 11 },
+        { kind: 'flag', l: 37, t: 19.5, w: 8, h: 9.4 },
+        { kind: 'flag-eu', l: 46, t: 19.5, w: 8, h: 9.4 },
+        { kind: 'platform', id: 'estrado', l: 33, t: 50.6, w: 34, h: 9.4, color: '#5a3b28' },
+        { kind: 'counter', id: 'mesaPresidencia', l: 34.5, t: 35.6, w: 31, h: 15 },
+        { kind: 'seats', id: 'bancadaIzq', l: 1.5, t: 43.71, w: 30, h: 31.29, color: '#2f4a74' },
+        { kind: 'seats', id: 'bancadaDer', l: 68.5, t: 43.71, w: 30, h: 31.29, color: '#2f4a74' },
         { kind: 'lectern', id: 'atril', l: 45, t: 46.8, w: 10, h: 23.2, color: '#5a3b28' },
-        { kind: 'table', id: 'mesaTaquigrafos', l: 33, t: 58.46, w: 11, h: 15.54 },
+        { kind: 'table', id: 'mesaTaquigrafos', l: 34.5, t: 63.83, w: 9.5, h: 16.17 },
         { kind: 'desk', id: 'mesaPrensa', l: 78, t: 69.2, w: 18, h: 16.8 },
         { emoji: '📸', x: 81, y: 65.64, s: 4, on: 'mesaPrensa' },
       ],
       hotspots: [
         ...L9_IDS.map((id) => {
-          const pos = { ALA: [6.5, 39.27, 'bancadaIzq'], CANA: [13, 39.27, 'bancadaIzq'], NIDAC: [19.5, 39.27, 'bancadaIzq'], UVA: [26, 39.27, 'bancadaIzq'], ASPA: [75, 39.27, 'bancadaDer'], TIC: [81.5, 39.27, 'bancadaDer'], ZIG: [88, 39.27, 'bancadaDer'], FAROL: [94.5, 39.27, 'bancadaDer'] }[id];
+          const pos = { ALA: [4.5, 39.27, 'bancadaIzq'], CANA: [12.1, 39.27, 'bancadaIzq'], NIDAC: [20.9, 39.27, 'bancadaIzq'], UVA: [28.8, 39.27, 'bancadaIzq'], ZIG: [71, 39.27, 'bancadaDer'], ASPA: [80.2, 39.27, 'bancadaDer'], TIC: [87.2, 39.27, 'bancadaDer'], FAROL: [95, 39.27, 'bancadaDer'] }[id];
           return {
             id: 'p_' + id, x: pos[0], y: pos[1], emoji: P[id].emoji, s: 5, on: pos[2], tag: P[id].sigla,
             label: (g) => `${P[id].sigla} · ${P[id].name}${g.flag('comp') ? ` (${L9_SEATS[id]} escaños)` : ''}`,
             look(g) { g.say(L9_SAYS[id], `${P[id].emoji} ${P[id].lider} — ${P[id].sigla}${g.flag('comp') ? ` (${L9_SEATS[id]})` : ''}`); },
           };
         }),
-        { id: 'letrado', x: 60, y: 26.4, emoji: '🧑‍⚖️', s: 9.8, behind: 'mesaPresidencia', label: 'Letrado Mayor de las Cortes',
+        { id: 'letrado', x: 60, y: 34, emoji: '🧑‍⚖️', s: 9.8, behind: 'mesaPresidencia', label: 'Letrado Mayor de las Cortes',
           look(g) {
             if (g.flag('comp')) return g.say('—Composición completa: 81 escaños. Ya pueden empezar a no ponerse de acuerdo.', 'Letrado Mayor');
             const falta = [!g.flag('l9acta') ? 'el acta de proclamación de Villatrámite' : '', !g.flag('l9res') ? 'la resolución que la declara firme' : ''].filter(Boolean);
@@ -1406,9 +1406,9 @@
               <p><b>Art. 13.</b> En segunda votación basta la mayoría simple: <b>más síes que noes</b>. Las abstenciones no cuentan (ni en la votación ni en la vida).</p>
               <p><b>Art. 14.</b> Todos los partidos que formen el gobierno deben votar <b>Sí</b>. Un partido que no vota a su propio gobierno no es un socio: es un tertuliano.</p>`);
           } },
-        { id: 'marcador', x: 50, y: 10, sign: 'CORTES DE VENTANILLA ALTA', sub: '81 escaños · 2.ª votación', w: 22, label: 'Marcador del hemiciclo',
+        { id: 'marcador', x: 83, y: 16, sign: 'CORTES DE VENTANILLA ALTA', sub: '81 escaños · 2.ª votación', w: 22, label: 'Marcador del hemiciclo',
           look(g) { g.say('81 escaños. Primera votación: fracasada (nadie llegó a 41). Segunda votación: basta con más síes que noes. Cafés servidos hoy en la cafetería: 1.204.'); } },
-        { id: 'escanos', x: 38.5, y: 54.02, emoji: '📋', s: 5, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
+        { id: 'escanos', x: 39, y: 59.38, emoji: '📋', s: 5, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
           look(g) {
             const c = g.flag('comp');
             const vt = (id) => (c ? L9_CIRC.VT[id] : '¿?');
