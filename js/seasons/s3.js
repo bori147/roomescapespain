@@ -1404,13 +1404,17 @@
         { kind: 'box', l: 22.2, t: 59.6, w: 8.6, h: 2.4, color: '#dde6e9' },
         // Salón: sofá de dos plazas bajo la ventana, alfombra y mesa baja
         { kind: 'sofa', id: 'sofa', l: 32.5, t: 51.6, w: 16.5, h: 17.4, color: '#6f8a7a' },
-        { kind: 'rug', id: 'alfombra', l: 29.5, t: 76, w: 24, h: 9, color: '#b5651d', z: 100 },
+        { kind: 'rug', id: 'alfombra', l: 29.5, t: 76, w: 27, h: 9, color: '#b5651d', z: 100 },
         { kind: 'pedestal', id: 'mesaBaja', l: 34.55, t: 70, w: 12.4, h: 10, color: '#6d5238' },
         { emoji: '🐈', x: 33.5, y: 79.9, s: 4.6 },
         { emoji: '🪴', x: 90, y: 69.3, s: 9.8 },
         // Cocina abierta: nevera, barra (con el inspector detrás) y cajonera
         { kind: 'cabinet', id: 'nevera', l: 52.5, t: 27.5, w: 7, h: 35, color: '#eceeee' },
-        { kind: 'counter', id: 'barra', l: 60.5, t: 45, w: 17.5, h: 21 },
+        { kind: 'pedestal', id: 'barra', l: 61, t: 48, w: 17.5, h: 18, color: '#e9e5dc' },
+        // Carcasa blanca de la caldera mural (el ♨️ queda como su placa)
+        { kind: 'box', l: 59, t: 14.1, w: 7, h: 13.5, color: '#f1efe9' },
+        // Placa del enchufe en el muro de fachada, a unos 40 cm del suelo
+        { kind: 'box', l: 49.9, t: 52.7, w: 1.6, h: 2.0, color: '#f5f3ee', z: 17 },
       ],
       hotspots: [
         { id: 'ventana', x: 40.75, y: 33.55, emoji: '🪟', s: 12.4, label: 'Ventana del salón',
@@ -1418,7 +1422,7 @@
           use: {
             mechero(g) { g.set('llamas'); g.say('Acercas la llama del mechero al cristal y miras el reflejo: ves <b>cuatro</b> llamitas. Michi también las ve y se asusta.'); },
           } },
-        { id: 'guia', x: 87.5, y: 28.5, sign: 'GUÍA DEL CERTIFICADOR', sub: '📗', w: 21, label: 'Guía del técnico certificador',
+        { id: 'guia', x: 86, y: 28.5, z: 250, sign: 'GUÍA DEL CERTIFICADOR', sub: '📗', w: 21, label: 'Guía del técnico certificador',
           look(g) {
             g.doc('📗 Guía rápida del certificador (CEE simplificado municipal)', `<table class="tbl s3-tbl">
               <tr><th>Elemento</th><th>Puntos</th></tr>
@@ -1449,7 +1453,7 @@
               <li><b>Vestidor:</b> sin requisitos de ventana; máximo 6 m².</li></ul>
               <p class="small">Toda pieza debe declararse con un uso que cumpla sus requisitos.</p>`);
           } },
-        { id: 'nevera', x: 56, y: 34.3, emoji: '🧊', s: 5, z: 103, label: 'Nota en la nevera',
+        { id: 'nevera', x: 56, y: 34.3, emoji: '📝', s: 5, z: 103, label: 'Nota en la nevera',
           look(g) { g.say('Nota de tu pareja: «Las persianas del salón: por la mañana no entra ni un rayo, pero a partir de las cinco de la tarde aquello es un horno. Compra cortinas. Y no te gastes más de lo que tenemos. Te quiero.»'); } },
         { id: 'cajon', x: 84, y: 53.47, emoji: '🗄️', s: 11.28, label: 'Cajón de la cocina',
           look(g) {
@@ -1457,7 +1461,7 @@
             g.set('mech'); g.give('mechero');
             g.say('Entre gomas y pilas encuentras un mechero.');
           } },
-        { id: 'enchufe', x: 50.8, y: 51.74, emoji: '🔌', s: 5, label: 'Enchufe de la pared exterior',
+        { id: 'enchufe', x: 50.8, y: 56.35, emoji: '🔌', s: 5, label: 'Enchufe de la pared exterior',
           look(g) { g.say('Un enchufe en el muro de fachada. La tapa está atornillada. Detrás se esconde la verdad sobre tu aislamiento.'); },
           use: {
             destornillador(g) { g.set('camara'); g.say('Quitas la tapa: detrás del ladrillo hay una <b>cámara de aire vacía</b>. Ni lana, ni corcho, ni nada: aire y una pelusa de 1974.'); },
@@ -1474,14 +1478,14 @@
             g.set('dest'); g.give('destornillador');
             g.say('Coges un destornillador plano.');
           } },
-        { id: 'movil', x: 50.5, y: 71.55, emoji: '📱', s: 5, on: 'alfombra', label: 'Tu móvil (en el suelo)',
+        { id: 'movil', x: 50.5, y: 72.95, emoji: '📱', s: 5, on: 'alfombra', label: 'Tu móvil (en el suelo)',
           look(g) { g.say('App del banco: saldo disponible <b>3.000 €</b>. Notificación: «¿Le interesa un préstamo personal al 14 % TAE?». No. Otra, de tu cuñado Paco: «¿Certificado energético? Conozco a uno que te pone una A por 50 € sin venir». Tampoco.'); } },
-        { id: 'portatil', x: 62.6, y: 40.55, emoji: '💻', s: 5, on: 'barra', label: 'Portátil (registro de certificados)',
+        { id: 'portatil', x: 63.1, y: 43.56, emoji: '💻', s: 5, on: 'barra', label: 'Portátil (registro de certificados)',
           look(g) {
             if (g.has('certEnergetico') || g.flag('cedula')) return g.say('Certificado registrado. El portátil se ha puesto en modo ahorro de energía, por solidaridad.');
             ceeModal(g);
           } },
-        { id: 'inspector', x: 70, y: 36.49, emoji: '🕵️', s: 11.6, behind: 'barra', label: 'Inspector de habitabilidad',
+        { id: 'inspector', x: 70.5, y: 38.69, emoji: '🕵️', s: 11.6, behind: 'barra', label: 'Inspector de habitabilidad',
           look(g) {
             if (!g.flag('licOK')) return g.say('—Antes de nada: esa terraza cerrada... ¿tiene licencia? Porque si no, eso no es una mejora, es una ampliación ilegal. Enséñeme la licencia de obra.', 'Inspector');
             g.say('—Para la cédula, tráigame el certificado energético registrado. Letra D o mejor. Y prepárese: luego le preguntaré por cada habitación.', 'Inspector');
