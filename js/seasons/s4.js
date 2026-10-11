@@ -550,7 +550,7 @@
         { emoji: '🧍‍♀️', x: 53, y: 57.51, s: 24.17 },
       ],
       hotspots: [
-        { id: 'tablon', x: 24.5, y: 30, sign: 'INSTRUCCIÓN 1/2030', sub: '⚖️', w: 17, z: 250, label: 'Tablón: causas de excusa',
+        { id: 'tablon', x: 24.5, y: 28, sign: 'INSTRUCCIÓN 1/2030', sub: '⚖️', w: 17, z: 250, label: 'Tablón: causas de excusa',
           look(g) {
             g.doc('⚖️ Instrucción 1/2030 de la Junta Electoral de Zona', `<p><b>Sobre las excusas de los miembros de mesa</b> (versión para el público, con dibujos no incluidos).</p>
               <p><b>1. Plazo.</b> Las excusas se presentan dentro de los <b>7 días naturales</b> siguientes a la notificación. Se presenta <b>un</b> documento acreditativo por persona.</p>
@@ -564,7 +564,7 @@
               <p><b>4. Credencial.</b> Para expedirla, el interesado deberá <b>acreditar su domicilio actual</b> con un documento fehaciente. El DNI no sirve: nadie actualiza el domicilio del DNI.</p>
               <p class="small">La Junta agradece su colaboración. Y la exige.</p>`);
           } },
-        { id: 'callejero', x: 46.75, y: 30, sign: 'CALLEJERO ELECTORAL', sub: '🗺️', w: 18.5, z: 250, label: 'Callejero electoral del distrito 03',
+        { id: 'callejero', x: 46.75, y: 28, sign: 'CALLEJERO ELECTORAL', sub: '🗺️', w: 18.5, z: 250, label: 'Callejero electoral del distrito 03',
           look(g) {
             g.doc('🗺️ Callejero electoral — Distrito 03', `<table class="tbl">
               <tr><td><b>Calle o tramo</b></td><td><b>Sección · Mesas</b></td></tr>
@@ -577,11 +577,11 @@
               <p>La sección corresponde al domicilio del <b>padrón</b> (el mismo al que se envía la notificación), no al que figure en el DNI. Dentro de cada sección, la mesa se asigna por la <b>inicial del primer apellido</b>.</p>
               <p class="small">Formato oficial: DD-SSS-M (distrito, sección, mesa). Ejemplo: 05-021-B.</p>`);
           } },
-        { id: 'cartel', x: 89.25, y: 30, sign: 'SI TE TOCA, TE TOCA', sub: '🗳️', w: 16.5, label: 'Cartel institucional',
+        { id: 'cartel', x: 89.25, y: 33.5, sign: 'SI TE TOCA, TE TOCA', sub: '🗳️', w: 16.5, label: 'Cartel institucional',
           look(g) { g.say('«Formar parte de una mesa electoral es un deber cívico». Debajo, a boli: «y una lotería que nadie quiere ganar».'); } },
-        { id: 'calendario', x: 76.5, y: 31.68, emoji: '📅', s: 5, label: 'Calendario: lunes 13 de mayo',
+        { id: 'calendario', x: 75.5, y: 31.68, emoji: '📅', s: 5, label: 'Calendario: lunes 13 de mayo',
           look(g) { g.say('Lunes 13 de mayo de 2030. Alguien ha rodeado la fecha en rojo y ha escrito: «Último día de excusas para los notificados el día 6. Hoy viene todo el barrio».'); } },
-        { id: 'reloj', x: 88.5, y: 14.7, emoji: '🕐', s: 5, label: 'Reloj de pared',
+        { id: 'reloj', x: 88.5, y: 14.7, emoji: '🕜', s: 5, label: 'Reloj de pared',
           look(g) { g.say('13:45. La Junta cierra a las 14:00. El funcionario ya ha empezado a ordenar los bolígrafos, que es su forma de despedirse.'); } },
         { id: 'funcionario', x: 67.5, y: 43.6, emoji: '🧑‍💼', s: 11.5, behind: 'mostrador', label: 'Funcionario de la Junta',
           look(g) {
@@ -623,7 +623,7 @@
             g.set('movil'); g.give('congreso'); g.give('whatsapp');
             g.say('Rebuscas en el correo y en los mensajes. Capturas dos cosas: la inscripción a un congreso al que ibas a ir y un mensaje de la tía Remedios, tu socia en la churrería.');
           } },
-        { id: 'cunado', x: 20, y: 60.27, emoji: '🧍‍♂️', s: 26.7, label: 'Tu cuñado (te ha acompañado)',
+        { id: 'cunado', x: 20, y: 60.27, emoji: '🧍🏽‍♂️', s: 26.7, label: 'Tu cuñado (te ha acompañado)',
           look(g) {
             if (g.flag('cunado')) return g.say('—Si no cuela lo del crucero, di que tienes alergia a las urnas. A mí me funcionó en 2027. Bueno, no me funcionó.', 'Tu cuñado Paco');
             g.set('cunado'); g.give('crucero');
