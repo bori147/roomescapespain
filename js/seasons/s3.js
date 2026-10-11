@@ -1176,7 +1176,7 @@
       carry: ['escritura'],
       scene: { wall: '#dfe3e8', floor: '#8c8f93', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'bracket', id: 'varilla', l: 28.7, t: 0, w: 0.6, h: 5 },
+        { kind: 'bracket', id: 'varilla', l: 28.7, t: 0, w: 0.6, h: 7.5 },
         { kind: 'flag', l: 55.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 66.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'screen', id: 'pantalla', l: 78.5, t: 10.6, w: 13, h: 12.8 },
@@ -1185,6 +1185,7 @@
         { kind: 'counter', id: 'ventanilla', l: 54, t: 48.85, w: 22, h: 23.15 },
         { kind: 'desk', id: 'mesaTerminal', l: 78, t: 58.9, w: 12.5, h: 17.1 },
         { kind: 'vitrine', id: 'maquinaCafe', l: 92, t: 32.96, w: 7.5, h: 40.04, color: '#6a2c2c' },
+        { kind: 'shelf', id: 'baldaCafe', l: 92.6, t: 46.45, w: 6.3, h: 1.2 },
       ],
       hotspots: [
         { id: 'plansot', x: 18, y: 31.3, sign: 'PLANO DEL SÓTANO', sub: 'C/ del Olvido 14', w: 16, label: 'Plano catastral del sótano', look: sotanoModal },
@@ -1227,7 +1228,7 @@
           } },
         { id: 'dron', x: 29, y: 9.67, emoji: '🛸', s: 6, label: 'El dron, colgado del techo',
           look(g) { g.say('El dron culpable, colgado del techo como trofeo. Tiene una pegatina: «Este lado arriba». Está colgado del revés.'); } },
-        { id: 'cafe', x: 95, y: 42, emoji: '☕', s: 5, z: 121, label: 'Máquina de café',
+        { id: 'cafe', x: 95, y: 42, emoji: '☕', s: 5, z: 121, on: 'baldaCafe', label: 'Máquina de café',
           look(g) { g.say('Café: 0,80 €. Superficie útil del vaso: 0,003 m². El Catastro dice que 0,005.'); } },
         { id: 'vecino', x: 44, y: 60.44, emoji: '🧍', s: 26.5, label: 'Vecino del 2ºA (en la cola)',
           look(g) { g.say('—A mí el dron me ha dicho que tengo un trastero de más. Ojalá. No me haga devolvérselo, que ya he metido la bici.', 'Vecino'); } },
