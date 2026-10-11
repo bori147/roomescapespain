@@ -577,18 +577,24 @@
       stars: 2,
       intro: 'La moción de censura cayó por un voto, la presidenta disolvió las Cortes y, en el buzón de la C/ del Olvido 14, te esperaba otra carta certificada: <b>te ha vuelto a tocar mesa</b>. Fue la gota que colmó la urna. Si no puedes con el sistema, únete a él: decides <b>opositar</b>.<br><br>Un año después (500 temas, una academia online y Michi durmiendo encima del tema 237), llega el primer ejercicio: 40.000 aspirantes para 12 plazas. La nota de corte es de 10 sobre 10. Y la hoja de respuestas solo admite lápiz del nº 2, que, naturalmente, no traes.<br><br>Llevas tu DNI de siempre y, para no perder la motivación, la carta de la Junta.<br><br><b>Objetivo:</b> identifícate ante el tribunal, consigue un lápiz, rellena la hoja sin un solo error y entrégala.',
       outro: '«APTO/A». El tribunal te devuelve el DNI y te entrega el certificado con una mezcla de sorpresa y lástima. Tras el segundo, tercer y cuarto ejercicio (y un año de impugnaciones), tu nombre aparece en el BOE de septiembre de 2032. Ya eres funcionario/a de carrera. Ahora solo falta tomar posesión… y para eso hará falta el certificado.',
-      scene: { wall: '#d9d4c7', floor: '#a8875f', floorH: 36, pattern: 'wood' },
+      scene: { wall: '#d9d4c7', floor: '#a8875f', floorH: 32, pattern: 'wood' },
       carry: ['dni', 'cartaMesa'],
       decor: [
-        { kind: 'window', l: 3, t: 8, w: 12, h: 24 },
-        { kind: 'flag', l: 62, t: 5, w: 5, h: 8 },
-        { kind: 'counter', l: 38, t: 45, w: 26, h: 9 },
-        { emoji: '🪑', x: 20, y: 72, s: 4, o: 0.7 }, { emoji: '🪑', x: 48, y: 70, s: 4, o: 0.7 },
-        { emoji: '🪑', x: 66, y: 72, s: 4, o: 0.7 }, { emoji: '🪑', x: 28, y: 88, s: 4, o: 0.7 },
-        { emoji: '🧑‍🎓', x: 70, y: 86, s: 4, o: 0.6 },
+        { kind: 'window', l: 3, t: 4.2, w: 12, h: 21.3 },
+        { kind: 'window', l: 85, t: 4.2, w: 12, h: 21.3 },
+        { kind: 'flag', l: 36.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'shelf', id: 'repisa', l: 52, t: 22.3, w: 6.5, h: 1.4 },
+        { kind: 'shelf', id: 'perchero', l: 2, t: 35.2, w: 12, h: 1.2 },
+        { kind: 'table', id: 'mesaTribunal', l: 36, t: 57.17, w: 25, h: 16.83 },
+        { kind: 'table', id: 'mesaMaterial', l: 78, t: 56.32, w: 18, h: 16.68 },
+        { kind: 'table', id: 'mesaVecino', l: 64.5, t: 62.27, w: 11, h: 17.73 },
+        { kind: 'table', id: 'mesaPupitre', l: 14, t: 63.98, w: 11, h: 18.02 },
+        { kind: 'pedestal', id: 'mesita', l: 87.5, t: 79.9, w: 7, h: 16.1, color: '#8a6a48' },
+        { emoji: '👨‍💼', x: 57.5, y: 51.6, s: 10, behind: 'mesaTribunal' },
+        { emoji: '📦', x: 93, y: 51.34, s: 5.6, on: 'mesaMaterial' },
       ],
       hotspots: [
-        { id: 'tablon', x: 24, y: 22, sign: 'TABLÓN', sub: '📌', w: 13, label: 'Tablón de anuncios',
+        { id: 'tablon', x: 23, y: 31.3, sign: 'TABLÓN', sub: '📌', w: 13, label: 'Tablón de anuncios',
           look(g) {
             g.doc('📌 TABLÓN DE ANUNCIOS', `<p class="tiny">En cumplimiento de la normativa de protección de datos, <b>no se publica el DNI</b> de los aspirantes. Se publica su domicilio completo, que es menos comprometido.</p>
               <p><b>LISTA PROVISIONAL DE ADMITIDOS</b> <small>(marzo)</small></p>
@@ -601,11 +607,11 @@
               <p><b>FE DE ERRATAS Nº 2.</b> En la pregunta 5, donde dice «el doble que él más uno», debe decir «el doble que él menos uno» (en ambas frases).</p>
               <p><b>CORRECCIÓN DE ERRORES de la Fe de erratas nº 2.</b> Queda sin efecto. La pregunta 5 se mantiene en su redacción original. Disculpen las molestias (no las sentimos).</p>`);
           } },
-        { id: 'reloj', x: 50, y: 13, emoji: '🕰️', s: 5, label: 'Reloj del pabellón',
+        { id: 'reloj', x: 55.25, y: 17.86, emoji: '🕰️', s: 5, on: 'repisa', label: 'Reloj del pabellón',
           look(g) { g.say('Quedan 87 minutos. El reloj lleva parado desde las oposiciones de 2009, pero el tribunal lo considera oficial.'); } },
-        { id: 'silencio', x: 80, y: 20, sign: 'SILENCIO', sub: 'Examen en curso', w: 14, label: 'Cartel de silencio',
+        { id: 'silencio', x: 72, y: 31.3, sign: 'SILENCIO', sub: 'Examen en curso', w: 14, label: 'Cartel de silencio',
           look(g) { g.say('«SILENCIO. EXAMEN EN CURSO». Debajo, a boli: «...y en 2032, y en 2033, y en 2034».'); } },
-        { id: 'tribunal', x: 51, y: 37, emoji: '👩‍⚖️', s: 7, label: 'Tribunal calificador',
+        { id: 'tribunal', x: 48, y: 51.2, emoji: '👩‍⚖️', s: 10.5, behind: 'mesaTribunal', label: 'Tribunal calificador',
           look(g) {
             if (!g.flag('ident')) return g.say('—Identifíquese antes de empezar. Muéstreme su DNI (selecciónelo y úselo conmigo). Sin DNI, no hay cuadernillo.', 'Presidenta del tribunal');
             g.say('—Cuando termine, entrégueme la hoja de respuestas. Solo se admite lápiz del nº 2. Material lo reparte el conserje, previo impreso.', 'Presidenta del tribunal');
@@ -639,12 +645,12 @@
             impreso(g) { g.say('—El material es cosa del conserje. Yo solo suspendo.', 'Presidenta del tribunal'); },
             impresoOk(g) { g.say('—Eso, al conserje. Yo no doy lápices: los firmo.', 'Presidenta del tribunal'); },
           } },
-        { id: 'abrigo', x: 8, y: 48, emoji: '🧥', s: 6, label: 'Tu abrigo',
+        { id: 'abrigo', x: 8, y: 41.6, emoji: '🧥', s: 13, label: 'Tu abrigo',
           look(g) {
             if (!g.flag('coat')) { g.set('coat'); g.say('En los bolsillos: un bolígrafo azul de la academia, un caramelo para los nervios (te lo comes) y pelos de Michi. Muchos pelos de Michi.'); g.give('boli'); return; }
             g.say('Solo quedan apuntes del tema 237 hechos un acordeón (y mordisqueados por Michi). Ese tema nunca cae.');
           } },
-        { id: 'conserje', x: 91, y: 50, emoji: '👷', s: 7, label: 'Conserje',
+        { id: 'conserje', x: 85, y: 50.2, emoji: '👷', s: 10.7, behind: 'mesaMaterial', label: 'Conserje',
           look(g) {
             if (g.has('lapiz')) return g.say('—Ya tiene su lápiz. El siguiente, en la próxima convocatoria.', 'Conserje');
             if (!g.flag('imp')) {
@@ -661,12 +667,12 @@
             dni(g) { g.say('—No le pido el DNI, le pido el impreso. Que es otra cosa.', 'Conserje'); },
             cartaMesa(g) { g.say('—¿Mesa electoral? A mí me tocó cuatro veces seguidas. Por eso me hice conserje de oposiciones: aquí las cartas no llegan. Guárdesela, que lleva su dirección y eso siempre sirve para algo.', 'Conserje'); },
           } },
-        { id: 'pupitre', x: 34, y: 74, emoji: '🪑', s: 7, label: 'Tu pupitre',
+        { id: 'pupitre', x: 30, y: 71.8, emoji: '🪑', s: 13.7, label: 'Tu pupitre',
           look(g) {
             if (!g.has('cuadernillo')) return g.say('Tu pupitre, con una pegatina: «Ocupe el asiento con su número de opositor». Bueno, pues este. De momento no tienes nada que leer en él.');
             g.doc('📘 Primer ejercicio — Cuadernillo', L1_INSTR + l1QuestionsHTML(false, []));
           } },
-        { id: 'vecino', x: 57, y: 76, emoji: '🧑‍🎓', s: 6, label: 'Opositor de al lado',
+        { id: 'vecino', x: 70, y: 55.8, emoji: '🧑‍🎓', s: 11.3, behind: 'mesaVecino', label: 'Opositor de al lado',
           look(g) {
             g.say(rand([
               '—Yo he marcado todo C. Estadísticamente, algo caerá. Es mi sexta convocatoria.',
@@ -674,7 +680,7 @@
               '—Dicen que el temario tiene 500 temas, pero mi academia dice que 452. Mi academia nunca se equivoca. Bueno, una vez.',
             ]), 'Opositor de al lado');
           } },
-        { id: 'temario', x: 82, y: 76, emoji: '📚', s: 7, label: 'Temario oficial (14 kg)',
+        { id: 'temario', x: 19.5, y: 58.65, emoji: '📚', s: 6, on: 'mesaPupitre', label: 'Temario oficial (14 kg)',
           look(g) {
             g.doc('📚 TEMARIO OFICIAL — Cuerpo Superior de Tramitadores', `<p><b>500 temas.</b> Se recomienda carretilla.</p>
               <ul><li>Bloque I (temas 1 a 100): Derecho constitucional y otras ficciones.</li>
@@ -688,11 +694,11 @@
               <li>Resolución de 30 de febrero: se añade el tema 501, «Novedades legislativas de esta mañana».</li></ul>
               <p class="tiny">Nota de la Secretaría del tribunal: se ruega a los aspirantes que comprueben la validez de las resoluciones antes de estudiárselas. Las fechas imposibles producen resoluciones nulas de pleno derecho.</p>`);
           } },
-        { id: 'bombo', x: 68, y: 52, emoji: '🎱', s: 5, label: 'Bombo del sorteo de temas',
+        { id: 'bombo', x: 91, y: 75.45, emoji: '🎱', s: 5, on: 'mesita', label: 'Bombo del sorteo de temas',
           look(g) { g.say('El bombo para el ejercicio oral. Sale la bola 237: «El silencio administrativo positivo: mito o leyenda». La que se comió Michi. Por suerte, el oral es dentro de seis meses.'); } },
-        { id: 'papelera', x: 18, y: 86, emoji: '🗑️', s: 5, label: 'Papelera',
+        { id: 'papelera', x: 7, y: 84.2, emoji: '🗑️', s: 6.5, label: 'Papelera',
           look(g) { g.say('Un folleto de academia: «El 100 % de nuestros alumnos aprobados, aprueban». Y un lápiz... no: un palito de helado. Falsa alarma.'); } },
-        { id: 'folleto', x: 45, y: 86, emoji: '📄', s: 4, label: 'Hoja tirada en el suelo',
+        { id: 'folleto', x: 46, y: 86.55, emoji: '📄', s: 5, label: 'Hoja tirada en el suelo',
           look(g) { g.say('Una hoja de respuestas de la convocatoria de 2019, rellena a bolígrafo. Anulada. Su dueño sigue opositando.'); } },
       ],
       combos: {
