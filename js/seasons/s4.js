@@ -861,20 +861,22 @@
       carry: ['encargo'],
       init(g) { g.set('datos', false); },
       decor: [
+        // Puerta trasera (210 × 90 cm) pegada al fondo; el teclado, al lado de la manilla
+        { kind: 'door', id: 'puertaT', l: 6.5, t: 22.7, w: 10.5, h: 43.3 },
         // Isla de cocina (90 cm) algo separada de la pared: el chef, detrás
         { kind: 'counter', id: 'isla', l: 30, t: 51.62, w: 32, h: 19.38 },
         // Cocina de acero contra la pared (90 cm), con la puerta del horno; balda de especias a 150 cm
         { kind: 'pedestal', id: 'fogon', l: 64.5, t: 47.44, w: 8.5, h: 18.56, color: '#7d838a' },
         { kind: 'box', l: 65.5, t: 55.5, w: 6.5, h: 8, color: '#2b2d31', z: 101 },
         { kind: 'shelf', id: 'especias', l: 64, t: 35.06, w: 9.5, h: 1.4 },
-        // Nevera (180 cm), mesita del becario (75 cm, sentado) y balda alta de la tele (215 cm)
-        { kind: 'cabinet', id: 'frigo', l: 74.5, t: 28.87, w: 8.5, h: 37.13, color: '#e4e7ea' },
-        { kind: 'desk', id: 'mesa', l: 83, t: 62.62, w: 14, h: 17.38 },
+        // Nevera (180 cm), mesa del becario (75 cm, frente cerrado; él, sentado) y balda alta de la tele (215 cm)
+        { kind: 'cabinet', id: 'frigo', l: 74.5, t: 28.87, w: 7.8, h: 37.13, color: '#e4e7ea' },
+        { kind: 'pedestal', id: 'mesa', l: 83.8, t: 62.62, w: 13.2, h: 17.38, color: '#6b5a45' },
         { kind: 'shelf', id: 'baldaTele', l: 88, t: 21.66, w: 7, h: 1.4 },
         { emoji: '🍳', x: 70.8, y: 43.71, s: 4.2, on: 'fogon', o: 0.9 },
       ],
       hotspots: [
-        { id: 'puerta', x: 14, y: 41.94, emoji: '🚪', s: 27.1, label: 'Puerta trasera (teclado de 4 cifras)',
+        { id: 'puerta', x: 20.5, y: 36.8, emoji: '🔢', s: 5, label: 'Puerta trasera (teclado de 4 cifras)',
           look(g) {
             g.input({
               title: '🚪 Puerta trasera', text: 'El becario ha puesto un teclado: «Los valores REALES de las dos cifras cocinadas, en el orden en que aparecen en la nota de prensa. Dos cifras cada uno».',
@@ -889,7 +891,7 @@
               },
             });
           } },
-        { id: 'nota', x: 35, y: 30.2, sign: 'BARÓMETRO DE MAYO', sub: '📊', w: 14, label: 'Nota de prensa (ya publicada)',
+        { id: 'nota', x: 35, y: 30.2, sign: 'BARÓMETRO DE MAYO', sub: '📊', w: 14, z: 250, label: 'Nota de prensa (ya publicada)',
           look(g) {
             g.doc('📊 Nota de prensa — Barómetro de mayo', `<p><b>«TIC, PRIMERA FUERZA»</b></p>
               <table class="tbl"><tr><td><b>Estimación de voto</b></td><td><b>%</b></td></tr>
@@ -911,7 +913,7 @@
           look(g) { g.say('Tarros etiquetados: «Margen de error», «Voto oculto», «Indecisos al gusto», «Tendencia» y uno vacío: «Rigor». Se acabó en 2008.'); } },
         { id: 'telefono', x: 59.5, y: 47.18, emoji: '☎️', s: 5, on: 'isla', label: 'Teléfono',
           look(g) { g.say('Suena. —¿Cocina &amp; Sondeos? Soy de TIC. ¿Para cuándo la siguiente? Queremos salir primeros otra vez, pero esta vez con más margen.', 'Teléfono'); } },
-        { id: 'chef', x: 46, y: 46.14, emoji: '👨‍🍳', s: 12, behind: 'isla', label: 'Director demoscópico (chef)',
+        { id: 'chef', x: 49.5, y: 42, emoji: '👨‍🍳', s: 13, behind: 'isla', label: 'Director demoscópico (chef)',
           look(g) {
             if (!g.flag('pase')) return g.say('—¡Fuera de mi cocina! Aquí no toca un cajón nadie que no traiga encargo por escrito. Una encuesta es como un cocido: lo importante no son los garbanzos, es quién la paga.', 'Director demoscópico');
             g.say('—Una encuesta es como un cocido: lo importante no son los garbanzos, es lo que le echas. Y yo le echo lo que me pide el cliente. Eso se llama «estimación».', 'Director demoscópico');
@@ -923,7 +925,7 @@
               g.say('—Orden de trabajo de Argumentarios Universales. Mis mejores clientes: nos encargan las encuestas y luego los discursos que las comentan. Me la quedo para la factura. Pasa, pasa, la cocina es tuya. Pero no toques el horno sin manopla.', 'Director demoscópico');
             },
           } },
-        { id: 'horno', x: 68.75, y: 59.8, emoji: '🔥', s: 5.3, z: 102, label: 'Horno (encendido)',
+        { id: 'horno', x: 68.75, y: 58.6, emoji: '🔥', s: 5.3, z: 102, label: 'Horno (encendido)',
           look(g) {
             if (g.flag('datos')) return g.say('El horno sigue encendido. Ahora mismo se está gratinando la próxima encuesta.');
             g.say('¡Quema! Dentro, en una bandeja, se están dorando los datos crudos de la encuesta. Sin algo para protegerte las manos, ni lo intentes.');
@@ -957,7 +959,7 @@
             g.set('mano'); g.give('manopla');
             g.say('Entre cucharones y encuestas de 2019 encuentras una manopla de horno.');
           } },
-        { id: 'nevera', x: 77.5, y: 36, emoji: '🧊', s: 5, z: 101, label: 'Nevera (con imanes)',
+        { id: 'nevera', x: 77.5, y: 36, emoji: '🧾', s: 5, z: 101, label: 'Nevera (con imanes)',
           look(g) {
             g.doc('🧊 Ficha técnica (sujeta con un imán de «I ❤ Muestreo»)', `<p><b>Universo:</b> residentes en Ventanilla Alta, mayores de 18 años. <b>Muestra:</b> 1.000 entrevistas.</p>
               <table class="tbl"><tr><td><b>Grupo de edad</b></td><td><b>Peso en la población</b></td><td><b>Entrevistas</b></td></tr>
@@ -965,7 +967,7 @@
               <tr><td>55–74</td><td>30 %</td><td>200</td></tr><tr><td>75 o más</td><td>20 %</td><td>200</td></tr></table>
               <p class="small">Los jóvenes están sobrerrepresentados porque contestan por Instagram. Para corregirlo existe la ponderación (ver recetario).</p>`);
           } },
-        { id: 'becario', x: 88, y: 57.14, emoji: '🧑‍🎓', s: 12, behind: 'mesa', label: 'Becario',
+        { id: 'becario', x: 88, y: 55, emoji: '🧑‍🎓', s: 12, behind: 'mesa', label: 'Becario',
           look(g) {
             g.say('—Lo he visto con mis propios ojos: han cocinado DOS cifras de la nota de prensa. Las demás están bien ponderadas.', 'Becario');
             g.say('—He bloqueado la puerta trasera con un código: los valores reales de esas dos cifras, en el orden en que salen en la nota. Los datos crudos están en el horno, que es donde se cocinan las cosas aquí.', 'Becario');
