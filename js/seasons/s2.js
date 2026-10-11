@@ -1645,23 +1645,24 @@
       outro: 'Sales de la Delegación con el certificado en la mano y 2.121 € menos en la cuenta. Fuera hace sol. La churrería sigue abierta. Lucía ha hecho porras. Tu cuñado ya tiene «una idea de negocio».',
       scene: { wall: '#bfc5c2', floor: '#6f706a', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'board', id: 'tablero', l: 87, t: 27.5, w: 11, h: 13 },
-        { kind: 'desk', id: 'mesaGestor', l: 14, t: 57.17, w: 22, h: 16.83 },
-        { kind: 'desk', id: 'mesaInspector', l: 39.5, t: 57.17, w: 20, h: 16.83 },
-        { emoji: '☕', x: 55, y: 54.5, s: 3, on: 'mesaInspector' },
-        { emoji: '🪑', x: 46.5, y: 71.79, s: 13.74 },
+        { kind: 'board', id: 'tablero', l: 84.5, t: 21.2, w: 14.3, h: 19.1 },
+        { kind: 'desk', id: 'mesaGestor', l: 10, t: 57.17, w: 26, h: 16.83 },
+        { kind: 'desk', id: 'mesaInspector', l: 38.5, t: 57.17, w: 20, h: 16.83 },
+        { emoji: '☕', x: 54, y: 54.5, s: 3, on: 'mesaInspector' },
+        { emoji: '🗑️', x: 47.4, y: 67.17, s: 6, z: 124 }, // en el hueco de las rodillas: tapa los pies del inspector
+        { emoji: '🪑', x: 46, y: 70.3, s: 13.6 },
       ],
       hotspots: [
         { id: 'fluorescente', x: 50, y: 5, emoji: '💡', s: 5, label: 'Fluorescente',
           look(g) { g.say('El fluorescente parpadea en morse. Dice: S-O-S. O eso, o «IVA». Se parecen.'); } },
-        { id: 'compensacion', x: 9, y: 31.3, sign: 'NORMAS DEL IVA', sub: '⚖️', w: 14, label: 'Normas de compensación del IVA',
+        { id: 'compensacion', x: 10, y: 31.3, sign: 'NORMAS DEL IVA', sub: '⚖️', w: 14, label: 'Normas de compensación del IVA',
           look(g) {
             g.doc('⚖️ Compensación de cuotas del IVA (simplificado)', `<ul>
               <li>Si un trimestre sale <b>positivo</b>, se ingresa.</li>
               <li>Si un trimestre sale <b>negativo</b>, no se devuelve: se <b>compensa</b>, restándolo del resultado del trimestre <b>siguiente</b>.</li>
               <li>Si en el <b>cuarto trimestre</b>, después de compensar, el resultado sigue siendo negativo, se pide la <b>devolución</b>. Una devolución no es un ingreso: es una esperanza.</li></ul>`);
           } },
-        { id: 'amortizacion', x: 30.5, y: 31.3, sign: 'TABLA DE AMORTIZACIÓN', sub: '📉', w: 20, z: 250, label: 'Tabla de amortización',
+        { id: 'amortizacion', x: 31.5, y: 31.3, sign: 'TABLA DE AMORTIZACIÓN', sub: '📉', w: 20, z: 250, label: 'Tabla de amortización',
           look(g) {
             g.doc('📉 Tabla de coeficientes de amortización (simplificada)', `<table class="tbl">
               <tr><td>Maquinaria de hostelería (freidoras, chocolateras, cafeteras)</td><td>10 % anual</td></tr>
@@ -1671,20 +1672,20 @@
               <p>La amortización se calcula sobre la <b>base imponible</b> (sin IVA) y empieza el día de la <b>puesta en funcionamiento</b>, no el de la compra, por <b>meses completos</b>:</p>
               <p class="big-num">base × coeficiente × meses ÷ 12</p>`);
           } },
-        { id: 'sanciones', x: 57.5, y: 31.3, sign: 'SANCIONES', sub: '⚠️', w: 12, z: 250, label: 'Cartel de sanciones',
+        { id: 'sanciones', x: 56.5, y: 31.3, sign: 'SANCIONES', sub: '⚠️', w: 12, z: 250, label: 'Cartel de sanciones',
           look(g) {
             g.doc('⚠️ Régimen sancionador (simplificado)', `<p>Por deducir indebidamente un IVA: se devuelve la <b>cuota</b> entera y se impone una <b>sanción del 50 %</b> de esa cuota.</p>
               <p><b>Reducción por conformidad:</b> si firma el acta en conformidad, la sanción se reduce un <b>30 %</b>.</p>
               <p><b>Reducción por pronto pago:</b> si además paga en plazo y no recurre, se reduce otro <b>25 % de lo que quede</b>.</p>
               <p class="small">La cuota no tiene descuentos. Nunca. Ni en rebajas.</p>`);
           } },
-        { id: 'corcho', x: 92.5, y: 34, emoji: '🗒️', s: 5, label: 'Corcho del inspector',
+        { id: 'corcho', x: 91.6, y: 28.5, emoji: '🗒️', s: 5, z: 15, label: 'Corcho del inspector',
           look(g) {
             g.doc('📌 El corcho del inspector (tu expediente)', `<div class="paper-note"><p>Pósit del inspector: «Pedir al contribuyente su copia del 036. Seguro que la lleva encima: los de la churrería lo llevan todo encima».</p></div><br>
               <div class="paper-note"><p><b>Foto de tu furgoneta</b> «de uso exclusivo para el negocio»: con silla de bebé, una tabla de surf en el techo y una pegatina de «Benidorm 2027».</p></div><br>
               <div class="paper-note"><p>Recorte de periódico: «Detenido un churrero por freír sin licencia». No eres tú. Aún.</p></div>`);
           } },
-        { id: 'inspector', x: 47, y: 49.95, emoji: '🕴️', s: 24.8, behind: 'mesaInspector', label: 'Inspector de Hacienda',
+        { id: 'inspector', x: 46, y: 49.95, emoji: '🕴️', s: 24.8, behind: 'mesaInspector', label: 'Inspector de Hacienda',
           look(g) {
             if (!g.flag('reqH')) {
               g.set('reqH');
@@ -1695,7 +1696,7 @@
             if (g.has('certificadoAEAT')) return g.say('—Ya tiene su certificado. Puede irse. No me haga cambiar de opinión.', 'Inspector de Hacienda');
             l10Menu(g);
           } },
-        { id: 'archivador', x: 8, y: 60.28, emoji: '🗄️', s: 15.43, label: 'Archivador con candado',
+        { id: 'archivador', x: 13.2, y: 52.28, emoji: '🗃️', s: 5.5, on: 'mesaGestor', label: 'Archivador con candado',
           look(g) {
             if (g.flag('archOpen')) return g.say('El archivador está abierto y vacío. Lo importante ya lo tienes. Lo demás, mejor que siga cerrado.');
             g.input({
