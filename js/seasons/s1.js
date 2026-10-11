@@ -934,18 +934,19 @@
         { emoji: '🗂️', x: 94, y: 35.92, s: 5, on: 'archivo' },
         { kind: 'platform', id: 'tarima', l: 45, t: 64.45, w: 33, h: 6.55, color: '#5e4430' },
         { kind: 'counter', id: 'estrado', l: 47, t: 48.06, w: 29, h: 16.39 },
-        { emoji: '🎙️', x: 53, y: 44.33, s: 4.2, on: 'estrado' },
+        { emoji: '🎙️', x: 56.5, y: 44.33, s: 4.2, on: 'estrado' },
         { kind: 'desk', id: 'prensa', l: 1.5, t: 57.17, w: 12, h: 16.83 },
         { kind: 'counter', id: 'testigos', l: 15, t: 54.39, w: 28, h: 24.61 },
         { emoji: '🎙️', x: 24.2, y: 51.19, s: 3.6, on: 'testigos' },
         { emoji: '🖼️', x: 29, y: 29.04, s: 8 },
+        { kind: 'box', l: 81.6, t: 65.4, w: 4.8, h: 8, color: '#2f3237', z: 115 },
         { kind: 'box', l: 81.3, t: 62.6, w: 5.4, h: 2.6, color: '#3a3d42', z: 125 },
-        { kind: 'cabinet', id: 'cajaFuerte', l: 62.2, t: 80.35, w: 7.6, h: 16.15, color: '#4a4f57' },
+        { kind: 'pedestal', id: 'cajaFuerte', l: 62.6, t: 84.4, w: 6.8, h: 12.1, color: '#4a4f57' },
       ],
       hotspots: [
-        { id: 'cartel', x: 52, y: 9, sign: 'COMISIÓN DE INVESTIGACIÓN', sub: 'sobre el retraso de su trámite', w: 27, label: 'Cartel de la comisión',
+        { id: 'cartel', x: 50, y: 11, sign: 'COMISIÓN DE INVESTIGACIÓN', sub: 'sobre el retraso de su trámite', w: 27, label: 'Cartel de la comisión',
           look(g) { g.say('Comisión de investigación nº 47 de esta legislatura. Las 46 anteriores concluyeron que «no consta».'); } },
-        { id: 'presidenta', x: 61, y: 41.3, emoji: '👩‍⚖️', s: 11, behind: 'estrado', label: 'Presidenta de la comisión',
+        { id: 'presidenta', x: 61, y: 43.1, emoji: '👩‍⚖️', s: 9, behind: 'estrado', label: 'Presidenta de la comisión',
           look(g) {
             g.say('—Esta comisión no se levantará hasta que aparezca la contabilidad de la Caja B. Nadie sale. Ni yo, y eso que tengo pádel.', 'Presidenta');
             if (!g.flag('docOK')) g.say('—Por cierto, alguien intentó triturar un documento antes de la sesión. La máquina se atascó. Qué mala suerte... para él.', 'Presidenta');
