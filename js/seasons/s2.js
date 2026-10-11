@@ -257,7 +257,7 @@
       }],
     });
   }
-  const L4_SIGNERS = { tia: '👵 Tía Remedios', tu: '🙂 Tú', cunado: '🙋‍♂️ Cuñado Paco', notario: '🧑‍⚖️ Notario' };
+  const L4_SIGNERS = { tia: '🙎‍♀️ Tía Remedios', tu: '🙂 Tú', cunado: '🙋‍♂️ Cuñado Paco', notario: '🧑‍⚖️ Notario' };
   function l4Firmas(g) {
     let seq = [];
     g.modal({
@@ -1046,21 +1046,21 @@
       carry: ['dni', 'contrato', 'certDen'],
       scene: { wall: '#4f3b33', floor: '#5a3b2a', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'rug', l: 39, t: 69.5, w: 38, h: 17.5, color: '#6b2e2e', z: 100 },
+        { kind: 'rug', l: 37, t: 69.5, w: 40, h: 17.5, color: '#6b2e2e', z: 100 },
         { kind: 'desk', id: 'mesaFirmasD', l: 2, t: 57.17, w: 35.5, h: 16.83 },
-        { kind: 'desk', id: 'mesaOficial', l: 39.5, t: 56.32, w: 14, h: 16.68 },
-        { kind: 'desk', id: 'mesaNotario', l: 56, t: 56.32, w: 20, h: 16.68 },
-        { kind: 'shelf', id: 'repisa', l: 52.5, t: 25.5, w: 6, h: 1.4 },
+        { kind: 'desk', id: 'mesaNotario', l: 39.5, t: 56.32, w: 20, h: 16.68 },
+        { kind: 'desk', id: 'mesaOficial', l: 61.5, t: 56.32, w: 14, h: 16.68 },
+        { kind: 'shelf', id: 'repisa', l: 60, t: 25.5, w: 6, h: 1.4 },
         { kind: 'flag', l: 78.5, t: 14.9, w: 7.5, h: 10.7 },
         { kind: 'bookcase', id: 'libreria', l: 88, t: 25.5, w: 10.5, h: 42.5, color: '#5a3d28' },
-        { emoji: '📄', x: 41.3, y: 53.65, s: 3, on: 'mesaOficial' },
+        { emoji: '📄', x: 73.5, y: 52.5, s: 4.3, on: 'mesaOficial' },
       ],
       hotspots: [
         { id: 'protocolo', x: 93, y: 20.25, emoji: '📚', s: 5.9, on: 'libreria', label: 'Protocolo notarial',
           look(g) { g.say('Tomos encuadernados en piel con todas las escrituras desde 1862. Huelen a tinta, a polvo y a herencias mal repartidas.'); } },
-        { id: 'reloj', x: 55.5, y: 21.05, emoji: '🕰️', s: 5, on: 'repisa', label: 'Reloj',
+        { id: 'reloj', x: 63, y: 21.05, emoji: '🕰️', s: 5, on: 'repisa', label: 'Reloj',
           look(g) { g.say('Son las 10:00. La firma era a las 9:30. En las notarías el tiempo transcurre distinto: se factura por minuto, pero se espera por horas.'); } },
-        { id: 'retrato', x: 66, y: 27.3, emoji: '🖼️', s: 9.9, label: 'Retrato de familia',
+        { id: 'retrato', x: 48, y: 27.3, emoji: '🖼️', s: 9.9, label: 'Retrato de familia',
           look(g) { g.say('Don Fulgencio con su padre, notario, y su abuelo, notario. Al fondo, un bebé con toga. Es su nieto. Ya tiene plaza.'); } },
         { id: 'cartel', x: 15, y: 31.3, sign: 'ORDEN DE FIRMA', sub: '✒️', w: 14, z: 250, label: 'Cartel: orden de firma',
           look(g) {
@@ -1068,7 +1068,7 @@
               <p>El <b>notario firma siempre el último</b>: «Ante mí». Si firma antes, deja de ser «ante él» y pasa a ser «antes que usted», que no es lo mismo.</p>
               <p class="small">Si un otorgante se niega a firmar, no hay escritura. Si se niegan dos, hay comida familiar.</p>`);
           } },
-        { id: 'notario', x: 66, y: 51.3, emoji: '👨‍💼', s: 11.4, behind: 'mesaNotario', label: 'Don Fulgencio, notario',
+        { id: 'notario', x: 48, y: 51.3, emoji: '🧑‍⚖️', s: 11.4, behind: 'mesaNotario', label: 'Don Fulgencio, notario',
           look(g) {
             if (!g.flag('borradorOK')) return g.say('—Yo no firmo nada con erratas. Revise el borrador con mi oficial. Y luego, a la mesa de firmas. Yo firmo el último, como manda la tradición. Y la minuta.', 'Notario');
             if (!g.flag('certIn') || !g.flag('dniIn')) {
@@ -1090,13 +1090,13 @@
               g.say('—07345189-R, válido hasta 2036. Comparece usted, «a quien identifico por su documento nacional de identidad», como diremos en la escritura. Bonita foto. Se le ve cara de haber pedido cita previa.', 'Notario');
             },
           } },
-        { id: 'oficial', x: 46.5, y: 50.94, emoji: '👩‍💼', s: 11.8, behind: 'mesaOficial', label: 'Oficial de la notaría',
+        { id: 'oficial', x: 67, y: 50.94, emoji: '👩‍💼', s: 11.8, behind: 'mesaOficial', label: 'Oficial de la notaría',
           look(g) {
             if (g.flag('borradorOK')) return g.say('—El borrador ya está corregido. Ahora, a firmar. En orden.', 'Oficial');
             if (!g.flag('carp')) g.say('—Aquí tiene el borrador. Antes de revisarlo, tenga a mano sus documentos: certificado de denominación, certificado del banco (¿lo trae en esa carpeta?) y contrato del local.', 'Oficial');
             l4Borrador(g);
           } },
-        { id: 'mesaFirmas', x: 21, y: 52.72, emoji: '📝', s: 5, on: 'mesaFirmasD', label: 'Mesa de firmas',
+        { id: 'mesaFirmas', x: 35.5, y: 52.72, emoji: '✒️', s: 5, on: 'mesaFirmasD', label: 'Mesa de firmas',
           look(g) {
             if (!g.flag('borradorOK')) return g.say('Sobre la mesa, la pluma estilográfica del notario. Nadie firma nada hasta que el borrador esté corregido.');
             if (!g.flag('certIn') || !g.flag('dniIn')) return g.say('El notario tapa la pluma con la mano: «Antes de firmar, déme el certificado de denominación original y su DNI. Lo dice el Reglamento Notarial. Y mi minuta».');
@@ -1109,14 +1109,14 @@
               '—Hijo/a, yo firmo antes que el Paco, que luego dice que lo ha hecho todo él. Lo demás me da igual.',
             ]), 'Tía Remedios');
           } },
-        { id: 'cunado', x: 32, y: 48.97, emoji: '🙋‍♂️', s: 10.5, behind: 'mesaFirmasD', label: 'Tu cuñado Paco',
+        { id: 'cunado', x: 20, y: 48.97, emoji: '🙋‍♂️', s: 10.5, behind: 'mesaFirmasD', label: 'Tu cuñado Paco',
           look(g) {
             g.say(rand([
               '—Yo firmo JUSTO después de ti, cuñao. Justo después: ni antes, ni con nadie en medio. Así salimos juntos en la foto.',
               '—Lo mío es firmar inmediatamente detrás de ti. Que se vea que somos un equipo. Aunque yo ponga 450 y tú 1.650.',
             ]), 'Tu cuñado Paco');
           } },
-        { id: 'carpeta', x: 16, y: 52.72, emoji: '📁', s: 5, on: 'mesaFirmasD', label: 'Tu carpeta',
+        { id: 'carpeta', x: 31.5, y: 52.72, emoji: '📁', s: 5, on: 'mesaFirmasD', label: 'Tu carpeta',
           look(g) {
             if (!g.flag('carp')) {
               g.set('carp');
