@@ -762,12 +762,13 @@
         { kind: 'board', id: 'corcho', l: 48.5, t: 29.75, w: 10.5, h: 12.75 },
         { kind: 'table', id: 'mesa', l: 30, t: 57.17, w: 20, h: 16.83 },
         { kind: 'pedestal', id: 'aparador', l: 85, t: 58.29, w: 13, h: 15.71, color: '#7a5a3e' },
+        { kind: 'box', id: 'router', l: 93, t: 57.19, w: 4, h: 1.1, color: '#2b2f36', z: 125 },
       ],
       hotspots: [
         { id: 'ordenador', x: 38.5, y: 50.5, emoji: '💻', s: 7.5, on: 'mesa', label: 'Ordenador',
           look: sedeModal,
           use: { usb(g) { g.take('usb'); g.set('usbIn'); g.say('Insertas el pendrive. Windows lo detecta tras tres minutos y dos actualizaciones obligatorias.'); } } },
-        { id: 'cajon', x: 55.5, y: 63.4, emoji: '🗄️', s: 11.92, label: 'Cajón del escritorio',
+        { id: 'cajon', x: 56, y: 62.27, emoji: '🗄️', s: 13.2, label: 'Cajón del escritorio',
           look(g) {
             if (!g.flag('usbFound')) { g.set('usbFound'); g.say('Entre cables que no sabes de qué son, aparece un pendrive: «CERTIFICADO FNMT — NO PERDER».'); g.give('usb'); }
             else g.say('Cables. Cargadores de móviles que ya no existen. Un mando de una tele que tiraste en 2014.');
@@ -783,7 +784,7 @@
           } },
         { id: 'libros', x: 10.25, y: 31.65, emoji: '📚', s: 5, on: 'estante', label: 'Libros',
           look(g) { g.say('«Cómo sobrevivir a la Administración Electrónica», «Java para nostálgicos» y «El arte de reiniciar».'); } },
-        { id: 'perroFoto', x: 23, y: 34.35, emoji: '🖼️', s: 8, label: 'Foto enmarcada',
+        { id: 'perroFoto', x: 24.5, y: 34.35, emoji: '🖼️', s: 8, label: 'Foto enmarcada',
           look(g) { g.say('Una foto de tu perro de cachorro. Detrás pone: «Tobi, el día que llegó a casa. Verano de 2015».'); } },
         { id: 'postit', x: 53.75, y: 36.1, emoji: '🗒️', s: 5, label: 'Pósit en el corcho',
           look(g) {
@@ -811,7 +812,7 @@
           } },
         { id: 'perro', x: 20, y: 77.44, emoji: '🐕', s: 8.5, label: 'Tobi',
           look(g) { g.say('Tobi te mira. Él tampoco entiende la Sede Electrónica. Pero al menos no lo intenta.'); } },
-        { id: 'gato', x: 95, y: 53.84, emoji: '🐈', s: 5, on: 'aparador', label: 'Gato sobre el router',
+        { id: 'gato', x: 95, y: 52.75, emoji: '🐈', s: 5, on: 'router', z: 126, label: 'Gato sobre el router',
           look(g) { g.say('El gato duerme encima del router porque está calentito. Por eso internet va lento. No lo muevas: no te lo perdonaría.'); } },
         { id: 'puerta', x: 71, y: 43.21, emoji: '🚪', s: 27.9, label: 'Puerta de casa',
           look(g) { g.say('No sales de casa hasta terminar el trámite online. Así lo manda la transformación digital.'); },
