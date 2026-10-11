@@ -1267,12 +1267,12 @@
       carry: ['credencial', 'actaCopia'],
       decor: [
         { kind: 'pedestal', id: 'aparador', l: 1.5, t: 52.16, w: 14.5, h: 19.84, color: '#7a5c3e' },
-        { kind: 'table', id: 'mesaEspera', l: 18, t: 58.9, w: 32.5, h: 17.1 },
+        { kind: 'pedestal', id: 'mesaEspera', l: 18, t: 58.9, w: 32.5, h: 17.1, color: '#5f4a36' },
         { kind: 'flag', l: 45, t: 14.9, w: 9, h: 10.7 },
         { kind: 'counter', id: 'mostrador', l: 52.5, t: 48.85, w: 22, h: 23.15 },
-        { emoji: '👩‍💼', x: 63.5, y: 43.6, s: 11.5, behind: 'mostrador' },
+        { emoji: '👨‍💼', x: 63.5, y: 43.6, s: 11.5, behind: 'mostrador' },
         { kind: 'desk', id: 'mesaSede', l: 76.5, t: 55.47, w: 9.5, h: 16.53 },
-        { kind: 'pedestal', id: 'mueble', l: 88, t: 56.57, w: 10.5, h: 15.43, color: '#8a8f96' },
+        { kind: 'pedestal', id: 'mueble', l: 88, t: 59.87, w: 10.5, h: 12.13, color: '#8a8f96' },
         { emoji: '🪴', x: 87.5, y: 82.33, s: 12 },
       ],
       hotspots: [
@@ -1302,7 +1302,7 @@
           } },
         { id: 'reloj', x: 31, y: 18.9, emoji: '🕐', s: 5, label: 'Reloj',
           look(g) { g.say('13:20. El Registro cierra a las 14:00, pero el plazo no se acaba hoy. Eso sí: hay que saber cuándo se acaba.'); } },
-        { id: 'registro', x: 63.5, y: 20, sign: 'REGISTRO', sub: '🧑‍💼', w: 12, label: 'Registro de entrada',
+        { id: 'registro', x: 63.5, y: 27, sign: 'REGISTRO', sub: '🧑‍💼', w: 12, label: 'Registro de entrada',
           look(g) {
             const falta = [!g.flag('acred') ? 'acreditar que es usted el presidente/a de la mesa' : '', !g.flag('adjunta') ? 'aportar copia del acta impugnada' : ''].filter(Boolean);
             if (falta.length) return g.say(`—¿Alegaciones como presidente/a de mesa? Antes de darle el impreso tiene que ${falta.join(' y ')}. Artículo 110. No me mire así: la ley no la he escrito yo. Yo solo la aplico con entusiasmo.`, 'Registro');
@@ -1339,11 +1339,11 @@
             g.set('notif'); g.give('notifRecurso');
             g.say('En tu carpeta, la notificación del recurso que te llegó esta mañana. Con un CSV muy raro.');
           } },
-        { id: 'apoderado', x: 23.5, y: 51.5, emoji: '🧑‍💼', s: 10, behind: 'mesaEspera', z: 133, tag: 'FAROL', label: 'Abogado de FAROL',
+        { id: 'apoderado', x: 45, y: 51.5, emoji: '🧑‍💼', s: 10, behind: 'mesaEspera', z: 133, tag: 'FAROL', label: 'Abogado de FAROL',
           look(g) { g.say('—Su mesa nos ha quitado un escaño por una papeleta con café. Una mancha es un dibujo. Un dibujo abstracto, pero un dibujo. Y un dibujo anula. Lo dice el manual... más o menos.', 'Abogado de FAROL'); } },
-        { id: 'fotocopiadora', x: 93, y: 50.79, emoji: '🖨️', s: 6.5, on: 'mueble', label: 'Fotocopiadora',
+        { id: 'fotocopiadora', x: 93, y: 54.09, emoji: '🖨️', s: 6.5, on: 'mueble', label: 'Fotocopiadora',
           look(g) { g.say('«Fuera de servicio desde el día 7». Alguien ha añadido: «Santa Paciencia, ruega por nosotros».'); } },
-        { id: 'letrados', x: 39.5, y: 50.01, emoji: '👩‍⚖️👨‍⚖️', s: 10, behind: 'mesaEspera', label: 'Letrados esperando',
+        { id: 'letrados', x: 30, y: 50.01, emoji: '👩‍💼🤵', s: 10, behind: 'mesaEspera', label: 'Letrados esperando',
           look(g) { g.say('—Los plazos son fáciles —dice uno—: hábiles o naturales, desde el día siguiente, y mirando el boletín por si hay correcciones. —¿Y si hay correcciones de las correcciones? —Entonces nos jubilamos.', 'Letrados'); } },
       ],
       hints: [
