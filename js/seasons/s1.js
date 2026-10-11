@@ -1057,13 +1057,14 @@
       scene: { wall: '#d8cfc0', floor: '#7c6d5d', floorH: 32, pattern: 'tiles' },
       init(g) { g.set('day', 8); },
       decor: [
-        { kind: 'counter', id: 'ventanillas', l: 1.5, t: 48.85, w: 61, h: 23.15 },
+        { kind: 'counter', id: 'ventanillas', l: 1.5, t: 48.85, w: 59.5, h: 23.15 },
         { emoji: '🧑‍💼', x: 8, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '👨‍💼', x: 24.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '👩‍💼', x: 41.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '👨‍💼', x: 58, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { kind: 'table', id: 'mesaImpresos', l: 2, t: 65.67, w: 16, h: 18.33 },
+        { emoji: '👨‍💼', x: 55, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { kind: 'table', id: 'mesaImpresos', l: 2, t: 69.07, w: 16, h: 18.93 },
         { kind: 'desk', id: 'mesaUjier', l: 81, t: 60.57, w: 16, h: 17.43 },
+        { emoji: '👨‍💼', x: 89, y: 54.05, s: 12.5, behind: 'mesaUjier' },
         { emoji: '🪴', x: 79, y: 77.66, s: 9.4 },
       ],
       hotspots: [
@@ -1077,7 +1078,7 @@
               <li><b>Caja (4):</b> para el pago de tasas.</li></ul>
               <p class="small">Este organigrama ha sido premiado por su coherencia interna.</p>`);
           } },
-        { id: 'retrato', x: 71, y: 12.2, emoji: '🖼️', s: 7.3, label: 'Retrato del Ministro',
+        { id: 'retrato', x: 72, y: 12.2, emoji: '🖼️', s: 7.3, label: 'Retrato del Ministro',
           look(g) { g.say('El Ministro de Asuntos Pendientes. Lleva en el cargo desde que se creó el ministerio. Tiene pendiente jubilarse.'); } },
         { id: 'v1', x: 8.5, y: 21, sign: '1 · REGISTRO', sub: '🧑‍💼', w: 13, label: 'Ventanilla 1: Registro',
           look(g) {
@@ -1091,7 +1092,7 @@
             },
             solicitud(g) { g.say('—Sin sellar no la acepto. ¿Usted se ha leído el organigrama?', 'Registro'); },
           } },
-        { id: 'v2', x: 25, y: 21, sign: '2 · SELLOS', sub: '👨‍🦲', w: 11, label: 'Ventanilla 2: Sellos',
+        { id: 'v2', x: 25, y: 21, sign: '2 · SELLOS', sub: '👨‍💼', w: 11, label: 'Ventanilla 2: Sellos',
           look(g) { g.say('—Sin número de expediente no puedo sellar nada. Y el número se lo da Registro cuando le lleve la solicitud sellada. Así es la vida.', 'Sellos'); },
           use: {
             solicitud: (g) => sellos(g), declaracionFirmada: (g) => sellos(g), justificante790: (g) => sellos(g),
@@ -1103,7 +1104,7 @@
             g.say('—Le informo: si no tiene número de expediente, puede sustituirlo por una DECLARACIÓN RESPONSABLE, bien rellenada y firmada.', 'Información');
             g.say('—Eso sí: acompañada del justificante de la tasa 790, pagada en Caja. Todo ello, junto a la solicitud genérica, se presenta en Sellos. Los impresos están en la mesa. ¿Algo más? No, ¿verdad? Siguiente.', 'Información');
           } },
-        { id: 'v4', x: 59, y: 21, sign: '4 · CAJA', sub: '🧔', w: 11, z: 250, label: 'Ventanilla 4: Caja',
+        { id: 'v4', x: 59, y: 21, sign: '4 · CAJA', sub: '👨‍💼', w: 11, z: 250, label: 'Ventanilla 4: Caja',
           look(g) { g.say('—Caja. Aquí se pagan las tasas. Si no trae nada que pagar, no me haga perder el tiempo, que tengo mucho que no hacer.', 'Caja'); },
           use: {
             modelo790(g) {
@@ -1116,7 +1117,7 @@
             },
           } },
         { id: 'calendario', x: 89.5, y: 38.46, emoji: '📅', s: 5.5, label: (g) => `Calendario (${g.flag('day')} de octubre)`, look: calendarModal },
-        { id: 'mesa', x: 10, y: 60.34, emoji: '🗂️', s: 6, on: 'mesaImpresos', label: 'Mesa de impresos',
+        { id: 'mesa', x: 10, y: 63.74, emoji: '🗂️', s: 6, on: 'mesaImpresos', label: 'Mesa de impresos',
           look(g) {
             if (!g.flag('forms')) {
               g.set('forms');
@@ -1124,12 +1125,12 @@
               g.give('solicitud'); g.give('declaracion'); g.give('modelo790');
             } else g.say('Impresos de todos los colores. El bolígrafo encadenado a la mesa no tiene tinta, como manda la tradición.');
           } },
-        { id: 'ujier', x: 89, y: 58.87, emoji: '😴', s: 6, behind: 'mesaUjier', label: 'Ujier dormido',
+        { id: 'ujier', x: 89, y: 51.3, emoji: '😴', s: 5.5, behind: 'mesaUjier', label: 'Ujier dormido',
           look(g) {
             if (!g.flag('pen')) { g.set('pen'); g.say('Zzz... El ujier ronca plácidamente. Del bolsillo de su chaqueta asoma un bolígrafo. Con tinta. Lo tomas prestado.'); g.give('boli'); }
             else g.say('Zzz... Sueña que le suben el complemento de destino.');
           } },
-        { id: 'puerta', x: 71, y: 44.05, emoji: '🚪', s: 27.5, label: 'Puerta de salida',
+        { id: 'puerta', x: 72, y: 44.05, emoji: '🚪', s: 27.5, label: 'Puerta de salida',
           look(g) {
             if (!g.has('resolucion')) return g.say('Un cartel: «SALIDA SOLO CON RESOLUCIÓN FAVORABLE. Y EN PLAZO».');
             g.say('Muestra la resolución en la puerta: selecciónala y úsala aquí.');
