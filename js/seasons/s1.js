@@ -622,14 +622,17 @@
       stars: 2,
       intro: 'Para renovar el DNI necesitas un <b>certificado de empadronamiento</b> actualizado.<br><br>Y para empadronarte, te dicen, necesitas... un certificado de empadronamiento.<br><br><b>Objetivo:</b> rompe el bucle y consigue que el funcionario te empadrone.',
       outro: 'Queda usted empadronado/a. Por un momento, el bucle se ha roto. Pero el sistema detecta que le falta su número de afiliación a la Seguridad Social. No pregunte por qué lo necesita el padrón.',
-      scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 33, pattern: 'wood' },
+      scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 44, t: 55, w: 30, h: 10 },
-        { kind: 'flag', l: 30, t: 6, w: 5, h: 8 },
-        { emoji: '🧍‍♀️', x: 8, y: 76, s: 6, o: 0.9 },
+        { kind: 'window', l: 20.5, t: 14.85, w: 11, h: 29.8 },
+        { kind: 'flag', l: 41, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 52, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'desk', id: 'escritorio', l: 17, t: 58.9, w: 18, h: 17.1 },
+        { kind: 'counter', id: 'ventanilla', l: 40, t: 48.85, w: 23, h: 23.15 },
+        { emoji: '🧍‍♀️', x: 70, y: 57.51, s: 24.17 },
       ],
       hotspots: [
-        { id: 'funcionario', x: 56, y: 48, emoji: '👨‍💼', s: 9, label: 'Funcionario de empadronamiento',
+        { id: 'funcionario', x: 51.5, y: 43.6, emoji: '👨‍💼', s: 11.5, behind: 'ventanilla', label: 'Funcionario de empadronamiento',
           look(g) {
             g.say('—Para empadronarle necesito su certificado de empadronamiento.', 'Funcionario');
             g.say('—¿Y cómo consigo el certificado? —Empadronándose. ¿Algo más?', 'Funcionario');
@@ -640,16 +643,16 @@
             modeloP0(g) { g.say('—Sin el sello de Registro de Entrada no vale. Esto no es un bar.', 'Funcionario'); },
             sello(g) { g.say('—No me selle a mí, por favor. Selle el modelo.', 'Funcionario'); },
           } },
-        { id: 'horario', x: 87, y: 24, sign: 'HORARIO', sub: '🕘', w: 11, label: 'Cartel de horario',
+        { id: 'horario', x: 82, y: 31.3, sign: 'HORARIO', sub: '🕘', w: 11, label: 'Cartel de horario',
           look(g) {
             g.doc('🕘 HORARIO DE ATENCIÓN AL PÚBLICO', `<p><b>Lunes a viernes: de 9:00 a 9:15.</b></p>
               <p>Miércoles: cerrado por reunión de coordinación.</p>
               <p>Agosto: cerrado. Septiembre: ya veremos.</p>
               <p class="small">Horario de reclamaciones: de 9:15 a 9:15.</p>`);
           } },
-        { id: 'monitor', x: 70, y: 49, emoji: '💻', s: 6, label: 'Monitor del compañero',
+        { id: 'monitor', x: 23, y: 53.57, emoji: '💻', s: 6, on: 'escritorio', label: 'Monitor del compañero',
           look(g) { g.say('Un pósit pegado en la pantalla: «CLAVE DEL ARCHIVO = HORA DE CIERRE AL PÚBLICO (4 cifras). ¡¡NO APUNTAR EN NINGÚN SITIO!!»'); } },
-        { id: 'archivo', x: 18, y: 55, emoji: '🗄️', s: 11, label: 'Archivo (cerradura de 4 cifras)',
+        { id: 'archivo', x: 8.5, y: 60.28, emoji: '🗄️', s: 15.43, label: 'Archivo (cerradura de 4 cifras)',
           look(g) {
             if (g.flag('archOpen')) return g.say('El archivo está abierto. Hay 3.000 carpetas iguales. Ya tienes lo que necesitabas.');
             g.input({
@@ -659,12 +662,12 @@
               ok: () => { g.set('archOpen'); g.say('El archivo se abre con un chirrido. Tras apartar expedientes de 1987, encuentras un Modelo P-0 en blanco.'); g.give('modeloP0'); },
             });
           } },
-        { id: 'buzon', x: 91, y: 62, emoji: '📮', s: 7, label: 'Buzón de sugerencias',
+        { id: 'buzon', x: 85, y: 62.42, emoji: '📮', s: 14.15, label: 'Buzón de sugerencias',
           look(g) {
             if (!g.flag('key')) { g.set('key'); g.say('El buzón está lleno a reventar: nadie lo abre desde 2008. Entre sugerencias como «Más ventanillas» y «Menos ventanillas» aparece una llavecita.'); g.give('llavecita'); }
             else g.say('Miles de sugerencias. Todas sin leer. Algunas amenazan con volverse sugerencias de otra cosa.');
           } },
-        { id: 'cajon', x: 42, y: 74, emoji: '🗃️', s: 7, label: 'Cajón del escritorio',
+        { id: 'cajon', x: 31.5, y: 54.455, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
           look(g) {
             if (g.flag('drawer')) return g.say('Solo queda un bocadillo fosilizado. No lo toques: podría ser patrimonio municipal.');
             g.say('El cajón está cerrado con llave.');
@@ -672,7 +675,7 @@
           use: {
             llavecita(g) { g.take('llavecita'); g.set('drawer'); g.say('Clic. Dentro: tres bolígrafos sin tinta, un bocadillo fosilizado y un SELLO de Registro de Entrada.'); g.give('sello'); },
           } },
-        { id: 'alcalde', x: 50, y: 18, emoji: '🖼️', s: 7, label: 'Retrato del alcalde',
+        { id: 'alcalde', x: 8.5, y: 29.04, emoji: '🖼️', s: 7.97, label: 'Retrato del alcalde',
           look(g) { g.say('El alcalde, cortando la cinta de una rotonda. Es la tercera rotonda de esta semana. La rotonda no lleva a ningún sitio, pero está preciosa.'); } },
       ],
       combos: {
