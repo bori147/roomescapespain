@@ -941,10 +941,11 @@
       scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'bookcase', l: 84.5, t: 25.5, w: 12, h: 42.5 },
-        { kind: 'desk', id: 'pupitreMesa', l: 24, t: 58.9, w: 18, h: 17.1 },
+        { kind: 'counter', id: 'pupitreMesa', l: 24, t: 58.9, w: 18, h: 17.1 },
         { kind: 'counter', id: 'mostrador', l: 46.5, t: 48.85, w: 23, h: 23.15 },
         { kind: 'lectern', id: 'atril', l: 87.5, t: 48.19, w: 6, h: 25.81 },
-        { kind: 'pedestal', id: 'mueble', l: 1.5, t: 77.69, w: 7, h: 17.31, color: '#7a5b3e' },
+        { kind: 'pedestal', id: 'mueble', l: 40, t: 77.69, w: 7, h: 17.31, color: '#7a5b3e' },
+        { emoji: '📁', x: 80, y: 54.5, s: 5.5, z: 117 },
       ],
       hotspots: [
         { id: 'normas', x: 28, y: 31.3, sign: 'ART. 408', sub: '⚖️ Identidad', w: 12, z: 250, label: 'Normas sobre identidad de nombres',
@@ -964,7 +965,7 @@
           } },
         { id: 'calendario', x: 60, y: 25.3, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Hoy es lunes, 18 de enero de 2027. El calendario es del Registro: tiene los festivos marcados en rojo y los puentes en rojo más oscuro.'); } },
-        { id: 'registradora', x: 58, y: 43.6, emoji: '🧑‍💼', s: 11.5, behind: 'mostrador', label: 'Registradora',
+        { id: 'registradora', x: 58, y: 43, emoji: '🧑‍💼', s: 10.5, behind: 'mostrador', label: 'Registradora',
           look(g) {
             if (g.has('certDen')) return g.say('—Ya tiene su certificado. Corra al notario, que caduca. Todo caduca. Menos las colas.', 'Registradora');
             if (!g.flag('ident')) return g.say('—Las solicitudes solo las presenta el interesado, identificado. DNI original, por favor. Las fotocopias las hago yo, que las que trae la gente salen torcidas.', 'Registradora');
@@ -1000,7 +1001,7 @@
               <table class="tbl">${L3_REG.map(([n, s]) => `<tr><td>${n}</td><td>${s}</td></tr>`).join('')}</table>
               <p class="small">«Porra de la Bentanilla» se inscribió en 1998 con B. El notario no lo vio. El registrador tampoco. Ya es tarde.</p>`);
           } },
-        { id: 'bandeja', x: 5, y: 73.25, emoji: '📥', s: 5, on: 'mueble', label: 'Bandeja de solicitudes',
+        { id: 'bandeja', x: 43.5, y: 73.25, emoji: '📥', s: 5, on: 'mueble', label: 'Bandeja de solicitudes',
           look(g) {
             if (g.has('certDen')) return g.say('Ya no necesitas más solicitudes. Aléjate de la bandeja despacio.');
             if (g.has('solicitudDen') || g.has('solicitudRellena')) return g.say('Ya tienes una solicitud. La bandeja te mira mal: aquí no se acapara.');
@@ -1013,7 +1014,7 @@
             solicitudDen: l3Form,
             solicitudRellena(g) { g.say('Ya está rellena. Si te has equivocado, la registradora te lo dirá. Sin decirte en qué.'); },
           } },
-        { id: 'cunado', x: 30, y: 52.9, emoji: '🙋‍♂️', s: 11.8, behind: 'pupitreMesa', label: 'Tu cuñado',
+        { id: 'cunado', x: 30, y: 53.2, emoji: '🙋‍♂️', s: 9.3, behind: 'pupitreMesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—Ponle «Real Churrería de España». Vende muchísimo. ¿Que está prohibido? Bah, eso lo dicen para que no lo pongas.',
@@ -1021,7 +1022,7 @@
               '—Hazme caso: con «Porras» no te equivocas. Porras siempre hay. Y trámites, ni te cuento.',
             ]), 'Tu cuñado');
           } },
-        { id: 'senor', x: 75.8, y: 50.57, emoji: '🧍‍♂️', s: 24.11, label: 'Señor con una carpeta enorme',
+        { id: 'senor', x: 76.55, y: 51.18, emoji: '🧍', s: 23.42, label: 'Señor con una carpeta enorme',
           look(g) { g.say('—Llevo catorce denegaciones: «Bar Manolo», «Bar Manolo 2», «Manolo Bar», «Bar de Manolo», «Barra Manolo»... Mañana pruebo con «Bar Pepe». Por cambiar.', 'Señor'); } },
         { id: 'puerta', x: 14, y: 43.59, emoji: '🚪', s: 28, label: 'Salida',
           look(g) { g.say('El vigilante no deja salir a nadie sin papeles. «Sin certificado no se va usted de aquí. ¿Qué haría fuera, sin nombre?»'); },
