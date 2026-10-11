@@ -31,6 +31,13 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // Emoji como imagen Fluent 3D (js/core.js); si no hay imagen, el emoji del sistema
   const EH = (str) => (window.GameUtils && window.GameUtils.emojiHTML ? window.GameUtils.emojiHTML(str) : String(str));
+  // En la sala: imágenes apoyadas de verdad y sombra de contacto del ancho de lo que se ve
+  const EHG = (str) => (window.GameUtils && window.GameUtils.emojiHTML ? window.GameUtils.emojiHTML(str, true) : String(str));
+  const fitShadow = (node, str) => {
+    const m = window.GameUtils && window.GameUtils.emojiShadow ? window.GameUtils.emojiShadow(str) : null;
+    if (m) { node.style.setProperty('--shw', m.w); node.style.setProperty('--shx', m.cx + '%'); }
+    else { node.style.removeProperty('--shw'); node.style.removeProperty('--shx'); }
+  };
   const ico = (id) => `<svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
   const later = (fn, ms) => setTimeout(fn, ms);
 
@@ -921,7 +928,8 @@
           if (d.color) e.style.setProperty('--c', d.color);
           z = d.l != null ? depthZ(d.t + d.h, floorH) : 0;
         } else {
-          e = el('span', 'deco deco-emoji', EH(d.emoji));
+          e = el('span', 'deco deco-emoji', EHG(d.emoji));
+          fitShadow(e, d.emoji);
           Object.assign(e.style, { left: d.x + '%', top: d.y + '%', fontSize: (d.s || 5) + 'cqw', opacity: d.o ?? 1 });
           const base = d.y + 0.889 * (d.s || 5);
           if (d.on) e.classList.add('on-surface');
@@ -985,12 +993,13 @@
       } else {
         const emo = val(hs.emoji); const tag = hs.tag ? val(hs.tag) : '';
         sig = `E|${label}|${emo}|${tag}`;
-        inner = `<span class="hs-emoji" aria-hidden="true">${EH(emo)}</span>${tag ? `<span class="hs-tag" aria-hidden="true">${tag}</span>` : ''}`;
+        inner = `<span class="hs-emoji" aria-hidden="true">${EHG(emo)}</span>${tag ? `<span class="hs-tag" aria-hidden="true">${tag}</span>` : ''}`;
         vtext = tag ? strip(tag) : '';
       }
       const wasVisible = !b.hidden;
       if (hsSig.get(hs.id) !== sig) {
         b.innerHTML = inner;
+        if (!hs.sign) fitShadow(b, val(hs.emoji));
         b.dataset.label = strip(label);
         b.setAttribute('aria-label', hsName(label, vtext));
         if (wasVisible && hsSig.has(hs.id)) diff.changedHs.push(hs.id);

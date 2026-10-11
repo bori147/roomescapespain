@@ -254,14 +254,15 @@
   .deco-column { background: linear-gradient(90deg, #cfcabf, #f4f1ea 40%, #bdb7aa); border-radius: .3cqw; box-shadow: 0 .3cqw .6cqw rgba(0, 0, 0, .25); }
   .deco-box { background: var(--c, #6d5238); border-radius: .4cqw; box-shadow: 0 .4cqw .8cqw rgba(0, 0, 0, .3), inset 0 .3cqw 0 rgba(255, 255, 255, .08); }
 
-  /* Sombra de contacto de lo que está en el suelo (objetos y decorado) */
+  /* Sombra de contacto de lo que está en el suelo (objetos y decorado).
+     --shw / --shx: ancho visible (em) y centro de la imagen, medidos por tools/emoji-build.js */
   .hs.on-floor::before, .deco-emoji.on-floor::before {
     content: '';
     position: absolute;
-    left: 50%;
-    bottom: -.06em;
-    width: .9em;
-    height: .16em;
+    left: var(--shx, 50%);
+    bottom: calc(var(--shw, .8) * -.1em);
+    width: calc(var(--shw, .8) * 1.15em);
+    height: calc(var(--shw, .8) * .2em);
     translate: -50% 0;
     z-index: -1;
     background: radial-gradient(closest-side, rgba(0, 0, 0, .38), transparent);
@@ -513,10 +514,10 @@
   .hs.on-surface::before, .deco-emoji.on-surface::before {
     content: '';
     position: absolute;
-    left: 50%;
-    bottom: -.03em;
-    width: .75em;
-    height: .1em;
+    left: var(--shx, 50%);
+    bottom: calc(var(--shw, .7) * -.06em);
+    width: calc(var(--shw, .7) * 1.08em);
+    height: calc(var(--shw, .7) * .12em);
     translate: -50% 0;
     z-index: -1;
     background: radial-gradient(closest-side, rgba(0, 0, 0, .34), transparent);

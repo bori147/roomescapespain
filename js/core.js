@@ -50,16 +50,32 @@
     for (const k of [c, c.replace(/-fe0f/g, ''), c + '-fe0f']) if (emojiKeys.has(k)) return k;
     return null;
   };
+  const BOX = EI.box || {};
   /**
    * Sustituye cada emoji con imagen por <img class="emo">; el resto del texto se escapa tal cual.
    * Los contenedores son decorativos (aria-hidden), así que alt="".
+   * ground: en la sala, cada imagen baja su margen transparente inferior para apoyar de verdad.
    */
-  const emojiHTML = (str) => graphemes(str).map((g) => {
+  const emojiHTML = (str, ground) => graphemes(str).map((g) => {
     const k = /\p{Extended_Pictographic}/u.test(g) ? emojiKey(g) : null;
-    return k ? `<img class="emo" src="${EI.base}${k}.webp" alt="" draggable="false" decoding="async">` : esc(g);
+    if (!k) return esc(g);
+    const drop = ground && BOX[k] && BOX[k][0] > 1 ? ` style="translate:0 ${+(BOX[k][0] / 2.56).toFixed(2)}%"` : '';
+    return `<img class="emo" src="${EI.base}${k}.webp" alt="" draggable="false" decoding="async"${drop}>`;
   }).join('');
+  /**
+   * Sombra de contacto ajustada a lo que se ve: anchura (en em) y centro (en % de la caja) de una fila de emoji.
+   * null si algún carácter no tiene medida (se usa la sombra estándar).
+   */
+  const emojiShadow = (str) => {
+    const gs = graphemes(str);
+    if (!gs.length) return null;
+    const first = emojiKey(gs[0]); const last = emojiKey(gs[gs.length - 1]);
+    if (!first || !last || !BOX[first] || !BOX[last]) return null;
+    const l = BOX[first][1] / 256; const r = gs.length - 1 + BOX[last][2] / 256;
+    return { w: +(r - l).toFixed(3), cx: +(((l + r) / 2 / gs.length) * 100).toFixed(1) };
+  };
   /** URL de la imagen de un emoji (para precargar), o null. */
   const emojiURL = (g) => { const k = emojiKey(g); return k ? EI.base + k + '.webp' : null; };
 
-  window.GameUtils = { rand, pad, norm, caesar, esc, emojiHTML, emojiURL, graphemes };
+  window.GameUtils = { rand, pad, norm, caesar, esc, emojiHTML, emojiShadow, emojiURL, graphemes };
 })();

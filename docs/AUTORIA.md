@@ -540,11 +540,12 @@ y un mostrador ~23 %.
 - el funcionario fuera de la primera vista del móvil;
 - la caja táctil de una persona pisando un cartel u objetos de la mesa.
 
-**Fallos del motor (no los compenses sala a sala).** Las imágenes Fluent dejan un 6,25 % de margen transparente bajo
-el objeto. Por eso los pies quedan unos píxeles por encima de su sombra, y la tele y los papeles, por encima de su
-balda o mesa. Además, la sombra de suelo mide `.9em` para todo, y bajo una persona forma un charco tres veces más
-ancho que ella. Coloca con el modelo (`base = y + 0,889·s`), sin mover `y` para tapar el hueco: el arreglo va en
-`css/ui-scene.css` y vale para las 50 salas.
+**Apoyo y sombras (resuelto en el motor; no lo compenses sala a sala).** Cada imagen Fluent deja un margen
+transparente bajo el dibujo (16 px de 256 en casi todas; hasta 100 px en billetes, gafas o sobres).
+`tools/emoji-build.js` lo mide por imagen (`EMOJI_IMG.box`) y el motor baja cada imagen ese margen dentro de la sala,
+así que el dibujo toca exactamente `base = y + 0,889·s`. La sombra de contacto toma el ancho visible de la imagen
+(`--shw`, `--shx`): bajo una persona es una elipse estrecha, no un charco. Coloca siempre con el modelo, sin mover
+`y` para tapar huecos. Si añades emoji nuevos, ejecuta `node tools/emoji-build.js` para copiarlos y medirlos.
 
 **Revisión mínima antes de dar una sala por buena:**
 1. `node tests/realism.js S-N` sin errores.
