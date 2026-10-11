@@ -472,15 +472,14 @@
       init(g) { g.set('h', 14); g.set('m', 35); },
       decor: [
         { kind: 'window', l: 1.5, t: 19.1, w: 10, h: 29.8 },
-        { kind: 'shelf', id: 'balda', l: 21.5, t: 23.37, w: 6, h: 1.4 },
         { kind: 'pedestal', id: 'atrilTerminal', l: 33, t: 54.36, w: 8, h: 17.64, color: '#6f7780' },
         { kind: 'flag', l: 48, t: 14.9, w: 9, h: 10.7 },
         { kind: 'counter', id: 'control', l: 46, t: 48.85, w: 14, h: 23.15 },
-        { emoji: '🧍‍♀️', x: 12.5, y: 57.02, s: 24.7 },
+        { emoji: '🧍‍♀️', x: 26, y: 57.02, s: 24.7 },
         { emoji: '🧯', x: 92.8, y: 57.17, s: 7.2 },
       ],
       hotspots: [
-        { id: 'cartel', x: 37, y: 31.3, sign: 'AVISO', sub: '📢', w: 10, label: 'Cartel de avisos',
+        { id: 'cartel', x: 37, y: 31.3, sign: 'AVISO', sub: '📢', w: 10, z: 250, label: 'Cartel de avisos',
           look(g) {
             g.doc('📢 AVISO IMPORTANTE', `<p>Estimado/a ciudadano/a:</p>
               <p>Las nuevas citas para la expedición y renovación del DNI se liberan <b>cada día a las 8:00 en punto</b>, según la hora oficial del reloj de esta sala.</p>
@@ -488,7 +487,7 @@
               <p>Gracias por su paciencia (que no por su comprensión).</p>
               <p class="small">— La Dirección</p>`);
           } },
-        { id: 'reloj', x: 24.5, y: 18.93, emoji: '🕰️', s: 5, on: 'balda', label: (g) => `Reloj de pared (${pad(g.flag('h'))}:${pad(g.flag('m'))})`,
+        { id: 'reloj', x: 26, y: 22.11, emoji: (g) => ['🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚'][g.flag('h') % 12], s: 5, label: (g) => `Reloj de pared (${pad(g.flag('h'))}:${pad(g.flag('m'))})`,
           look: clockModal },
         { id: 'pc', x: 37, y: 48.58, emoji: '🖥️', s: 6.5, on: 'atrilTerminal', label: 'Terminal de autocita',
           look(g) {
@@ -532,7 +531,7 @@
               '—Yo me pongo el despertador a las 7:59 cada día. Llevo tres meses. Mi mujer ya duerme en el sofá.',
             ]), 'Alguien de la cola');
           } },
-        { id: 'silla', x: 84, y: 66.1, emoji: '💺', s: 15.6, label: 'Silla de espera',
+        { id: 'silla', x: 84, y: 68.84, emoji: '🪑', s: 12.56, label: 'Silla de espera',
           look(g) { g.say('Una silla atornillada al suelo. Por si alguien intentaba llevársela para esperar en casa.'); } },
         { id: 'planta', x: 6, y: 79.5, emoji: '🪴', s: 9.7, label: 'Planta',
           look(g) { g.say('Una planta de plástico. Es lo único de esta oficina que no ha pedido la baja.'); } },
