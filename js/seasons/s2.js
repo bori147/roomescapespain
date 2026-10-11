@@ -1220,16 +1220,18 @@
       intro: '¡Inauguración! Lunes, 1 de febrero de 2027. La churrería huele a aceite nuevo y a deudas. Traes la <b>licencia provisional</b> que te dio el técnico: sin ella a la vista, la persiana no sube.<br><br>Tu primera clienta, doña Ramona, quiere <b>factura completa</b> a nombre de su empresa. El TPV es «Verifactu»: cada factura se encadena con la anterior mediante una <b>huella</b>, se envía a Hacienda y no se puede borrar. Nunca. Ni llorando.<br><br><b>Objetivo:</b> abre la churrería, emite una factura correcta y entrégasela a doña Ramona.',
       outro: 'Doña Ramona se marcha con su factura y su taza; tú te quedas la <b>copia</b> para el archivo. Pasan dos meses y medio de churros, chocolate y tiques. Llega el primer trimestre: el modelo 303 del IVA. El IVA que cobraste... no era tuyo.',
       carry: ['licencia'],
-      scene: { wall: '#f1e3c6', floor: '#a0764f', floorH: 30, pattern: 'wood' },
+      scene: { wall: '#f1e3c6', floor: '#a0764f', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 26, t: 58, w: 46, h: 9 },
-        { kind: 'shelf', l: 64, t: 32, w: 16, h: 2 },
-        { kind: 'window', l: 84, t: 8, w: 12, h: 24 },
-        { emoji: '🍩', x: 60, y: 56, s: 3, o: 0.9 }, { emoji: '🥤', x: 40, y: 56, s: 3, o: 0.9 },
-        { emoji: '🪑', x: 92, y: 88, s: 4, o: 0.8 },
+        { kind: 'door', l: 11.2, t: 25.6, w: 11.6, h: 42.3, color: '#8fb3c2' },
+        { kind: 'shelf', id: 'estante', l: 66, t: 28.5, w: 10, h: 1.4 },
+        { emoji: '☕', x: 68, y: 25.52, s: 3.35, on: 'estante' },
+        { emoji: '☕', x: 74, y: 25.52, s: 3.35, on: 'estante' },
+        { kind: 'counter', id: 'barra', l: 56, t: 48.85, w: 35, h: 23.15 },
+        { emoji: '🪑', x: 52.5, y: 68.18, s: 13.3 },
+        { kind: 'table', id: 'mesaRamona', l: 47, t: 63.97, w: 11, h: 18.03 },
       ],
       hotspots: [
-        { id: 'pizarra', x: 18, y: 18, sign: 'PRECIOS (IVA incl.)', sub: '🖍️', w: 15, label: 'Pizarra de precios',
+        { id: 'pizarra', x: 86.5, y: 21.7, sign: 'PRECIOS (IVA incl.)', sub: '🖍️', w: 15, label: 'Pizarra de precios',
           look(g) {
             g.doc('🖍️ Pizarra de precios (IVA incluido)', `<table class="tbl">
               <tr><td>Chocolate con churros (en mesa)</td><td>5,50 €</td></tr>
@@ -1239,7 +1241,7 @@
               <tr><td>Taza de recuerdo «Porras del Trámite»</td><td>12,10 €</td></tr></table>
               <p class="small">Todos los precios llevan el IVA incluido, como manda la ley y el sentido común.</p>`);
           } },
-        { id: 'normas', x: 42, y: 18, sign: 'NORMAS VERIFACTU', sub: '🔗', w: 15, label: 'Normas de facturación',
+        { id: 'normas', x: 55.5, y: 31.3, sign: 'NORMAS VERIFACTU', sub: '🔗', w: 16, z: 250, label: 'Normas de facturación',
           look(g) {
             g.doc('🔗 Normas de facturación (Verifactu, versión de la casa)', `<ul>
               <li><b>Factura completa</b> (con NIF del cliente): <b>serie A</b>. Tique o factura simplificada: serie T.</li>
@@ -1249,7 +1251,7 @@
               <li><b>Huella</b> = huella de la última factura de la <b>MISMA serie</b> + total de la nueva factura <b>en céntimos</b>. Quédese con las <b>4 últimas cifras</b>.</li>
               <li>Una factura registrada en Verifactu <b>no se puede borrar</b>. Ni la de prueba.</li></ul>`);
           } },
-        { id: 'marco', x: 58, y: 18, sign: (g) => (g.flag('abierto') ? 'LICENCIA' : 'MARCO VACÍO'), sub: (g) => (g.flag('abierto') ? '🪧 Provisional' : '⬜'), w: 11, label: 'Marco junto a la entrada',
+        { id: 'marco', x: 31, y: 31.3, sign: (g) => (g.flag('abierto') ? 'LICENCIA' : 'MARCO VACÍO'), sub: (g) => (g.flag('abierto') ? '🪧 Provisional' : '⬜'), w: 11, z: 250, label: 'Marco junto a la entrada',
           look(g) {
             if (g.flag('abierto')) return g.say('Tu licencia provisional, enmarcada y a la vista. Al lado has dejado sitio para la definitiva. Va a estar vacío una temporada. Larga.');
             g.say('Un marco vacío junto a la entrada. Debajo, una pegatina municipal: «La licencia de actividad deberá exhibirse en lugar visible desde la entrada. Sin ella, no se abre». Lucía no subirá la persiana hasta verla colgada.');
@@ -1260,9 +1262,9 @@
               g.say('Cuelgas la licencia provisional en el marco. Lucía sube la persiana con un estruendo de feria: ¡ABIERTO! Entra el olor de la calle, la cola de curiosos... y tu primera clienta, doña Ramona.', 'Marco');
             },
           } },
-        { id: 'tazas', x: 72, y: 27, emoji: '☕', s: 4, label: 'Estantería de tazas de recuerdo',
+        { id: 'tazas', x: 71, y: 25.52, emoji: '☕', s: 3.35, on: 'estante', label: 'Estantería de tazas de recuerdo',
           look(g) { g.say('Tazas «Porras del Trámite», con un sello de registro de entrada dibujado. 12,10 € cada una. Tu cuñado ya se ha llevado tres «para promoción».'); } },
-        { id: 'lucia', x: 20, y: 51, emoji: '👩‍🍳', s: 7, label: 'Lucía, la churrera',
+        { id: 'lucia', x: 80, y: 43.9, emoji: '👩‍🍳', s: 11.2, behind: 'barra', label: 'Lucía, la churrera',
           look(g) {
             g.say(rand([
               '—Yo frío, tú facturas. Así nos repartimos el sufrimiento.',
@@ -1270,17 +1272,17 @@
               '—Ayer hiciste una factura de prueba de un céntimo. Ya no se puede borrar. Está ahí, en Hacienda, para la eternidad.',
             ]), 'Lucía');
           } },
-        { id: 'freidora', x: 32, y: 50, emoji: '🍳', s: 5, label: 'Freidora',
+        { id: 'freidora', x: 87.5, y: 43.69, emoji: '🍳', s: 5.8, on: 'barra', label: 'Freidora',
           look(g) { g.say('La freidora burbujea. Es lo único de este negocio que funciona sin certificado digital.'); } },
-        { id: 'tpv', x: 50, y: 51, emoji: '🖥️', s: 6, label: 'TPV con Verifactu',
+        { id: 'tpv', x: 61, y: 43.25, emoji: '🖥️', s: 6.3, on: 'barra', label: 'TPV con Verifactu',
           look: l6Tpv },
-        { id: 'persiana', x: 80, y: 60, emoji: '🚪', s: 10, label: 'Persiana bajada',
+        { id: 'persiana', x: 17, y: 43.4, emoji: '🚪', s: 28.8, label: 'Persiana bajada',
           show: (g) => !g.flag('abierto'),
           look(g) { g.say('La persiana está bajada. Por la rendija se oye a alguien: «¿Abren o no abren? Sin la licencia a la vista yo no entro, que luego viene una inspección y me llevan de testigo». Es doña Ramona, tu primera clienta.'); },
           use: {
             licencia(g) { g.say('La licencia no se pega en la persiana con celo: va en el marco, a la vista desde la entrada. Esto es un negocio serio. Más o menos.'); },
           } },
-        { id: 'ramona', x: 80, y: 62, emoji: '💁‍♀️', s: 8, label: 'Doña Ramona, primera clienta',
+        { id: 'ramona', x: 52.5, y: 55.57, emoji: '💁‍♀️', s: 10.83, behind: 'mesaRamona', label: 'Doña Ramona, primera clienta',
           show: (g) => !!g.flag('abierto'),
           look(g) {
             if (!g.flag('ramona')) {
@@ -1300,13 +1302,13 @@
             },
             tarjetaRamona(g) { g.say('—Quédatela, que la necesitas para la factura. Yo tengo cuatrocientas.', 'Doña Ramona'); },
           } },
-        { id: 'papelera', x: 10, y: 84, emoji: '🗑️', s: 5, label: 'Papelera',
+        { id: 'papelera', x: 94, y: 74.67, emoji: '🗑️', s: 6, label: 'Papelera',
           look(g) {
             g.doc('🗑️ Papeles en la papelera', `<div class="paper-note"><p><b>Tique T-2027-0005</b> — 1 café — 1,65 €<br>Huella: <b>3310</b></p></div><br>
               <div class="paper-note"><p><b>Factura A-2027-0001</b> — «PRUEBA PRUEBA, NO VALE» — 0,01 €<br>Huella: <b>8947</b><br><i>Registrada en Verifactu. No se puede anular. Ya lo has intentado.</i></p></div>
               <p class="small">Los tiques T-0001 a T-0004 se los ha llevado tu cuñado «para la contabilidad». No sabes qué contabilidad.</p>`);
           } },
-        { id: 'cunado', x: 40, y: 82, emoji: '🙋‍♂️', s: 6, label: 'Tu cuñado',
+        { id: 'cunado', x: 69.5, y: 43.9, emoji: '🙋‍♂️', s: 11.2, behind: 'barra', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—Te instalo el «TPV Cuñadísimo»: hace facturas sin IVA. ¿Que es ilegal? Hombre, ilegal, ilegal... es creativo.',
@@ -1314,7 +1316,7 @@
               '—Ponle la serie T, que es de «Todo». ¿Cómo que no? Bueno, tú verás.',
             ]), 'Tu cuñado');
           } },
-        { id: 'cola', x: 62, y: 84, emoji: '🧍‍♂️🧍‍♀️', s: 4, label: 'Cola de clientes',
+        { id: 'cola', x: 29, y: 48.49, emoji: '🧍‍♂️🧍‍♀️', s: 24.2, label: 'Cola de clientes',
           show: (g) => !!g.flag('abierto'),
           look(g) {
             g.say(rand([
