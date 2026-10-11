@@ -1247,22 +1247,24 @@
       intro: 'Quieres cerrar la terraza: la tienes medida al centímetro en tu plano acotado. Toca fachada, así que necesitas el permiso de la <b>junta de propietarios</b>. Y como eres nuevo/a, el sorteo anual te ha nombrado... <b>presidente/a de la comunidad</b>. Enhorabuena.<br><br>Como presidente/a, decides qué otros puntos se votan antes que el tuyo y en qué orden. Cada vecino tiene sus manías. Y los ausentes... no siempre están tan ausentes.<br><br><b>Objetivo:</b> consigue que la junta apruebe tu obra y que el administrador firme el acta.',
       outro: 'Obra aprobada. Doña Pura ha impugnado el acta «por principio», pero el administrador dice que se le pasará. Con el acta firmada en la mano, vas al Ayuntamiento a pedir la licencia de obra. ¿Qué podría salir mal?',
       carry: ['planoAcotado'],
-      scene: { wall: '#e4d6bd', floor: '#6c6158', floorH: 36, pattern: 'tiles' },
+      scene: { wall: '#e4d6bd', floor: '#6c6158', floorH: 24, pattern: 'tiles' },
       decor: [
-        { kind: 'counter', l: 34, t: 60, w: 32, h: 7 },
-        { kind: 'board', l: 3, t: 10, w: 14, h: 22 },
-        { emoji: '🪑', x: 20, y: 86, s: 4, o: 0.8 }, { emoji: '🪑', x: 80, y: 86, s: 4, o: 0.8 },
-        { emoji: '🛗', x: 96, y: 40, s: 5, o: 0.7 },
+        { kind: 'board', l: 13, t: 23.75, w: 22, h: 21.38, z: 11 },
+        { kind: 'door', l: 89.5, t: 26.12, w: 9.5, h: 49.88, color: '#9aa0a6' },
+        { emoji: '🛗', x: 94.25, y: 20.27, s: 4.45 },
+        { kind: 'bench', id: 'sillasIzq', l: 13, t: 56.26, w: 20, h: 20.34, color: '#5d6670' },
+        { kind: 'bench', id: 'sillasDer', l: 67, t: 56.26, w: 21, h: 20.34, color: '#5d6670' },
+        { kind: 'desk', id: 'mesaPres', l: 35, t: 64.79, w: 30, h: 19.71 },
       ],
       hotspots: [
-        { id: 'convocatoria', x: 10, y: 21, sign: 'CONVOCATORIA', sub: '📌', w: 11, label: 'Convocatoria de la junta',
+        { id: 'convocatoria', x: 20, y: 34.4, w: 12, sign: 'CONVOCATORIA', sub: '📌', label: 'Convocatoria de la junta',
           look(g) {
             g.doc('📌 Convocatoria de junta ordinaria', `<p>Puntos que el presidente/a puede incluir, en el orden que decida:</p>
               <ul><li>${J_PTS.P}</li><li>${J_PTS.A}</li><li>${J_PTS.B}</li></ul>
               <p><b>Último punto (obligatorio):</b> ${J_PTS.R}.</p>
               <p class="small">Cada punto se vota una sola vez. Lo que se aprueba en un punto ya cuenta como aprobado en los siguientes.</p>`);
           } },
-        { id: 'estatutos', x: 26, y: 18, emoji: '📘', s: 5, label: 'Estatutos de la comunidad',
+        { id: 'estatutos', x: 37.3, y: 60.35, s: 5, on: 'mesaPres', emoji: '📘', label: 'Estatutos de la comunidad',
           look(g) {
             g.doc('📘 Estatutos (redactados en 1974 por el del 4ºA, que era notario aficionado)', `<ul>
               <li><b>Puntos ordinarios</b> (portero, pintura, bicis...): se aprueban si hay <b>más votos a favor que en contra</b>, tanto en número de propietarios como en cuotas. Las abstenciones y los ausentes no cuentan. Un empate es un no.</li>
@@ -1270,17 +1272,17 @@
               <li>El presidente/a no vota en los puntos ordinarios: modera. En las obras de su propia vivienda, sí vota.</li>
               <li>Las delegaciones de voto solo valen si se entregan al administrador antes de la junta.</li></ul>`);
           } },
-        { id: 'coef', x: 40, y: 18, emoji: '📊', s: 5, label: 'Cuadro de coeficientes',
+        { id: 'coef', x: 31, y: 37.47, s: 5.94, emoji: '📊', label: 'Cuadro de coeficientes',
           look(g) {
             g.doc('📊 Coeficientes de participación', `<table class="tbl">${J_OWN.map((o) => `<tr><td>${o.name}</td><td>${o.c} %</td></tr>`).join('')}<tr><td><b>Total (9 propietarios)</b></td><td><b>100 %</b></td></tr></table>`);
           } },
-        { id: 'buzon', x: 88, y: 20, emoji: '📬', s: 5, label: 'Buzón de la comunidad',
+        { id: 'buzon', x: 6, y: 67.26, s: 10.73, emoji: '📬', label: 'Buzón de la comunidad',
           look(g) {
             if (g.flag('buz')) return g.say('Publicidad de cerrajeros, una citación del juzgado para el 1ºB y un folleto de «compramos su piso al contado».');
             g.set('buz'); g.give('delegacion');
             g.say('En el buzón: dos cartas. Una de los Peláez (2ºB): «Delegamos nuestro voto en Doña Engracia; votaremos lo mismo que ella». Ya la tiene Engracia. La otra, del fondo del 2ºA, delega en el presidente... que eres tú. Te la guardas.');
           } },
-        { id: 'admin', x: 62, y: 48, emoji: '🧑‍💼', s: 6, label: 'El administrador de fincas',
+        { id: 'admin', x: 50, y: 58.57, s: 12.02, behind: 'mesaPres', emoji: '🧑‍💼', label: 'El administrador de fincas',
           look(g) {
             if (g.has('acta')) return g.say('—Tráigame el acta y se la firmo. Es lo único que firmo sin leer.', 'Administrador');
             g.say(`—Soy el administrador, de Fincas Morosas S.L. Yo levanto acta y cobro. ${g.flag('planoOK') ? 'Su obra ya está en el orden del día, con su plano.' : 'Para meter su obra en el orden del día necesito un <b>plano con las medidas</b> de la terraza: sin plano, los vecinos se imaginan un rascacielos.'} ${g.flag('deleg') ? 'La delegación del fondo ya está registrada.' : 'Si alguien le ha dado una delegación de voto, entréguemela antes de empezar.'} La mesa presidencial es suya, presidente/a.`, 'Administrador');
@@ -1294,24 +1296,24 @@
             delegacion(g) { g.take('delegacion'); g.set('deleg'); g.say('—Delegación del 2ºA registrada: el fondo votará lo mismo que usted. Un fondo de inversión obedeciendo a un vecino. Esto no lo había visto nunca.', 'Administrador'); },
             acta(g) { g.take('acta'); g.give('actaFirmada'); g.say('—Firmado. Tenga su acta. Su obra queda aprobada. Doña Pura dice que lo va a impugnar, pero lo dice de todo desde 1981. Enhorabuena, presidente/a. Ahora, a por la licencia.', 'Administrador'); g.win(); },
           } },
-        { id: 'mesa', x: 50, y: 56, emoji: '🔔', s: 5, label: 'Mesa presidencial (orden del día)',
+        { id: 'mesa', x: 58.3, y: 60.35, s: 5, on: 'mesaPres', emoji: '🔔', label: 'Mesa presidencial (orden del día)',
           look(g) {
             if (!g.flag('planoOK')) return g.say('El administrador te tapa el orden del día: —Sin el plano de la obra no la meto en la junta, presidente/a. Démelo primero.', 'Administrador');
             juntaModal(g);
           } },
-        { id: 'remedios', x: 14, y: 52, emoji: '👵', s: 6, label: 'Doña Engracia (1ºA)',
+        { id: 'remedios', x: 16.5, y: 52.24, s: 5.8, behind: 'sillasIzq', emoji: '👵', label: 'Doña Engracia (1ºA)',
           look(g) { g.say('—Yo voto que sí a lo del portero automático y a pintar, que el portal está hecho un asco. A lo de las bicis, que no: mi nieto viene en bici. ¿Lo de tu terraza? Solo si <b>antes</b> se ha aprobado el portero automático, que no oigo a mi nieto cuando llama. Y los Peláez votan lo que yo, que me han delegado. Ah, y dígale a su tía Remedios que las porras del martes estaban duras.', 'Doña Engracia'); } },
-        { id: 'fulgencio', x: 25, y: 52, emoji: '🧓', s: 6, label: 'Don Fulgencio (1ºB)',
+        { id: 'fulgencio', x: 23, y: 52.24, s: 5.8, behind: 'sillasIzq', emoji: '🧓', label: 'Don Fulgencio (1ºB)',
           look(g) { g.say('—Yo, a todo lo que sea derrama, que NO: ni portero ni pintura. Lo de prohibir las bicis, que sí. ¿Tu terraza? Me da igual, voto que sí... salvo que en esta junta ya se haya aprobado alguna derrama: entonces, por despecho, que no.', 'Don Fulgencio'); } },
-        { id: 'paco', x: 36, y: 52, emoji: '🧑‍🍳', s: 6, label: 'Fermín, del bar «El Recurso» (local)',
+        { id: 'paco', x: 83.8, y: 54.92, s: 10.93, behind: 'sillasDer', emoji: '🧑‍🍳', label: 'Fermín, del bar «El Recurso» (local)',
           look(g) { g.say('—Lo de las bicis, NO: mis mejores clientes vienen en bici. Y como se apruebe, me voy al bar y no vuelvo en toda la junta. Pintar, tampoco, que me cierran la terraza un día. El portero, sí. ¿Tu obra? Que sí... a no ser que antes se haya aprobado pintar: si pintan, que nadie más toque la fachada en un año.', 'Fermín (bar)'); } },
-        { id: 'bermejo', x: 74, y: 52, emoji: '🧔', s: 6, label: 'Sr. Bermejo (3ºA)',
+        { id: 'bermejo', x: 70.5, y: 52.24, s: 5.8, behind: 'sillasDer', emoji: '🧔', label: 'Sr. Bermejo (3ºA)',
           look(g) { g.say('—El portero, no: yo tengo el telefonillo de 1974 y funciona. Pintar y prohibir bicis, sí. ¿Lo tuyo? Solo si antes se ha <b>votado</b> lo de las bicis, salga lo que salga. Que conste en acta que yo lo pedí.', 'Sr. Bermejo'); } },
-        { id: 'pura', x: 85, y: 52, emoji: '👩‍🦳', s: 6, label: 'Doña Pura (4ºA)',
+        { id: 'pura', x: 77, y: 52.24, s: 5.8, behind: 'sillasDer', emoji: '👩‍🦳', label: 'Doña Pura (4ºA)',
           look(g) { g.say('—Yo, al <b>primer punto</b> que se vote, siempre NO. Por principio. Luego, a todo que sí... menos a tu terraza: a eso solo si antes se ha aprobado pintar el portal. Si el portal está bonito, que cada uno haga en su casa lo que quiera.', 'Doña Pura'); } },
-        { id: 'yeray', x: 75, y: 80, emoji: '💻', s: 5, label: 'Yeray (4ºB), por videollamada',
+        { id: 'yeray', x: 62.6, y: 60.35, s: 5, on: 'mesaPres', emoji: '💻', label: 'Yeray (4ºB), por videollamada',
           look(g) { g.say('—¿Se me oye? En el primer punto me abstengo, que estoy conectándome. Luego, para equilibrar, voto siempre <b>lo contrario de lo que salió en el punto anterior</b>: si se aprobó, no; si se rechazó, sí. Es mi filosofía de vida.', 'Yeray (videollamada)'); } },
-        { id: 'pipas', x: 34, y: 82, emoji: '🥜', s: 4, label: 'Bolsa de pipas',
+        { id: 'pipas', x: 41.4, y: 60.35, s: 5, on: 'mesaPres', emoji: '🥜', label: 'Bolsa de pipas',
           look(g) { g.say('Pipas para la junta. Las juntas de vecinos son el único espectáculo en directo que sigue siendo gratis. Fermín, el del bar, te cuenta que tu cuñado Paco ya le ha ofrecido «una franquicia de porras para el local». Fermín no ha dicho que no. Mal asunto.'); } },
       ],
       hints: [
