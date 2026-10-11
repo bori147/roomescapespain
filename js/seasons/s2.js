@@ -1340,14 +1340,15 @@
       carry: ['copiaFactura'],
       scene: { wall: '#d6cbb5', floor: '#6b5a48', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 36, t: 58, w: 30, h: 8 },
-        { kind: 'shelf', l: 5, t: 62, w: 15, h: 2 },
-        { kind: 'box', l: 84, t: 70, w: 10, h: 12, color: '#8b6b47' },
-        { emoji: '🛢️', x: 92, y: 60, s: 5, o: 0.85 },
-        { emoji: '🪑', x: 51, y: 80, s: 5, o: 0.85 },
+        { kind: 'door', l: 2.5, t: 23.37, w: 10.5, h: 44.63 },
+        { kind: 'counter', id: 'obrador', l: 15.5, t: 51.06, w: 17, h: 20.94 },
+        { kind: 'desk', id: 'escritorio', l: 37, t: 57.17, w: 26, h: 16.83 },
+        { kind: 'box', id: 'cajas2026', l: 72, t: 61.41, w: 7, h: 13.59, color: '#a07a4f' },
+        { emoji: '🛢️', x: 88, y: 65.27, s: 9.82 },
+        { emoji: '🪑', x: 47, y: 68.84, s: 12.56 },
       ],
       hotspots: [
-        { id: 'instrucciones', x: 22, y: 18, sign: 'INSTRUCCIONES DEL 303', sub: '📘', w: 16, label: 'Instrucciones del modelo 303',
+        { id: 'instrucciones', x: 50, y: 31.3, sign: 'INSTRUCCIONES DEL 303', sub: '📘', w: 20, label: 'Instrucciones del modelo 303',
           look(g) {
             g.doc('📘 Modelo 303 — Instrucciones (simplificadas para este juego)', `<p><b>Casilla 27 · IVA devengado:</b> el IVA de todas las facturas y tiques <b>emitidos</b> en el trimestre, a cada tipo. Las facturas <b>rectificativas restan</b>.</p>
               <p><b>Casilla 45 · IVA deducible:</b> solo el IVA de facturas <b>recibidas</b> que cumplan TODO:</p>
@@ -1355,13 +1356,13 @@
               <p><b>Casilla 71 · Resultado</b> = casilla 27 − casilla 45.</p>
               <p><b>Plazo:</b> del 1 al 20 de abril. <b>Domiciliación:</b> solo hasta el día 15. Después del 15: pague primero en su banco, que le dará un <b>NRC</b>, y presente la declaración con ese NRC.</p>`);
           } },
-        { id: 'cuadro', x: 42, y: 18, emoji: '🖼️', s: 5, label: 'Cuadro',
+        { id: 'cuadro', x: 84, y: 29.04, emoji: '🖼️', s: 8, label: 'Cuadro',
           look(g) { g.say('Tu primer euro, enmarcado. Bueno, el marco. El euro te lo llevaste para pagar el IVA del primer día.'); } },
-        { id: 'calendario', x: 58, y: 16, emoji: '📅', s: 5, label: 'Calendario',
+        { id: 'calendario', x: 68, y: 33.8, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Domingo, 18 de abril de 2027. Alguien (tú) ha escrito en el día 15: «domiciliar el 303». Y lo ha tachado. Y ha escrito «mañana». Y lo ha vuelto a tachar.'); } },
-        { id: 'gestor', x: 86, y: 40, emoji: '☎️', s: 5, label: 'Teléfono del gestor',
+        { id: 'gestor', x: 60, y: 52.73, emoji: '☎️', s: 5, on: 'escritorio', label: 'Teléfono del gestor',
           look(g) { g.say('Contestador: «Hola, soy tu gestor. Estoy de vacaciones hasta el 21 de abril. Si es por el 303... ánimo».'); } },
-        { id: 'libroEmitidas', x: 12, y: 55, emoji: '📒', s: 6, label: 'Libro de facturas emitidas',
+        { id: 'libroEmitidas', x: 40.5, y: 52.28, emoji: '📒', s: 5.5, on: 'escritorio', label: 'Libro de facturas emitidas',
           look(g) {
             const a = g.flag('anotada');
             g.doc('📒 Libro registro de facturas emitidas — 1T 2027', `<table class="tbl">
@@ -1380,9 +1381,9 @@
               g.say('Anotas la factura A-2027-0002 en el libro: base 10,00 € al 10 % y 10,00 € al 21 %. Y grapas la copia a la página. Verifactu ya lo sabía; ahora lo sabe también tu libro.', 'Libro de facturas emitidas');
             },
           } },
-        { id: 'ordenador', x: 50, y: 51, emoji: '💻', s: 7, label: 'Ordenador (Sede de la AEAT)',
+        { id: 'ordenador', x: 48.5, y: 50.95, emoji: '💻', s: 7, on: 'escritorio', label: 'Ordenador (Sede de la AEAT)',
           look: l7Form },
-        { id: 'movil', x: 62, y: 54, emoji: '📱', s: 4, label: 'Banca móvil',
+        { id: 'movil', x: 55, y: 52.73, emoji: '📱', s: 5, on: 'escritorio', label: 'Banca móvil',
           look(g) {
             if (g.has('nrc')) return g.say('Ya pagaste. El NRC está en tu inventario. El dinero, en Hacienda.', 'Banca móvil');
             g.input({
@@ -1394,14 +1395,14 @@
               ok: () => { g.give('nrc'); g.say('Pago de 128 € realizado. El banco te da un NRC de 22 caracteres. Y un mensaje: «¿Le interesa un préstamo para pagar sus impuestos?».', 'Banca móvil'); },
             });
           } },
-        { id: 'cajaZapatos', x: 28, y: 80, emoji: '📦', s: 7, label: 'Caja de zapatos de facturas',
+        { id: 'cajaZapatos', x: 34, y: 74.44, emoji: '📦', s: 5.2, label: 'Caja de zapatos de facturas',
           look(g) {
             if (g.flag('libroOK')) return g.say('La caja de zapatos guarda ahora solo lo que no se puede deducir. Es como un museo de errores.');
             l7Caja(g);
           } },
-        { id: 'gato', x: 52, y: 85, emoji: '🐈', s: 5, label: 'Gato de la churrería',
+        { id: 'gato', x: 75.5, y: 56.97, emoji: '🐈', s: 5, on: 'cajas2026', label: 'Gato de la churrería',
           look(g) { g.say('El gato duerme sobre las facturas de 2026. No es deducible, pero desgrava el estrés.'); } },
-        { id: 'lucia', x: 74, y: 80, emoji: '👩‍🍳', s: 7, label: 'Lucía',
+        { id: 'lucia', x: 24, y: 45.81, emoji: '👩‍🍳', s: 11.5, behind: 'obrador', label: 'Lucía',
           look(g) { g.say('—Jefe, me voy. Mañana entro a las seis. Bueno, a las cinco y media, que hay que hacer la masa. Pero tú pon las seis, como siempre.', 'Lucía'); } },
       ],
       hints: [
