@@ -963,7 +963,8 @@
       scene: { wall: '#dfe6ee', floor: '#5d6b7a', floorH: 32, pattern: 'carpet' },
       carry: ['portatilOk', 'cuadroOk'],
       decor: [
-        { kind: 'flag-eu', l: 59, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag', l: 53.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 64.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'desk', id: 'mesaBecario', l: 1.5, t: 57.17, w: 18, h: 16.83 },
         { kind: 'desk', id: 'puesto', l: 28, t: 57.17, w: 18, h: 16.83 },
         { kind: 'desk', id: 'mesaAuditor', l: 55, t: 57.17, w: 18, h: 16.83 },
@@ -971,7 +972,7 @@
         { emoji: '🗂️', x: 15.5, y: 53.61, s: 4, on: 'mesaBecario' },
       ],
       hotspots: [
-        { id: 'plataforma', x: 34, y: 52.28, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🔌'), s: 5.5,
+        { id: 'plataforma', x: 34, y: 52.72, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🔌'), s: 5,
           label: (g) => (g.flag('pc') ? (g.flag('credito') ? 'Plataforma CAFÉ-MRR (en tu portátil)' : 'Plataforma CAFÉ-MRR (pide el certificado de crédito)') : 'Puesto libre con toma de red'),
           look(g) {
             if (!g.flag('pc')) return g.say('Un puesto libre con toma de red. Un cartel: «La plataforma CAFÉ-MRR solo funciona en equipos dados de alta por el CAU. Equipos particulares, abstenerse. Equipos del CAU, también, si no arrancan».');
