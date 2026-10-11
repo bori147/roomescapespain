@@ -835,7 +835,7 @@
         { kind: 'table', id: 'mesa', l: 17, t: 58.9, w: 16, h: 17.1 },
         { kind: 'desk', id: 'escritorio', l: 38, t: 58.9, w: 22, h: 17.1 },
         { kind: 'desk', id: 'puesto2', l: 81.5, t: 58.9, w: 16, h: 17.1 },
-        { emoji: '🖨️', x: 89.5, y: 54.19, s: 5.3, on: 'puesto2' },
+        { emoji: '🖨️', x: 89.5, y: 54.81, s: 4.6, on: 'puesto2' },
       ],
       hotspots: [
         { id: 'tramos', x: 31, y: 31.3, sign: 'REGLAS IRPF', sub: '📊', w: 13, label: 'Cartel: reglas del IRPF',
@@ -860,7 +860,7 @@
             if (!g.flag('don')) { g.set('don'); g.say('En el bolsillo hay un recibo doblado: un donativo que hiciste en un arrebato de solidaridad.'); g.give('donativo'); }
             else g.say('Solo quedan caramelos de menta pegados al forro.');
           } },
-        { id: 'buzon', x: 28.5, y: 54.45, emoji: '✉️', s: 5, on: 'mesa', label: 'Tu correspondencia',
+        { id: 'buzon', x: 28.5, y: 54.45, emoji: '📨', s: 5, on: 'mesa', label: 'Tu correspondencia',
           look(g) {
             if (!g.flag('pen')) { g.set('pen'); g.say('Entre la publicidad, una carta de tu plan de pensiones.'); g.give('pensiones'); }
             else g.say('Publicidad de un gimnasio y una oferta de fibra. Nada deducible.');
@@ -870,7 +870,7 @@
             if (!g.flag('gaf')) { g.set('gaf'); g.say('Una factura de óptica. ¿Será deducible?'); g.give('gafas'); }
             else g.say('Aquí estaban las gafas. Ahora las llevas puestas, para leer mejor lo que vas a pagar.');
           } },
-        { id: 'papelera', x: 35.5, y: 77.4, emoji: '🗑️', s: 6, label: 'Papelera',
+        { id: 'papelera', x: 27, y: 77.33, emoji: '🗑️', s: 6.04, label: 'Papelera',
           look(g) {
             if (!g.flag('old')) { g.set('old'); g.say('Alguien tiró aquí su declaración del año pasado... ¡un momento, es la tuya! (La tiraste tú, de rabia.)'); g.give('renta2025'); }
             else g.say('Pañuelos usados. Hay mucha gente llorando en esta sala.');
