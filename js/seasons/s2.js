@@ -1340,8 +1340,8 @@
       carry: ['copiaFactura'],
       scene: { wall: '#d6cbb5', floor: '#6b5a48', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'door', l: 0.5, t: 23.37, w: 10, h: 44.63 },
-        { kind: 'counter', id: 'obrador', l: 12, t: 51.06, w: 13, h: 20.94 },
+        { kind: 'door', l: 1.5, t: 23.37, w: 9.5, h: 44.63 },
+        { kind: 'counter', id: 'obrador', l: 13.5, t: 51.06, w: 17, h: 20.94 },
         { kind: 'desk', id: 'escritorio', l: 37, t: 57.17, w: 26, h: 16.83 },
         { kind: 'box', l: 76, t: 68.2, w: 8, h: 6.8, color: '#a07a4f' },
         { kind: 'box', id: 'cajas2026', l: 77, t: 61.41, w: 6, h: 6.79, color: '#b58a5a' },
@@ -1357,11 +1357,11 @@
               <p><b>Casilla 71 · Resultado</b> = casilla 27 − casilla 45.</p>
               <p><b>Plazo:</b> del 1 al 20 de abril. <b>Domiciliación:</b> solo hasta el día 15. Después del 15: pague primero en su banco, que le dará un <b>NRC</b>, y presente la declaración con ese NRC.</p>`);
           } },
-        { id: 'cuadro', x: 90, y: 29.04, emoji: '🖼️', s: 8, label: 'Cuadro',
+        { id: 'cuadro', x: 90, y: 30.58, emoji: '🖼️', s: 6.25, label: 'Cuadro',
           look(g) { g.say('Tu primer euro, enmarcado. Bueno, el marco. El euro te lo llevaste para pagar el IVA del primer día.'); } },
         { id: 'calendario', x: 68, y: 33.8, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Domingo, 18 de abril de 2027. Alguien (tú) ha escrito en el día 15: «domiciliar el 303». Y lo ha tachado. Y ha escrito «mañana». Y lo ha vuelto a tachar.'); } },
-        { id: 'gestor', x: 60.25, y: 52.73, emoji: '☎️', s: 5, on: 'escritorio', label: 'Teléfono del gestor',
+        { id: 'gestor', x: 28, y: 46.62, emoji: '☎️', s: 5, on: 'obrador', label: 'Teléfono del gestor',
           look(g) { g.say('Contestador: «Hola, soy tu gestor. Estoy de vacaciones hasta el 21 de abril. Si es por el 303... ánimo».'); } },
         { id: 'libroEmitidas', x: 40.5, y: 52.28, emoji: '📒', s: 5.5, on: 'escritorio', label: 'Libro de facturas emitidas',
           look(g) {
@@ -1396,14 +1396,14 @@
               ok: () => { g.give('nrc'); g.say('Pago de 128 € realizado. El banco te da un NRC de 22 caracteres. Y un mensaje: «¿Le interesa un préstamo para pagar sus impuestos?».', 'Banca móvil'); },
             });
           } },
-        { id: 'cajaZapatos', x: 67.5, y: 73.47, emoji: '📦', s: 5.1, label: 'Caja de zapatos de facturas',
+        { id: 'cajaZapatos', x: 60.25, y: 52.72, emoji: '📦', s: 5, on: 'escritorio', label: 'Caja de zapatos de facturas',
           look(g) {
             if (g.flag('libroOK')) return g.say('La caja de zapatos guarda ahora solo lo que no se puede deducir. Es como un museo de errores.');
             l7Caja(g);
           } },
         { id: 'gato', x: 80, y: 56.97, emoji: '🐈', s: 5, on: 'cajas2026', label: 'Gato de la churrería',
           look(g) { g.say('El gato duerme sobre las facturas de 2026. No es deducible, pero desgrava el estrés.'); } },
-        { id: 'lucia', x: 18.5, y: 45.81, emoji: '👩‍🍳', s: 11.5, behind: 'obrador', label: 'Lucía',
+        { id: 'lucia', x: 20, y: 43, emoji: '👩‍🍳', s: 12.5, behind: 'obrador', label: 'Lucía',
           look(g) { g.say('—Jefe, me voy. Mañana entro a las seis. Bueno, a las cinco y media, que hay que hacer la masa. Pero tú pon las seis, como siempre.', 'Lucía'); } },
       ],
       hints: [
