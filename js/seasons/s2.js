@@ -1422,22 +1422,23 @@
       scene: { wall: '#efe3cf', floor: '#9a7b58', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'door', id: 'puerta', l: 1.5, t: 23.37, w: 10.7, h: 44.63, color: '#7a5a3c' },
-        { kind: 'window', l: 13.8, t: 19.1, w: 9, h: 29.8 },
-        { kind: 'table', id: 'mesa', l: 28, t: 58.9, w: 13, h: 17.1 },
+        { kind: 'window', l: 16, t: 19.1, w: 9, h: 29.8 },
+        { kind: 'table', id: 'mesa', l: 27.5, t: 58.9, w: 15, h: 17.1 },
         { kind: 'counter', id: 'barra', l: 46, t: 48.85, w: 28, h: 23.15 },
-        { emoji: '☕', x: 38.5, y: 56.23, s: 3, on: 'mesa' },
+        { emoji: '☕', x: 41, y: 56.23, s: 3, on: 'mesa' },
+        { kind: 'shelf', id: 'soporte', l: 4.6, t: 19, w: 4.5, h: 1.4 },
         { emoji: '☕', x: 62, y: 46.18, s: 3, on: 'barra' },
       ],
       hotspots: [
-        { id: 'convenio', x: 35.5, y: 28, sign: 'CONVENIO DE CHURRERÍAS', sub: '📕', w: 22, z: 250, label: 'Convenio colectivo',
+        { id: 'convenio', x: 37, y: 28, sign: 'CONVENIO DE CHURRERÍAS', sub: '📕', w: 22, z: 250, label: 'Convenio colectivo',
           look(g) {
             g.doc('📕 Convenio colectivo de churrerías, buñolerías y afines', `<p><b>Art. 12. Limpieza:</b> tras el último cobro del día, la persona que cierra dedica <b>15 minutos</b> a limpiar la freidora. Ese tiempo es tiempo de trabajo.</p>
               <p><b>Art. 13. Tiempo efectivo:</b> desde la entrada hasta la salida. El bocadillo cuenta: en esta casa no se para.</p>
               <p><b>Art. 14.</b> El chocolate sobrante no computa como salario en especie. Por mucho que insista la empresa.</p>`);
           } },
-        { id: 'horario', x: 68, y: 28, sign: 'HORARIO', sub: 'De 7:00 a 12:00', w: 12, label: 'Horario de apertura al público',
+        { id: 'horario', x: 68, y: 28, sign: 'HORARIO', sub: 'De 7:00 a 12:00', w: 14, label: 'Horario de apertura al público',
           look(g) { g.say('«Horario de apertura al público: de 7:00 a 12:00». Es el horario de los clientes. El de los churros empieza antes.'); } },
-        { id: 'camara', x: 6.85, y: 15.65, emoji: '📹', s: 5, label: 'Cámara de la puerta',
+        { id: 'camara', x: 6.85, y: 14.55, emoji: '📹', s: 5, on: 'soporte', label: 'Cámara de la puerta',
           look(g) {
             g.doc('📹 Grabaciones de la cámara de la puerta (semana del 10 al 14 de mayo)', `<table class="tbl">
               <tr><td><b>Lunes 10</b>: 5:58 entra Lucía · 12:01 sale Lucía</td><td></td></tr>
@@ -1476,7 +1477,7 @@
               <tr><td><b>Jueves 13</b> · 12:30 · cobra: Jefe</td><td>3 cafés</td></tr>
               <tr><td><b>Jueves 13</b> · 13:30 · cobra: Jefe</td><td>1 taza de recuerdo</td></tr></table>`);
           } },
-        { id: 'inspectora', x: 34.5, y: 51.85, emoji: '🕵️‍♀️', s: 9.5, behind: 'mesa', label: 'Inspectora de Trabajo',
+        { id: 'inspectora', x: 34.5, y: 50.97, emoji: '🕵️‍♀️', s: 10.5, behind: 'mesa', label: 'Inspectora de Trabajo',
           look(g) {
             if (!g.flag('req')) return g.say('—Buenos días. Inspección de Trabajo. ¿Es usted el empresario? Esto es una S.L.: acredíteme que la representa. Con papeles, no con cara de jefe.', 'Inspectora');
             g.input({
@@ -1514,7 +1515,7 @@
             },
             registroPapel(g) { g.say('—Ese registro lo ha rellenado usted. Con boli de cuatro colores. No vale como prueba. Mire los criterios del requerimiento.', 'Inspectora'); },
           } },
-        { id: 'lucia', x: 55, y: 40.2, emoji: '👩‍🍳', s: 12.5, behind: 'barra', label: 'Lucía',
+        { id: 'lucia', x: 55, y: 43.8, emoji: '👩‍🍳', s: 11, behind: 'barra', label: 'Lucía',
           look(g) {
             g.say(rand([
               '—Yo ficho, jefe. Pero con la harina la máquina no me reconoce. A las seis de la mañana no me reconoce ni mi madre.',
@@ -1522,7 +1523,7 @@
               '—Yo la masa la empiezo antes de las seis, que si no, no da tiempo. Eso lo sabe hasta el gato.',
             ]), 'Lucía');
           } },
-        { id: 'vecina', x: 15.5, y: 57.02, emoji: '🧍', s: 24.7, label: 'Vecina del 2.º',
+        { id: 'vecina', x: 12.4, y: 57.02, emoji: '🧍', s: 24.7, label: 'Vecina del 2.º',
           look(g) { g.say('—Yo lo vi todo: el jueves la persiana se subió a las siete. ¿Que si vi entrar a la chica? No, eso no. Pero la persiana, a las siete. Apúntelo, inspectora, apúntelo.', 'Vecina del 2.º'); } },
         { id: 'gato', x: 78.5, y: 73.55, emoji: '🐈', s: 5, label: 'Gato',
           look(g) { g.say('El gato te mira con la tranquilidad de quien entra a trabajar a las 5:52 y no ficha.'); } },
