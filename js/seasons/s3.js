@@ -1396,21 +1396,29 @@
       intro: 'Verano de 2029. La terraza ya está cerrada (con licencia, que la traes en la carpeta junto a tu plano acotado). Para tener la <b>cédula de habitabilidad</b> necesitas, además, un <b>certificado de eficiencia energética</b> de letra D o mejor. El técnico certificador te ha dejado su guía y una nota: «Rellénalo tú, que yo certifico desde casa».<br><br>Habrá que averiguar cómo es de verdad tu piso, sin fiarse de las apariencias, y decidir qué mejoras pagar con lo poco que te queda.<br><br><b>Objetivo:</b> registra un certificado energético de letra D o mejor sin pasarte de presupuesto y consigue la cédula de habitabilidad.',
       outro: 'Cédula de habitabilidad concedida: tu casa es, oficialmente, habitable. Lo celebras con Michi. Pero al bajar la basura (con la cédula y la escritura en el bolsillo, por costumbre) ves un cartel nuevo en el portal: «EDIFICIO PRECINTADO — ITE DESFAVORABLE». La puerta se cierra detrás de ti.',
       carry: ['licencia', 'planoAcotado'],
-      scene: { wall: '#f0e6d2', floor: '#a7825d', floorH: 30, pattern: 'wood' },
+      scene: { wall: '#f0e6d2', floor: '#a7825d', floorH: 38, pattern: 'wood' },
       decor: [
-        { kind: 'window', l: 40, t: 8, w: 14, h: 28 },
-        { kind: 'counter', l: 62, t: 58, w: 22, h: 8 },
-        { kind: 'rug', l: 18, t: 76, w: 28, h: 12, color: '#b5651d' },
-        { emoji: '🛋️', x: 30, y: 80, s: 8, o: 0.95 },
-        { emoji: '🐈', x: 40, y: 86, s: 3, o: 0.95 },
+        // Baño: hueco de puerta abierto (marco y azulejo) con la bañera al fondo
+        { kind: 'box', l: 21.5, t: 21.5, w: 10, h: 40.5, color: '#ece6d8' },
+        { kind: 'box', id: 'bano', l: 22.2, t: 22.3, w: 8.6, h: 39.7, color: '#b9d0d8' },
+        { kind: 'box', l: 22.2, t: 59.6, w: 8.6, h: 2.4, color: '#dde6e9' },
+        // Salón: sofá de dos plazas bajo la ventana, alfombra y mesa baja
+        { kind: 'sofa', id: 'sofa', l: 32.5, t: 51.6, w: 16.5, h: 17.4, color: '#6f8a7a' },
+        { kind: 'rug', id: 'alfombra', l: 29.5, t: 76, w: 24, h: 9, color: '#b5651d', z: 100 },
+        { kind: 'pedestal', id: 'mesaBaja', l: 34.55, t: 70, w: 12.4, h: 10, color: '#6d5238' },
+        { emoji: '🐈', x: 33.5, y: 79.9, s: 4.6 },
+        { emoji: '🪴', x: 90, y: 69.3, s: 9.8 },
+        // Cocina abierta: nevera, barra (con el inspector detrás) y cajonera
+        { kind: 'cabinet', id: 'nevera', l: 52.5, t: 27.5, w: 7, h: 35, color: '#eceeee' },
+        { kind: 'counter', id: 'barra', l: 60.5, t: 45, w: 17.5, h: 21 },
       ],
       hotspots: [
-        { id: 'ventana', x: 47, y: 22, emoji: '🪟', s: 6, label: 'Ventana del salón',
+        { id: 'ventana', x: 40.75, y: 33.55, emoji: '🪟', s: 12.4, label: 'Ventana del salón',
           look(g) { g.say('Una ventana con su cristal. ¿Simple? ¿Doble? A simple vista, transparente. Que es lo mínimo que se le pide a un cristal.'); },
           use: {
             mechero(g) { g.set('llamas'); g.say('Acercas la llama del mechero al cristal y miras el reflejo: ves <b>cuatro</b> llamitas. Michi también las ve y se asusta.'); },
           } },
-        { id: 'guia', x: 15, y: 20, sign: 'GUÍA DEL CERTIFICADOR', sub: '📗', w: 16, label: 'Guía del técnico certificador',
+        { id: 'guia', x: 87.5, y: 28.5, sign: 'GUÍA DEL CERTIFICADOR', sub: '📗', w: 21, label: 'Guía del técnico certificador',
           look(g) {
             g.doc('📗 Guía rápida del certificador (CEE simplificado municipal)', `<table class="tbl s3-tbl">
               <tr><th>Elemento</th><th>Puntos</th></tr>
@@ -1426,12 +1434,12 @@
               <li>Orientación: si el sol entra por la <b>mañana</b>, mira al <b>este</b>; a <b>mediodía</b>, al <b>sur</b>; por la <b>tarde</b>, al <b>oeste</b>; si no entra nunca, al <b>norte</b>.</li>
               <li>Las calderas de gas anteriores a 2010 que no dicen «condensación» son convencionales.</li></ul>`);
           } },
-        { id: 'catalogo', x: 66, y: 20, emoji: '📰', s: 5, label: 'Catálogo de mejoras',
+        { id: 'catalogo', x: 43.5, y: 65.55, emoji: '📰', s: 5, on: 'mesaBaja', label: 'Catálogo de mejoras',
           look(g) {
             g.doc('📰 Catálogo «Reforma tu letra» — precios cerrados (dicen)', `<table class="tbl">${MEJORAS.map((m) => `<tr><td>${m.name}</td><td>${fmt(m.cost)} €</td></tr>`).join('')}</table>
               <p class="small">Los burletes y la pintura blanca no computan en el certificado, pero quedan monísimos.</p>`);
           } },
-        { id: 'requisitos', x: 82, y: 20, emoji: '📋', s: 5, label: 'Requisitos de habitabilidad',
+        { id: 'requisitos', x: 38, y: 65.55, emoji: '📋', s: 5, on: 'mesaBaja', label: 'Requisitos de habitabilidad',
           look(g) {
             g.doc('📋 Cédula de habitabilidad — requisitos mínimos', `<ul>
               <li>Certificado de eficiencia energética de letra <b>D o mejor</b>.</li>
@@ -1441,39 +1449,39 @@
               <li><b>Vestidor:</b> sin requisitos de ventana; máximo 6 m².</li></ul>
               <p class="small">Toda pieza debe declararse con un uso que cumpla sus requisitos.</p>`);
           } },
-        { id: 'nevera', x: 72, y: 46, emoji: '🧊', s: 5, label: 'Nota en la nevera',
+        { id: 'nevera', x: 56, y: 34.3, emoji: '🧊', s: 5, z: 103, label: 'Nota en la nevera',
           look(g) { g.say('Nota de tu pareja: «Las persianas del salón: por la mañana no entra ni un rayo, pero a partir de las cinco de la tarde aquello es un horno. Compra cortinas. Y no te gastes más de lo que tenemos. Te quiero.»'); } },
-        { id: 'cajon', x: 80, y: 52, emoji: '🗄️', s: 5, label: 'Cajón de la cocina',
+        { id: 'cajon', x: 84, y: 53.47, emoji: '🗄️', s: 11.28, label: 'Cajón de la cocina',
           look(g) {
             if (g.flag('mech')) return g.say('Gomas elásticas, pilas gastadas y la garantía de una tostadora que ya no existe.');
             g.set('mech'); g.give('mechero');
             g.say('Entre gomas y pilas encuentras un mechero.');
           } },
-        { id: 'enchufe', x: 27, y: 46, emoji: '🔌', s: 4, label: 'Enchufe de la pared exterior',
+        { id: 'enchufe', x: 50.8, y: 51.74, emoji: '🔌', s: 5, label: 'Enchufe de la pared exterior',
           look(g) { g.say('Un enchufe en el muro de fachada. La tapa está atornillada. Detrás se esconde la verdad sobre tu aislamiento.'); },
           use: {
             destornillador(g) { g.set('camara'); g.say('Quitas la tapa: detrás del ladrillo hay una <b>cámara de aire vacía</b>. Ni lana, ni corcho, ni nada: aire y una pelusa de 1974.'); },
           } },
-        { id: 'caldera', x: 92, y: 30, emoji: '♨️', s: 5, label: 'Caldera',
+        { id: 'caldera', x: 62.5, y: 19.93, emoji: '♨️', s: 7, label: 'Caldera',
           look(g) { g.say('Placa de la caldera: «Caldera mural de <b>gas natural</b>. Año de fabricación: <b>1998</b>. Tipo: estándar». De condensación, nada. De ruido, mucho.'); } },
-        { id: 'termo', x: 92, y: 52, emoji: '🛁', s: 5, label: 'Baño (termo)',
+        { id: 'termo', x: 27.4, y: 54.6, emoji: '🛁', s: 6.6, z: 101, label: 'Baño (termo)',
           look(g) { g.say('En el baño hay un <b>termo eléctrico</b> de 80 litros. El agua caliente dura exactamente lo que tardas en enjabonarte.'); } },
-        { id: 'cuarto', x: 8, y: 50, emoji: '🚪', s: 9, label: 'Cuarto interior',
+        { id: 'cuarto', x: 13, y: 38.89, emoji: '🚪', s: 26, label: 'Cuarto interior',
           look(g) { g.say('El cuarto interior: <b>2,50 × 2,00 m</b> (5 m²), como dice tu plano acotado. <b>No tiene ventana</b>. Tu pareja lo llama «el dormitorio de invitados»; los invitados lo llaman «la celda».'); } },
-        { id: 'herramientas', x: 12, y: 82, emoji: '🧰', s: 5, label: 'Caja de herramientas',
+        { id: 'herramientas', x: 20, y: 77.55, emoji: '🧰', s: 5, label: 'Caja de herramientas',
           look(g) {
             if (g.flag('dest')) return g.say('Tornillos sobrantes de la reforma. Siempre sobran tornillos. Nadie sabe de dónde.');
             g.set('dest'); g.give('destornillador');
             g.say('Coges un destornillador plano.');
           } },
-        { id: 'movil', x: 52, y: 80, emoji: '📱', s: 4, label: 'Tu móvil (en el suelo)',
+        { id: 'movil', x: 50.5, y: 71.55, emoji: '📱', s: 5, on: 'alfombra', label: 'Tu móvil (en el suelo)',
           look(g) { g.say('App del banco: saldo disponible <b>3.000 €</b>. Notificación: «¿Le interesa un préstamo personal al 14 % TAE?». No. Otra, de tu cuñado Paco: «¿Certificado energético? Conozco a uno que te pone una A por 50 € sin venir». Tampoco.'); } },
-        { id: 'portatil', x: 66, y: 52, emoji: '💻', s: 5, label: 'Portátil (registro de certificados)',
+        { id: 'portatil', x: 62.6, y: 40.55, emoji: '💻', s: 5, on: 'barra', label: 'Portátil (registro de certificados)',
           look(g) {
             if (g.has('certEnergetico') || g.flag('cedula')) return g.say('Certificado registrado. El portátil se ha puesto en modo ahorro de energía, por solidaridad.');
             ceeModal(g);
           } },
-        { id: 'inspector', x: 60, y: 82, emoji: '🕵️', s: 6, label: 'Inspector de habitabilidad',
+        { id: 'inspector', x: 70, y: 36.49, emoji: '🕵️', s: 11.6, behind: 'barra', label: 'Inspector de habitabilidad',
           look(g) {
             if (!g.flag('licOK')) return g.say('—Antes de nada: esa terraza cerrada... ¿tiene licencia? Porque si no, eso no es una mejora, es una ampliación ilegal. Enséñeme la licencia de obra.', 'Inspector');
             g.say('—Para la cédula, tráigame el certificado energético registrado. Letra D o mejor. Y prepárese: luego le preguntaré por cada habitación.', 'Inspector');
