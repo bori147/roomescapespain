@@ -1356,22 +1356,32 @@
       stars: 5,
       intro: 'Cortes de Ventanilla Alta: 81 escaños, ocho grupos y ninguna mayoría. La primera votación de investidura ya ha fracasado; en la segunda basta con <b>más síes que noes</b>. La consultora te ha nombrado «facilitador/a de consensos» (no se cobra, pero se sale en la foto).<br><br>Pero el Letrado Mayor no deja votar nada: le falta la composición de la circunscripción de Villatrámite, y los papeles que la acreditan los traes tú.<br><br><b>Objetivo:</b> completa la composición de la cámara y propón un gobierno que salga investido: todos sus partidos deben votar Sí y debe haber más síes que noes.',
       outro: 'Investidura aprobada: 23 síes, 17 noes y 41 abstenciones. Paz Equidistante preside un gobierno con menos de un tercio de la cámara... porque los dos grandes se abstuvieron «para que se estrellen solos». Y gracias, en el fondo, a un escaño: el de tu mesa y su mancha de café. Te llevas el único ejemplar firmado del acuerdo de gobierno. Seis meses después, la oposición registra una moción de censura. Y en la cafetería se habla de un tránsfuga.',
-      scene: { wall: '#6d2b2b', floor: '#4f3526', floorH: 50, pattern: 'carpet' },
+      scene: { wall: '#6d2b2b', floor: '#4f3526', floorH: 40, pattern: 'carpet' },
       carry: ['actaProcl', 'resolucion'],
       decor: [
-        { kind: 'arc' },
-        { emoji: '📸', x: 6, y: 34, s: 4, o: 0.85 }, { emoji: '🎥', x: 94, y: 34, s: 4, o: 0.85 },
+        { kind: 'flag', l: 35, t: 19, w: 7, h: 9.4 },
+        { kind: 'flag-eu', l: 45, t: 19, w: 7, h: 9.4 },
+        { kind: 'platform', id: 'estrado', l: 31, t: 50.6, w: 38, h: 9.4, color: '#5a3b28' },
+        { kind: 'counter', id: 'mesaPresidencia', l: 33, t: 30.9, w: 34, h: 19.7 },
+        { kind: 'seats', id: 'bancadaIzq', l: 2, t: 44.5, w: 27, h: 31.5, color: '#3f6b3f' },
+        { kind: 'seats', id: 'bancadaDer', l: 71, t: 44.5, w: 27, h: 31.5, color: '#3f6b3f' },
+        { kind: 'lectern', id: 'atril', l: 45, t: 46.8, w: 10, h: 23.2, color: '#5a3b28' },
+        { kind: 'table', id: 'mesaTaquigrafos', l: 31, t: 56.7, w: 11, h: 15.3 },
+        { kind: 'desk', id: 'mesaPrensa', l: 78, t: 69.2, w: 18, h: 16.8 },
+        { kind: 'pedestal', id: 'peanaCamara', l: 3, t: 65.8, w: 7, h: 20.2, color: '#3a3a3a' },
+        { emoji: '🎥', x: 6.5, y: 59.08, s: 7.5, on: 'peanaCamara' },
+        { emoji: '📸', x: 80.5, y: 65.64, s: 4, on: 'mesaPrensa' },
       ],
       hotspots: [
         ...L9_IDS.map((id) => {
-          const pos = { ALA: [12, 72], CANA: [22, 55], NIDAC: [35, 47], UVA: [50, 44], TIC: [65, 47], ZIG: [78, 55], FAROL: [88, 72], ASPA: [50, 62] }[id];
+          const pos = { ALA: [6.5, 40.06, 'bancadaIzq'], CANA: [13, 40.06, 'bancadaIzq'], NIDAC: [19.5, 40.06, 'bancadaIzq'], UVA: [26, 40.06, 'bancadaIzq'], ASPA: [74, 40.06, 'bancadaDer'], TIC: [80.5, 40.06, 'bancadaDer'], ZIG: [87, 40.06, 'bancadaDer'], FAROL: [93.5, 40.06, 'bancadaDer'] }[id];
           return {
-            id: 'p_' + id, x: pos[0], y: pos[1], emoji: P[id].emoji, s: 6, tag: P[id].sigla,
+            id: 'p_' + id, x: pos[0], y: pos[1], emoji: P[id].emoji, s: 5, on: pos[2], tag: P[id].sigla,
             label: (g) => `${P[id].sigla} · ${P[id].name}${g.flag('comp') ? ` (${L9_SEATS[id]} escaños)` : ''}`,
             look(g) { g.say(L9_SAYS[id], `${P[id].emoji} ${P[id].lider} — ${P[id].sigla}${g.flag('comp') ? ` (${L9_SEATS[id]})` : ''}`); },
           };
         }),
-        { id: 'letrado', x: 84, y: 26, emoji: '🧑‍⚖️', s: 6, label: 'Letrado Mayor de las Cortes',
+        { id: 'letrado', x: 60, y: 26.4, emoji: '🧑‍⚖️', s: 9.8, behind: 'mesaPresidencia', label: 'Letrado Mayor de las Cortes',
           look(g) {
             if (g.flag('comp')) return g.say('—Composición completa: 81 escaños. Ya pueden empezar a no ponerse de acuerdo.', 'Letrado Mayor');
             const falta = [!g.flag('l9acta') ? 'el acta de proclamación de Villatrámite' : '', !g.flag('l9res') ? 'la resolución que la declara firme' : ''].filter(Boolean);
@@ -1391,15 +1401,15 @@
               g.say('—Recurso desestimado, proclamación firme. Estupendo. ¿Y la proclamación? Una resolución que declara firme un acta que no tengo es poesía administrativa.', 'Letrado Mayor');
             },
           } },
-        { id: 'reglamento', x: 18, y: 14, sign: 'REGLAMENTO', sub: 'Arts. 12 a 14', w: 14, label: 'Reglamento de las Cortes',
+        { id: 'reglamento', x: 15, y: 22, sign: 'REGLAMENTO', sub: 'Arts. 12 a 14', w: 14, label: 'Reglamento de las Cortes',
           look(g) {
             g.doc('📜 Reglamento de las Cortes de Ventanilla Alta', `<p><b>Art. 12.</b> El candidato o candidata a la presidencia lo propone el partido con <b>más escaños</b> de entre los que forman el gobierno propuesto.</p>
               <p><b>Art. 13.</b> En segunda votación basta la mayoría simple: <b>más síes que noes</b>. Las abstenciones no cuentan (ni en la votación ni en la vida).</p>
               <p><b>Art. 14.</b> Todos los partidos que formen el gobierno deben votar <b>Sí</b>. Un partido que no vota a su propio gobierno no es un socio: es un tertuliano.</p>`);
           } },
-        { id: 'marcador', x: 50, y: 14, sign: 'CORTES DE VENTANILLA ALTA', sub: '81 escaños · 2.ª votación', w: 22, label: 'Marcador del hemiciclo',
+        { id: 'marcador', x: 50, y: 10, sign: 'CORTES DE VENTANILLA ALTA', sub: '81 escaños · 2.ª votación', w: 22, label: 'Marcador del hemiciclo',
           look(g) { g.say('81 escaños. Primera votación: fracasada (nadie llegó a 41). Segunda votación: basta con más síes que noes. Cafés servidos hoy en la cafetería: 1.204.'); } },
-        { id: 'escanos', x: 5, y: 88, emoji: '📋', s: 5, label: 'Reparto de escaños',
+        { id: 'escanos', x: 36.5, y: 52.26, emoji: '📋', s: 5, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
           look(g) {
             const c = g.flag('comp');
             const vt = (id) => (c ? L9_CIRC.VT[id] : '¿?');
@@ -1408,12 +1418,12 @@
               <tr><td><b>Total</b></td><td>34</td><td>30</td><td>${c ? 17 : '¿?'}</td><td><b>${c ? 81 : '¿?'}</b></td></tr></table>
               <p class="small">${c ? 'Composición completa y firme.' : 'Villatrámite: pendiente de que alguien entregue al Letrado Mayor el acta de proclamación y la resolución del recurso. Sin ellas, la cámara está a medio componer.'}</p>`);
           } },
-        { id: 'tribuna', x: 50, y: 85, emoji: '🎤', s: 7, label: 'Tribuna de oradores',
+        { id: 'tribuna', x: 50, y: 42.36, emoji: '🎤', s: 5, on: 'atril', label: 'Tribuna de oradores',
           look(g) {
             if (!g.flag('comp')) return g.say('—Con la cámara a medio componer no se vota nada —dice el Letrado Mayor desde su mesa—. Tráigame lo de Villatrámite.', 'Letrado Mayor');
             l9Tribuna(g);
           } },
-        { id: 'periodista', x: 94, y: 88, emoji: '🧑‍💻', s: 5, label: 'Periodista parlamentaria',
+        { id: 'periodista', x: 87, y: 63.7, emoji: '🧑‍💻', s: 11.7, behind: 'mesaPrensa', label: 'Periodista parlamentaria',
           look(g) {
             g.say('—Un consejo gratis: ZIGZAG hace siempre exactamente lo contrario de lo que anuncia. Siempre. Si dicen Sí, votan No; si dicen No, votan Sí. Es lo único coherente que tienen.', 'Periodista parlamentaria');
             g.say('—Los demás, para mi desgracia, hacen lo que dicen. Así no hay quien escriba una crónica.', 'Periodista parlamentaria');
