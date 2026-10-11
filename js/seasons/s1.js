@@ -892,34 +892,34 @@
       scene: { wall: '#7a2e2e', floor: '#5a3b2a', floorH: 36, pattern: 'carpet' },
       decor: [
         // Vista desde la tribuna: bancadas de escaños (3 filas, 150 cm) en herradura; las alas, más cerca
-        { kind: 'screen', l: 41.5, t: 3.5, w: 17, h: 11 },
+        { kind: 'screen', l: 38, t: 2, w: 20, h: 14.5 },
         { kind: 'seats', id: 'bancoCentro', l: 25, t: 34, w: 46, h: 30, color: '#2f6a3a' },
         { kind: 'door', l: 85, t: 22, w: 10.1, h: 42, color: '#6d4c2f' },
         { kind: 'shelf', id: 'soporteCam', l: 2, t: 14, w: 7.5, h: 1.4 },
         { emoji: '🎥', x: 5.75, y: 8, s: 6.75, on: 'soporteCam' },
-        { kind: 'seats', id: 'alaIzq', l: 2, t: 43, w: 24, h: 33, color: '#2f6a3a' },
+        { kind: 'seats', id: 'alaIzq', l: 2, t: 43, w: 28.5, h: 33, color: '#2f6a3a' },
         { kind: 'seats', id: 'alaDer', l: 65.5, t: 43, w: 16, h: 33, color: '#2f6a3a' },
         { kind: 'counter', id: 'barandilla', l: 83, t: 52.32, w: 14, h: 25.68 },
         { kind: 'table', id: 'mesaTaquigrafos', l: 6, t: 68.25, w: 15, h: 17.75 },
-        { kind: 'lectern', id: 'atril', l: 45.95, t: 60.4, w: 8.1, h: 27.6, color: '#6d4c2f' },
+        { kind: 'lectern', id: 'atril', l: 43.95, t: 60.4, w: 8.1, h: 27.6, color: '#6d4c2f' },
       ],
       hotspots: [
         ...PARTIES.map((p, i) => {
           // [x, y, s, apoyo]: emblemas (~44 cm) sobre el pupitre de su bancada; el PIN, su portavoz en el escaño
           const pos = {
-            PPA: [8, 37.13, 6.6, { on: 'alaIzq' }], VYV: [31, 29.02, 5.6, { on: 'bancoCentro' }],
+            PPA: [8, 38.56, 5, { on: 'alaIzq' }], VYV: [31, 29.02, 5.6, { on: 'bancoCentro' }],
             TRM: [40, 27.87, 6.9, { on: 'bancoCentro' }], PIN: [20.5, 32.55, 11.75, { on: 'alaIzq' }],
             PSA: [58.5, 26.53, 8.4, { on: 'bancoCentro' }], CPM: [66.5, 28.4, 6.3, { on: 'bancoCentro' }],
-            PRR: [77.5, 37.49, 6.2, { on: 'alaDer' }], UNO: [49, 29.02, 5.6, { on: 'bancoCentro' }],
+            PRR: [77.5, 38.56, 5, { on: 'alaDer' }], UNO: [49, 29.02, 5.6, { on: 'bancoCentro' }],
           }[p.id];
           return {
             id: 'p_' + p.id, x: pos[0], y: pos[1], emoji: p.emoji, s: pos[2], ...pos[3], tag: p.id, label: `${p.id} · ${p.name} (${p.seats} escaños)`,
             look(g) { g.say(p.demand, `${p.emoji} Portavoz del ${p.id} — ${p.name} (${p.seats})`); },
           };
         }),
-        { id: 'marcador', x: 50, y: 9, sign: 'MARCADOR', sub: 'Mayoría: 176', w: 14, label: 'Marcador de votaciones',
+        { id: 'marcador', x: 48, y: 9, sign: 'MARCADOR', sub: 'Mayoría: 176', w: 14, label: 'Marcador de votaciones',
           look(g) { g.say('Mayoría absoluta: 176 de 350 escaños. Días sin gobierno: 287. Récord de cafés servidos en la cafetería: batido cada semana.'); } },
-        { id: 'tribuna', x: 50, y: 55.78, emoji: '🎤', s: 5.2, on: 'atril', label: 'Tribuna de oradores', look: coalitionModal },
+        { id: 'tribuna', x: 48, y: 54.18, emoji: '🎤', s: 7, on: 'atril', label: 'Tribuna de oradores', look: coalitionModal },
         { id: 'ujier', x: 88.5, y: 47.02, emoji: '🤵', s: 11, behind: 'barandilla', label: 'Ujier',
           look(g) { g.say('—Nadie sale de aquí hasta que haya gobierno. Tengo órdenes. Y bocadillos para tres semanas.', 'Ujier'); } },
         { id: 'escanos', x: 13.5, y: 63.45, emoji: '📋', s: 5.4, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
