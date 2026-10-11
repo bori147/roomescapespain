@@ -364,17 +364,17 @@
     { id: 8, n: 'D. Hugo Instancia', g: 'M', j: true, y: 20, p: 'MIX', prof: 'Juez de carrera' },
   ];
   const GROUPS = [
-    { id: 'ABL', name: 'Alianza por el Bloqueo', seats: 130, emoji: '🧱', x: 22, y: 54.61, s: 5.5, on: 'mesa',
+    { id: 'ABL', name: 'Alianza por el Bloqueo', seats: 130, emoji: '🧱', x: 20.5, y: 55.06, s: 5, on: 'mesa',
       say: '—Votaremos sí si en la lista hay al menos un candidato nuestro y ninguno del BDB. Con el BDB, ni a heredar.' },
-    { id: 'BDB', name: 'Bloque del Desbloqueo', seats: 120, emoji: '🔓', x: 77, y: 54.61, s: 5.5, on: 'mesa',
+    { id: 'BDB', name: 'Bloque del Desbloqueo', seats: 120, emoji: '🔓', x: 73.5, y: 55.06, s: 5, on: 'mesa',
       say: '—Desbloquearemos si hay al menos dos candidatos nuestros, si no está Amparo Recurso y si todos los candidatos tienen al menos diez años de experiencia. Es decir: desbloquearemos cuando nos desbloqueen.' },
-    { id: 'CMC', name: 'Coalición Mesa Camilla', seats: 40, emoji: '🛋️', x: 9, y: 69.11, s: 14.5,
+    { id: 'CMC', name: 'Coalición Mesa Camilla', seats: 40, emoji: '🛋️', x: 8.5, y: 61.93, s: 11.33,
       say: '—Sí, si va Celia Sumario. Pero si va Diego Providencia, no: nos debe una cena desde 2014.' },
-    { id: 'PCP', name: 'Plataforma Ciudadana del Puente', seats: 30, emoji: '🌉', x: 33, y: 54.61, s: 5.5, on: 'mesa',
+    { id: 'PCP', name: 'Plataforma Ciudadana del Puente', seats: 30, emoji: '🌉', x: 31.5, y: 55.06, s: 5, on: 'mesa',
       say: '—Queremos al menos dos juristas que no sean jueces de carrera. Eso sí: Celia Sumario y Gloria Fallo juntas, no. Se pelean por el último croissant.' },
-    { id: 'URC', name: 'Unión de Regantes Constitucionales', seats: 20, emoji: '🚿', x: 57, y: 54.61, s: 5.5, on: 'mesa',
+    { id: 'URC', name: 'Unión de Regantes Constitucionales', seats: 20, emoji: '🚿', x: 51.5, y: 55.06, s: 5, on: 'mesa',
       say: '—Votamos siempre lo contrario que el BDB. Y además exigimos que entre los cuatro sumen al menos 80 años de experiencia: esto no es un máster.' },
-    { id: 'MIX', name: 'Grupo Mixto', seats: 10, emoji: '🎲', x: 67, y: 54.61, s: 5.5, on: 'mesa',
+    { id: 'MIX', name: 'Grupo Mixto', seats: 10, emoji: '🎲', x: 62.5, y: 55.06, s: 5, on: 'mesa',
       say: '—Votaremos sí solo si está Hugo Instancia y si nuestro voto es decisivo: o sea, si sin nosotros no se llega a 210 y con nosotros sí.' },
   ];
   const SEATS8 = Object.fromEntries(GROUPS.map((x) => [x.id, x.seats]));
@@ -1302,32 +1302,35 @@
       carry: ['acuseTC'],
       decor: [
         { kind: 'board', id: 'corcho', l: 3, t: 28, w: 10, h: 12 },
-        { kind: 'flag', l: 77, t: 16, w: 8, h: 10 },
+        { kind: 'flag', l: 75, t: 17, w: 8, h: 10 },
         { kind: 'door', id: 'puerta', l: 88, t: 22, w: 10, h: 42, color: '#5b3f2a' },
-        { kind: 'table', id: 'mesa', l: 17, t: 59.5, w: 66, h: 16.5 },
-        { emoji: '☕', x: 39.5, y: 57.19, s: 2.6, on: 'mesa' }, { emoji: '☕', x: 62, y: 57.19, s: 2.6, on: 'mesa' },
+        { kind: 'table', id: 'mesa', l: 17, t: 59.5, w: 67, h: 16.5 },
+        { emoji: '👨‍💼', x: 25, y: 52.25, s: 9.5, behind: 'mesa' }, { emoji: '👩‍💼', x: 36, y: 52.25, s: 9.5, behind: 'mesa' },
+        { emoji: '🧑‍💼', x: 56, y: 52.25, s: 9.5, behind: 'mesa' }, { emoji: '👩‍💼', x: 67, y: 52.25, s: 9.5, behind: 'mesa' },
+        { emoji: '👨‍💼', x: 78, y: 52.25, s: 9.5, behind: 'mesa' },
+        { emoji: '☕', x: 27.6, y: 57.19, s: 2.6, on: 'mesa' }, { emoji: '☕', x: 69.2, y: 57.19, s: 2.6, on: 'mesa' },
       ],
       hotspots: [
         ...GROUPS.map((p) => ({
           id: 'g_' + p.id, x: p.x, y: p.y, emoji: p.emoji, s: p.s, ...(p.on ? { on: p.on } : {}), tag: `${p.id} · ${p.seats}`, label: `${p.id} · ${p.name} (${p.seats} escaños)`,
           look(g) { g.say(p.say, `${p.emoji} Portavoz del ${p.id} — ${p.name} (${p.seats})`); },
         })),
-        { id: 'candidatos', x: 28, y: 29, sign: 'CANDIDATOS', sub: '🗂️', w: 14, label: 'Relación de candidatos',
+        { id: 'candidatos', x: 25, y: 29, sign: 'CANDIDATOS', sub: '🗂️', w: 14, label: 'Relación de candidatos',
           look(g) {
             g.doc('🗂️ Candidatos a vocal', `<table class="s5-t"><tr><th>Candidato/a</th><th>Perfil</th><th>Experiencia</th><th>Propuesto por</th></tr>
               ${CANDS.map((c) => `<tr><td>${c.n}</td><td>${c.prof}</td><td>${c.y} años</td><td>${c.p}</td></tr>`).join('')}</table>
               <p class="small">Todos los candidatos son de reconocida competencia. Algunos incluso lo reconocen ellos mismos.</p>`);
           } },
-        { id: 'lo', x: 64, y: 29, sign: 'LEY ORGÁNICA', sub: '⚖️', w: 14, label: 'Ley Orgánica del Consejo',
+        { id: 'lo', x: 60, y: 29, sign: 'LEY ORGÁNICA', sub: '⚖️', w: 14, label: 'Ley Orgánica del Consejo',
           look(g) {
             g.doc('⚖️ Ley Orgánica del Consejo Superior de la Toga (extracto)', `<ol><li>La Cámara elegirá <b>cuatro vocales</b> por mayoría de <b>tres quintos</b> (210 de 350 escaños).</li>
               <li>La lista será <b>paritaria</b>: dos mujeres y dos hombres.</li>
               <li>Al menos <b>dos</b> de los vocales serán jueces o juezas de carrera.</li></ol>
               <p class="small">Disposición adicional: si no hay acuerdo, los vocales salientes continuarán en funciones hasta el fin de los tiempos.</p>`);
           } },
-        { id: 'escanos', x: 46, y: 29, sign: 'ESCAÑOS', sub: '🔢', w: 12, label: 'Reparto de escaños',
+        { id: 'escanos', x: 42.5, y: 29, sign: 'ESCAÑOS', sub: '🔢', w: 12, label: 'Reparto de escaños',
           look(g) { g.doc('🔢 Reparto de escaños', `<table class="tbl">${GROUPS.map((p) => `<tr><td>${p.emoji} <b>${p.id}</b> — ${p.name}</td><td>${p.seats}</td></tr>`).join('')}<tr><td><b>Total</b></td><td><b>350</b></td></tr></table><p class="small">Cada grupo vota en bloque: o todos sí, o todos no.</p>`); } },
-        { id: 'urna', x: 45, y: 53.99, emoji: '🗳️', s: 6.2, on: 'mesa', label: (g) => (g.flag('habil') ? 'Urna de votación' : 'Urna de votación (precintada)'),
+        { id: 'urna', x: 44.5, y: 53.99, emoji: '🗳️', s: 6.2, on: 'mesa', label: (g) => (g.flag('habil') ? 'Urna de votación' : 'Urna de votación (precintada)'),
           look(g) {
             if (!g.flag('habil')) return g.say('La urna está precintada. Una nota de la Presidencia: «Solo se convocará la votación cuando se acredite que el bloqueo paraliza algún asunto de Estado. Con papeles. Sellados». En 2.000 días nadie ha traído ninguno.');
             renovModal(g);
