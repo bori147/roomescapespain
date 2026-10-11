@@ -9,7 +9,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SRC = path.join(ROOT, 'node_modules', '@lobehub', 'fluent-emoji-3d', 'assets');
+// Busca el paquete subiendo directorios (sirve también desde una copia de trabajo anidada)
+const SRC = (() => {
+  try { return path.join(path.dirname(require.resolve('@lobehub/fluent-emoji-3d/package.json', { paths: [ROOT] })), 'assets'); } catch (e) { return path.join(ROOT, 'node_modules', '@lobehub', 'fluent-emoji-3d', 'assets'); }
+})();
 const OUT = path.join(ROOT, 'img', 'emoji');
 const SCAN = ['index.html', 'js/engine.js', 'js/ui-fx.js', 'js/ui-puzzles.js',
   ...fs.readdirSync(path.join(ROOT, 'js', 'seasons')).filter((f) => /^s\d+\.js$/.test(f)).map((f) => 'js/seasons/' + f)];

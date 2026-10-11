@@ -553,3 +553,39 @@ así que el dibujo toca exactamente `base = y + 0,889·s`. La sombra de contacto
    huecos bajo los objetos y piezas que se tocan.
 3. En el código, comprueba a mano la regla del borde derecho y la separación de carteles.
 4. `node tests/run.js` → TODO CORRECTO.
+
+### 7.5 Muebles disponibles (`decor: { kind, id, l, t, w, h, color }`)
+Medidas reales de referencia. El alto `h` en % de la escena sale de `node tests/scale-model.js <floorH> <cm> <pie%>`
+(la línea «un mueble de N cm…»); el ancho, de 1 % del ancho ≈ 8,4 cm junto a la pared con `floorH: 32`
+(multiplica por la profundidad si el pie está más abajo). Pega a la pared del fondo lo alto (puertas, librerías,
+armarios): su pie va justo en el horizonte (`t + h = 100 − floorH`). `color` cambia el tono donde se indica.
+
+| `kind` | Qué es | Medida real típica | `color` |
+|---|---|---|---|
+| `counter` | Mostrador, ventanilla, barra | 105 cm de alto | — |
+| `table` | Mesa de patas finas | 75 cm | — |
+| `desk` | Escritorio con cajonera | 75 cm | — |
+| `cabinet` | Archivador (130 cm) o armario (200 cm) | 130–200 × 90 cm | sí |
+| `bookcase` | Librería con libros | 200 × 90 cm | madera |
+| `bench` | Banco o fila de sillas de espera (con respaldo) | 85 cm (asiento a 45) | tapicería |
+| `sofa` | Sofá | 85 × 200 cm | tapicería |
+| `pedestal` | Mueble bajo, peana, aparador | 50–90 cm | sí |
+| `vitrine` | Vitrina o mostrador expositor acristalado | 100 × 150 cm | zócalo |
+| `lectern` | Atril o tribuna de oradores | 115 × 60 cm | sí |
+| `platform` | Tarima, escenario bajo, estrado | 30–60 cm de alto | sí |
+| `seats` | Gradas, butacas o escaños vistos de frente (3 filas) | 50 cm por fila | sí |
+| `partition` | Mampara, biombo, cabina de votación | 180 × 100 cm | sí |
+| `door` | Puerta con marco y manilla | 210 × 90 cm | sí |
+| `window` | Ventana | 140 de alto, alféizar a 90 | — |
+| `shutter` | Persiana metálica bajada | lo que tape | sí |
+| `curtain` | Telón o cortina | lo que tape | sí |
+| `shelf` | Balda de pared | 3 cm de grosor (`h` ≈ 1,4) | — |
+| `bracket` | Brazo de pared (no para teles altas: ver §7.4) | — | — |
+| `board` | Tablón de corcho | 90 × 60 cm | — |
+| `screen` | Pantalla grande de pared | 100 × 60 cm | — |
+| `flag`, `flag-eu` | Banderas con mástil | ver §7.4 | — |
+| `column`, `box`, `rug`, `arc` | Columna, caja o bulto, alfombra, hemiciclo | — | `box` y `rug` |
+
+Una silla suelta va mejor como emoji `🪑` a escala (unos 90 cm de alto) que como mueble; varias sillas en fila, mejor
+`bench`. Si una sala necesita un mueble que no está en la lista, no lo inventes con estilos sueltos: usa el más
+parecido y apúntalo para añadirlo aquí.
