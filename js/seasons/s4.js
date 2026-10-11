@@ -1189,20 +1189,22 @@
         { kind: 'door', id: 'puerta', l: 0.8, t: 23.37, w: 9.6, h: 44.63 },
         { kind: 'shelf', id: 'perchero', l: 14.4, t: 34, w: 7, h: 1.4 },
         { kind: 'desk', id: 'mesaJunta', l: 24, t: 58.9, w: 37, h: 17.1 },
+        { kind: 'box', id: 'cajaPizza', l: 24.6, t: 58.0, w: 4.8, h: 0.9, color: '#c9a26b' },
+        { kind: 'box', id: 'cajaPizza2', l: 24.7, t: 57.1, w: 4.6, h: 0.9, color: '#d1ac78' },
         { kind: 'counter', id: 'barrera', l: 63.5, t: 48.85, w: 33.5, h: 23.15 },
         { kind: 'flag', l: 74.7, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 85.7, t: 14.9, w: 9, h: 10.7 },
         { kind: 'shelf', id: 'baldaReloj', l: 2.6, t: 20.2, w: 6, h: 1.4 },
         { emoji: '🕰️', x: 5.6, y: 16.66, s: 3.98, on: 'baldaReloj' },
-        { emoji: '📦', x: 20, y: 76.66, s: 6.01 },
+        { emoji: '📦', x: 29, y: 70.45, s: 5.69 },
       ],
       hotspots: [
-        { id: 'pantalla', x: 45.5, y: 11, sign: 'ESCRUTADO: 99,99 %', sub: '📺', w: 20, label: 'Pantalla de resultados',
+        { id: 'pantalla', x: 45.5, y: 10.3, sign: 'ESCRUTADO: 99,99 %', sub: '📺', w: 20, label: 'Pantalla de resultados',
           look(g) {
             if (g.flag('grapada')) return g.say('«Escrutado: 100 %». Los tertulianos, decepcionados, pasan a analizar lo que podría haber pasado si no hubiera llegado tu mesa.');
             g.say('«Escrutado: 99,99 %. Falta: Mesa 03-013-C». Llevan así una hora. Los tertulianos ya han analizado tres veces lo que podría pasar con ese 0,01 %.');
           } },
-        { id: 'totales', x: 36, y: 31.3, sign: 'HOJA DE TOTALES', sub: '🍕 (con mancha)', w: 14, z: 15, label: 'Hoja de totales provisionales',
+        { id: 'totales', x: 36, y: 32.3, sign: 'HOJA DE TOTALES', sub: '🍕 (con mancha)', w: 14, z: 15, label: 'Hoja de totales provisionales',
           look(g) {
             g.doc('📄 Totales provisionales — circunscripción de Villatrámite', `<p><b>A falta de la Mesa 03-013-C</b>${g.flag('grapada') ? ' <i>(su acta va grapada detrás: súmala)</i>' : ' <i>(nadie ha traído su acta)</i>'}</p>
               <table class="tbl"><tr><td>🪁 ALA</td><td>5.682</td></tr><tr><td>🏮 FAROL</td><td>5.699</td></tr><tr><td>🧭 NIDAC</td><td>1.899</td></tr>
@@ -1225,7 +1227,7 @@
               <p>3. Los escaños se atribuyen por el método D'Hondt.</p>
               <p><b>Artículo 45.</b> La circunscripción de Villatrámite elige <b>17</b> diputados y diputadas.</p>`);
           } },
-        { id: 'pizarra', x: 55, y: 31.3, sign: "MÉTODO D'HONDT", sub: '🧮', w: 15, label: "Pizarra: el método D'Hondt",
+        { id: 'pizarra', x: 55, y: 32.3, sign: "MÉTODO D'HONDT", sub: '🧮', w: 15, label: "Pizarra: el método D'Hondt",
           look(g) {
             g.doc("🧮 El método D'Hondt, explicado para concejales", `<ol>
               <li>Descarta las candidaturas que no superan la barrera (ver la Ley).</li>
@@ -1240,20 +1242,20 @@
         { id: 'calculadora', x: 37.5, y: 54.45, emoji: '🧮', s: 5, on: 'mesaJunta', label: 'Calculadora (solo divide)', look: l7Calc },
         { id: 'ordenador', x: 43.5, y: 53.21, emoji: '🖥️', s: 6.4, on: 'mesaJunta', label: 'Ordenador del informático',
           look(g) { g.say('Pantalla azul: «ERROR 0x0DHONDT: el escaño 17 ha generado una excepción no controlada. Llame al informático (de 9:00 a 23:00)».'); } },
-        { id: 'proclamacion', x: 49.5, y: 54.45, emoji: '✍️', s: 5, on: 'mesaJunta', label: 'Acta de proclamación',
+        { id: 'proclamacion', x: 49.5, y: 54.45, emoji: '📜', s: 5, on: 'mesaJunta', label: 'Acta de proclamación',
           look(g) {
             if (!g.flag('grapada')) return g.say('—Zzz... —el magistrado abre un ojo—: no se proclama nada con una mesa sin sumar. Que alguien traiga el acta de la 03-013-C y la grape a los totales... Zzz.', 'Magistrado');
             l7Proclamacion(g);
           } },
-        { id: 'chaqueta', x: 17.9, y: 41.32, emoji: '🧥', s: 13.28, label: 'Tu chaqueta',
+        { id: 'chaqueta', x: 17.9, y: 40.97, emoji: '🧥', s: 12.3, label: 'Tu chaqueta',
           look(g) { g.say('Tu chaqueta huele a urna, a bocadillo de calamares y a doce horas de interventora. En el bolsillo, la credencial de presidente/a de mesa: ya es un recuerdo de guerra.'); } },
         { id: 'magistrado', x: 56, y: 53.8, emoji: '👨‍⚖️', s: 11, behind: 'mesaJunta', label: 'Presidente de la Junta (dormido)',
           look(g) { g.say('—Zzz... cocientes... de mayor a menor... ¿quién ha dejado entrar a los nulos?... Zzz.', 'Magistrado'); } },
         { id: 'periodistas', x: 90, y: 44.4, emoji: '🎤📸', s: 5, on: 'barrera', label: 'Periodistas',
           look(g) { g.say('—¿Ya? ¿Ya? ¿Quién se lleva el último escaño? Llevamos dos horas en directo diciendo «todo está muy abierto».', 'Periodistas'); } },
-        { id: 'pizzas', x: 27, y: 54.45, emoji: '🍕', s: 5, on: 'mesaJunta', label: 'Cajas de pizza',
+        { id: 'pizzas', x: 27, y: 52.65, emoji: '🍕', s: 5, on: 'cajaPizza2', label: 'Cajas de pizza',
           look(g) { g.say('Pizzas del turno de noche. Una de ellas ha manchado justo la cifra de CAÑA. Una pena: el total de votos a candidaturas sí se lee.'); } },
-        { id: 'candidatos', x: 75, y: 43.6, emoji: '🤵🤵‍♀️', s: 11.5, behind: 'barrera', label: 'Candidatos esperando',
+        { id: 'candidatos', x: 76, y: 43.6, emoji: '🤵🤵‍♀️', s: 11.5, behind: 'barrera', label: 'Candidatos esperando',
           look(g) { g.say('—Hemos ganado —dice el de FAROL. —No, hemos ganado nosotros —dice la de NIDAC. —Todos hemos ganado —dice el de TIC, que no saca escaño.', 'Candidatos'); } },
       ],
       hints: [
