@@ -887,6 +887,7 @@
       decor: [
         { kind: 'window', l: 87, t: 18.85, w: 10, h: 29.31 },
         { kind: 'flag', l: 57, t: 14.6, w: 8, h: 10.5 },
+        { kind: 'pedestal', l: 36.9, t: 64, w: 17.6, h: 9.5, color: '#5f4e3c' },
         { kind: 'desk', id: 'mesaInterventor', l: 36, t: 57.3, w: 28, h: 16.7 },
         { kind: 'pedestal', id: 'aparador', l: 68, t: 51.95, w: 16, h: 17.05, color: '#5e4634' },
         { emoji: '🪑', x: 29, y: 68.29, s: 13.17 },
@@ -898,7 +899,7 @@
             g.say('—Nadie sale de esta sala hasta que el cuadro de créditos cuadre. Al céntimo. Bueno, al millar de euros, que es como va el cuadro.', 'Interventor General');
             g.say('—Las reglas están en el acuerdo de techo de gasto, en la pared. Y lo que haga falta de 2023, en el archivo. La clave del archivo... la tiene apuntada alguien que ya se jubiló. En un pósit. Pegado al archivo. Por seguridad.', 'Interventor General');
           } },
-        { id: 'cuadro', x: 24, y: 30.75, sign: 'CUADRO DE CRÉDITOS', sub: '📊', w: 18, label: 'Cuadro de créditos (manchado de café)', look: budgetModal },
+        { id: 'cuadro', x: 33, y: 30.75, sign: 'CUADRO DE CRÉDITOS', sub: '📊', w: 18, label: 'Cuadro de créditos (manchado de café)', look: budgetModal },
         { id: 'techo', x: 76, y: 30.75, sign: 'TECHO DE GASTO', sub: '🧱', w: 15, label: 'Acuerdo de techo de gasto',
           look(g) {
             g.doc('🧱 Acuerdo del Consejo de Ministros — Techo de gasto 2033', `<p>Para el ejercicio 2033, con presupuesto prorrogado (otra vez), se acuerda:</p>
@@ -907,7 +908,7 @@
               <li>El total del <b>Capítulo 2</b> superará al del <b>Capítulo 6</b> en exactamente <b>300.000 €</b>.</li></ol>
               <p class="small">Recuerde: el cuadro de créditos se expresa en <b>miles de euros</b>.</p>`);
           } },
-        { id: 'placa', x: 46, y: 21.3, sign: 'PLACA', sub: '🏅', w: 12, label: 'Placa conmemorativa',
+        { id: 'placa', x: 10, y: 30.75, sign: 'PLACA', sub: '🏅', w: 12, label: 'Placa conmemorativa',
           look(g) { g.say('«En esta sala se aprobaron los últimos Presupuestos Generales del Estado, el 14 de marzo de 2023. Desde entonces: prórroga, prórroga, prórroga.»'); } },
         { id: 'archivo', x: 9.5, y: 56.17, emoji: '🗄️', s: 15, label: (g) => (g.flag('lector') ? 'Archivo (cerradura de 4 cifras)' : 'Archivo (lector de tarjetas y cerradura)'),
           look(g) {
@@ -930,7 +931,7 @@
           } },
         { id: 'postit', x: 11, y: 51.55, emoji: '🗒️', s: 5, z: 111, label: 'Pósit sobre el archivo',
           look(g) { g.say('«Clave del archivo: día y mes en que se aprobaron los últimos Presupuestos (DDMM). Ya nadie se acuerda, así que es segurísima.»'); } },
-        { id: 'cafe', x: 61.5, y: 54.19, emoji: '☕', s: 3.5, on: 'mesaInterventor', label: 'Taza de café volcada',
+        { id: 'cafe', x: 61.5, y: 52.86, emoji: '☕', s: 5, on: 'mesaInterventor', label: 'Taza de café volcada',
           look(g) { g.say('La culpable. Una taza con el lema «I ❤ el déficit». Aún gotea sobre el suelo. Nadie la recoge: no hay partida para fregonas.'); } },
         { id: 'calculadora', x: 43, y: 52.86, emoji: '🧮', s: 5, on: 'mesaInterventor', label: 'Calculadora',
           look(g) { g.say('Una calculadora oficial. Le faltan las teclas del 7 y del 9: recortes. Tendrás que sumar de cabeza, como en 1978 (o con tu portátil, si arranca antes de 2034).'); },
