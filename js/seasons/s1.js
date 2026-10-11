@@ -624,10 +624,10 @@
       outro: 'Queda usted empadronado/a. Por un momento, el bucle se ha roto. Pero el sistema detecta que le falta su número de afiliación a la Seguridad Social. No pregunte por qué lo necesita el padrón.',
       scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'window', l: 20.5, t: 14.85, w: 11, h: 29.8 },
+        { kind: 'window', l: 20.5, t: 12.7, w: 11, h: 29.8 },
         { kind: 'flag', l: 41, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 52, t: 14.9, w: 9, h: 10.7 },
-        { kind: 'table', id: 'escritorio', l: 17, t: 55.46, w: 18, h: 16.54 },
+        { kind: 'desk', id: 'escritorio', l: 17, t: 55.46, w: 18, h: 16.54 },
         { kind: 'counter', id: 'ventanilla', l: 40, t: 48.85, w: 23, h: 23.15 },
         { kind: 'pedestal', id: 'peana', l: 81, t: 56.04, w: 8, h: 17.96, color: '#7a5c44' },
         { emoji: '🧍‍♀️', x: 74, y: 56.4, s: 23.7 },
@@ -644,16 +644,16 @@
             modeloP0(g) { g.say('—Sin el sello de Registro de Entrada no vale. Esto no es un bar.', 'Funcionario'); },
             sello(g) { g.say('—No me selle a mí, por favor. Selle el modelo.', 'Funcionario'); },
           } },
-        { id: 'horario', x: 82, y: 31.3, sign: 'HORARIO', sub: '🕘', w: 11, label: 'Cartel de horario',
+        { id: 'horario', x: 85.5, y: 31.3, sign: 'HORARIO', sub: '🕘', w: 11, label: 'Cartel de horario',
           look(g) {
             g.doc('🕘 HORARIO DE ATENCIÓN AL PÚBLICO', `<p><b>Lunes a viernes: de 9:00 a 9:15.</b></p>
               <p>Miércoles: cerrado por reunión de coordinación.</p>
               <p>Agosto: cerrado. Septiembre: ya veremos.</p>
               <p class="small">Horario de reclamaciones: de 9:15 a 9:15.</p>`);
           } },
-        { id: 'monitor', x: 30.5, y: 50.13, emoji: '🖥️', s: 6, on: 'escritorio', label: 'Monitor del compañero',
+        { id: 'monitor', x: 23.5, y: 50.13, emoji: '🖥️', s: 6, on: 'escritorio', label: 'Monitor del compañero',
           look(g) { g.say('Un pósit pegado en la pantalla: «CLAVE DEL ARCHIVO = HORA DE CIERRE AL PÚBLICO (4 cifras). ¡¡NO APUNTAR EN NINGÚN SITIO!!»'); } },
-        { id: 'archivo', x: 8.5, y: 60.28, emoji: '🗄️', s: 15.43, label: 'Archivo (cerradura de 4 cifras)',
+        { id: 'archivo', x: 8.5, y: 62.78, emoji: '🗄️', s: 12.63, label: 'Archivo (cerradura de 4 cifras)',
           look(g) {
             if (g.flag('archOpen')) return g.say('El archivo está abierto. Hay 3.000 carpetas iguales. Ya tienes lo que necesitabas.');
             g.input({
@@ -668,7 +668,7 @@
             if (!g.flag('key')) { g.set('key'); g.say('El buzón está lleno a reventar: nadie lo abre desde 2008. Entre sugerencias como «Más ventanillas» y «Menos ventanillas» aparece una llavecita.'); g.give('llavecita'); }
             else g.say('Miles de sugerencias. Todas sin leer. Algunas amenazan con volverse sugerencias de otra cosa.');
           } },
-        { id: 'cajon', x: 21.5, y: 51.015, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
+        { id: 'cajon', x: 31.7, y: 51.015, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
           look(g) {
             if (g.flag('drawer')) return g.say('Solo queda un bocadillo fosilizado. No lo toques: podría ser patrimonio municipal.');
             g.say('El cajón está cerrado con llave.');
