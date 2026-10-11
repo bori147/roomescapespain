@@ -1077,6 +1077,7 @@
         { kind: 'counter', id: 'ventanillas', l: 28, t: 48.85, w: 36, h: 23.15 },
         { kind: 'table', id: 'mesa600', l: 66, t: 58.9, w: 18, h: 17.1 },
         { kind: 'bench', id: 'banco', l: 86.5, t: 58.24, w: 12, h: 19.76 },
+        { emoji: '👨‍💼', x: 38.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
       ],
       hotspots: [
         { id: 'tramos', x: 68.5, y: 31.3, sign: 'ITP · TIPOS', sub: '📊', w: 12, label: 'Cartel de tipos del ITP',
@@ -1092,7 +1093,7 @@
               <li><b>50 %</b> para familias numerosas. (Un gato no computa como miembro de la unidad familiar, aunque mande más que nadie.)</li>
               <li><b>100 %</b> para quien entienda a la primera este cartel.</li></ul>`);
           } },
-        { id: 'catastro', x: 4.5, y: 47.27, emoji: '🏧', s: 5.5, on: 'quiosco', label: 'Quiosco del Catastro',
+        { id: 'catastro', x: 4.5, y: 47.71, emoji: '💻', s: 5, on: 'quiosco', label: 'Quiosco del Catastro',
           look(g) {
             if (g.has('certVR')) return g.say('El quiosco imprime un anuncio: «¿Sabía que el valor de referencia NO es el valor de mercado? Nosotros tampoco».');
             g.input({
@@ -1111,7 +1112,7 @@
               <p><b>Art. 5. Plazo.</b> 30 días hábiles desde la transmisión.</p>
               <p><b>Art. 6. Recaudación.</b> Si el transmitente no paga, la ventanilla intentará cobrárselo al comprador igualmente, por si cuela.</p>`);
           } },
-        { id: 'plusvalia', x: 38.5, y: 31.3, sign: 'PLUSVALÍA', sub: '🙋‍♂️', w: 11, z: 250, label: 'Ventanilla de plusvalía (Ayuntamiento)',
+        { id: 'plusvalia', x: 38.5, y: 22, sign: 'PLUSVALÍA', sub: '🙋‍♂️', w: 11, z: 250, label: 'Ventanilla de plusvalía (Ayuntamiento)',
           look(g) {
             if (g.has('noSujecion')) return g.say('—Ya le di la diligencia. No me mire así, que yo solo intento cobrar.', 'Funcionario de plusvalía');
             g.choice({
@@ -1125,7 +1126,7 @@
               ],
             });
           } },
-        { id: 'funcionaria', x: 49.5, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'ventanillas', label: 'Funcionaria de la Oficina Liquidadora',
+        { id: 'funcionaria', x: 55, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'ventanillas', label: 'Funcionaria de la Oficina Liquidadora',
           look(g) {
             if (!g.flag('escrOK')) return g.say('—Sin la copia de la escritura no le liquido nada. Tráigamela: precio, fecha, metros... Lo quiero todo. Y antes de liquidar el ITP, resuelva lo de la plusvalía en la ventanilla de al lado.', 'Funcionaria');
             if (!g.has('noSujecion')) return g.say('—Antes de liquidar el ITP, resuelva lo de la plusvalía en la ventanilla de al lado. Si no, el sistema se lía y me lía a mí.', 'Funcionaria');
@@ -1138,7 +1139,7 @@
               g.say('—16 de octubre de 2028, 225.000 €, 72 m² construidos, vivienda habitual... Fotocopiada. Tenga, no la pierda, que el Catastro se la va a pedir. Cuando aclare la plusvalía, presente el 600 en el terminal.', 'Funcionaria');
             },
           } },
-        { id: 'terminal', x: 70.5, y: 53.12, emoji: '🖥️', s: 6.5, on: 'mesa600', label: 'Terminal del modelo 600',
+        { id: 'terminal', x: 70.3, y: 53.12, emoji: '🖥️', s: 6.5, on: 'mesa600', label: 'Terminal del modelo 600',
           look(g) {
             if (!g.flag('ident')) return g.say('«Identifíquese con su documento de identidad.»', 'Terminal');
             if (!g.flag('escrOK')) return g.say('«Error 600-E: falta la copia de la escritura. Entréguela a la funcionaria de la Oficina Liquidadora.»', 'Terminal');
@@ -1148,17 +1149,17 @@
           use: {
             dni(g) { g.set('ident'); g.say('«Identificado/a: 07345189-R. Fecha de nacimiento: 20/10/1993. Le consta una inspección en 2028. Bienvenido/a otra vez, contribuyente.»', 'Terminal'); },
           } },
-        { id: 'cartera', x: 81.5, y: 54.45, emoji: '👛', s: 5, on: 'mesa600', label: 'Tu cartera',
+        { id: 'cartera', x: 80.5, y: 54.45, emoji: '💼', s: 5, on: 'mesa600', label: 'Tu cartera',
           look(g) {
             g.say('Una tarjeta del videoclub (ya no existe el videoclub, ni tu saldo) y la tarjeta de fidelización de la churrería: «a la décima porra, la undécima gratis». La sellas tú mismo/a.');
           } },
-        { id: 'carpeta', x: 76.5, y: 54.45, emoji: '🗂️', s: 5, on: 'mesa600', label: 'Tu carpeta de la compra',
+        { id: 'carpeta', x: 75.8, y: 54.45, emoji: '🗂️', s: 5, on: 'mesa600', label: 'Tu carpeta de la compra',
           look(g) {
             g.say('Fotocopias de fotocopias. Y el folleto del 0,99 % TAE, que guardas como recordatorio. Lo importante (escritura, recibo del IBI y DNI) ya lo llevas en la mano.');
           } },
         { id: 'cola', x: 29, y: 57.15, emoji: '🧍', s: 25.7, label: 'Contribuyente en la cola',
           look(g) { g.say('—Yo pagué la plusvalía de la vendedora sin darme cuenta. Ahora ella me manda postales desde Benidorm.', 'Contribuyente'); } },
-        { id: 'reloj', x: 61.5, y: 44.4, emoji: '⏰', s: 5, on: 'ventanillas', label: 'Reloj',
+        { id: 'reloj', x: 20, y: 21.06, emoji: '🕐', s: 5, label: 'Reloj',
           look(g) { g.say('Faltan 29 días hábiles para que acabe el plazo. Aquí eso es mañana.'); } },
       ],
       hints: [
