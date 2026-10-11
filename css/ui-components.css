@@ -436,3 +436,17 @@
     to { translate: 100% 0; }
   }
 }
+
+/* Emoji como imagen Fluent 3D (GameUtils.emojiHTML): ocupa lo mismo que un emoji de texto (1 em) */
+@layer components {
+  .emo {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+}

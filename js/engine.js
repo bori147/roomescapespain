@@ -29,6 +29,8 @@
   const pad2 = (n) => String(n).padStart(2, '0');
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // Emoji como imagen Fluent 3D (js/core.js); si no hay imagen, el emoji del sistema
+  const EH = (str) => (window.GameUtils && window.GameUtils.emojiHTML ? window.GameUtils.emojiHTML(str) : String(str));
   const ico = (id) => `<svg class="ico" width="20" height="20" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
   const later = (fn, ms) => setTimeout(fn, ms);
 
@@ -462,7 +464,7 @@
     const msg = $('#dlgMsg'); const idle = $('#dlgIdle'); const face = $('#dlgFace'); const who = $('#dlgWho');
     if (current) {
       d.dataset.skin = current.kind;
-      face.textContent = current.face || DEFAULT_FACE[current.kind] || '';
+      face.innerHTML = EH(current.face || DEFAULT_FACE[current.kind] || '');
       who.textContent = current.who ? strip(current.who) : '';
       if (shownSeq !== current.seq) {
         shownSeq = current.seq;
@@ -551,7 +553,7 @@
     // El «·» va pegado al objeto anterior (nunca abre línea) y el emoji, a su nombre.
     const shown = all.slice(0, all.length > 3 ? 2 : 3);
     const more = all.length - shown.length;
-    toast(`<span class="toast-k">Añadido a tu bandeja</span><span class="toast-b">${shown.map((id) => `${ITEMS[id].emoji}\u00A0<b>${ITEMS[id].name}</b>`).join('\u00A0· ')}${more ? ` <span class="toast-more">y ${more}\u00A0más</span>` : ''}</span>`, 1800 + 400 * (Math.min(all.length, 4) - 1));
+    toast(`<span class="toast-k">Añadido a tu bandeja</span><span class="toast-b">${shown.map((id) => `${EH(ITEMS[id].emoji)}\u00A0<b>${ITEMS[id].name}</b>`).join('\u00A0· ')}${more ? ` <span class="toast-more">y ${more}\u00A0más</span>` : ''}</span>`, 1800 + 400 * (Math.min(all.length, 4) - 1));
     announce(`Añadido a tu bandeja: ${all.map((id) => strip(ITEMS[id].name)).join(', ')}`);
   }
 
@@ -887,6 +889,13 @@
     return n(v) === n(l) ? l : `${v} — ${l}`;
   }
 
+  // Orden de profundidad: la pared detrás (10–19); en el suelo, cuanto más abajo apoya, más delante (100–240)
+  function depthZ(base, floorH) {
+    const horizon = 100 - floorH;
+    if (base < horizon - 0.5) return 10 + Math.max(0, Math.min(9, Math.round(base / 10)));
+    return 100 + Math.max(0, Math.min(140, Math.round((base - horizon) * 4)));
+  }
+
   function renderScene() {
     const sc = $('#scene');
     const key = `${S.season}-${S.level}#${epoch}`;
@@ -902,20 +911,36 @@
       sc.style.setProperty('--floor', L.scene.floor);
       sc.style.setProperty('--floorH', floorH + '%');
       for (const c of ['wall', 'floor', 'baseboard']) { const e = el('div', c); e.setAttribute('aria-hidden', 'true'); sc.append(e); }
+      // Profundidad: lo que apoya más abajo en el suelo queda delante (ver depthZ)
+      const decoZ = new Map();
       for (const d of L.decor || []) {
-        let e;
+        let e; let z;
         if (d.kind) {
           e = el('div', 'deco deco-' + d.kind);
           if (d.l != null) Object.assign(e.style, { left: d.l + '%', top: d.t + '%', width: d.w + '%', height: d.h + '%' });
           if (d.color) e.style.setProperty('--c', d.color);
+          z = d.l != null ? depthZ(d.t + d.h, floorH) : 0;
         } else {
-          e = el('span', 'deco deco-emoji', d.emoji);
+          e = el('span', 'deco deco-emoji', EH(d.emoji));
           Object.assign(e.style, { left: d.x + '%', top: d.y + '%', fontSize: (d.s || 5) + 'cqw', opacity: d.o ?? 1 });
-          if (d.y + 0.89 * (d.s || 5) >= 100 - floorH - 1) e.classList.add('on-floor');
+          const base = d.y + 0.889 * (d.s || 5);
+          if (d.on) e.classList.add('on-surface');
+          else if (base >= 100 - floorH - 1) e.classList.add('on-floor');
+          z = depthZ(base, floorH);
         }
+        if (d.id) decoZ.set(d.id, z);
+        if (d.z != null) z = d.z;
+        e.style.setProperty('--z', z);
         e.setAttribute('aria-hidden', 'true');
         sc.append(e);
       }
+      // «on: id» (encima de un mueble) va justo delante de él; «behind: id», justo detrás
+      const relZ = (o, z) => (o.on && decoZ.has(o.on) ? decoZ.get(o.on) + 1 : o.behind && decoZ.has(o.behind) ? decoZ.get(o.behind) - 1 : z);
+      (L.decor || []).forEach((d, i) => {
+        if (d.kind || d.z != null || !(d.on || d.behind)) return;
+        const e = sc.querySelectorAll('.deco')[i];
+        if (e) e.style.setProperty('--z', relZ(d, 0));
+      });
       for (const hs of L.hotspots) {
         const b = el('button', 'hs' + (hs.sign ? ' sign' : ''));
         b.type = 'button';
@@ -923,11 +948,17 @@
         b.hidden = true;
         b.style.left = hs.x + '%';
         b.style.top = hs.y + '%';
-        if (hs.sign) b.style.setProperty('--sw', (hs.w || 12) + 'cqw');
+        let z;
+        if (hs.sign) { b.style.setProperty('--sw', (hs.w || 12) + 'cqw'); z = 12; }
         else {
           b.style.fontSize = (hs.s || 6) + 'cqw';
-          if (hs.y + 0.89 * (hs.s || 6) >= 100 - floorH - 1) b.classList.add('on-floor');
+          const base = hs.y + 0.889 * (hs.s || 6);
+          if (hs.on) b.classList.add('on-surface');
+          else if (base >= 100 - floorH - 1) b.classList.add('on-floor');
+          z = depthZ(base, floorH);
         }
+        z = hs.z != null ? hs.z : relZ(hs, z);
+        b.style.setProperty('--z', z);
         b.addEventListener('click', onHsClick);
         sc.append(b);
         hsNodes.set(hs.id, b);
@@ -949,12 +980,12 @@
         const sign = val(hs.sign); const sub = hs.sub ? val(hs.sub) : '';
         const big = sub && [...sub].length <= 4 && !/[a-z0-9]/i.test(sub);
         sig = `S|${label}|${sign}|${sub}`;
-        inner = `<b>${sign}</b>${sub ? `<span class="${big ? 'sub-emoji' : ''}">${sub}</span>` : ''}`;
+        inner = `<b>${sign}</b>${sub ? `<span class="${big ? 'sub-emoji' : ''}">${big ? EH(sub) : sub}</span>` : ''}`;
         vtext = strip(sign) + (sub && !big ? ' ' + strip(sub) : '');
       } else {
         const emo = val(hs.emoji); const tag = hs.tag ? val(hs.tag) : '';
         sig = `E|${label}|${emo}|${tag}`;
-        inner = `<span class="hs-emoji" aria-hidden="true">${emo}</span>${tag ? `<span class="hs-tag" aria-hidden="true">${tag}</span>` : ''}`;
+        inner = `<span class="hs-emoji" aria-hidden="true">${EH(emo)}</span>${tag ? `<span class="hs-tag" aria-hidden="true">${tag}</span>` : ''}`;
         vtext = tag ? strip(tag) : '';
       }
       const wasVisible = !b.hidden;
@@ -989,7 +1020,7 @@
       let b = invNodes.get(id);
       if (!b) {
         const it = ITEMS[id];
-        b = el('button', 'slot', `<span class="slot-emoji" aria-hidden="true">${it.emoji}</span><span class="slot-name">${it.name}</span>`);
+        b = el('button', 'slot', `<span class="slot-emoji" aria-hidden="true">${EH(it.emoji)}</span><span class="slot-name">${it.name}</span>`);
         b.type = 'button';
         b.dataset.id = id;
         b.title = strip(it.name);
@@ -1426,7 +1457,7 @@
   function carryHtml(lv, title) {
     const list = (lv.carry || []).filter((id) => ITEMS[id]);
     if (!list.length) return '';
-    return `<div class="carry"><span class="carry-t">🎒 ${title}:</span> ${list.map((id) => `<span class="carry-i">${ITEMS[id].emoji} ${ITEMS[id].name}</span>`).join('')}</div>`;
+    return `<div class="carry"><span class="carry-t">🎒 ${title}:</span> ${list.map((id) => `<span class="carry-i">${EH(ITEMS[id].emoji)} ${ITEMS[id].name}</span>`).join('')}</div>`;
   }
 
   function stars(n) {
@@ -1746,7 +1777,7 @@ Sigue aquí: ${SITE_URL}`;
         : !open ? '<span class="sc-status chip lock">🔒 Bloqueada</span>'
           : cur ? `<span class="sc-status chip cur">En curso ${curLevel}/${n}</span>`
             : '<span class="sc-status chip cur">Sin empezar</span>';
-      b.innerHTML = `<span class="sc-tile" aria-hidden="true">${sea.emoji || '📂'}</span>
+      b.innerHTML = `<span class="sc-tile" aria-hidden="true">${EH(sea.emoji || '📂')}</span>
         <span class="sc-main">
           <span class="sc-kicker">Temporada ${sea.id}${sea.badge ? ` · ${sea.badge}` : ''}</span>
           ${open ? `<span class="sc-title">${sea.title}${just ? '<span class="redact" aria-hidden="true">PENDIENTE DE TRÁMITE</span>' : ''}</span>` : `<span class="sc-title redacted"><span class="sr-only">${sea.title}</span><span class="redact" aria-hidden="true">PENDIENTE DE TRÁMITE</span></span>`}

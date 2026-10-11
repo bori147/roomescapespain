@@ -426,3 +426,40 @@ cada captura, pasa estas **sondas** (un fallo da salida 1; los avisos solo se li
 
 Opciones útiles: `--escenas=05,23-27` (solo esas), `--motion` (con animaciones), `--estricto` (que las sondas
 fallen aunque el rediseño esté a medias). El detalle de cada captura queda en `<carpeta>/informe.json`.
+
+## 7. Realismo, escala y profundidad de las salas
+
+Las salas se dibujan con **imágenes Fluent 3D** (`img/emoji/`, generadas con `node tools/emoji-build.js` a partir
+de los emoji que usan las temporadas; licencia MIT de Microsoft). Se ven igual en todos los dispositivos, así que las
+proporciones se pueden ajustar de verdad. Reglas:
+
+### 7.1 Escala real
+- La pared del fondo representa **320 cm** de alto (`tests/scale-model.js`). Lo que apoya en el suelo más cerca del
+  jugador (más abajo) se ve hasta un **30 %** más grande.
+- Cada objeto tiene su tamaño real en `tests/scale-catalog.js` (persona de pie 170 cm, silla 85 cm, mochila 45 cm…).
+  El tamaño `s` de un objeto se calcula: **`node tests/scale-model.js <floorH> <cm> <base%>`**.
+- Objetos pequeños (< 30 cm: llaves, monedas, tazas, papeles) pueden exagerarse hasta ×2,5 para que se vean y se
+  puedan tocar en el móvil; nunca menos de `s: 3`.
+- Personas: de pie (🧍, 🧑‍⚖️…) a escala completa; los **bustos** (🧑‍💼, 👩‍💼…) son medio cuerpo: úsalos detrás de un
+  mostrador o una mesa, con el borde inferior oculto por el mueble.
+
+### 7.2 Todo apoya en algo (nada flota)
+- **`base`** = dónde toca el objeto: `y + 0,889·s` (% del alto). La línea del suelo está en `100 − floorH`.
+- **Suelo:** su base cae dentro de la franja del suelo. Cuanto más abajo, más delante (se dibuja por encima).
+- **Encima de un mueble:** `on: '<id del decor>'` y la base exactamente en el tablero del mueble (`t` del decor).
+  Se dibuja delante del mueble con una sombra corta.
+- **Detrás de un mueble:** `behind: '<id del decor>'` (el funcionario tras el mostrador): el mueble tapa su parte baja.
+- **Pared:** cuadros, carteles, relojes y ventanas a alturas reales (`node tests/scale-model.js <floorH> pared <cm_del_borde_inferior> <cm_objeto>`):
+  carteles y cuadros con el borde inferior a 120–150 cm, relojes a ~200 cm, ventanas con el alféizar a ~90 cm.
+- Una tele va sobre una peana (`kind: 'pedestal'`) o un soporte de pared (`kind: 'bracket'`); una carpeta, sobre una mesa
+  o un archivador; un portátil, sobre un escritorio.
+- Muebles disponibles (`decor: { kind, l, t, w, h, id }`, en %): `counter` (mostrador, 100–110 cm), `desk` (escritorio,
+  75 cm), `table` (mesa, 75 cm), `shelf` (balda de pared), `cabinet` (archivador/armario, 120–200 cm, `color`),
+  `bench` (fila de sillas, 45 cm de asiento), `pedestal` (mueble bajo, 50–80 cm, `color`), `bracket`, `box`, `board`,
+  `screen`, `rug`, `column`, `window`, `flag`, `flag-eu`. Calcula su alto con la calculadora (línea «un mueble de N cm»).
+
+### 7.3 Composición
+- Deja aire: los objetos tocables visibles a la vez no deben taparse más de un tercio.
+- Los objetos que aparecen más tarde (`show`) también deben quedar bien colocados.
+- Los textos de la sala (carteles) deben seguir leyéndose; los carteles miden lo que su `w` indica.
+- Comprueba con **`node tests/room.js S-N --debug`** (caja, base y cm reales de cada objeto) y **`node tests/realism.js S-N`**.

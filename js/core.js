@@ -38,5 +38,28 @@
   /** Escapa HTML. */
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  window.GameUtils = { rand, pad, norm, caesar, esc };
+  /* Emoji como imagen (Fluent 3D, igual en todos los dispositivos). Ver tools/emoji-build.js. */
+  const EI = window.EMOJI_IMG || { base: 'img/emoji/', keys: '' };
+  const emojiKeys = new Set(EI.keys ? EI.keys.split(' ') : []);
+  const seg = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter('es', { granularity: 'grapheme' }) : null;
+  const graphemes = (s) => (seg ? [...seg.segment(String(s))].map((x) => x.segment) : Array.from(String(s)));
+  const hexOf = (g) => Array.from(g).map((c) => c.codePointAt(0).toString(16).padStart(4, '0')).join('-');
+  /** Clave de fichero de un emoji (o null si no hay imagen). */
+  const emojiKey = (g) => {
+    const c = hexOf(g);
+    for (const k of [c, c.replace(/-fe0f/g, ''), c + '-fe0f']) if (emojiKeys.has(k)) return k;
+    return null;
+  };
+  /**
+   * Sustituye cada emoji con imagen por <img class="emo">; el resto del texto se escapa tal cual.
+   * Los contenedores son decorativos (aria-hidden), así que alt="".
+   */
+  const emojiHTML = (str) => graphemes(str).map((g) => {
+    const k = /\p{Extended_Pictographic}/u.test(g) ? emojiKey(g) : null;
+    return k ? `<img class="emo" src="${EI.base}${k}.webp" alt="" draggable="false" decoding="async">` : esc(g);
+  }).join('');
+  /** URL de la imagen de un emoji (para precargar), o null. */
+  const emojiURL = (g) => { const k = emojiKey(g); return k ? EI.base + k + '.webp' : null; };
+
+  window.GameUtils = { rand, pad, norm, caesar, esc, emojiHTML, emojiURL, graphemes };
 })();

@@ -490,3 +490,85 @@
     .scene, .scene *, .slot-emoji { font-variant-emoji: emoji; }
   }
 }
+
+/* ==========================================================
+   Profundidad y objetos como imagen (realismo y proporciones)
+   - El motor pone --z: pared 10–19; suelo 100–240 según dónde apoya (más abajo = más delante);
+     «on: mueble» = delante del mueble; «behind: mueble» = detrás (p. ej. funcionario tras el mostrador).
+   - .scene aísla su apilamiento: nada de la sala se cuela por encima de la barra o el sello.
+   ========================================================== */
+@layer scene {
+  .scene { isolation: isolate; }
+  .deco { z-index: var(--z, 0); }
+  .hs { z-index: var(--z, 2); }
+  @media (hover: hover) { .hs:hover { z-index: 400; } }
+  .hs:focus-visible { z-index: 410; }
+
+  /* Las imágenes apoyan en la base de su caja (sin hueco de línea de texto) */
+  .hs-emoji { display: flex; align-items: flex-end; line-height: 0; }
+  .deco-emoji { display: inline-flex; align-items: flex-end; line-height: 0; }
+  .hs .emo, .deco-emoji .emo { vertical-align: top; }
+
+  /* Encima de un mueble: sombra de contacto corta sobre el tablero */
+  .hs.on-surface::before, .deco-emoji.on-surface::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -.03em;
+    width: .75em;
+    height: .1em;
+    translate: -50% 0;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, .34), transparent);
+    pointer-events: none;
+  }
+  .hs.on-surface { filter: drop-shadow(0 .1cqw .15cqw rgba(0, 0, 0, .25)); }
+}
+
+/* Muebles extra para apoyar objetos con realismo (decor { kind, l, t, w, h, id }) */
+@layer scene {
+  /* Mesa: tablero fino y dos patas */
+  .deco-table {
+    background:
+      linear-gradient(180deg, #a07c56 0 9%, #5a4330 9% 12%, transparent 12%),
+      linear-gradient(90deg, transparent 4%, #6d5238 4% 8%, transparent 8% 92%, #6d5238 92% 96%, transparent 96%);
+    filter: drop-shadow(0 .5cqw .4cqw rgba(0, 0, 0, .25));
+  }
+  /* Escritorio: tablero, cajonera a la derecha y faldón */
+  .deco-desk {
+    background:
+      linear-gradient(180deg, #8f7a62 0 8%, #4f4234 8% 10%, transparent 10%),
+      linear-gradient(90deg, transparent 0 66%, #6f5c47 66% 97%, transparent 97%),
+      linear-gradient(180deg, transparent 10%, #5f4e3c 10% 40%, transparent 40%),
+      linear-gradient(90deg, #5a4a39 0 3%, transparent 3%);
+    filter: drop-shadow(0 .5cqw .4cqw rgba(0, 0, 0, .25));
+  }
+  .deco-desk::after {
+    content: ''; position: absolute; right: 6%; width: 28%; top: 30%; height: 50%;
+    background: repeating-linear-gradient(180deg, transparent 0 31%, rgba(0, 0, 0, .25) 31% 34%);
+  }
+  /* Armario/archivador alto con dos puertas */
+  .deco-cabinet {
+    border-radius: .3cqw;
+    background: linear-gradient(90deg, transparent calc(50% - .12cqw), rgba(0, 0, 0, .3) calc(50% - .12cqw) calc(50% + .12cqw), transparent calc(50% + .12cqw)), var(--c, #8a8f96);
+    box-shadow: inset 0 0 0 .25cqw rgba(0, 0, 0, .18), 0 .5cqw .9cqw rgba(0, 0, 0, .3);
+  }
+  /* Banco/sillas de espera en fila */
+  .deco-bench {
+    background:
+      linear-gradient(180deg, var(--c, #4b5d73) 0 22%, transparent 22% 40%, var(--c, #4b5d73) 40% 55%, transparent 55%),
+      linear-gradient(90deg, transparent 6%, #3a3a3a 6% 9%, transparent 9% 91%, #3a3a3a 91% 94%, transparent 94%);
+    filter: drop-shadow(0 .4cqw .35cqw rgba(0, 0, 0, .25));
+  }
+  /* Peana / mueble bajo (para una tele, una impresora, una planta…) */
+  .deco-pedestal {
+    border-radius: .3cqw .3cqw .15cqw .15cqw;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c, #6d5238) 80%, #fff) 0 12%, var(--c, #6d5238) 12%);
+    box-shadow: 0 .5cqw .8cqw rgba(0, 0, 0, .28);
+  }
+  /* Soporte de pared (brazo para una tele o un altavoz) */
+  .deco-bracket {
+    background: linear-gradient(90deg, transparent 40%, #3c3c3c 40% 60%, transparent 60%), linear-gradient(180deg, #4a4a4a 0 30%, transparent 30%);
+    border-radius: .2cqw;
+  }
+}
