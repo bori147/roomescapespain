@@ -1071,26 +1071,28 @@
       carry: ['dni', 'escritura', 'reciboIBI'],
       scene: { wall: '#cfd8cc', floor: '#7d8378', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'counter', l: 30, t: 56, w: 44, h: 9 },
-        { kind: 'flag', l: 50, t: 5, w: 5, h: 8 },
-        { kind: 'board', l: 4, t: 10, w: 22, h: 30 },
-        { emoji: '🪑', x: 84, y: 84, s: 4, o: 0.8 }, { emoji: '🪑', x: 90, y: 84, s: 4, o: 0.8 },
+        { kind: 'pedestal', id: 'quiosco', l: 1.5, t: 52.16, w: 6, h: 19.84, color: '#4b5563' },
+        { kind: 'lectern', id: 'atril', l: 9.5, t: 46.65, w: 7, h: 25.35 },
+        { kind: 'flag', l: 47, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'counter', id: 'ventanillas', l: 28, t: 48.85, w: 36, h: 23.15 },
+        { kind: 'table', id: 'mesa600', l: 66, t: 58.9, w: 18, h: 17.1 },
+        { kind: 'bench', id: 'banco', l: 86.5, t: 58.24, w: 12, h: 19.76 },
       ],
       hotspots: [
-        { id: 'tramos', x: 15, y: 18, sign: 'ITP · TIPOS', sub: '📊', w: 12, label: 'Cartel de tipos del ITP',
+        { id: 'tramos', x: 68.5, y: 31.3, sign: 'ITP · TIPOS', sub: '📊', w: 12, label: 'Cartel de tipos del ITP',
           look(g) {
             g.doc('📊 Impuesto sobre Transmisiones Patrimoniales — vivienda usada', `<p><b>Base imponible:</b> el <b>mayor</b> de estos dos valores: el precio escriturado o el valor de referencia del Catastro.</p>
               <table class="tbl"><tr><td>Parte de la base hasta 200.000 €</td><td>6 %</td></tr><tr><td>Parte de la base que exceda de 200.000 €</td><td>8 %</td></tr></table>
               <p><b>Tipo reducido del 4 %</b> (sobre toda la base), si se cumplen <b>las dos</b> condiciones:</p>
               <ul><li>El comprador es <b>menor de 35 años</b> en la fecha de la escritura.</li><li>La base imponible <b>no supera 240.000 €</b>.</li></ul>`);
           } },
-        { id: 'bonif', x: 15, y: 33, sign: 'BONIFICACIONES', sub: '🎁', w: 12, label: 'Cartel de bonificaciones',
+        { id: 'bonif', x: 86, y: 31.3, sign: 'BONIFICACIONES', sub: '🎁', w: 14, label: 'Cartel de bonificaciones',
           look(g) {
             g.doc('🎁 Bonificaciones en la cuota', `<ul><li><b>20 %</b> de bonificación para viviendas de <b>menos de 70 m² construidos</b> según escritura.</li>
               <li><b>50 %</b> para familias numerosas. (Un gato no computa como miembro de la unidad familiar, aunque mande más que nadie.)</li>
               <li><b>100 %</b> para quien entienda a la primera este cartel.</li></ul>`);
           } },
-        { id: 'catastro', x: 36, y: 22, emoji: '🏧', s: 6, label: 'Quiosco del Catastro',
+        { id: 'catastro', x: 4.5, y: 47.27, emoji: '🏧', s: 5.5, on: 'quiosco', label: 'Quiosco del Catastro',
           look(g) {
             if (g.has('certVR')) return g.say('El quiosco imprime un anuncio: «¿Sabía que el valor de referencia NO es el valor de mercado? Nosotros tampoco».');
             g.input({
@@ -1100,7 +1102,7 @@
               ok: () => { g.give('certVR'); g.say('El quiosco imprime: «Valor de referencia 2028 de su inmueble: 241.000 €». Más de lo que pagaste. El Catastro cree mucho en ti.', 'Quiosco del Catastro'); },
             });
           } },
-        { id: 'ordenanza', x: 60, y: 22, emoji: '📖', s: 5, label: 'Ordenanza fiscal (en un atril)',
+        { id: 'ordenanza', x: 13, y: 42.2, emoji: '📖', s: 5, on: 'atril', label: 'Ordenanza fiscal (en un atril)',
           look(g) {
             g.doc('📖 Ordenanza fiscal del Impuesto sobre el Incremento de Valor de los Terrenos («plusvalía»)', `<p><b>Art. 1. Hecho imponible.</b> El incremento de valor de los terrenos urbanos que se pone de manifiesto al transmitirlos.</p>
               <p><b>Art. 2. Exenciones.</b> Las que diga la ley, y las de las personas que hayan esperado más de tres horas en esta ventanilla (en estudio desde 2009).</p>
@@ -1109,7 +1111,7 @@
               <p><b>Art. 5. Plazo.</b> 30 días hábiles desde la transmisión.</p>
               <p><b>Art. 6. Recaudación.</b> Si el transmitente no paga, la ventanilla intentará cobrárselo al comprador igualmente, por si cuela.</p>`);
           } },
-        { id: 'plusvalia', x: 44, y: 46, sign: 'PLUSVALÍA', sub: '🙋‍♂️', w: 11, label: 'Ventanilla de plusvalía (Ayuntamiento)',
+        { id: 'plusvalia', x: 38.5, y: 31.3, sign: 'PLUSVALÍA', sub: '🙋‍♂️', w: 11, z: 250, label: 'Ventanilla de plusvalía (Ayuntamiento)',
           look(g) {
             if (g.has('noSujecion')) return g.say('—Ya le di la diligencia. No me mire así, que yo solo intento cobrar.', 'Funcionario de plusvalía');
             g.choice({
@@ -1123,7 +1125,7 @@
               ],
             });
           } },
-        { id: 'funcionaria', x: 62, y: 47, emoji: '👩‍💼', s: 7, label: 'Funcionaria de la Oficina Liquidadora',
+        { id: 'funcionaria', x: 49.5, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'ventanillas', label: 'Funcionaria de la Oficina Liquidadora',
           look(g) {
             if (!g.flag('escrOK')) return g.say('—Sin la copia de la escritura no le liquido nada. Tráigamela: precio, fecha, metros... Lo quiero todo. Y antes de liquidar el ITP, resuelva lo de la plusvalía en la ventanilla de al lado.', 'Funcionaria');
             if (!g.has('noSujecion')) return g.say('—Antes de liquidar el ITP, resuelva lo de la plusvalía en la ventanilla de al lado. Si no, el sistema se lía y me lía a mí.', 'Funcionaria');
@@ -1136,7 +1138,7 @@
               g.say('—16 de octubre de 2028, 225.000 €, 72 m² construidos, vivienda habitual... Fotocopiada. Tenga, no la pierda, que el Catastro se la va a pedir. Cuando aclare la plusvalía, presente el 600 en el terminal.', 'Funcionaria');
             },
           } },
-        { id: 'terminal', x: 80, y: 50, emoji: '🖥️', s: 6, label: 'Terminal del modelo 600',
+        { id: 'terminal', x: 70.5, y: 53.12, emoji: '🖥️', s: 6.5, on: 'mesa600', label: 'Terminal del modelo 600',
           look(g) {
             if (!g.flag('ident')) return g.say('«Identifíquese con su documento de identidad.»', 'Terminal');
             if (!g.flag('escrOK')) return g.say('«Error 600-E: falta la copia de la escritura. Entréguela a la funcionaria de la Oficina Liquidadora.»', 'Terminal');
@@ -1146,17 +1148,17 @@
           use: {
             dni(g) { g.set('ident'); g.say('«Identificado/a: 07345189-R. Fecha de nacimiento: 20/10/1993. Le consta una inspección en 2028. Bienvenido/a otra vez, contribuyente.»', 'Terminal'); },
           } },
-        { id: 'cartera', x: 12, y: 80, emoji: '👛', s: 5, label: 'Tu cartera',
+        { id: 'cartera', x: 81.5, y: 54.45, emoji: '👛', s: 5, on: 'mesa600', label: 'Tu cartera',
           look(g) {
             g.say('Una tarjeta del videoclub (ya no existe el videoclub, ni tu saldo) y la tarjeta de fidelización de la churrería: «a la décima porra, la undécima gratis». La sellas tú mismo/a.');
           } },
-        { id: 'carpeta', x: 24, y: 82, emoji: '🗂️', s: 5, label: 'Tu carpeta de la compra',
+        { id: 'carpeta', x: 76.5, y: 54.45, emoji: '🗂️', s: 5, on: 'mesa600', label: 'Tu carpeta de la compra',
           look(g) {
             g.say('Fotocopias de fotocopias. Y el folleto del 0,99 % TAE, que guardas como recordatorio. Lo importante (escritura, recibo del IBI y DNI) ya lo llevas en la mano.');
           } },
-        { id: 'cola', x: 52, y: 82, emoji: '🧍', s: 5, label: 'Contribuyente en la cola',
+        { id: 'cola', x: 29, y: 57.15, emoji: '🧍', s: 25.7, label: 'Contribuyente en la cola',
           look(g) { g.say('—Yo pagué la plusvalía de la vendedora sin darme cuenta. Ahora ella me manda postales desde Benidorm.', 'Contribuyente'); } },
-        { id: 'reloj', x: 88, y: 16, emoji: '⏰', s: 4, label: 'Reloj',
+        { id: 'reloj', x: 61.5, y: 44.4, emoji: '⏰', s: 5, on: 'ventanillas', label: 'Reloj',
           look(g) { g.say('Faltan 29 días hábiles para que acabe el plazo. Aquí eso es mañana.'); } },
       ],
       hints: [
