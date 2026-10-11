@@ -924,7 +924,7 @@
               g.say('El lector traga tu DNI, lo mira, lo duda y lo devuelve. «Identificación correcta. Puede solicitar notas simples.»', 'Terminal');
             },
           } },
-        { id: 'registradora', x: 67, y: 43.6, emoji: '👩‍⚖️', s: 11.5, behind: 'mostrador', label: 'Doña Inmaculada, registradora',
+        { id: 'registradora', x: 67, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'mostrador', label: 'Doña Inmaculada, registradora',
           look(g) {
             if (!g.has('notaSimple')) return g.say('—La certificación de cargas se la doy cuando me diga usted qué cargas tiene la finca. Pida la nota simple en el terminal. Con su número de finca, que yo no adivino.', 'Registradora');
             g.input({
@@ -944,11 +944,11 @@
           look(g) {
             g.say('Pañuelos, un caramelo del banco (no), la oferta vinculante bien doblada y una porra de la churrería envuelta en servilleta, por si la registradora se ablanda. A las 13:58 no se ablanda nadie.');
           } },
-        { id: 'archivo', x: 85, y: 55.01, emoji: '🗄️', s: 14.61, label: 'Archivo de legajos',
+        { id: 'archivo', x: 85, y: 57.38, emoji: '🗄️', s: 11.95, label: 'Archivo de legajos',
           look(g) { g.say('Legajos desde 1861. Huele a papel antiguo, a humedad y a herencias mal repartidas.'); } },
-        { id: 'cola', x: 45, y: 60.24, emoji: '🧍‍♂️', s: 26.73, label: 'Señor en la cola',
+        { id: 'cola', x: 47.5, y: 60.44, emoji: '🧍', s: 26.5, label: 'Señor en la cola',
           look(g) { g.say('—Yo vengo a ver si mi finca sigue siendo mía. Desde que mi cuñado vino a «ayudarme con unos papeles», lo compruebo cada mes.', 'Señor'); } },
-        { id: 'cartel', x: 86, y: 31.3, sign: 'AVISO', sub: '📢', w: 10, label: 'Aviso',
+        { id: 'cartel', x: 88, y: 31.3, sign: 'AVISO', sub: '📢', w: 10, label: 'Aviso',
           look(g) { g.say('«Se ruega no confundir la nota simple con una nota sencilla. La nota simple es complicada. La nota sencilla no existe.»'); } },
       ],
       hints: [
