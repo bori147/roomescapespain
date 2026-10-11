@@ -1266,13 +1266,17 @@
       scene: { wall: '#d6cdb8', floor: '#6d5a48', floorH: 32, pattern: 'wood' },
       carry: ['credencial', 'actaCopia'],
       decor: [
-        { kind: 'counter', l: 56, t: 52, w: 22, h: 10 },
-        { kind: 'shelf', l: 3, t: 34, w: 18, h: 2 },
-        { kind: 'flag', l: 44, t: 6, w: 4, h: 7 },
-        { emoji: '🪑', x: 36, y: 78, s: 5, o: 0.85 },
+        { kind: 'pedestal', id: 'aparador', l: 1.5, t: 52.16, w: 16, h: 19.84, color: '#7a5c3e' },
+        { kind: 'table', id: 'mesaEspera', l: 19.5, t: 58.9, w: 30, h: 17.1 },
+        { kind: 'flag', l: 43, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'counter', id: 'mostrador', l: 52, t: 48.85, w: 22, h: 23.15 },
+        { emoji: '👩‍💼', x: 63, y: 43.6, s: 11.5, behind: 'mostrador' },
+        { kind: 'desk', id: 'mesaSede', l: 76.5, t: 55.47, w: 9.5, h: 16.53 },
+        { kind: 'pedestal', id: 'mueble', l: 88, t: 56.57, w: 10.5, h: 15.43, color: '#8a8f96' },
+        { emoji: '🪴', x: 87.5, y: 82.33, s: 12 },
       ],
       hotspots: [
-        { id: 'ley', x: 7, y: 28, emoji: '📕', s: 5, label: 'Ley Electoral de Ventanilla Alta (LEVA)',
+        { id: 'ley', x: 10, y: 47.71, emoji: '📕', s: 5, on: 'aparador', label: 'Ley Electoral de Ventanilla Alta (LEVA)',
           look(g) {
             g.doc('📕 Ley Electoral de Ventanilla Alta (extracto)', `<p><b>Art. 7. Cómputo de plazos.</b> Los plazos de esta Ley se cuentan en días <b>naturales</b>, salvo los del Título VI (artículos 100 a 120), que se cuentan en días <b>hábiles</b>. Son inhábiles los sábados, los domingos y los festivos nacionales, autonómicos y locales. Los plazos empiezan a contar el <b>día siguiente</b> al de la notificación.</p>
               <p><b>Art. 101. Reclamaciones.</b> Contra el escrutinio de una mesa cabe reclamación ante la Junta Electoral de Zona en el plazo de 1 día.</p>
@@ -1280,15 +1284,15 @@
               <p><b>Art. 110. Alegaciones.</b> Las partes afectadas por un recurso del art. 108 —incluido el presidente/a de la mesa cuya acta se impugne— podrán presentar alegaciones <b>ante la misma Junta que recibió el recurso</b>, en el plazo de <b>5 días</b> desde la notificación. El presidente/a de mesa deberá <b>acreditar su condición</b> con la credencial expedida por la Junta de Zona y <b>aportar copia del acta</b> impugnada.</p>
               <p><b>Art. 110 bis.</b> Cuando el recurso afecte a <b>una sola mesa</b>, los plazos del artículo anterior se reducen a la mitad, redondeando hacia arriba.</p>`);
           } },
-        { id: 'bova', x: 16, y: 28, emoji: '📰', s: 5, label: 'Boletín Oficial de Ventanilla Alta (BOVA)',
+        { id: 'bova', x: 15, y: 47.71, emoji: '📰', s: 5, on: 'aparador', label: 'Boletín Oficial de Ventanilla Alta (BOVA)',
           look(g) {
             g.doc('📰 BOVA — Boletín Oficial de Ventanilla Alta', `<p><b>Orden 12/2030</b>, por la que se regula el uso de la palabra «sinergia» en documentos oficiales (máximo tres por página).</p>
               <p><b>Resolución</b> por la que se declara festivo local en Villatrámite el viernes 7 de junio, festividad de Santa Paciencia, patrona de la ciudad.</p>
               <p><b>Corrección de errores</b> de la Ley Electoral de Ventanilla Alta. Advertido error en el artículo 110 bis, donde dice «redondeando hacia arriba» debe decir «<b>redondeando hacia abajo</b>».</p>
               <p><b>Anuncio:</b> se encuentra en tramitación la corrección de la corrección de errores. Hasta su publicación, no surte efecto alguno.</p>`);
           } },
-        { id: 'calendario', x: 30, y: 20, emoji: '📅', s: 6, label: 'Calendario laboral', look: l8Calendar },
-        { id: 'guia', x: 46, y: 22, sign: 'GUÍA DEL CSV', sub: '🪞', w: 13, label: 'Guía: cómo leer el CSV',
+        { id: 'calendario', x: 9.5, y: 33.8, emoji: '📅', s: 5, label: 'Calendario laboral', look: l8Calendar },
+        { id: 'guia', x: 84, y: 31.3, sign: 'GUÍA DEL CSV', sub: '🪞', w: 13, label: 'Guía: cómo leer el CSV',
           look(g) {
             g.doc('🪞 ¿Cómo se lee el Código Seguro de Verificación?', `<p>Por su seguridad, el CSV se imprime «<b>en espejo</b>»:</p>
               <ul><li>Cada letra se sustituye por la que ocupa su misma posición contando desde el <b>final</b> del abecedario (A↔Z, B↔Y, C↔X...; sin Ñ).</li>
@@ -1296,9 +1300,9 @@
               <p>Para acceder a la Sede, introduzca el CSV <b>ya enderezado</b>.</p>
               <p class="small">Ejemplo: «ZYX-123» se endereza como «ABC-876».</p>`);
           } },
-        { id: 'reloj', x: 58, y: 12, emoji: '🕐', s: 4, label: 'Reloj',
+        { id: 'reloj', x: 31, y: 18.9, emoji: '🕐', s: 5, label: 'Reloj',
           look(g) { g.say('13:20. El Registro cierra a las 14:00, pero el plazo no se acaba hoy. Eso sí: hay que saber cuándo se acaba.'); } },
-        { id: 'registro', x: 67, y: 38, sign: 'REGISTRO', sub: '🧑‍💼', w: 12, label: 'Registro de entrada',
+        { id: 'registro', x: 63, y: 20, sign: 'REGISTRO', sub: '🧑‍💼', w: 12, label: 'Registro de entrada',
           look(g) {
             const falta = [!g.flag('acred') ? 'acreditar que es usted el presidente/a de la mesa' : '', !g.flag('adjunta') ? 'aportar copia del acta impugnada' : ''].filter(Boolean);
             if (falta.length) return g.say(`—¿Alegaciones como presidente/a de mesa? Antes de darle el impreso tiene que ${falta.join(' y ')}. Artículo 110. No me mire así: la ley no la he escrito yo. Yo solo la aplico con entusiasmo.`, 'Registro');
@@ -1316,9 +1320,9 @@
               g.say('—Copia del acta de la Mesa 03-013-C. Voto n.º 7, NIDAC, «mancha de café involuntaria». Adjuntada al expediente.', 'Registro');
             },
           } },
-        { id: 'justicia', x: 91, y: 22, emoji: '⚖️', s: 6, label: 'Balanza de la Justicia',
+        { id: 'justicia', x: 4.5, y: 47.27, emoji: '⚖️', s: 5.5, on: 'aparador', label: 'Balanza de la Justicia',
           look(g) { g.say('Una balanza dorada. Uno de los platillos está calzado con un BOVA doblado. Nadie se atreve a quitarlo.'); } },
-        { id: 'sede', x: 87, y: 50, emoji: '🖥️', s: 6, label: 'Terminal de la Sede',
+        { id: 'sede', x: 81.25, y: 49.96, emoji: '🖥️', s: 6.2, on: 'mesaSede', label: 'Terminal de la Sede',
           look(g) {
             if (g.flag('leido')) return g.doc('📄 Recurso (texto íntegro)', L8_RECURSO);
             g.input({
@@ -1329,17 +1333,17 @@
               ok: () => { g.set('leido'); setTimeout(() => g.doc('📄 Recurso (texto íntegro)', L8_RECURSO), 0); },
             });
           } },
-        { id: 'carpeta', x: 40, y: 70, emoji: '📂', s: 5, label: 'Tu carpeta',
+        { id: 'carpeta', x: 55, y: 44.4, emoji: '📂', s: 5, on: 'mostrador', label: 'Tu carpeta',
           look(g) {
             if (g.flag('notif')) return g.say('Solo quedan clips, un recibo de la hipoteca y un pelo de Michi. Nada que alegar.');
             g.set('notif'); g.give('notifRecurso');
             g.say('En tu carpeta, la notificación del recurso que te llegó esta mañana. Con un CSV muy raro.');
           } },
-        { id: 'apoderado', x: 20, y: 62, emoji: '🧑‍💼', s: 7, tag: 'FAROL', label: 'Abogado de FAROL',
+        { id: 'apoderado', x: 24.5, y: 50.45, emoji: '🧑‍💼', s: 9.5, on: 'mesaEspera', tag: 'FAROL', label: 'Abogado de FAROL',
           look(g) { g.say('—Su mesa nos ha quitado un escaño por una papeleta con café. Una mancha es un dibujo. Un dibujo abstracto, pero un dibujo. Y un dibujo anula. Lo dice el manual... más o menos.', 'Abogado de FAROL'); } },
-        { id: 'fotocopiadora', x: 58, y: 77, emoji: '🖨️', s: 7, label: 'Fotocopiadora',
+        { id: 'fotocopiadora', x: 93, y: 50.79, emoji: '🖨️', s: 6.5, on: 'mueble', label: 'Fotocopiadora',
           look(g) { g.say('«Fuera de servicio desde el día 7». Alguien ha añadido: «Santa Paciencia, ruega por nosotros».'); } },
-        { id: 'letrados', x: 82, y: 80, emoji: '👩‍⚖️👨‍⚖️', s: 5, label: 'Letrados esperando',
+        { id: 'letrados', x: 39, y: 50.45, emoji: '👩‍⚖️👨‍⚖️', s: 9.5, behind: 'mesaEspera', label: 'Letrados esperando',
           look(g) { g.say('—Los plazos son fáciles —dice uno—: hábiles o naturales, desde el día siguiente, y mirando el boletín por si hay correcciones. —¿Y si hay correcciones de las correcciones? —Entonces nos jubilamos.', 'Letrados'); } },
       ],
       hints: [
