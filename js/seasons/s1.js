@@ -700,8 +700,8 @@
         { emoji: '💁‍♀️', x: 49.8, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '🧑‍💻', x: 66, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '👩‍💼', x: 77.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '🙎‍♂️', x: 90.4, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { kind: 'pedestal', id: 'pieTurnos', l: 19.5, t: 51.63, w: 4.5, h: 28.37, color: '#5d6670' },
+        { emoji: '🙎‍♂️', x: 88.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { kind: 'pedestal', id: 'pieTurnos', l: 21, t: 51.63, w: 4, h: 28.37, color: '#5d6670' },
         { kind: 'bench', id: 'banco', l: 29.75, t: 65.72, w: 16.5, h: 21.28 },
         { kind: 'table', id: 'mesaTurnos', l: 79, t: 62.27, w: 11, h: 17.73 },
         { kind: 'counter', id: 'garita', l: 0.5, t: 64.67, w: 12, h: 27.33 },
@@ -710,7 +710,7 @@
       hotspots: [
         { id: 'pantalla', x: 67.5, y: 6.6, emoji: '📺', s: 5.5, on: 'soporte', label: (g) => `Pantalla de turnos: A-${pad(g.flag('turno'), 3)}`,
           look(g) { g.say(`TURNO: A-${pad(g.flag('turno'), 3)}. ${g.flag('turno') === 12 ? 'Lleva así desde las 8:00. El encargado de los turnos está en un curso de «Gestión eficiente de turnos».' : '¡Ha cambiado!'}`); } },
-        { id: 'dispensador', x: 21.75, y: 46.96, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
+        { id: 'dispensador', x: 23, y: 46.96, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
           look(g) {
             if (g.flag('ticketTaken')) return g.say('Ya tienes número. Coger otro sería ilegal. O peor: de mala educación.');
             g.set('ticketTaken'); g.say('Te toca el A-347. En pantalla van por el A-012. Haces cuentas y te entra frío.'); g.give('ticket');
@@ -744,7 +744,7 @@
               },
             });
           } },
-        { id: 'puerta', x: 12, y: 47.16, emoji: '🚪', s: 24, label: 'Salida',
+        { id: 'puerta', x: 14, y: 43.2, emoji: '🚪', s: 27.9, label: 'Salida',
           look(g) { g.say('—Sin número de afiliación no sale nadie. Ni entra. Bueno, entrar sí.', 'Vigilante'); },
           use: { numeroSS(g) { g.say('El vigilante mira tu número, lo compara con una lista, asiente y abre la puerta. Libertad (provisional).', 'Vigilante'); g.win(); } } },
       ],
