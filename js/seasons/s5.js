@@ -1128,25 +1128,26 @@
       scene: { wall: '#6b2737', floor: '#4a2d22', floorH: 33, pattern: 'carpet' },
       carry: ['grapadoraUE'],
       decor: [
-        { kind: 'shelf', id: 'repisaCamara', l: 1.5, t: 16.7, w: 6.5, h: 1.4 },
-        { kind: 'flag', l: 26.5, t: 14.65, w: 8.5, h: 10.45 },
-        { kind: 'flag-eu', l: 65, t: 14.65, w: 8.5, h: 10.45 },
-        { kind: 'platform', id: 'tarima', l: 33, t: 65.22, w: 34, h: 4.28, color: '#5a3424' },
-        { kind: 'counter', id: 'mesaPresi', l: 36, t: 49.52, w: 28, h: 15.7 },
-        { kind: 'counter', id: 'escanosIzq', l: 3, t: 62.44, w: 27, h: 17.56 },
-        { kind: 'counter', id: 'escanosDer', l: 70, t: 62.44, w: 27, h: 17.56 },
-        { emoji: '🎥', x: 4.75, y: 10.48, s: 7, on: 'repisaCamara' },
-        { emoji: '👩‍💼', x: 11, y: 55.77, s: 10, behind: 'escanosIzq' },
-        { emoji: '👨‍💼', x: 24, y: 56.31, s: 10, behind: 'escanosIzq' },
-        { emoji: '🧑‍💼', x: 74, y: 56.31, s: 10, behind: 'escanosDer' },
+        { kind: 'shelf', id: 'repisaCamara', l: 1.5, t: 16.75, w: 6.5, h: 1.4 },
+        { kind: 'shelf', id: 'mensulaReloj', l: 68.5, t: 25.13, w: 5, h: 1.4 },
+        { kind: 'flag', l: 33, t: 14.65, w: 8.5, h: 10.47 },
+        { kind: 'flag-eu', l: 43.5, t: 14.65, w: 8.5, h: 10.47 },
+        { kind: 'platform', id: 'tarima', l: 32, t: 64.49, w: 36, h: 6.51, color: '#5a3424' },
+        { kind: 'counter', id: 'mesaPresi', l: 35, t: 48.21, w: 30, h: 16.28 },
+        { kind: 'counter', id: 'escanosIzq', l: 1.5, t: 61.58, w: 29, h: 17.42 },
+        { kind: 'counter', id: 'escanosDer', l: 69.5, t: 61.58, w: 29, h: 17.42 },
+        { emoji: '🎥', x: 4.75, y: 10.47, s: 7, on: 'repisaCamara' },
+        { emoji: '👩‍💼', x: 8.5, y: 55.86, s: 11.3, behind: 'escanosIzq' },
+        { emoji: '🧑‍💼', x: 22, y: 56.2, s: 10.9, behind: 'escanosIzq' },
+        { emoji: '👩‍💼', x: 74, y: 55.86, s: 11.3, behind: 'escanosDer' },
       ],
       hotspots: [
-        { id: 'mesa', x: 44, y: 44.17, emoji: '🗳️', s: 6, on: 'mesaPresi', label: 'Mesa de la Comisión (votación)',
+        { id: 'mesa', x: 44, y: 42.88, emoji: '🗳️', s: 6, on: 'mesaPresi', label: 'Mesa de la Comisión (votación)',
           look(g) {
             if (g.flag('lawOk')) return g.say('La votación ya está hecha y el texto, conforme. Ahora falta grapar el texto y entregárselo al Letrado Mayor.');
             senadoModal(g);
           } },
-        { id: 'reglamento', x: 15, y: 30.7, sign: 'REGLAMENTO', sub: '📕', w: 13, label: 'Reglamento de la Cámara',
+        { id: 'reglamento', x: 14, y: 30.7, sign: 'REGLAMENTO', sub: '📕', w: 13, label: 'Reglamento de la Cámara',
           look(g) {
             g.doc('📕 Reglamento de la Cámara (extracto)', `<ol><li>Las enmiendas se votan <b>por tipos</b>: primero las de <b>supresión</b>, después las de <b>modificación</b> y por último las de <b>adición</b>. Dentro de cada tipo, por orden de <b>número</b>.</li>
               <li>Una enmienda se aprueba si obtiene <b>más votos a favor que en contra</b>. Las abstenciones no cuentan. En caso de empate, se rechaza.</li>
@@ -1154,12 +1155,12 @@
               <li>Si, al llegar su turno, el texto al que se refiere una enmienda ya no existe, la enmienda <b>decae</b> y no se vota.</li>
               <li>La Comisión tiene <b>21 miembros</b>; asisten todos (hay catering).</li></ol>`);
           } },
-        { id: 'proyecto', x: 84, y: 30.7, sign: 'PROYECTO DE LEY', sub: '📄', w: 15, label: 'Proyecto de ley y enmiendas',
+        { id: 'proyecto', x: 85, y: 30.7, sign: 'PROYECTO DE LEY', sub: '📄', w: 15, label: 'Proyecto de ley y enmiendas',
           look(g) {
             g.doc('📄 Proyecto de Ley de Simplificación de Reclamaciones', `<p class="s5-law">${LAW0}</p><p><b>Enmiendas presentadas:</b></p>
               <table class="s5-t">${ENM.map((e) => `<tr><td><b>E${e.n}</b></td><td>${e.g}</td><td>${e.t}</td><td>${e.d}</td></tr>`).join('')}</table>`);
           } },
-        { id: 'letrado', x: 57, y: 45.07, emoji: '👨‍💼', s: 10.5, behind: 'mesaPresi', label: 'Letrado Mayor',
+        { id: 'letrado', x: 58, y: 42.98, emoji: '👨‍💼', s: 9.9, behind: 'mesaPresi', label: 'Letrado Mayor',
           look(g) {
             g.doc('🤓 Informe de los Letrados sobre el efecto de las enmiendas', `<p>A efectos de las posiciones de los grupos, los Letrados informan:</p>
               <table class="tbl"><tr><td>E1 (treinta → noventa)</td><td>Alarga el plazo</td></tr><tr><td>E2 (suprime «y por triplicado»)</td><td>Neutra</td></tr>
@@ -1180,19 +1181,19 @@
               g.win();
             },
           } },
-        { id: 'gac', x: 13.5, y: 58, emoji: '⏳', s: 5, tag: 'GAC · 9', on: 'escanosIzq', label: 'Portavoz del GAC — Grupo Aplazamiento Constructivo (9)',
+        { id: 'gac', x: 15, y: 57.14, emoji: '⏳', s: 5, tag: 'GAC · 9', on: 'escanosIzq', label: 'Portavoz del GAC — Grupo Aplazamiento Constructivo (9)',
           look(g) { g.say('—Votamos a favor de nuestras enmiendas y en contra de todas las del GRF, por principio. En las demás, nos abstenemos: es lo que mejor se nos da.', '⏳ Portavoz del GAC (9 senadores)'); } },
-        { id: 'grf', x: 26.5, y: 58, emoji: '🔄', s: 5, tag: 'GRF · 7', on: 'escanosIzq', label: 'Portavoz del GRF — Grupo Rotonda Federal (7)',
+        { id: 'grf', x: 27.5, y: 57.14, emoji: '🔄', s: 5, tag: 'GRF · 7', on: 'escanosIzq', label: 'Portavoz del GRF — Grupo Rotonda Federal (7)',
           look(g) { g.say('—A favor de las nuestras. En contra de cualquier enmienda que alargue un plazo: los plazos largos son para los débiles. En lo demás, abstención.', '🔄 Portavoz del GRF (7 senadores)'); } },
-        { id: 'gpa', x: 76.5, y: 58, emoji: '🌉', s: 5, tag: 'GPA · 4', on: 'escanosDer', label: 'Portavoz del GPA — Grupo Puente y Acueducto (4)',
+        { id: 'gpa', x: 79.5, y: 57.14, emoji: '🌉', s: 5, tag: 'GPA · 4', on: 'escanosDer', label: 'Portavoz del GPA — Grupo Puente y Acueducto (4)',
           look(g) { g.say('—A favor de las nuestras. En todas las demás votamos lo mismo que el GRF, que para eso compartimos asesor.', '🌉 Portavoz del GPA (4 senadores)'); } },
-        { id: 'gmi', x: 85.5, y: 55.9, emoji: '🤷', s: 10.5, tag: 'GMI · 1', behind: 'escanosDer', label: 'Senador del GMI — Grupo Mixto Indeciso (1)',
+        { id: 'gmi', x: 87, y: 54.93, emoji: '🤷', s: 11.9, tag: 'GMI · 1', behind: 'escanosDer', label: 'Senador del GMI — Grupo Mixto Indeciso (1)',
           look(g) { g.say('—Yo voto a favor de todo lo que se vote. Así nadie se enfada conmigo. Bueno, sí, pero menos.', '🤷 Senador del GMI (1)'); } },
-        { id: 'reloj', x: 50, y: 8.2, emoji: '🕰️', s: 5, label: 'Reloj de la Cámara',
+        { id: 'reloj', x: 71, y: 20.69, emoji: '🕰️', s: 5, on: 'mensulaReloj', label: 'Reloj de la Cámara',
           look(g) { g.say('Son las 19:58. A las 20:00 se levanta la sesión pase lo que pase. Lleva así desde el siglo XIX: el reloj marca siempre las 19:58.'); } },
-        { id: 'dormido', x: 93.5, y: 59.2, emoji: '😴', s: 5, behind: 'escanosDer', label: 'Senador de otra comisión',
+        { id: 'dormido', x: 95, y: 58.06, emoji: '😴', s: 5, behind: 'escanosDer', label: 'Senador de otra comisión',
           look(g) { g.say('Un senador de otra comisión, dormido. Se equivocó de sala en 2023 y nadie se ha atrevido a despertarlo.'); } },
-        { id: 'tapiz', x: 50, y: 22.5, emoji: '🖼️', s: 10, label: 'Tapiz histórico',
+        { id: 'tapiz', x: 61, y: 18.49, emoji: '🖼️', s: 9.8, label: 'Tapiz histórico',
           look(g) { g.say('Un tapiz con una escena épica: unos senadores del siglo XIX votando una enmienda a una enmienda de una enmienda. Aún no han terminado.'); } },
       ],
       combos: {
