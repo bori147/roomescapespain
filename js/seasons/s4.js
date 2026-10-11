@@ -1359,22 +1359,21 @@
       scene: { wall: '#6d2b2b', floor: '#4f3526', floorH: 40, pattern: 'carpet' },
       carry: ['actaProcl', 'resolucion'],
       decor: [
-        { kind: 'flag', l: 35, t: 19, w: 7, h: 9.4 },
-        { kind: 'flag-eu', l: 45, t: 19, w: 7, h: 9.4 },
+        { kind: 'curtain', l: 31, t: 18, w: 38, h: 42, color: '#4a1a20', z: 11 },
+        { kind: 'flag', l: 36, t: 19.5, w: 7, h: 9.4 },
+        { kind: 'flag-eu', l: 45, t: 19.5, w: 7, h: 9.4 },
         { kind: 'platform', id: 'estrado', l: 31, t: 50.6, w: 38, h: 9.4, color: '#5a3b28' },
         { kind: 'counter', id: 'mesaPresidencia', l: 33, t: 30.9, w: 34, h: 19.7 },
-        { kind: 'seats', id: 'bancadaIzq', l: 2, t: 44.5, w: 27, h: 31.5, color: '#3f6b3f' },
-        { kind: 'seats', id: 'bancadaDer', l: 71, t: 44.5, w: 27, h: 31.5, color: '#3f6b3f' },
+        { kind: 'seats', id: 'bancadaIzq', l: 2, t: 43.71, w: 26.5, h: 31.29, color: '#2f4a74' },
+        { kind: 'seats', id: 'bancadaDer', l: 71.5, t: 43.71, w: 26.5, h: 31.29, color: '#2f4a74' },
         { kind: 'lectern', id: 'atril', l: 45, t: 46.8, w: 10, h: 23.2, color: '#5a3b28' },
-        { kind: 'table', id: 'mesaTaquigrafos', l: 31, t: 56.7, w: 11, h: 15.3 },
+        { kind: 'table', id: 'mesaTaquigrafos', l: 33, t: 58.46, w: 11, h: 15.54 },
         { kind: 'desk', id: 'mesaPrensa', l: 78, t: 69.2, w: 18, h: 16.8 },
-        { kind: 'pedestal', id: 'peanaCamara', l: 3, t: 65.8, w: 7, h: 20.2, color: '#3a3a3a' },
-        { emoji: '🎥', x: 6.5, y: 59.08, s: 7.5, on: 'peanaCamara' },
-        { emoji: '📸', x: 80.5, y: 65.64, s: 4, on: 'mesaPrensa' },
+        { emoji: '📸', x: 81, y: 65.64, s: 4, on: 'mesaPrensa' },
       ],
       hotspots: [
         ...L9_IDS.map((id) => {
-          const pos = { ALA: [6.5, 40.06, 'bancadaIzq'], CANA: [13, 40.06, 'bancadaIzq'], NIDAC: [19.5, 40.06, 'bancadaIzq'], UVA: [26, 40.06, 'bancadaIzq'], ASPA: [74, 40.06, 'bancadaDer'], TIC: [80.5, 40.06, 'bancadaDer'], ZIG: [87, 40.06, 'bancadaDer'], FAROL: [93.5, 40.06, 'bancadaDer'] }[id];
+          const pos = { ALA: [6.5, 39.27, 'bancadaIzq'], CANA: [13, 39.27, 'bancadaIzq'], NIDAC: [19.5, 39.27, 'bancadaIzq'], UVA: [26, 39.27, 'bancadaIzq'], ASPA: [75, 39.27, 'bancadaDer'], TIC: [81.5, 39.27, 'bancadaDer'], ZIG: [88, 39.27, 'bancadaDer'], FAROL: [94.5, 39.27, 'bancadaDer'] }[id];
           return {
             id: 'p_' + id, x: pos[0], y: pos[1], emoji: P[id].emoji, s: 5, on: pos[2], tag: P[id].sigla,
             label: (g) => `${P[id].sigla} · ${P[id].name}${g.flag('comp') ? ` (${L9_SEATS[id]} escaños)` : ''}`,
@@ -1401,7 +1400,7 @@
               g.say('—Recurso desestimado, proclamación firme. Estupendo. ¿Y la proclamación? Una resolución que declara firme un acta que no tengo es poesía administrativa.', 'Letrado Mayor');
             },
           } },
-        { id: 'reglamento', x: 15, y: 22, sign: 'REGLAMENTO', sub: 'Arts. 12 a 14', w: 14, label: 'Reglamento de las Cortes',
+        { id: 'reglamento', x: 15, y: 16, sign: 'REGLAMENTO', sub: 'Arts. 12 a 14', w: 14, label: 'Reglamento de las Cortes',
           look(g) {
             g.doc('📜 Reglamento de las Cortes de Ventanilla Alta', `<p><b>Art. 12.</b> El candidato o candidata a la presidencia lo propone el partido con <b>más escaños</b> de entre los que forman el gobierno propuesto.</p>
               <p><b>Art. 13.</b> En segunda votación basta la mayoría simple: <b>más síes que noes</b>. Las abstenciones no cuentan (ni en la votación ni en la vida).</p>
@@ -1409,7 +1408,7 @@
           } },
         { id: 'marcador', x: 50, y: 10, sign: 'CORTES DE VENTANILLA ALTA', sub: '81 escaños · 2.ª votación', w: 22, label: 'Marcador del hemiciclo',
           look(g) { g.say('81 escaños. Primera votación: fracasada (nadie llegó a 41). Segunda votación: basta con más síes que noes. Cafés servidos hoy en la cafetería: 1.204.'); } },
-        { id: 'escanos', x: 36.5, y: 52.26, emoji: '📋', s: 5, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
+        { id: 'escanos', x: 38.5, y: 54.02, emoji: '📋', s: 5, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
           look(g) {
             const c = g.flag('comp');
             const vt = (id) => (c ? L9_CIRC.VT[id] : '¿?');
@@ -1423,7 +1422,7 @@
             if (!g.flag('comp')) return g.say('—Con la cámara a medio componer no se vota nada —dice el Letrado Mayor desde su mesa—. Tráigame lo de Villatrámite.', 'Letrado Mayor');
             l9Tribuna(g);
           } },
-        { id: 'periodista', x: 87, y: 63.7, emoji: '🧑‍💻', s: 11.7, behind: 'mesaPrensa', label: 'Periodista parlamentaria',
+        { id: 'periodista', x: 87, y: 64.32, emoji: '🧑‍💻', s: 11, behind: 'mesaPrensa', label: 'Periodista parlamentaria',
           look(g) {
             g.say('—Un consejo gratis: ZIGZAG hace siempre exactamente lo contrario de lo que anuncia. Siempre. Si dicen Sí, votan No; si dicen No, votan Sí. Es lo único coherente que tienen.', 'Periodista parlamentaria');
             g.say('—Los demás, para mi desgracia, hacen lo que dicen. Así no hay quien escriba una crónica.', 'Periodista parlamentaria');
