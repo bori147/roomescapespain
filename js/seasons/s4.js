@@ -1186,12 +1186,15 @@
       decor: [
         { kind: 'screen', l: 33.5, t: 3.5, w: 24, h: 15 },
         { kind: 'board', id: 'corcho', l: 28, t: 24, w: 16, h: 15 },
-        { kind: 'shelf', id: 'perchero', l: 3, t: 34, w: 8, h: 1.4 },
+        { kind: 'door', id: 'puerta', l: 0.8, t: 23.37, w: 9.6, h: 44.63 },
+        { kind: 'shelf', id: 'perchero', l: 14.4, t: 34, w: 7, h: 1.4 },
         { kind: 'desk', id: 'mesaJunta', l: 24, t: 58.9, w: 37, h: 17.1 },
         { kind: 'counter', id: 'barrera', l: 63.5, t: 48.85, w: 33.5, h: 23.15 },
-        { kind: 'shelf', id: 'baldaReloj', l: 16, t: 27.63, w: 6, h: 1.4 },
-        { emoji: '🕰️', x: 19, y: 24.08, s: 3.98, on: 'baldaReloj' },
-        { emoji: '📦', x: 9, y: 78.57, s: 6.11 },
+        { kind: 'flag', l: 74.7, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 85.7, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'shelf', id: 'baldaReloj', l: 2.6, t: 20.2, w: 6, h: 1.4 },
+        { emoji: '🕰️', x: 5.6, y: 16.66, s: 3.98, on: 'baldaReloj' },
+        { emoji: '📦', x: 20, y: 76.66, s: 6.01 },
       ],
       hotspots: [
         { id: 'pantalla', x: 45.5, y: 11, sign: 'ESCRUTADO: 99,99 %', sub: '📺', w: 20, label: 'Pantalla de resultados',
@@ -1242,7 +1245,7 @@
             if (!g.flag('grapada')) return g.say('—Zzz... —el magistrado abre un ojo—: no se proclama nada con una mesa sin sumar. Que alguien traiga el acta de la 03-013-C y la grape a los totales... Zzz.', 'Magistrado');
             l7Proclamacion(g);
           } },
-        { id: 'chaqueta', x: 7, y: 41.32, emoji: '🧥', s: 13.28, label: 'Tu chaqueta',
+        { id: 'chaqueta', x: 17.9, y: 41.32, emoji: '🧥', s: 13.28, label: 'Tu chaqueta',
           look(g) { g.say('Tu chaqueta huele a urna, a bocadillo de calamares y a doce horas de interventora. En el bolsillo, la credencial de presidente/a de mesa: ya es un recuerdo de guerra.'); } },
         { id: 'magistrado', x: 56, y: 53.8, emoji: '👨‍⚖️', s: 11, behind: 'mesaJunta', label: 'Presidente de la Junta (dormido)',
           look(g) { g.say('—Zzz... cocientes... de mayor a menor... ¿quién ha dejado entrar a los nulos?... Zzz.', 'Magistrado'); } },
