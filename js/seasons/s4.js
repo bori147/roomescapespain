@@ -861,13 +861,20 @@
       carry: ['encargo'],
       init(g) { g.set('datos', false); },
       decor: [
-        { kind: 'counter', l: 30, t: 56, w: 40, h: 10 },
-        { kind: 'shelf', l: 44, t: 30, w: 16, h: 2 },
-        { kind: 'window', l: 76, t: 8, w: 11, h: 24 },
-        { emoji: '🍳', x: 66, y: 53, s: 3, o: 0.9 },
+        // Isla de cocina (90 cm) algo separada de la pared: el chef, detrás
+        { kind: 'counter', id: 'isla', l: 30, t: 51.62, w: 32, h: 19.38 },
+        // Cocina de acero contra la pared (90 cm), con la puerta del horno; balda de especias a 150 cm
+        { kind: 'pedestal', id: 'fogon', l: 64.5, t: 47.44, w: 8.5, h: 18.56, color: '#7d838a' },
+        { kind: 'box', l: 65.5, t: 55.5, w: 6.5, h: 8, color: '#2b2d31', z: 101 },
+        { kind: 'shelf', id: 'especias', l: 64, t: 35.06, w: 9.5, h: 1.4 },
+        // Nevera (180 cm), mesita del becario (75 cm, sentado) y balda alta de la tele (215 cm)
+        { kind: 'cabinet', id: 'frigo', l: 74.5, t: 28.87, w: 8.5, h: 37.13, color: '#e4e7ea' },
+        { kind: 'desk', id: 'mesa', l: 83, t: 62.62, w: 14, h: 17.38 },
+        { kind: 'shelf', id: 'baldaTele', l: 88, t: 21.66, w: 7, h: 1.4 },
+        { emoji: '🍳', x: 70.8, y: 43.71, s: 4.2, on: 'fogon', o: 0.9 },
       ],
       hotspots: [
-        { id: 'puerta', x: 5, y: 48, emoji: '🚪', s: 10, label: 'Puerta trasera (teclado de 4 cifras)',
+        { id: 'puerta', x: 14, y: 41.94, emoji: '🚪', s: 27.1, label: 'Puerta trasera (teclado de 4 cifras)',
           look(g) {
             g.input({
               title: '🚪 Puerta trasera', text: 'El becario ha puesto un teclado: «Los valores REALES de las dos cifras cocinadas, en el orden en que aparecen en la nota de prensa. Dos cifras cada uno».',
@@ -882,7 +889,7 @@
               },
             });
           } },
-        { id: 'nota', x: 18, y: 22, sign: 'BARÓMETRO DE MAYO', sub: '📊', w: 14, label: 'Nota de prensa (ya publicada)',
+        { id: 'nota', x: 35, y: 30.2, sign: 'BARÓMETRO DE MAYO', sub: '📊', w: 14, label: 'Nota de prensa (ya publicada)',
           look(g) {
             g.doc('📊 Nota de prensa — Barómetro de mayo', `<p><b>«TIC, PRIMERA FUERZA»</b></p>
               <table class="tbl"><tr><td><b>Estimación de voto</b></td><td><b>%</b></td></tr>
@@ -890,9 +897,9 @@
               <tr><td>🍺 CAÑA</td><td>14</td></tr><tr><td>🍇 UVA</td><td>14</td></tr><tr><td>🧭 NIDAC</td><td>6</td></tr><tr><td>Otros / NS-NC</td><td>5</td></tr></table>
               <p class="small">Encuesta realizada por Cocina &amp; Sondeos para un cliente que prefiere no ser nombrado (TIC). Margen de error: ± lo que haga falta. Que la suma no dé 100 es un efecto de la cocción. Difundida desde un digital de Andorra, por aquello de la veda de encuestas de los últimos cinco días.</p>`);
           } },
-        { id: 'tele', x: 36, y: 17, emoji: '📺', s: 6, label: 'Televisión',
+        { id: 'tele', x: 91.5, y: 15.93, emoji: '📺', s: 6.45, on: 'baldaTele', label: 'Televisión',
           look(g) { g.say('—«...y según el último barómetro, TIC sería primera fuerza. Hemos preguntado a TIC y están de acuerdo con la encuesta». Corte a publicidad.', 'Informativo'); } },
-        { id: 'recetario', x: 49, y: 25, emoji: '📕', s: 4, label: 'Recetario de la casa',
+        { id: 'recetario', x: 66.5, y: 30.62, emoji: '📕', s: 5, on: 'especias', label: 'Recetario de la casa',
           look(g) {
             g.doc('📕 Recetario de Cocina &amp; Sondeos', `<p><b>Receta n.º 1: la ponderación</b> (la de verdad)</p>
               <p>Cada grupo de edad pesa lo que pesa en la <b>POBLACIÓN</b>, no lo que pesa en la muestra. Para cada partido, multiplica su porcentaje en cada grupo por el peso de ese grupo en la población, y suma.</p>
@@ -900,11 +907,11 @@
               <p><b>Receta n.º 2: la cocina</b> (la de la casa)</p>
               <p>Ingredientes: un cliente, dos cifras y mucha cara. Se sube al cliente y se baja a quien le haga sombra. Las demás cifras, ni tocarlas: así nadie sospecha.</p>`);
           } },
-        { id: 'especiero', x: 56, y: 25, emoji: '🧂', s: 4, label: 'Especiero',
+        { id: 'especiero', x: 71, y: 30.62, emoji: '🫙', s: 5, on: 'especias', label: 'Especiero',
           look(g) { g.say('Tarros etiquetados: «Margen de error», «Voto oculto», «Indecisos al gusto», «Tendencia» y uno vacío: «Rigor». Se acabó en 2008.'); } },
-        { id: 'telefono', x: 68, y: 22, emoji: '☎️', s: 4, label: 'Teléfono',
+        { id: 'telefono', x: 59.5, y: 47.18, emoji: '☎️', s: 5, on: 'isla', label: 'Teléfono',
           look(g) { g.say('Suena. —¿Cocina &amp; Sondeos? Soy de TIC. ¿Para cuándo la siguiente? Queremos salir primeros otra vez, pero esta vez con más margen.', 'Teléfono'); } },
-        { id: 'chef', x: 22, y: 56, emoji: '👨‍🍳', s: 8, label: 'Director demoscópico (chef)',
+        { id: 'chef', x: 46, y: 46.14, emoji: '👨‍🍳', s: 12, behind: 'isla', label: 'Director demoscópico (chef)',
           look(g) {
             if (!g.flag('pase')) return g.say('—¡Fuera de mi cocina! Aquí no toca un cajón nadie que no traiga encargo por escrito. Una encuesta es como un cocido: lo importante no son los garbanzos, es quién la paga.', 'Director demoscópico');
             g.say('—Una encuesta es como un cocido: lo importante no son los garbanzos, es lo que le echas. Y yo le echo lo que me pide el cliente. Eso se llama «estimación».', 'Director demoscópico');
@@ -916,7 +923,7 @@
               g.say('—Orden de trabajo de Argumentarios Universales. Mis mejores clientes: nos encargan las encuestas y luego los discursos que las comentan. Me la quedo para la factura. Pasa, pasa, la cocina es tuya. Pero no toques el horno sin manopla.', 'Director demoscópico');
             },
           } },
-        { id: 'horno', x: 40, y: 75, emoji: '🔥', s: 6, label: 'Horno (encendido)',
+        { id: 'horno', x: 68.75, y: 59.8, emoji: '🔥', s: 5.3, z: 102, label: 'Horno (encendido)',
           look(g) {
             if (g.flag('datos')) return g.say('El horno sigue encendido. Ahora mismo se está gratinando la próxima encuesta.');
             g.say('¡Quema! Dentro, en una bandeja, se están dorando los datos crudos de la encuesta. Sin algo para protegerte las manos, ni lo intentes.');
@@ -928,7 +935,7 @@
               g.say('Con la manopla sacas la bandeja y extiendes los datos crudos sobre la encimera. Huelen a tostado, pero se leen bien.');
             },
           } },
-        { id: 'encimera', x: 47, y: 54, emoji: '📋', s: 5, label: 'Datos crudos (sobre la encimera)', show: (g) => g.flag('datos'),
+        { id: 'encimera', x: 38.5, y: 47.18, emoji: '📋', s: 5, on: 'isla', label: 'Datos crudos (sobre la encimera)', show: (g) => g.flag('datos'),
           look(g) {
             g.doc('📋 Datos crudos — intención de voto por grupo de edad (%)', `<table class="tbl">
               <tr><td><b>Partido</b></td><td><b>18–34</b></td><td><b>35–54</b></td><td><b>55–74</b></td><td><b>75+</b></td></tr>
@@ -941,16 +948,16 @@
               <tr><td>Otros / NS-NC</td><td>5</td><td>5</td><td>5</td><td>5</td></tr></table>
               <p class="small">Cada columna suma 100. Grasa añadida: 0 %. Sal: al gusto del cliente.</p>`);
           } },
-        { id: 'olla', x: 60, y: 52, emoji: '🍲', s: 5, label: 'Olla a fuego lento',
+        { id: 'olla', x: 66.6, y: 43, emoji: '🍲', s: 5, on: 'fogon', label: 'Olla a fuego lento',
           look(g) { g.say('«Estimación de voto, a fuego lento». Dentro flotan unos indecisos. El chef dice que se reparten solos al hervir.'); } },
-        { id: 'cajon', x: 62, y: 76, emoji: '🗃️', s: 5, label: 'Cajón de la cocina',
+        { id: 'cajon', x: 32.5, y: 47.18, emoji: '🗃️', s: 5, on: 'isla', label: 'Cajón de la cocina',
           look(g) {
             if (!g.flag('pase')) return g.say('—¡Las manos quietas! —grita el chef—. Los cajones de mi cocina solo los abre quien trae encargo.', 'Director demoscópico');
             if (g.flag('mano')) return g.say('Cubiertos, un abrelatas y una calculadora con la tecla «=» gastada de tanto usarla al revés.');
             g.set('mano'); g.give('manopla');
             g.say('Entre cucharones y encuestas de 2019 encuentras una manopla de horno.');
           } },
-        { id: 'nevera', x: 88, y: 50, emoji: '🧊', s: 9, label: 'Nevera (con imanes)',
+        { id: 'nevera', x: 77.5, y: 36, emoji: '🧊', s: 5, z: 101, label: 'Nevera (con imanes)',
           look(g) {
             g.doc('🧊 Ficha técnica (sujeta con un imán de «I ❤ Muestreo»)', `<p><b>Universo:</b> residentes en Ventanilla Alta, mayores de 18 años. <b>Muestra:</b> 1.000 entrevistas.</p>
               <table class="tbl"><tr><td><b>Grupo de edad</b></td><td><b>Peso en la población</b></td><td><b>Entrevistas</b></td></tr>
@@ -958,7 +965,7 @@
               <tr><td>55–74</td><td>30 %</td><td>200</td></tr><tr><td>75 o más</td><td>20 %</td><td>200</td></tr></table>
               <p class="small">Los jóvenes están sobrerrepresentados porque contestan por Instagram. Para corregirlo existe la ponderación (ver recetario).</p>`);
           } },
-        { id: 'becario', x: 76, y: 60, emoji: '🧑‍🎓', s: 7, label: 'Becario',
+        { id: 'becario', x: 88, y: 57.14, emoji: '🧑‍🎓', s: 12, behind: 'mesa', label: 'Becario',
           look(g) {
             g.say('—Lo he visto con mis propios ojos: han cocinado DOS cifras de la nota de prensa. Las demás están bien ponderadas.', 'Becario');
             g.say('—He bloqueado la puerta trasera con un código: los valores reales de esas dos cifras, en el orden en que salen en la nota. Los datos crudos están en el horno, que es donde se cocinan las cosas aquí.', 'Becario');
