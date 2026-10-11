@@ -972,7 +972,7 @@
         { emoji: '🗂️', x: 15.5, y: 53.61, s: 4, on: 'mesaBecario' },
       ],
       hotspots: [
-        { id: 'plataforma', x: 34, y: 52.72, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🔌'), s: 5,
+        { id: 'plataforma', x: 34, y: 52.28, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🖥️'), s: 5.5,
           label: (g) => (g.flag('pc') ? (g.flag('credito') ? 'Plataforma CAFÉ-MRR (en tu portátil)' : 'Plataforma CAFÉ-MRR (pide el certificado de crédito)') : 'Puesto libre con toma de red'),
           look(g) {
             if (!g.flag('pc')) return g.say('Un puesto libre con toma de red. Un cartel: «La plataforma CAFÉ-MRR solo funciona en equipos dados de alta por el CAU. Equipos particulares, abstenerse. Equipos del CAU, también, si no arrancan».');
@@ -1017,9 +1017,9 @@
           look(g) {
             g.doc('🏘️ Padrón municipal (cifras oficiales a 1 de enero)', `<table class="tbl"><tr><td>Ciudad Sede</td><td>1.204.330</td></tr><tr><td>Villabajo</td><td>5.012</td></tr><tr><td>Villarriba</td><td>4.987</td></tr><tr><td>Quintanilla del Expediente</td><td>312</td></tr></table><p class="small">Villarriba y Villabajo llevan años discutiendo quién tiene más habitantes. Ahora ya lo saben.</p>`);
           } },
-        { id: 'caja', x: 23.5, y: 76.22, emoji: '📦', s: 6.5, label: 'Caja de facturas',
+        { id: 'caja', x: 50.5, y: 76.22, emoji: '📦', s: 6.5, label: 'Caja de facturas',
           look(g) { g.doc('📦 Caja de facturas', `<p class="small">Once facturas, ordenadas por número de registro de entrada (R-01 es la primera que entró).</p><div class="s5-scroll">${factTable()}</div>`); } },
-        { id: 'papelera', x: 50.5, y: 73.75, emoji: '🗑️', s: 5.9, label: 'Papelera',
+        { id: 'papelera', x: 21.5, y: 73.75, emoji: '🗑️', s: 5.9, label: 'Papelera',
           look(g) {
             if (!g.flag('ad2')) { g.set('ad2'); g.say('Entre envoltorios de turrón aparece un papel arrugado con una chincheta: ¡la Adenda nº 2!'); g.give('adenda2'); return; }
             g.say('Envoltorios de turrón y un borrador de discurso: «Hemos ejecutado el 100 % de los fondos (de los que hemos ejecutado)».');
