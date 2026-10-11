@@ -830,16 +830,15 @@
       outro: 'Declaración presentada correctamente. Sin embargo, para corregir su expediente anterior hace falta aprobar una ley. Y para aprobar una ley hace falta un gobierno. Llevamos 287 días en funciones.',
       scene: { wall: '#d9e0d0', floor: '#8a8f7f', floorH: 32, pattern: 'carpet' },
       decor: [
-        { kind: 'shelf', id: 'perchero', l: 4.5, t: 28.4, w: 9, h: 1.4 },
+        { kind: 'shelf', id: 'perchero', l: 5.5, t: 28.4, w: 7, h: 1.4 },
         { kind: 'window', l: 83, t: 19.1, w: 13, h: 29.8 },
         { kind: 'table', id: 'mesa', l: 17, t: 58.9, w: 16, h: 17.1 },
         { kind: 'desk', id: 'escritorio', l: 38, t: 58.9, w: 22, h: 17.1 },
         { kind: 'desk', id: 'puesto2', l: 81.5, t: 58.9, w: 16, h: 17.1 },
-        { emoji: '🖥️', x: 89.5, y: 53.57, s: 6, on: 'puesto2' },
-        { emoji: '🪑', x: 47, y: 68.84, s: 12.5 },
+        { emoji: '🖨️', x: 89.5, y: 54.19, s: 5.3, on: 'puesto2' },
       ],
       hotspots: [
-        { id: 'tramos', x: 26, y: 31.3, sign: 'REGLAS IRPF', sub: '📊', w: 13, label: 'Cartel: reglas del IRPF',
+        { id: 'tramos', x: 31, y: 31.3, sign: 'REGLAS IRPF', sub: '📊', w: 13, label: 'Cartel: reglas del IRPF',
           look(g) {
             g.doc('📊 IRPF — Reglas simplificadas (solo para este juego)', `<p><b>1. Base</b> = ingresos brutos − deducciones.</p>
               <p><b>2. Solo son deducibles:</b> donativos y aportaciones a planes de pensiones. Nada más. Ni gafas, ni abogados, ni disgustos.</p>
@@ -848,7 +847,7 @@
               <p class="small">Cada tramo se aplica solo a la parte de la base que cae dentro de él.</p>
               <p><b>4. Resultado</b> = cuota − retenciones ya practicadas.</p>`);
           } },
-        { id: 'lema', x: 49, y: 24, z: 250, sign: 'HACIENDA SOMOS TODOS', sub: '(unos más que otros)', w: 18, label: 'Cartel institucional',
+        { id: 'lema', x: 51.5, y: 24, z: 250, sign: 'HACIENDA SOMOS TODOS', sub: '(unos más que otros)', w: 18, label: 'Cartel institucional',
           look(g) { g.say('«Hacienda somos todos». Alguien ha añadido a boli: «unos más que otros».'); } },
         { id: 'terminal', x: 46, y: 53.12, emoji: '🖥️', s: 6.5, on: 'escritorio', label: 'Terminal Renta Web', look: rentaModal },
         { id: 'carpeta', x: 21.5, y: 54.45, emoji: '📁', s: 5, on: 'mesa', label: 'Tu carpeta',
@@ -856,7 +855,7 @@
             if (!g.flag('nom')) { g.set('nom'); g.say('Dentro de tu carpeta está el certificado de retenciones de tu empresa.'); g.give('nomina'); }
             else g.say('La carpeta está vacía. Como tu cuenta después de la renta.');
           } },
-        { id: 'abrigo', x: 9, y: 36.42, emoji: '🧥', s: 16.4, label: 'Tu abrigo',
+        { id: 'abrigo', x: 9, y: 34.88, emoji: '🧥', s: 12.8, label: 'Tu abrigo',
           look(g) {
             if (!g.flag('don')) { g.set('don'); g.say('En el bolsillo hay un recibo doblado: un donativo que hiciste en un arrebato de solidaridad.'); g.give('donativo'); }
             else g.say('Solo quedan caramelos de menta pegados al forro.');
@@ -866,7 +865,7 @@
             if (!g.flag('pen')) { g.set('pen'); g.say('Entre la publicidad, una carta de tu plan de pensiones.'); g.give('pensiones'); }
             else g.say('Publicidad de un gimnasio y una oferta de fibra. Nada deducible.');
           } },
-        { id: 'gafas', x: 54.5, y: 54.45, emoji: '👓', s: 5, on: 'escritorio', label: 'Factura sobre la mesa',
+        { id: 'gafas', x: 54.5, y: 54.45, emoji: '🧾', s: 5, on: 'escritorio', label: 'Factura sobre la mesa',
           look(g) {
             if (!g.flag('gaf')) { g.set('gaf'); g.say('Una factura de óptica. ¿Será deducible?'); g.give('gafas'); }
             else g.say('Aquí estaban las gafas. Ahora las llevas puestas, para leer mejor lo que vas a pagar.');
