@@ -584,12 +584,13 @@
         { kind: 'window', l: 87, t: 4.2, w: 11, h: 21.3 },
         { kind: 'shelf', id: 'repisa', l: 54, t: 22.3, w: 6.5, h: 1.4 },
         { kind: 'shelf', id: 'perchero', l: 1.5, t: 31.7, w: 11, h: 1.2 },
-        { kind: 'pedestal', id: 'mesaTribunal', l: 45, t: 56.32, w: 24, h: 16.68, color: '#2f5a45' },
+        { kind: 'pedestal', id: 'mesaTribunal', l: 45, t: 56.32, w: 25, h: 16.68, color: '#2f5a45' },
         { kind: 'desk', id: 'mesaMaterial', l: 77, t: 57.17, w: 18, h: 16.83 },
-        { kind: 'desk', id: 'mesaPupitre', l: 11, t: 63.12, w: 15, h: 17.88 },
+        { kind: 'desk', id: 'mesaPupitre', l: 12.5, t: 63.12, w: 13, h: 17.88 },
         { kind: 'desk', id: 'mesaVecino', l: 29, t: 63.12, w: 13, h: 17.88 },
-        { kind: 'pedestal', id: 'mesita', l: 70, t: 79.02, w: 7, h: 15.98, color: '#8a6a48' },
-        { emoji: '👨‍💼', x: 49.5, y: 50.4, s: 10.3, behind: 'mesaTribunal' },
+        { emoji: '🗂️', x: 47, y: 53.23, s: 3.48, on: 'mesaTribunal' },
+        { emoji: '🪑', x: 33.5, y: 68.84, s: 12.56, z: 150 },
+        { emoji: '🪑', x: 83, y: 62.95, s: 11.87, z: 122 },
         { emoji: '📦', x: 91.5, y: 52.19, s: 5.6, on: 'mesaMaterial' },
       ],
       hotspots: [
@@ -610,7 +611,7 @@
           look(g) { g.say('Quedan 87 minutos. El reloj lleva parado desde las oposiciones de 2009, pero el tribunal lo considera oficial.'); } },
         { id: 'silencio', x: 76, y: 31.3, sign: 'SILENCIO', sub: 'Examen en curso', w: 14, label: 'Cartel de silencio',
           look(g) { g.say('«SILENCIO. EXAMEN EN CURSO». Debajo, a boli: «...y en 2032, y en 2033, y en 2034».'); } },
-        { id: 'tribunal', x: 59, y: 50.2, emoji: '👩‍⚖️', s: 10.5, behind: 'mesaTribunal', label: 'Tribunal calificador',
+        { id: 'tribunal', x: 57.5, y: 50.2, emoji: '👩‍⚖️', s: 10.5, behind: 'mesaTribunal', label: 'Tribunal calificador',
           look(g) {
             if (!g.flag('ident')) return g.say('—Identifíquese antes de empezar. Muéstreme su DNI (selecciónelo y úselo conmigo). Sin DNI, no hay cuadernillo.', 'Presidenta del tribunal');
             g.say('—Cuando termine, entrégueme la hoja de respuestas. Solo se admite lápiz del nº 2. Material lo reparte el conserje, previo impreso.', 'Presidenta del tribunal');
@@ -666,7 +667,7 @@
             dni(g) { g.say('—No le pido el DNI, le pido el impreso. Que es otra cosa.', 'Conserje'); },
             cartaMesa(g) { g.say('—¿Mesa electoral? A mí me tocó cuatro veces seguidas. Por eso me hice conserje de oposiciones: aquí las cartas no llegan. Guárdesela, que lleva su dirección y eso siempre sirve para algo.', 'Conserje'); },
           } },
-        { id: 'pupitre', x: 16, y: 68.84, emoji: '🪑', s: 12.56, behind: 'mesaPupitre', label: 'Tu pupitre',
+        { id: 'pupitre', x: 16.5, y: 68.84, emoji: '🪑', s: 12.56, behind: 'mesaPupitre', label: 'Tu pupitre',
           look(g) {
             if (!g.has('cuadernillo')) return g.say('Tu pupitre, con una pegatina: «Ocupe el asiento con su número de opositor». Bueno, pues este. De momento no tienes nada que leer en él.');
             g.doc('📘 Primer ejercicio — Cuadernillo', L1_INSTR + l1QuestionsHTML(false, []));
@@ -693,11 +694,11 @@
               <li>Resolución de 30 de febrero: se añade el tema 501, «Novedades legislativas de esta mañana».</li></ul>
               <p class="tiny">Nota de la Secretaría del tribunal: se ruega a los aspirantes que comprueben la validez de las resoluciones antes de estudiárselas. Las fechas imposibles producen resoluciones nulas de pleno derecho.</p>`);
           } },
-        { id: 'bombo', x: 73.5, y: 74.58, emoji: '🎱', s: 5, on: 'mesita', label: 'Bombo del sorteo de temas',
+        { id: 'bombo', x: 67, y: 51.52, emoji: '🔮', s: 5.4, on: 'mesaTribunal', label: 'Bombo del sorteo de temas',
           look(g) { g.say('El bombo para el ejercicio oral. Sale la bola 237: «El silencio administrativo positivo: mito o leyenda». La que se comió Michi. Por suerte, el oral es dentro de seis meses.'); } },
         { id: 'papelera', x: 5, y: 82.39, emoji: '🗑️', s: 6.3, label: 'Papelera',
           look(g) { g.say('Un folleto de academia: «El 100 % de nuestros alumnos aprobados, aprueban». Y un lápiz... no: un palito de helado. Falsa alarma.'); } },
-        { id: 'folleto', x: 10.5, y: 84.56, emoji: '📄', s: 5, label: 'Hoja tirada en el suelo',
+        { id: 'folleto', x: 9.5, y: 81.9, emoji: '📄', s: 5, label: 'Hoja tirada en el suelo',
           look(g) { g.say('Una hoja de respuestas de la convocatoria de 2019, rellena a bolígrafo. Anulada. Su dueño sigue opositando.'); } },
       ],
       combos: {
