@@ -1056,18 +1056,19 @@
       stars: 4,
       intro: 'Domingo 26 de mayo de 2030, 19:40. Llevas doce horas presidiendo la Mesa 03-013-C con la credencial colgada del cuello. El vocal duerme, la interventora de UVA protesta por todo, el apoderado de FAROL ha traído bocadillos para tres días y acaba de entrar el policía del turno de tarde, que no te ha visto en su vida.<br><br>Quedan los últimos votantes en la cola. Luego habrá que abrir la urna y contar. Ah, y tu voto por correo no ha llegado: menos mal que guardaste el justificante.<br><br><b>Objetivo:</b> decide quién puede votar, cierra la votación, haz el escrutinio y firma un acta sin errores.',
       outro: 'Acta firmada por triplicado. Con tu copia en el bolsillo, la llevas a la Junta Electoral Provincial... donde el ordenador que reparte los escaños se ha colgado. Y adivina qué mesa falta por sumar.',
-      scene: { wall: '#cfe0c9', floor: '#a29a86', floorH: 38, pattern: 'tiles' },
+      scene: { wall: '#cfe0c9', floor: '#a29a86', floorH: 32, pattern: 'tiles' },
       carry: ['credencial', 'justificante'],
       decor: [
-        { kind: 'screen', id: 'pizarra', l: 21, t: 23.25, w: 38.5, h: 21.31 },
-        { kind: 'partition', id: 'cabinaPanel', l: 2, t: 21.31, w: 17.5, h: 40.69, color: '#a9b4bf' },
-        { kind: 'desk', id: 'mesa', l: 21, t: 56.32, w: 34, h: 15.68 },
-        { kind: 'desk', id: 'mesaApoderado', l: 83, t: 55.44, w: 14, h: 15.56 },
-        { emoji: '🥪', x: 93.3, y: 52.77, s: 3, on: 'mesaApoderado' }, { emoji: '🥪', x: 95.6, y: 52.77, s: 3, on: 'mesaApoderado' },
-        { emoji: '🧍‍♀️', x: 75, y: 49.83, s: 21.56 },
+        { kind: 'partition', id: 'cabinaPanel', l: 4, t: 29.5, w: 14.5, h: 41.5, color: '#a9b4bf' },
+        { kind: 'screen', id: 'pizarra', l: 22, t: 23.38, w: 36, h: 25.5 },
+        { kind: 'window', l: 61, t: 19.1, w: 10.5, h: 29.8 },
+        { kind: 'desk', id: 'mesa', l: 20.5, t: 58.87, w: 39.5, h: 17.13 },
+        { kind: 'desk', id: 'mesaApoderado', l: 82.5, t: 57.17, w: 15, h: 16.83 },
+        { emoji: '🥪', x: 93.5, y: 54.5, s: 3, on: 'mesaApoderado' }, { emoji: '🥪', x: 96, y: 54.5, s: 3, on: 'mesaApoderado' },
+        { emoji: '🧍‍♀️', x: 78, y: 54.58, s: 24.09 },
       ],
       hotspots: [
-        { id: 'censo', x: 28.5, y: 28, z: 250, sign: 'LISTA DEL CENSO', sub: 'Mesa C · apellidos O–Z', w: 14, label: 'Lista del censo de la mesa',
+        { id: 'censo', x: 31, y: 32, z: 20, sign: 'LISTA DEL CENSO', sub: 'Mesa C · apellidos O–Z', w: 14, label: 'Lista del censo de la mesa',
           look(g) {
             const rows = [['Olmedo Rius, Fausto', '10.203.040-A', 1958], ['Ordóñez Bel, Rosario', '11.908.112-C', 1962], ['Ortega Ruiz, Remigia', '12.345.678-Z', 1941], ['Ortiz Vela, Ramón', '22.876.543-K', 1932],
               ['Paciente Sufrido/a, Ciudadano/a', '07.345.189-R', 1993], ['Palomo Ruiz, Andrés', '14.765.001-D', 1971], ['Pardo Sáez, Tomás', '33.112.009-B', 1977], ['Prieto Gual, Inés', '16.220.318-F', 1988],
@@ -1076,7 +1077,7 @@
               ['Urrutia Gil, Jon', '26.410.973-W', 1968], ['Vega Ríos, Lucía', '27.775.140-X', 2002], ['Vidal Pons, Sergio', '55.443.322-M', 1990], ['Zapata Gil, Lorenzo', '28.119.006-Y', 1949]];
             g.doc('📋 Censo — Distrito 03 · Sección 013 · Mesa C (O–Z)', `<table class="tbl"><tr><td><b>Elector/a</b></td><td><b>DNI · nacimiento</b></td></tr>${rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]} · ${r[2]}</td></tr>`).join('')}</table><p class="small">20 electores. Los apellidos de la A a la Ñ votan en las mesas A y B, en el aula de al lado.</p>`);
           } },
-        { id: 'correoLista', x: 52, y: 28, sign: 'VOTO POR CORREO', sub: '📮', w: 13, z: 250, label: 'Lista de voto por correo',
+        { id: 'correoLista', x: 50, y: 32, z: 20, sign: 'VOTO POR CORREO', sub: '📮', w: 15, label: 'Lista de voto por correo',
           look(g) {
             g.doc('📮 Electores de esta mesa que solicitaron voto por correo', `<table class="tbl">
               <tr><td>Paciente Sufrido/a, Ciudadano/a</td><td>No ha llegado (Correos lo ha traspapelado)</td></tr>
@@ -1084,11 +1085,11 @@
               <tr><td>Zapata Gil, Lorenzo</td><td>Llegado ✔</td></tr></table>
               <p class="small">Los votos por correo llegados se introducen en la urna al cerrar la votación.</p>`);
           } },
-        { id: 'mural', x: 90, y: 28, sign: 'MURAL DE 3.º B', sub: '🖍️', w: 13, label: 'Mural infantil',
+        { id: 'mural', x: 89, y: 31.3, z: 250, sign: 'MURAL DE 3.º B', sub: '🖍️', w: 13, label: 'Mural infantil',
           look(g) { g.say('Un mural de 3.º B: «Cuando sea mayor quiero ser interventora». Al lado, otro: «Yo quiero ser abstención». El colegio tiene futuro.'); } },
-        { id: 'reloj', x: 41, y: 16.87, emoji: '🕗', s: 5, label: 'Reloj: 19:40',
+        { id: 'reloj', x: 40, y: 15.74, emoji: '🕗', s: 5, label: 'Reloj: 19:40',
           look(g) { g.say('19:40. A las 20:00 se cierra la votación. A las 20:01 el apoderado de FAROL ya está preguntando por los resultados.'); } },
-        { id: 'manual', x: 35.5, y: 51.88, emoji: '📘', s: 5, on: 'mesa', label: 'Manual del presidente de mesa',
+        { id: 'manual', x: 47.3, y: 54.43, emoji: '📘', s: 5, on: 'mesa', label: 'Manual del presidente de mesa',
           look(g) {
             g.doc('📘 Manual del presidente/a de mesa (extracto)', `<p><b>A) ¿Quién puede votar?</b></p><ol>
               <li>Hay que identificarse con <b>DNI, pasaporte o carné de conducir ORIGINALES</b>, con fotografía. Fotocopias, nunca. Un documento <b>caducado sí vale</b> si la foto permite reconocer al votante.</li>
@@ -1103,7 +1104,7 @@
               <li>Papeleta <b>sin sobre</b> o de <b>otra elección</b>: <b>NULO</b>.</li>
               <li>Sobre que contenga, además de la papeleta, <b>cualquier objeto</b> (billetes, chicles, estampitas): <b>NULO</b>.</li></ul>`);
           } },
-        { id: 'urna', x: 41, y: 49.91, emoji: '🗳️', s: 7.22, on: 'mesa', label: 'Urna',
+        { id: 'urna', x: 42, y: 53.89, emoji: '🗳️', s: 5.6, on: 'mesa', label: 'Urna',
           look(g) {
             if (!g.flag('cerrada')) return g.say('—¡La urna no se abre hasta que se cierre la votación! —grita la interventora de UVA—. ¡Protesto! —¿Por qué? —Por si acaso.');
             if (!g.flag('poli')) return g.say('—¡Quieto ahí! —El policía del turno de tarde se interpone entre tú y la urna—. A usted no le conozco. La urna solo la abre el presidente o la presidenta de la mesa, debidamente acreditado/a. Aquí cualquiera dice que preside.', 'Policía (turno de tarde)');
@@ -1125,19 +1126,19 @@
               <li>(Voto por correo) Papeleta de NIDAC.</li>
               <li>(Voto por correo) Papeleta de CAÑA. Huele a calamares.</li></ol>`);
           } },
-        { id: 'numerada', x: 47.5, y: 51.88, emoji: '📋', s: 5, on: 'mesa', label: 'Lista numerada de votantes',
+        { id: 'numerada', x: 36.5, y: 54.43, emoji: '📋', s: 5, on: 'mesa', label: 'Lista numerada de votantes',
           look(g) {
             const l = [['Olmedo Rius, Fausto', '9:03'], ['Ruano Pi, Celia', '9:10'], ['Quesada Luna, Amparo', '9:31'], ['Palomo Ruiz, Andrés', '9:45'], ['Soler Vidal, Marina', '10:02'], ['Prieto Gual, Inés', '10:20'],
               ['Pardo Sáez, Tomás', '10:42'], ['Segura Bas, Óscar', '11:15'], ['Urrutia Gil, Jon', '12:30'], ['Ordóñez Bel, Rosario', '13:05'], ['Toledano Mir, Eloy', '17:48'], ['Vega Ríos, Lucía', '19:22']];
             g.doc('📋 Lista numerada de votantes', `<table class="tbl">${l.map((r, i) => `<tr><td>${i + 1}. ${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table><p class="small">Han votado 12 electores hasta las 19:40.</p>`);
           } },
-        { id: 'acta', x: 30.5, y: 51.88, emoji: '📝', s: 5, on: 'mesa', label: 'Acta de escrutinio', show: (g) => g.flag('cerrada'),
+        { id: 'acta', x: 33, y: 54.43, emoji: '📝', s: 5, on: 'mesa', label: 'Acta de escrutinio', show: (g) => g.flag('cerrada'),
           look(g) {
             if (!g.flag('poli')) return g.say('Sin abrir la urna, ¿qué vas a escrutar? Y el policía del turno de tarde no deja que nadie se acerque a ella sin acreditarse.');
             if (!g.flag('protestaOk')) return g.say('—¡Protesto! No pienso firmar un acta presidida por alguien que ni siquiera ha votado. Lo dice la lista de voto por correo: su voto NO ha llegado. ¡Abstencionista! —Y cruza los brazos encima del acta.', 'Interventora de UVA');
             l6Acta(g);
           } },
-        { id: 'interventora', x: 25.5, y: 50.71, emoji: '🙅‍♀️', s: 8.2, behind: 'mesa', tag: 'UVA', label: 'Interventora de UVA',
+        { id: 'interventora', x: 29.5, y: 53.63, emoji: '🙅‍♀️', s: 10.18, behind: 'mesa', tag: 'UVA', label: 'Interventora de UVA',
           look(g) {
             if (g.flag('protestaOk')) return g.say('—Protesto. —¿Por qué? —Todavía no lo sé, pero lo apunto ya y luego lo relleno. Así se gana tiempo.', 'Interventora de UVA');
             g.say('—Protesto. Y además tengo una protesta de verdad: usted pidió el voto por correo y su voto no ha llegado. Un/a presidente/a que no vota... Yo así no firmo nada.', 'Interventora de UVA');
@@ -1149,7 +1150,7 @@
               g.say('—Justificante de imposición... certificado urgente, jueves 23, a las 13:59, dirigido a esta mesa. O sea, que usted votó y lo ha perdido Correos. —Suspira, decepcionada—. Retiro la protesta. Pero la dejo apuntada, por si acaso.', 'Interventora de UVA');
             },
           } },
-        { id: 'policia', x: 41, y: 38.61, emoji: '👮', s: 8.43, behind: 'mesa', label: 'Policía (turno de tarde)',
+        { id: 'policia', x: 54, y: 53.7, emoji: '👮', s: 11.63, behind: 'mesa', label: 'Policía (turno de tarde)',
           look(g) {
             if (g.flag('poli')) return g.say('—A sus órdenes, presidente/a. Yo vigilo la urna; usted, el resto. Y si sobra algún bocadillo, también lo vigilo.', 'Policía (turno de tarde)');
             g.say('—Buenas tardes. Acabo de entrar de turno y aquí no conozco a nadie. Si alguien quiere tocar la urna, que me enseñe la credencial. Aunque lleve doce horas sentado/a ahí, que eso no acredita nada.', 'Policía (turno de tarde)');
@@ -1161,12 +1162,12 @@
               g.say('—Credencial de la Junta Electoral de Zona: presidente/a de la Mesa 03-013-C. Todo en regla. Cuando se cierre la votación, la urna es suya.', 'Policía (turno de tarde)');
             },
           } },
-        { id: 'apoderado', x: 88.3, y: 46.16, emoji: '🧑‍🍳', s: 11.63, behind: 'mesaApoderado', tag: 'FAROL', label: 'Apoderado de FAROL',
+        { id: 'apoderado', x: 88.5, y: 52.09, emoji: '🧑‍🍳', s: 11.43, behind: 'mesaApoderado', tag: 'FAROL', label: 'Apoderado de FAROL',
           look(g) { g.say('—¿Un bocadillo? Tengo de tortilla, de calamares y de tortilla de calamares. Si el escrutinio sale bien, hay postre.', 'Apoderado de FAROL'); } },
-        { id: 'vocal', x: 52.5, y: 54.08, emoji: '😴', s: 5, behind: 'mesa', label: 'Vocal primero (dormido)',
+        { id: 'vocal', x: 23.5, y: 56.06, emoji: '😴', s: 5, behind: 'mesa', label: 'Vocal primero (dormido)',
           look(g) { g.say('Zzz... —murmura algo en sueños—: «...arrugada sí vale... dos iguales cuentan una...». Duerme, pero se ha estudiado el manual.'); } },
-        { id: 'cola', x: 67.5, y: 55.22, emoji: '🧍', s: 23.38, label: 'Cola de votantes', look: l6Cola },
-        { id: 'cabina', x: 11.8, y: 41.08, emoji: '🚪', s: 23.53, label: 'Cabina de votación',
+        { id: 'cola', x: 71, y: 58.78, emoji: '🧍', s: 26.12, label: 'Cola de votantes', look: l6Cola },
+        { id: 'cabina', x: 11.25, y: 51.15, emoji: '🚪', s: 22.33, label: 'Cabina de votación',
           look(g) { g.say('Una cabina con cortinilla. Dentro, papeletas de todos los partidos y un señor que lleva veinte minutos decidiéndose entre dos que proponen exactamente lo mismo.'); } },
       ],
       hints: [
