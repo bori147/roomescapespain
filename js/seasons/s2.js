@@ -1544,17 +1544,17 @@
       decor: [
         { kind: 'shutter', l: 2, t: 19.69, w: 14, h: 50.31, color: '#9aa0a6' },
         { kind: 'window', l: 75, t: 19.68, w: 14, h: 30.63 },
-        { kind: 'shelf', id: 'balda', l: 46, t: 35, w: 18, h: 1.2 },
+        { kind: 'shelf', id: 'balda', l: 47, t: 35, w: 18, h: 1.2 },
         { kind: 'counter', id: 'barra', l: 38, t: 49.34, w: 30, h: 23.66 },
-        { kind: 'table', id: 'mesa', l: 71, t: 61.95, w: 26, h: 18.05 },
-        { emoji: '📗', x: 52.5, y: 31.89, s: 3.5, on: 'balda' },
-        { emoji: '🍩', x: 61.5, y: 47.12, s: 2.5, on: 'barra' },
-        { emoji: '☕', x: 65, y: 46.67, s: 3, on: 'barra' },
-        { emoji: '☕', x: 84.5, y: 59.28, s: 3, on: 'mesa' },
+        { kind: 'pedestal', id: 'mesa', color: '#8a6a48', l: 71, t: 61.95, w: 26, h: 18.05 },
+        { emoji: '📗', x: 53.5, y: 31.89, s: 3.5, on: 'balda' },
+        { emoji: '🧂', x: 61.5, y: 46.67, s: 3, on: 'barra' },
+        { emoji: '☕', x: 65.5, y: 46.67, s: 3, on: 'barra' },
+        { emoji: '☕', x: 82.5, y: 59.28, s: 3, on: 'mesa' },
       ],
       init(g) { g.set('saldo', 312); },
       hotspots: [
-        { id: 'bases', x: 30, y: 32.4, sign: 'BASES DEL KIT DIGITAL', sub: '📜', w: 20, label: 'Bases de la convocatoria',
+        { id: 'bases', x: 34, y: 32.4, sign: 'BASES DEL KIT DIGITAL', sub: '📜', w: 20, label: 'Bases de la convocatoria',
           look(g) {
             g.doc('📜 Bases del Kit Digital (resumen para supervivientes)', `<p>Para justificar la ayuda, presente en el portal:</p>
               <ol><li><b>Captura de la web</b> con los logotipos que exige el <b>Manual de publicidad</b>.</li>
@@ -1567,7 +1567,7 @@
           } },
         { id: 'calendario', x: 69, y: 27.28, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Hoy termina el plazo de justificación. A las 23:59, cómo no. El portal suele caerse a las 23:00, por tradición.'); } },
-        { id: 'cajero', x: 78.5, y: 30, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
+        { id: 'cajero', x: 78.5, y: 39, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
           look(g) { g.say('El cajero de tu banco, en la acera de enfrente. Admite ingresos en efectivo. Para sacar dinero, cobra comisión; para meterlo, de momento no.'); },
           use: {
             efectivo(g) {
@@ -1575,7 +1575,7 @@
               g.say(`Cruzas la calle con la recaudación y la ingresas en el cajero. Nuevo saldo: ${g.flag('saldo')} €. El cajero te da las gracias. Es lo único que te las da hoy.`, 'Cajero');
             },
           } },
-        { id: 'manual', x: 49, y: 30.56, emoji: '📘', s: 5, on: 'balda', label: 'Manual de publicidad (88 páginas)',
+        { id: 'manual', x: 50, y: 30.56, emoji: '📘', s: 5, on: 'balda', label: 'Manual de publicidad (88 páginas)',
           look(g) {
             g.doc('📘 Manual de publicidad de las ayudas (extracto de la página 61)', `<p>El pie de la web del beneficiario mostrará <b>exactamente</b> estos logotipos, ni uno más ni uno menos:</p>
               <ul><li>El emblema de la Unión Europea <b>con el texto</b> «Financiado por la Unión Europea – NextGenerationEU». <b>Nunca la bandera sola</b>.</li>
@@ -1603,7 +1603,7 @@
               g.give('efectivo');
             } else g.say('Vacía. Como tus fines de semana.');
           } },
-        { id: 'buzon', x: 21.5, y: 65.15, emoji: '📬', s: 9.95, label: 'Buzón',
+        { id: 'buzon', x: 9, y: 67.75, emoji: '✉️', s: 5, label: 'Buzón',
           look(g) {
             if (!g.flag('mail')) {
               g.set('mail');
@@ -1611,7 +1611,7 @@
               g.give('facturaAgente');
             } else g.say('Solo propaganda: «¡Digitalice su negocio! (Si ya lo ha hecho, digitalícelo otra vez)».');
           } },
-        { id: 'ayudas', x: 59, y: 30.56, emoji: '🗃️', s: 5, on: 'balda', label: 'Carpeta «Ayudas recibidas»',
+        { id: 'ayudas', x: 60, y: 30.56, emoji: '🗃️', s: 5, on: 'balda', label: 'Carpeta «Ayudas recibidas»',
           look(g) {
             g.doc('🗃️ Ayudas y premios que has recibido', `<table class="tbl">
               <tr><td>2023 · Subvención autonómica «Emprende Ya» (pública)</td><td>1.000 €</td></tr>
@@ -1621,7 +1621,7 @@
               <tr><td>2027 · Descuento del 10 % en la ferretería de tu cuñado (un «favor»)</td><td>14 €</td></tr></table>
               <p class="small">El premio de la porra está enmarcado. La ayuda de los toldos, también: el toldo se lo llevó el viento.</p>`);
           } },
-        { id: 'cunado', x: 78, y: 53.72, emoji: '🙋‍♂️', s: 11, behind: 'mesa', label: 'Tu cuñado',
+        { id: 'cunado', x: 78, y: 55.05, emoji: '🙋‍♂️', s: 9.5, behind: 'mesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—¿Kit Digital? Yo te hacía la web gratis. En Comic Sans y con musiquita.',
