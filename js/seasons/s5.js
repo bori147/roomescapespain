@@ -1058,13 +1058,15 @@
       decor: [
         { kind: 'vitrine', id: 'cristalera', l: 56, t: 12, w: 19, h: 52, color: '#5b6475' },
         { kind: 'shelf', id: 'pupitre', l: 62, t: 40.6, w: 10, h: 1.4 },
-        { emoji: '👩‍💼', x: 61, y: 33.55, s: 9.5, behind: 'cristalera' },
+        { emoji: '🎧', x: 68, y: 37.04, s: 4, on: 'pupitre' },
         { kind: 'flag-eu', l: 83, t: 20, w: 9, h: 10.7 },
         { kind: 'pedestal', id: 'aparador', l: 79, t: 49.4, w: 17, h: 18.6, color: '#6d5238' },
         { kind: 'table', id: 'mesa', l: 25.5, t: 59.5, w: 29, h: 16.5 },
-        { emoji: '🪑', x: 40.5, y: 62.85, s: 11.42, behind: 'mesa' },
-        { emoji: '🎙️', x: 39.5, y: 55.94, s: 4, on: 'mesa' },
-        { emoji: '🎙️', x: 44.5, y: 55.94, s: 4, on: 'mesa' },
+        { emoji: '🪑', x: 38.5, y: 62.85, s: 11.42, behind: 'mesa' },
+        { emoji: '🪑', x: 48, y: 62.85, s: 11.42, behind: 'mesa' },
+        { emoji: '🎙️', x: 41.5, y: 55.94, s: 4, on: 'mesa' },
+        { emoji: '🎙️', x: 52.5, y: 55.94, s: 4, on: 'mesa' },
+        { emoji: '🔢', x: 23, y: 37.78, s: 2.5 },
       ],
       hotspots: [
         { id: 'puerta', x: 14, y: 40.67, emoji: '🚪', s: 26.25, label: 'Puerta de la sala (código de 4 cifras)',
@@ -1076,7 +1078,7 @@
               ok: () => { g.say('Bip. La puerta se abre. En el pasillo, un ujier te ofrece un croissant: es el último. Te lo has ganado. Y, con una reverencia, una grapadora homologada UE: «De parte de la Representación, por lo del informe».'); g.give('grapadoraUE'); g.win(); },
             });
           } },
-        { id: 'cabina', x: 67.5, y: 36.16, emoji: '🎧', s: 5, on: 'pupitre', z: 101, label: 'Cabina de interpretación (ES)',
+        { id: 'cabina', x: 61, y: 34.22, emoji: '👩‍💼', s: 8.75, behind: 'cristalera', label: 'Cabina de interpretación (ES)',
           look(g) {
             if (!g.flag('nota')) return g.say('—¿Es usted el/la de los fondos? La Representación ha dejado una nota para usted. Pero me han dicho que solo se la dé a cambio del informe del auditor. Órdenes. En veinticuatro idiomas.', 'Intérprete');
             g.say('—Llevo seis horas traduciendo «llegaremos a un acuerdo en la próxima cumbre». Ya me sale en sueños. En húngaro.', 'Intérprete');
@@ -1090,7 +1092,7 @@
           } },
         { id: 'regA', x: 29.5, y: 55.05, emoji: '📘', s: 5, on: 'mesa', label: 'Reglamento (UE) 2032/118', look: (g) => regDoc(g, 'A') },
         { id: 'regB', x: 34.5, y: 55.05, emoji: '📙', s: 5, on: 'mesa', label: 'Reglamento (UE) 2032/97', look: (g) => regDoc(g, 'B') },
-        { id: 'manual', x: 92.5, y: 44.96, emoji: '📒', s: 5, on: 'aparador', label: 'Manual del becario',
+        { id: 'manual', x: 93.5, y: 44.96, emoji: '📒', s: 5, on: 'aparador', label: 'Manual del becario',
           look(g) {
             g.doc('📒 Manual del becario de la Representación', `<p><b>Capítulo 7. Notas cifradas.</b></p>
               <p>Las notas internas se cifran con el sistema «considerando-palabra»: cada pareja <b>(c, p)</b> remite a la <b>palabra número p</b> del <b>considerando número c</b> del <b>último Reglamento publicado</b> en el Diario Oficial.</p>
@@ -1108,9 +1110,9 @@
               <li><b>Comitología:</b> el arte de crear un comité para decidir qué comité decide.</li><li><b>Acervo:</b> todo lo que ya no se puede cambiar.</li>
               <li><b>Hoja de ruta:</b> documento que no lleva a ninguna parte.</li><li><b>Avance significativo:</b> nada.</li><li><b>Paso histórico:</b> casi nada.</li></ul>`);
           } },
-        { id: 'delegado', x: 48, y: 52.82, emoji: '👨‍💼', s: 9.2, behind: 'mesa', label: 'Delegado de un Estado frugal',
+        { id: 'delegado', x: 48, y: 52.55, emoji: '👨‍💼', s: 9.5, behind: 'mesa', label: 'Delegado de un Estado frugal',
           look(g) { g.say('—Mi país propone recortar el presupuesto de los croissants. Y el de las servilletas. Y el de esta conversación.', 'Delegado frugal'); } },
-        { id: 'croissants', x: 82, y: 44.96, emoji: '🍽️', s: 5, on: 'aparador', label: 'Bandeja de croissants',
+        { id: 'croissants', x: 81.5, y: 44.96, emoji: '🍽️', s: 5, on: 'aparador', label: 'Bandeja de croissants',
           look(g) { g.say('Una bandeja vacía con migas. Un cartel: «Croissants de cortesía». La cortesía se acabó a las 9:03.'); } },
       ],
       hints: [
