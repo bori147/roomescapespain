@@ -940,14 +940,14 @@
       carry: ['dni'],
       scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 60, t: 54, w: 24, h: 9 },
-        { kind: 'counter', l: 5, t: 61, w: 14, h: 6 },
-        { kind: 'column', l: 47, t: 4, w: 4, h: 64 },
-        { kind: 'rug', l: 26, t: 76, w: 40, h: 14, color: '#5a2e2e' },
-        { emoji: '🗄️', x: 52, y: 60, s: 4, o: 0.85 },
+        { kind: 'bookcase', l: 84.5, t: 25.5, w: 12, h: 42.5 },
+        { kind: 'desk', id: 'pupitreMesa', l: 24, t: 58.9, w: 18, h: 17.1 },
+        { kind: 'counter', id: 'mostrador', l: 46.5, t: 48.85, w: 23, h: 23.15 },
+        { kind: 'lectern', id: 'atril', l: 87.5, t: 48.19, w: 6, h: 25.81 },
+        { kind: 'pedestal', id: 'mueble', l: 1.5, t: 77.69, w: 7, h: 17.31, color: '#7a5b3e' },
       ],
       hotspots: [
-        { id: 'normas', x: 16, y: 18, sign: 'ART. 408', sub: '⚖️ Identidad', w: 13, label: 'Normas sobre identidad de nombres',
+        { id: 'normas', x: 28, y: 31.3, sign: 'ART. 408', sub: '⚖️ Identidad', w: 12, z: 250, label: 'Normas sobre identidad de nombres',
           look(g) {
             g.doc('⚖️ Reglamento del Registro — Identidad de denominaciones (simplificado)', `<p>No se puede inscribir una denominación <b>idéntica</b> a otra ya inscrita o reservada. Hay identidad no solo cuando coinciden del todo, sino también cuando <b>solo</b> se diferencian en:</p>
               <ol><li>El <b>orden</b> de las palabras, el <b>género</b> o el <b>número</b> (singular / plural).</li>
@@ -956,15 +956,15 @@
               <li>Letras que <b>suenan igual</b>: b/v, ll/y, o una h muda.</li></ol>
               <p class="small">En cambio, palabras distintas que no suenan igual son distintas: un tranvía no es un trámite, aunque a veces vayan igual de lentos.</p>`);
           } },
-        { id: 'prohibidas', x: 34, y: 18, sign: 'PROHIBIDO', sub: '🚫 Palabras', w: 13, label: 'Cartel de palabras prohibidas',
+        { id: 'prohibidas', x: 45, y: 31.3, sign: 'PROHIBIDO', sub: '🚫 Palabras', w: 13, z: 250, label: 'Cartel de palabras prohibidas',
           look(g) {
             g.doc('🚫 Términos prohibidos', `<p>No pueden incluirse en una denominación términos que induzcan a confusión con organismos públicos:</p>
               <p class="big-num">REAL · NACIONAL · ESTADO · HACIENDA · MINISTERIO · OFICIAL · PÚBLICO</p>
               <p class="small">Ni «Real Churrería», ni «Churros de Hacienda». Sobre todo este último: da miedo.</p>`);
           } },
-        { id: 'calendario', x: 62, y: 14, emoji: '📅', s: 5, label: 'Calendario',
+        { id: 'calendario', x: 60, y: 25.3, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Hoy es lunes, 18 de enero de 2027. El calendario es del Registro: tiene los festivos marcados en rojo y los puentes en rojo más oscuro.'); } },
-        { id: 'registradora', x: 71, y: 46, emoji: '🧑‍💼', s: 8, label: 'Registradora',
+        { id: 'registradora', x: 58, y: 43.6, emoji: '🧑‍💼', s: 11.5, behind: 'mostrador', label: 'Registradora',
           look(g) {
             if (g.has('certDen')) return g.say('—Ya tiene su certificado. Corra al notario, que caduca. Todo caduca. Menos las colas.', 'Registradora');
             if (!g.flag('ident')) return g.say('—Las solicitudes solo las presenta el interesado, identificado. DNI original, por favor. Las fotocopias las hago yo, que las que trae la gente salen torcidas.', 'Registradora');
@@ -994,26 +994,26 @@
             },
             solicitudDen(g) { g.say('—En blanco no. Rellénela en el pupitre.', 'Registradora'); },
           } },
-        { id: 'libro', x: 12, y: 55, emoji: '📖', s: 6, label: 'Libro de denominaciones',
+        { id: 'libro', x: 90.5, y: 43.75, emoji: '📖', s: 5, on: 'atril', label: 'Libro de denominaciones',
           look(g) {
             g.doc('📖 Libro de denominaciones (tomo B–V, extracto)', `<p class="small">Las <b>reservas</b> tienen una vigencia de <b>seis meses</b> desde su fecha. Caducada la reserva, el nombre vuelve a estar disponible (si nadie lo ha inscrito).</p>
               <table class="tbl">${L3_REG.map(([n, s]) => `<tr><td>${n}</td><td>${s}</td></tr>`).join('')}</table>
               <p class="small">«Porra de la Bentanilla» se inscribió en 1998 con B. El notario no lo vio. El registrador tampoco. Ya es tarde.</p>`);
           } },
-        { id: 'bandeja', x: 30, y: 58, emoji: '📥', s: 5, label: 'Bandeja de solicitudes',
+        { id: 'bandeja', x: 5, y: 73.25, emoji: '📥', s: 5, on: 'mueble', label: 'Bandeja de solicitudes',
           look(g) {
             if (g.has('certDen')) return g.say('Ya no necesitas más solicitudes. Aléjate de la bandeja despacio.');
             if (g.has('solicitudDen') || g.has('solicitudRellena')) return g.say('Ya tienes una solicitud. La bandeja te mira mal: aquí no se acapara.');
             g.give('solicitudDen');
             g.say(g.flag('intentos') ? `Coges otra solicitud. Es tu intento número ${g.flag('intentos') + 1}. La bandeja ya te conoce.` : 'Coges una solicitud de certificación negativa de denominación. Está en blanco y huele a esperanza.');
           } },
-        { id: 'pupitre', x: 40, y: 69, emoji: '✍️', s: 6, label: 'Pupitre para rellenar',
+        { id: 'pupitre', x: 38.5, y: 54.45, emoji: '📝', s: 5, on: 'pupitreMesa', label: 'Pupitre para rellenar',
           look(g) { g.say('Un pupitre con un bolígrafo atado con una cadena de barco. Aquí se rellenan las solicitudes (selecciona una y úsala aquí).'); },
           use: {
             solicitudDen: l3Form,
             solicitudRellena(g) { g.say('Ya está rellena. Si te has equivocado, la registradora te lo dirá. Sin decirte en qué.'); },
           } },
-        { id: 'cunado', x: 60, y: 80, emoji: '🙋‍♂️', s: 7, label: 'Tu cuñado',
+        { id: 'cunado', x: 30, y: 52.9, emoji: '🙋‍♂️', s: 11.8, behind: 'pupitreMesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—Ponle «Real Churrería de España». Vende muchísimo. ¿Que está prohibido? Bah, eso lo dicen para que no lo pongas.',
@@ -1021,9 +1021,9 @@
               '—Hazme caso: con «Porras» no te equivocas. Porras siempre hay. Y trámites, ni te cuento.',
             ]), 'Tu cuñado');
           } },
-        { id: 'senor', x: 22, y: 82, emoji: '👨‍🦳', s: 6, label: 'Señor con una carpeta enorme',
+        { id: 'senor', x: 75.8, y: 50.57, emoji: '🧍‍♂️', s: 24.11, label: 'Señor con una carpeta enorme',
           look(g) { g.say('—Llevo catorce denegaciones: «Bar Manolo», «Bar Manolo 2», «Manolo Bar», «Bar de Manolo», «Barra Manolo»... Mañana pruebo con «Bar Pepe». Por cambiar.', 'Señor'); } },
-        { id: 'puerta', x: 92, y: 52, emoji: '🚪', s: 12, label: 'Salida',
+        { id: 'puerta', x: 14, y: 43.59, emoji: '🚪', s: 28, label: 'Salida',
           look(g) { g.say('El vigilante no deja salir a nadie sin papeles. «Sin certificado no se va usted de aquí. ¿Qué haría fuera, sin nombre?»'); },
           use: {
             certDen(g) { g.say('Enseñas el certificado. El vigilante lo lee dos veces, asiente y abre la puerta: «Porras del Trámite... Iré a probarlas». No irá.'); g.win(); },
