@@ -627,9 +627,10 @@
         { kind: 'window', l: 20.5, t: 14.85, w: 11, h: 29.8 },
         { kind: 'flag', l: 41, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 52, t: 14.9, w: 9, h: 10.7 },
-        { kind: 'desk', id: 'escritorio', l: 17, t: 58.9, w: 18, h: 17.1 },
+        { kind: 'table', id: 'escritorio', l: 17, t: 55.46, w: 18, h: 16.54 },
         { kind: 'counter', id: 'ventanilla', l: 40, t: 48.85, w: 23, h: 23.15 },
-        { emoji: '🧍‍♀️', x: 70, y: 57.51, s: 24.17 },
+        { kind: 'pedestal', id: 'peana', l: 81, t: 56.04, w: 8, h: 17.96, color: '#7a5c44' },
+        { emoji: '🧍‍♀️', x: 74, y: 56.4, s: 23.7 },
       ],
       hotspots: [
         { id: 'funcionario', x: 51.5, y: 43.6, emoji: '👨‍💼', s: 11.5, behind: 'ventanilla', label: 'Funcionario de empadronamiento',
@@ -650,7 +651,7 @@
               <p>Agosto: cerrado. Septiembre: ya veremos.</p>
               <p class="small">Horario de reclamaciones: de 9:15 a 9:15.</p>`);
           } },
-        { id: 'monitor', x: 23, y: 53.57, emoji: '💻', s: 6, on: 'escritorio', label: 'Monitor del compañero',
+        { id: 'monitor', x: 30.5, y: 50.13, emoji: '🖥️', s: 6, on: 'escritorio', label: 'Monitor del compañero',
           look(g) { g.say('Un pósit pegado en la pantalla: «CLAVE DEL ARCHIVO = HORA DE CIERRE AL PÚBLICO (4 cifras). ¡¡NO APUNTAR EN NINGÚN SITIO!!»'); } },
         { id: 'archivo', x: 8.5, y: 60.28, emoji: '🗄️', s: 15.43, label: 'Archivo (cerradura de 4 cifras)',
           look(g) {
@@ -662,12 +663,12 @@
               ok: () => { g.set('archOpen'); g.say('El archivo se abre con un chirrido. Tras apartar expedientes de 1987, encuentras un Modelo P-0 en blanco.'); g.give('modeloP0'); },
             });
           } },
-        { id: 'buzon', x: 85, y: 62.42, emoji: '📮', s: 14.15, label: 'Buzón de sugerencias',
+        { id: 'buzon', x: 85, y: 50.26, emoji: '🗳️', s: 6.5, on: 'peana', label: 'Buzón de sugerencias',
           look(g) {
             if (!g.flag('key')) { g.set('key'); g.say('El buzón está lleno a reventar: nadie lo abre desde 2008. Entre sugerencias como «Más ventanillas» y «Menos ventanillas» aparece una llavecita.'); g.give('llavecita'); }
             else g.say('Miles de sugerencias. Todas sin leer. Algunas amenazan con volverse sugerencias de otra cosa.');
           } },
-        { id: 'cajon', x: 31.5, y: 54.455, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
+        { id: 'cajon', x: 21.5, y: 51.015, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
           look(g) {
             if (g.flag('drawer')) return g.say('Solo queda un bocadillo fosilizado. No lo toques: podría ser patrimonio municipal.');
             g.say('El cajón está cerrado con llave.');
