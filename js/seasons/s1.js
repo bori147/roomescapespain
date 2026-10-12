@@ -847,7 +847,7 @@
               <p class="small">Cada tramo se aplica solo a la parte de la base que cae dentro de él.</p>
               <p><b>4. Resultado</b> = cuota − retenciones ya practicadas.</p>`);
           } },
-        { id: 'lema', x: 51.5, y: 24, z: 250, sign: 'HACIENDA SOMOS TODOS', sub: '(unos más que otros)', w: 18, label: 'Cartel institucional',
+        { id: 'lema', x: 51.5, y: 32.8, z: 250, sign: 'HACIENDA SOMOS TODOS', sub: '(unos más que otros)', w: 18, label: 'Cartel institucional',
           look(g) { g.say('«Hacienda somos todos». Alguien ha añadido a boli: «unos más que otros».'); } },
         { id: 'terminal', x: 46, y: 53.12, emoji: '🖥️', s: 6.5, on: 'escritorio', label: 'Terminal Renta Web', look: rentaModal },
         { id: 'carpeta', x: 21.5, y: 54.45, emoji: '📁', s: 5, on: 'mesa', label: 'Tu carpeta',
@@ -860,7 +860,7 @@
             if (!g.flag('don')) { g.set('don'); g.say('En el bolsillo hay un recibo doblado: un donativo que hiciste en un arrebato de solidaridad.'); g.give('donativo'); }
             else g.say('Solo quedan caramelos de menta pegados al forro.');
           } },
-        { id: 'buzon', x: 28.5, y: 54.45, emoji: '📨', s: 5, on: 'mesa', label: 'Tu correspondencia',
+        { id: 'buzon', x: 28.5, y: 54.45, emoji: '✉️', s: 5, on: 'mesa', label: 'Tu correspondencia',
           look(g) {
             if (!g.flag('pen')) { g.set('pen'); g.say('Entre la publicidad, una carta de tu plan de pensiones.'); g.give('pensiones'); }
             else g.say('Publicidad de un gimnasio y una oferta de fibra. Nada deducible.');
