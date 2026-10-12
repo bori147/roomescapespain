@@ -1546,11 +1546,14 @@
         { kind: 'window', l: 75, t: 19.68, w: 14, h: 30.63 },
         { kind: 'shelf', id: 'balda', l: 47, t: 35, w: 18, h: 1.2 },
         { kind: 'counter', id: 'barra', l: 38, t: 49.34, w: 30, h: 23.66 },
-        { kind: 'pedestal', id: 'mesa', color: '#8a6a48', l: 71, t: 61.95, w: 26, h: 18.05 },
+        { kind: 'pedestal', id: 'mesa', color: '#b5463c', l: 71.5, t: 61.95, w: 23, h: 18.05 },
+        { kind: 'box', l: 75.7, t: 37.5, w: 12.6, h: 12.8, color: '#cdbda4', z: 15 },
+        { kind: 'box', l: 81.75, t: 37.5, w: 0.5, h: 12.8, color: '#f4f1ea', z: 15 },
         { emoji: '📗', x: 53.5, y: 31.89, s: 3.5, on: 'balda' },
         { emoji: '🧂', x: 61.5, y: 46.67, s: 3, on: 'barra' },
         { emoji: '☕', x: 65.5, y: 46.67, s: 3, on: 'barra' },
-        { emoji: '☕', x: 82.5, y: 59.28, s: 3, on: 'mesa' },
+        { emoji: '☕', x: 82, y: 59.28, s: 3, on: 'mesa' },
+        { emoji: '📰', x: 14.5, y: 67.1, s: 5.9 },
       ],
       init(g) { g.set('saldo', 312); },
       hotspots: [
@@ -1567,7 +1570,7 @@
           } },
         { id: 'calendario', x: 69, y: 27.28, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Hoy termina el plazo de justificación. A las 23:59, cómo no. El portal suele caerse a las 23:00, por tradición.'); } },
-        { id: 'cajero', x: 78.5, y: 39, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
+        { id: 'cajero', x: 79, y: 41, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
           look(g) { g.say('El cajero de tu banco, en la acera de enfrente. Admite ingresos en efectivo. Para sacar dinero, cobra comisión; para meterlo, de momento no.'); },
           use: {
             efectivo(g) {
@@ -1584,7 +1587,7 @@
               <li>El logotipo del programa: «Kit Digital».</li></ul>
               <p class="small">Cualquier otro logotipo (de su cuñado, de su abuela o de sus sentimientos) invalida la justificación.</p>`);
           } },
-        { id: 'portatil', x: 46, y: 44.45, emoji: '💻', s: 5.5, on: 'barra', label: 'Portátil',
+        { id: 'portatil', x: 49, y: 44.45, emoji: '💻', s: 5.5, on: 'barra', label: 'Portátil',
           look(g) {
             g.choice({
               title: '💻 Portátil', text: 'El portátil arranca con tres actualizaciones pendientes y un antivirus caducado. ¿Qué abres?',
@@ -1611,7 +1614,7 @@
               g.give('facturaAgente');
             } else g.say('Solo propaganda: «¡Digitalice su negocio! (Si ya lo ha hecho, digitalícelo otra vez)».');
           } },
-        { id: 'ayudas', x: 60, y: 30.56, emoji: '🗃️', s: 5, on: 'balda', label: 'Carpeta «Ayudas recibidas»',
+        { id: 'ayudas', x: 60, y: 30.56, emoji: '🗂️', s: 5, on: 'balda', label: 'Carpeta «Ayudas recibidas»',
           look(g) {
             g.doc('🗃️ Ayudas y premios que has recibido', `<table class="tbl">
               <tr><td>2023 · Subvención autonómica «Emprende Ya» (pública)</td><td>1.000 €</td></tr>
@@ -1621,7 +1624,7 @@
               <tr><td>2027 · Descuento del 10 % en la ferretería de tu cuñado (un «favor»)</td><td>14 €</td></tr></table>
               <p class="small">El premio de la porra está enmarcado. La ayuda de los toldos, también: el toldo se lo llevó el viento.</p>`);
           } },
-        { id: 'cunado', x: 78, y: 55.05, emoji: '🙋‍♂️', s: 9.5, behind: 'mesa', label: 'Tu cuñado',
+        { id: 'cunado', x: 75, y: 54, emoji: '🙋‍♂️', s: 9.5, behind: 'mesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—¿Kit Digital? Yo te hacía la web gratis. En Comic Sans y con musiquita.',
