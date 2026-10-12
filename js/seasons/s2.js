@@ -1141,13 +1141,11 @@
       scene: { wall: '#e0d6c4', floor: '#8e8e86', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'board', id: 'corcho', l: 1.5, t: 29.75, w: 11, h: 12.75 },
-        { kind: 'desk', id: 'tablero', l: 14, t: 58.9, w: 18, h: 17.1 },
+        { kind: 'pedestal', id: 'tablero', l: 14, t: 55.44, w: 18, h: 20.56, color: '#8f7a62' },
         { kind: 'cabinet', id: 'archivo', l: 34, t: 44.08, w: 9, h: 28.92, color: '#8a8f96' },
         { kind: 'counter', id: 'mostrador', l: 45, t: 48.85, w: 22, h: 23.15 },
         { kind: 'counter', id: 'ventanillaCaja', l: 81, t: 48.85, w: 16, h: 23.15 },
         { kind: 'flag', l: 52, t: 14.9, w: 9, h: 10.7 },
-        { emoji: '🪑', x: 19.5, y: 63.85, s: 12, behind: 'tablero' },
-        { emoji: '👩‍💼', x: 88, y: 43.6, s: 11.5, behind: 'ventanillaCaja' },
       ],
       hotspots: [
         { id: 'maqueta', x: 7, y: 35.5, emoji: '🏟️', s: 5, label: 'Maqueta en el corcho',
@@ -1170,7 +1168,7 @@
           } },
         { id: 'plazo', x: 46.5, y: 31.7, emoji: '🗓️', s: 5, label: 'Cartel de plazos',
           look(g) { g.say('«Plazo máximo de resolución: 3 meses. Transcurrido el plazo sin respuesta, se entenderá DESESTIMADA. Que tenga un buen día.»'); } },
-        { id: 'caja', x: 91, y: 18, sign: 'CAJA', sub: '💶', w: 10, z: 250, label: 'Caja municipal',
+        { id: 'caja', x: 90, y: 31.3, sign: 'CAJA', sub: '💶', w: 10, z: 250, label: 'Caja municipal',
           look(g) {
             if (g.has('justificanteTasa') || g.flag('tasaOK')) return g.say('—Ya ha pagado. Si quiere pagar otra vez, no se lo voy a impedir.', 'Caja');
             g.input({
@@ -1189,7 +1187,7 @@
             justificanteTasa: (g) => l5Entrega(g, 'justificanteTasa'),
             plano(g) { g.say('—Este plano no tiene la distribución. ¿Dónde va la freidora? ¿Y las mesas? Hágalo en la mesa de dibujo.', 'Técnico municipal'); },
           } },
-        { id: 'arquitecta', x: 18.5, y: 52, emoji: '👷‍♀️', s: 11.9, behind: 'tablero', label: 'Tu arquitecta',
+        { id: 'arquitecta', x: 18.5, y: 48.54, emoji: '👷‍♀️', s: 11.9, behind: 'tablero', label: 'Tu arquitecta',
           look(g) {
             if (!g.flag('plano')) {
               g.set('plano');
@@ -1197,13 +1195,13 @@
               g.give('plano');
             } else g.say('—Recuerde: el pasillo de la puerta, libre. Los técnicos se ponen muy tontos con eso. Y con razón.', 'Arquitecta');
           } },
-        { id: 'mesaDibujo', x: 28, y: 54.45, emoji: '📐', s: 5, on: 'tablero', label: 'Mesa de dibujo',
+        { id: 'mesaDibujo', x: 28, y: 50.99, emoji: '📐', s: 5, on: 'tablero', label: 'Mesa de dibujo',
           look(g) { g.say('Una mesa de dibujo con escuadra, cartabón y un compás que alguien ha usado para pinchar el corcho. Selecciona el plano y úsalo aquí.'); },
           use: {
             plano: l5Grid,
             planoFirmado(g) { g.say('El plano ya está firmado. Si lo tocas más, el técnico lo notará. Siempre lo notan.'); },
           } },
-        { id: 'vecino', x: 74.6, y: 59.42, emoji: '🧍', s: 25.4, label: 'Vecino del primero',
+        { id: 'vecino', x: 73.65, y: 55.88, emoji: '🧍', s: 23.76, label: 'Vecino del primero',
           look(g) { g.say('—Vengo a presentar alegaciones contra su churrería. Por el olor. ¿Que todavía no ha abierto? Ya, pero me lo imagino.', 'Vecino'); } },
         { id: 'planta', x: 6, y: 81.46, emoji: '🪴', s: 9.6, label: 'Planta',
           look(g) { g.say('Esta planta tiene licencia de actividad clasificada: hace la fotosíntesis. Tardaron dos años en concedérsela.'); } },
