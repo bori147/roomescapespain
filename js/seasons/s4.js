@@ -653,10 +653,11 @@
       carry: ['dni'],
       decor: [
         { kind: 'box', l: 0, t: 6, w: 100, h: 3, color: '#1f3f7a' },
-        { kind: 'pedestal', id: 'pieTurnos', l: 4, t: 53.8, w: 4, h: 20.2, color: '#c9cdd3' },
+        { kind: 'pedestal', id: 'pieTurnos', l: 3, t: 53.8, w: 6, h: 20.2, color: '#c9cdd3' },
         { kind: 'bench', id: 'banco', l: 11, t: 62.4, w: 14, h: 20.6 },
         { kind: 'shelf', id: 'soporte', l: 41.5, t: 22.3, w: 6.5, h: 1.4 },
         { kind: 'counter', id: 'mostrador', l: 42, t: 48.85, w: 34, h: 23.15 },
+        { emoji: '👩‍💼', x: 60, y: 43.6, s: 11.5, behind: 'mostrador' },
         { emoji: '🧍‍♀️', x: 40, y: 57.51, s: 24.17 },
       ],
       hotspots: [
@@ -666,7 +667,7 @@
               <p>cada botón da el turno del servicio que figura en el botón situado a su <b>DERECHA</b>. El último botón da el turno del primero.</p>
               <p class="small">Disculpen las molestias. Llevamos así desde 2019. La modernización avanza a buen ritmo.</p>`);
           } },
-        { id: 'dispensador', x: 6, y: 48.47, emoji: '🎟️', s: 6, on: 'pieTurnos', label: 'Dispensador de turnos', look: l2Dispensador },
+        { id: 'dispensador', x: 6, y: 49.36, emoji: '🎟️', s: 5, on: 'pieTurnos', label: 'Dispensador de turnos', look: l2Dispensador },
         { id: 'pantalla', x: 44.75, y: 16.2, emoji: '📺', s: 6.9, on: 'soporte', label: 'Pantalla de turnos',
           look(g) { g.say('Pantalla: «A-998 · B-111 · C-046 · D-300». Todas las colas van por el número anterior al siguiente tique. Es lo único que funciona en esta oficina.'); } },
         { id: 'capicua', x: 26, y: 31.3, sign: '¿SABÍA QUE...?', sub: '🔢', w: 14, z: 250, label: 'Cartel «¿Sabía que...?»',
@@ -683,7 +684,7 @@
               <li>Cierre el sobre dirigido a la Mesa y entréguelo en ventanilla, que lo enviará certificado y urgente. Gratis. (A nosotros también nos sorprende.)</li></ol>
               <p class="small">Nota: el adhesivo de los sobres es de la anterior legislatura y ya no pega. Utilice la barra de pegamento del mostrador.</p>`);
           } },
-        { id: 'reloj', x: 76, y: 14.7, emoji: '🕐', s: 5, label: 'Reloj: 13:52',
+        { id: 'reloj', x: 76, y: 14.7, emoji: '🕑', s: 5, label: 'Reloj: 13:52',
           look(g) { g.say('13:52. Cierran a las 14:00. A las 13:55 empiezan a «cuadrar caja», que es como se dice «no le atiendo» en idioma postal.'); } },
         { id: 'ventanilla', x: 60, y: 22, sign: 'VENTANILLA 3', sub: '👩‍💼', w: 13, label: 'Ventanilla 3 — Voto por correo',
           look(g) {
