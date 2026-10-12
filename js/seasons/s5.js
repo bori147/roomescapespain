@@ -582,15 +582,13 @@
       decor: [
         { kind: 'window', l: 2, t: 4.2, w: 12, h: 21.3 },
         { kind: 'window', l: 87, t: 4.2, w: 11, h: 21.3 },
-        { kind: 'shelf', id: 'repisa', l: 54, t: 22.3, w: 6.5, h: 1.4 },
         { kind: 'shelf', id: 'perchero', l: 1.5, t: 31.7, w: 11, h: 1.2 },
         { kind: 'pedestal', id: 'mesaTribunal', l: 45, t: 56.32, w: 25, h: 16.68, color: '#2f5a45' },
-        { kind: 'desk', id: 'mesaMaterial', l: 77, t: 57.17, w: 18, h: 16.83 },
+        { kind: 'pedestal', id: 'mesaMaterial', l: 77, t: 57.17, w: 18, h: 16.83, color: '#6f5c47' },
         { kind: 'desk', id: 'mesaPupitre', l: 12.5, t: 63.12, w: 13, h: 17.88 },
-        { kind: 'desk', id: 'mesaVecino', l: 29, t: 63.12, w: 13, h: 17.88 },
+        { kind: 'pedestal', id: 'mesaVecino', l: 29, t: 63.12, w: 13, h: 17.88, color: '#6f5c47' },
         { emoji: '🗂️', x: 47, y: 53.23, s: 3.48, on: 'mesaTribunal' },
-        { emoji: '🪑', x: 33.5, y: 68.84, s: 12.56, z: 150 },
-        { emoji: '🪑', x: 83, y: 62.95, s: 11.87, z: 122 },
+        { emoji: '👨‍⚖️', x: 48.5, y: 50.4, s: 10.3, behind: 'mesaTribunal' },
         { emoji: '📦', x: 91.5, y: 52.19, s: 5.6, on: 'mesaMaterial' },
       ],
       hotspots: [
@@ -607,7 +605,7 @@
               <p><b>FE DE ERRATAS Nº 2.</b> En la pregunta 5, donde dice «el doble que él más uno», debe decir «el doble que él menos uno» (en ambas frases).</p>
               <p><b>CORRECCIÓN DE ERRORES de la Fe de erratas nº 2.</b> Queda sin efecto. La pregunta 5 se mantiene en su redacción original. Disculpen las molestias (no las sentimos).</p>`);
           } },
-        { id: 'reloj', x: 57.25, y: 17.86, emoji: '🕰️', s: 5, on: 'repisa', label: 'Reloj del pabellón',
+        { id: 'reloj', x: 57.5, y: 12.56, emoji: '🕛', s: 5, label: 'Reloj del pabellón',
           look(g) { g.say('Quedan 87 minutos. El reloj lleva parado desde las oposiciones de 2009, pero el tribunal lo considera oficial.'); } },
         { id: 'silencio', x: 76, y: 31.3, sign: 'SILENCIO', sub: 'Examen en curso', w: 14, label: 'Cartel de silencio',
           look(g) { g.say('«SILENCIO. EXAMEN EN CURSO». Debajo, a boli: «...y en 2032, y en 2033, y en 2034».'); } },
@@ -650,7 +648,7 @@
             if (!g.flag('coat')) { g.set('coat'); g.say('En los bolsillos: un bolígrafo azul de la academia, un caramelo para los nervios (te lo comes) y pelos de Michi. Muchos pelos de Michi.'); g.give('boli'); return; }
             g.say('Solo quedan apuntes del tema 237 hechos un acordeón (y mordisqueados por Michi). Ese tema nunca cae.');
           } },
-        { id: 'conserje', x: 84, y: 50.2, emoji: '👷', s: 10.7, behind: 'mesaMaterial', label: 'Conserje',
+        { id: 'conserje', x: 84, y: 50.2, emoji: '👨‍💼', s: 10.7, behind: 'mesaMaterial', label: 'Conserje',
           look(g) {
             if (g.has('lapiz')) return g.say('—Ya tiene su lápiz. El siguiente, en la próxima convocatoria.', 'Conserje');
             if (!g.flag('imp')) {
@@ -698,7 +696,7 @@
           look(g) { g.say('El bombo para el ejercicio oral. Sale la bola 237: «El silencio administrativo positivo: mito o leyenda». La que se comió Michi. Por suerte, el oral es dentro de seis meses.'); } },
         { id: 'papelera', x: 5, y: 82.39, emoji: '🗑️', s: 6.3, label: 'Papelera',
           look(g) { g.say('Un folleto de academia: «El 100 % de nuestros alumnos aprobados, aprueban». Y un lápiz... no: un palito de helado. Falsa alarma.'); } },
-        { id: 'folleto', x: 9.5, y: 81.9, emoji: '📄', s: 5, label: 'Hoja tirada en el suelo',
+        { id: 'folleto', x: 9, y: 80.9, emoji: '📄', s: 5, label: 'Hoja tirada en el suelo',
           look(g) { g.say('Una hoja de respuestas de la convocatoria de 2019, rellena a bolígrafo. Anulada. Su dueño sigue opositando.'); } },
       ],
       combos: {
