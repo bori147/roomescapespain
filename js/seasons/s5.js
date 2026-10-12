@@ -1359,15 +1359,15 @@
       carry: ['nombramiento'],
       decor: [
         { kind: 'door', l: 1.5, t: 22, w: 10, h: 42, color: '#6e4f35' },
-        { kind: 'flag', l: 63, t: 8.5, w: 8, h: 9.5 },
-        { kind: 'flag-eu', l: 73, t: 8.5, w: 8, h: 9.5 },
-        { kind: 'desk', id: 'mesaSecretario', l: 29, t: 53.37, w: 16.5, h: 15.63 },
-        { kind: 'table', id: 'mesaConsejo', l: 47.5, t: 56, w: 41.5, h: 16 },
-        { emoji: '👩‍💼', x: 53, y: 49.5, s: 9, behind: 'mesaConsejo' },
-        { emoji: '👨‍💼', x: 61, y: 49.5, s: 9, behind: 'mesaConsejo' },
-        { emoji: '👩‍💼', x: 77, y: 49.5, s: 9, behind: 'mesaConsejo' },
-        { emoji: '👨‍💼', x: 85, y: 49.5, s: 9, behind: 'mesaConsejo' },
-        { emoji: '☕', x: 87.5, y: 53.33, s: 3, on: 'mesaConsejo' },
+        { kind: 'flag', l: 65, t: 8.5, w: 8, h: 9.5 },
+        { kind: 'flag-eu', l: 75, t: 8.5, w: 8, h: 9.5 },
+        { kind: 'pedestal', id: 'mesaSecretario', l: 29, t: 53.37, w: 16.5, h: 15.63, color: '#6f5c47' },
+        { kind: 'pedestal', id: 'mesaConsejo', l: 47.5, t: 56, w: 41.5, h: 16, color: '#5a3f2a' },
+        { emoji: '🧑‍💼', x: 53, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '🧑‍💼', x: 61, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '🧑‍💼', x: 77, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '🧑‍💼', x: 85, y: 49.5, s: 9, behind: 'mesaConsejo' },
+        { emoji: '☕', x: 86, y: 53.33, s: 3, on: 'mesaConsejo' },
         { emoji: '🧍‍♂️', x: 24.5, y: 49.58, s: 22.97 },
       ],
       hotspots: [
@@ -1384,7 +1384,7 @@
               g.win();
             },
           } },
-        { id: 'gobierno', x: 88, y: 29.3, sign: 'COMPOSICIÓN DEL GOBIERNO', sub: '🏛️', w: 22, label: 'Composición del Gobierno',
+        { id: 'gobierno', x: 86, y: 29.3, sign: 'COMPOSICIÓN DEL GOBIERNO', sub: '🏛️', w: 22, label: 'Composición del Gobierno',
           look(g) {
             g.doc('🏛️ Composición del Gobierno', `<p>Ministros asistentes (además de ti, que no tienes asiento asignado: estás de pie, como corresponde a los nuevos):</p>
               <ul><li><b>Dña.</b> Nuria Dietas</li><li><b>Dña.</b> Pilar Escalafón</li><li><b>D.</b> Tomás Quórum</li><li><b>D.</b> Luis Trienio</li></ul>
@@ -1396,7 +1396,7 @@
               <p>Por antigüedad de la cartera, el asiento de <b>Cultura</b> tiene un número menor que el de <b>Asuntos Pendientes</b>.</p>
               <p class="small"><i>El resto del plano se quemó con una vela aromática en una reunión de crisis.</i></p>`);
           } },
-        { id: 'secretario', x: 33, y: 49.37, emoji: '🧑‍💼', s: 9, behind: 'mesaSecretario', label: 'Secretario del Consejo',
+        { id: 'secretario', x: 33, y: 48, emoji: '🧑‍💼', s: 9.5, behind: 'mesaSecretario', label: 'Secretario del Consejo',
           look(g) {
             if (!g.flag('acred')) return g.say('—¿Y usted quién es? Aquí no se queda nadie sin nombramiento publicado en el BOE. Enséñemelo y le explico cómo funciona la máquina de cifra.', 'Secretario del Consejo');
             g.say('—La máquina de cifra se configura con la clave del día: las iniciales de las cuatro carteras, en el orden de los asientos, del 1 al 4. Yo no me acuerdo de quién se sienta dónde. Nadie se acuerda.', 'Secretario del Consejo');
@@ -1430,12 +1430,12 @@
               <p>El titular de Fomento consultó el móvil durante toda la sesión y, preguntado al respecto, respondió que estaba «fomentando».</p>
               <p>Se levanta la sesión sin que conste que nadie se haya enterado de nada.</p>`);
           } },
-        { id: 'ujier', x: 10.8, y: 46.8, emoji: '🧍', s: 21.6, label: 'Ujier veterano',
+        { id: 'ujier', x: 15, y: 46.8, emoji: '🧍', s: 21.6, label: 'Ujier veterano',
           look(g) {
             g.say('—Cuarenta años sirviendo cafés aquí. Le cuento: la de Economía no deja de tomar notas, y se sienta siempre en un extremo, pegadita al Presidente.', 'Ujier veterano');
             g.say('—Y Doña Nuria Dietas nunca se sienta en un extremo: dice que junto al Presidente le da corriente.', 'Ujier veterano');
           } },
-        { id: 'prensa', x: 24.5, y: 39, emoji: '📸', s: 5, z: 125, label: 'Fotógrafo de prensa',
+        { id: 'prensa', x: 24.5, y: 48.5, emoji: '📸', s: 5, z: 125, label: 'Fotógrafo de prensa',
           look(g) {
             g.say('—Tengo una foto buenísima del último Consejo: el ministro Trienio sentado justo en el asiento siguiente al de quien dormía la siesta. Siguiente en número, digo.', 'Fotógrafo');
             g.say('—Y el del crucigrama estaba en un extremo, junto al Presidente: lo pillé con el «nueve horizontal: trámite eterno».', 'Fotógrafo');
