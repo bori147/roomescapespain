@@ -651,9 +651,9 @@
               <p>Agosto: cerrado. Septiembre: ya veremos.</p>
               <p class="small">Horario de reclamaciones: de 9:15 a 9:15.</p>`);
           } },
-        { id: 'monitor', x: 23.5, y: 50.13, emoji: '🖥️', s: 6, on: 'escritorio', label: 'Monitor del compañero',
+        { id: 'monitor', x: 21.5, y: 50.13, emoji: '🖥️', s: 6, on: 'escritorio', label: 'Monitor del compañero',
           look(g) { g.say('Un pósit pegado en la pantalla: «CLAVE DEL ARCHIVO = HORA DE CIERRE AL PÚBLICO (4 cifras). ¡¡NO APUNTAR EN NINGÚN SITIO!!»'); } },
-        { id: 'archivo', x: 8.5, y: 62.78, emoji: '🗄️', s: 12.63, label: 'Archivo (cerradura de 4 cifras)',
+        { id: 'archivo', x: 8.5, y: 61.53, emoji: '🗄️', s: 14.03, label: 'Archivo (cerradura de 4 cifras)',
           look(g) {
             if (g.flag('archOpen')) return g.say('El archivo está abierto. Hay 3.000 carpetas iguales. Ya tienes lo que necesitabas.');
             g.input({
@@ -668,7 +668,7 @@
             if (!g.flag('key')) { g.set('key'); g.say('El buzón está lleno a reventar: nadie lo abre desde 2008. Entre sugerencias como «Más ventanillas» y «Menos ventanillas» aparece una llavecita.'); g.give('llavecita'); }
             else g.say('Miles de sugerencias. Todas sin leer. Algunas amenazan con volverse sugerencias de otra cosa.');
           } },
-        { id: 'cajon', x: 31.7, y: 51.015, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
+        { id: 'cajon', x: 27.5, y: 51.015, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Cajón del escritorio',
           look(g) {
             if (g.flag('drawer')) return g.say('Solo queda un bocadillo fosilizado. No lo toques: podría ser patrimonio municipal.');
             g.say('El cajón está cerrado con llave.');
