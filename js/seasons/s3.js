@@ -874,7 +874,7 @@
               <tr><td>—</td><td>—</td><td>4ºB</td><td>4480</td></tr></table>
               <p class="small">Hay dos 3ºB. Como hay dos de casi todo en este edificio, salvo ascensores.</p>`);
           } },
-        { id: 'plano', x: 23, y: 31.3, sign: 'PLANO DEL EDIFICIO', sub: 'División horizontal', w: 18, z: 250, label: 'Plano de división horizontal',
+        { id: 'plano', x: 24.5, y: 31.3, sign: 'PLANO DEL EDIFICIO', sub: 'División horizontal', w: 18, z: 250, label: 'Plano de división horizontal',
           look(g) {
             g.doc('📐 Plano de división horizontal — C/ del Olvido, 14', `<div class="s3-twin">
               <div><b>ESCALERA IZQUIERDA</b><br>Bajos A y B, y del 1º al 3º.<br>🪜 <b>Sin ascensor</b> (hueco reservado desde 1979, «para cuando haya presupuesto»).</div>
@@ -882,7 +882,7 @@
               <p class="small">Inscrito en 2001. Revisado por última vez en 2001.</p>`);
           } },
         { id: 'tasador', x: 22, y: 54.45, emoji: '📄', s: 5, on: 'mesaConsulta', label: 'Informe del tasador (en un clip)',
-          look(g) { g.doc('🧐 Informe de tasación', '<p>Valor de tasación: <b>225.000 €</b>. Exactamente lo que pide el vendedor. Exactamente lo que necesita el banco. Exactamente lo que estabas temiendo.</p><p class="small">Visita realizada: desde el coche, en doble fila.</p>'); } },
+          look(g) { g.doc('📄 Informe de tasación', '<p>Valor de tasación: <b>225.000 €</b>. Exactamente lo que pide el vendedor. Exactamente lo que necesita el banco. Exactamente lo que estabas temiendo.</p><p class="small">Visita realizada: desde el coche, en doble fila.</p>'); } },
         { id: 'reloj', x: 6.5, y: 21.06, emoji: '🕰️', s: 5, on: 'libreria', label: 'Reloj',
           look(g) { g.say('Horario de atención: de 9:00 a 14:00. Son las 13:58. La registradora ya tiene el bolso en la mano.'); } },
         { id: 'terminal', x: 28, y: 52.68, emoji: '🖥️', s: 7, on: 'mesaConsulta', label: 'Terminal de publicidad registral',
@@ -928,7 +928,7 @@
           look(g) {
             if (!g.has('notaSimple')) return g.say('—La certificación de cargas se la doy cuando me diga usted qué cargas tiene la finca. Pida la nota simple en el terminal. Con su número de finca, que yo no adivino.', 'Registradora');
             g.input({
-              title: '👩‍⚖️ Certificación de cargas',
+              title: '👩‍💼 Certificación de cargas',
               text: '—A ver. Según la nota simple, ¿cuál es el <b>importe total de las cargas que siguen vigentes</b> hoy? Sume solo lo que sigue vivo, que lo muerto no paga.',
               numeric: true, maxLen: 6,
               check: (v) => +v === 96250,
@@ -940,7 +940,7 @@
               },
             });
           } },
-        { id: 'bolso', x: 11, y: 80.56, emoji: '👜', s: 5, label: 'Tu bolsa',
+        { id: 'bolso', x: 12, y: 73.1, emoji: '👜', s: 5, label: 'Tu bolsa',
           look(g) {
             g.say('Pañuelos, un caramelo del banco (no), la oferta vinculante bien doblada y una porra de la churrería envuelta en servilleta, por si la registradora se ablanda. A las 13:58 no se ablanda nadie.');
           } },
