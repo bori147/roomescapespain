@@ -833,15 +833,15 @@
       carry: ['dni', 'contrato', 'copia036'],
       scene: { wall: '#cfd9e3', floor: '#9aa3a8', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'window', l: 43, t: 19.1, w: 11, h: 29.8 },
+        { kind: 'window', l: 44, t: 25.2, w: 11, h: 29.8 },
         { kind: 'flag', l: 58.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 69.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
         { kind: 'desk', id: 'mesaTerminal', l: 19, t: 58.9, w: 19, h: 17.1 },
         { kind: 'counter', id: 'ventanilla', l: 57, t: 48.85, w: 23, h: 23.15 },
-        { kind: 'box', id: 'cajas', l: 83.3, t: 64.33, w: 9.2, h: 12.67, color: '#b98a5b' },
-        { kind: 'box', id: 'cajasArriba', l: 83.8, t: 51.66, w: 8.2, h: 12.67, color: '#c99a68', z: 137 },
-        { emoji: '🪴', x: 77, y: 83.67, s: 10.5 },
+        { kind: 'box', id: 'cajas', l: 81.5, t: 64.33, w: 9.2, h: 12.67, color: '#b98a5b' },
+        { kind: 'box', id: 'cajasArriba', l: 82.0, t: 51.66, w: 8.2, h: 12.67, color: '#c99a68', z: 137 },
+        { emoji: '🪴', x: 89, y: 87.4, s: 10.8 },
       ],
       hotspots: [
         { id: 'tramos', x: 13, y: 31.3, sign: 'CUOTAS RETA', sub: '📊', w: 13, label: 'Cartel de cuotas',
@@ -858,9 +858,9 @@
               <p><b>Requisito:</b> no haber estado de alta como autónomo en ningún momento de los <b>dos años</b> inmediatamente anteriores a la nueva alta.</p>
               <p class="small">Si estuvo de alta, aunque fuera un ratito vendiendo pulseras, no insista: el sistema lo sabe todo. Menos dónde está su cita.</p>`);
           } },
-        { id: 'calendario', x: 89, y: 27.5, emoji: '📅', s: 5.5, label: 'Calendario',
+        { id: 'calendario', x: 94.3, y: 27.5, emoji: '📅', s: 5.5, label: 'Calendario',
           look(g) { g.say('Hoy es jueves, 14 de enero de 2027. Alguien ha rodeado el día 29 con rotulador rojo: «fin de plazo de algo». Nadie recuerda de qué.'); } },
-        { id: 'funcionaria', x: 69.5, y: 43.24, emoji: '👩‍💼', s: 11.9, behind: 'ventanilla', label: 'Funcionaria del RETA',
+        { id: 'funcionaria', x: 69.8, y: 43.24, emoji: '👩‍💼', s: 11.9, behind: 'ventanilla', label: 'Funcionaria del RETA',
           look(g) {
             if (!g.flag('censo')) return g.say('—Para el alta en autónomos necesito tres cosas: la copia sellada de su alta en Hacienda (el 036), su vida laboral y que me diga qué cuota le corresponde. La vida laboral se imprime en el terminal. La cuota, en los carteles. La paciencia, en su casa.', 'Funcionaria');
             if (g.has('vidaLaboral')) return l2Cuota(g);
@@ -877,7 +877,7 @@
             dni(g) { g.say('—El DNI lo pide el terminal, no yo. Yo me fío de usted. El terminal, de nadie.', 'Funcionaria'); },
             prevision(g) { g.say('—Sus previsiones me parecen muy bien. Optimistas, pero bien. Yo lo que quiero es su vida laboral y su cuota.', 'Funcionaria'); },
           } },
-        { id: 'terminal', x: 33.3, y: 52.23, emoji: '🖥️', s: 7.5, on: 'mesaTerminal', label: 'Terminal Import@ss',
+        { id: 'terminal', x: 33.0, y: 52.23, emoji: '🖥️', s: 7.5, on: 'mesaTerminal', label: 'Terminal Import@ss',
           look(g) {
             if (g.has('vidaLaboral')) return g.say('Ya imprimiste tu vida laboral. Es más corta de lo que parece y, aun así, no cabe en una hoja.');
             if (!g.flag('dniLeido')) return g.say('La pantalla parpadea: «IMPORT@SS. Identifíquese: acerque su DNI al lector». Debajo del lector, a boli: «el DNI caducado no lo lee, no insista».');
@@ -892,7 +892,7 @@
               l2Terminal(g);
             },
           } },
-        { id: 'cartera', x: 22, y: 54.45, emoji: '👛', s: 5, on: 'mesaTerminal', label: 'Tu cartera',
+        { id: 'cartera', x: 26.8, y: 54.45, emoji: '👛', s: 5, on: 'mesaTerminal', label: 'Tu cartera',
           look(g) { g.say('En tu cartera: 3,20 €, el hueco del DNI (vacío: lo llevas en la mano, por si acaso) y la tarjeta de la Seguridad Social: «Nº de afiliación: <b>28/03471215/34</b>». La conseguiste tras cinco ventanillas, cuando renovaste el DNI. Se nota.'); } },
         { id: 'mochila', x: 14, y: 78.69, emoji: '🎒', s: 7.1, label: 'Tu mochila',
           look(g) {
@@ -902,7 +902,7 @@
               g.give('prevision'); g.give('cocheLetra');
             } else g.say('Nada más. Bueno, un caramelo de menta con pelusa. No.');
           } },
-        { id: 'repartidor', x: 88, y: 44.2, emoji: '👷', s: 11, behind: 'cajas', label: 'Repartidor de harina',
+        { id: 'repartidor', x: 86.2, y: 44.2, emoji: '👷', s: 11, behind: 'cajas', label: 'Repartidor de harina',
           look(g) {
             if (!g.flag('harina')) {
               g.set('harina');
@@ -910,7 +910,7 @@
               g.give('presupuestoHarina');
             } else g.say('—Llevo aquí desde las ocho. Ya me he hecho amigo de la planta.', 'Repartidor');
           } },
-        { id: 'movil', x: 27.3, y: 54.45, emoji: '📱', s: 5, on: 'mesaTerminal', label: 'Tu móvil',
+        { id: 'movil', x: 21.3, y: 54.45, emoji: '📱', s: 5, on: 'mesaTerminal', label: 'Tu móvil',
           look(g) {
             if (!g.flag('luz')) {
               g.set('luz');
