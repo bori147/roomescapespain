@@ -1073,10 +1073,10 @@
       decor: [
         { kind: 'pedestal', id: 'quiosco', l: 1.5, t: 52.16, w: 6, h: 19.84, color: '#4b5563' },
         { kind: 'lectern', id: 'atril', l: 9.5, t: 46.65, w: 7, h: 25.35 },
-        { kind: 'flag', l: 47, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag', l: 48.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'counter', id: 'ventanillas', l: 28, t: 48.85, w: 36, h: 23.15 },
-        { kind: 'table', id: 'mesa600', l: 66, t: 58.9, w: 18, h: 17.1 },
-        { kind: 'bench', id: 'banco', l: 86.5, t: 58.24, w: 12, h: 19.76 },
+        { kind: 'table', id: 'mesa600', l: 66, t: 58.9, w: 19.5, h: 17.1 },
+        { kind: 'bench', id: 'banco', l: 87.5, t: 58.24, w: 11.5, h: 19.76 },
         { emoji: '👨‍💼', x: 38.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
       ],
       hotspots: [
@@ -1093,7 +1093,7 @@
               <li><b>50 %</b> para familias numerosas. (Un gato no computa como miembro de la unidad familiar, aunque mande más que nadie.)</li>
               <li><b>100 %</b> para quien entienda a la primera este cartel.</li></ul>`);
           } },
-        { id: 'catastro', x: 4.5, y: 47.71, emoji: '💻', s: 5, on: 'quiosco', label: 'Quiosco del Catastro',
+        { id: 'catastro', x: 4.5, y: 46.83, emoji: '🖥️', s: 6, on: 'quiosco', label: 'Quiosco del Catastro',
           look(g) {
             if (g.has('certVR')) return g.say('El quiosco imprime un anuncio: «¿Sabía que el valor de referencia NO es el valor de mercado? Nosotros tampoco».');
             g.input({
@@ -1103,7 +1103,7 @@
               ok: () => { g.give('certVR'); g.say('El quiosco imprime: «Valor de referencia 2028 de su inmueble: 241.000 €». Más de lo que pagaste. El Catastro cree mucho en ti.', 'Quiosco del Catastro'); },
             });
           } },
-        { id: 'ordenanza', x: 13, y: 42.2, emoji: '📖', s: 5, on: 'atril', label: 'Ordenanza fiscal (en un atril)',
+        { id: 'ordenanza', x: 13, y: 42.2, emoji: '📖', s: 5, on: 'atril', z: 250, label: 'Ordenanza fiscal (en un atril)',
           look(g) {
             g.doc('📖 Ordenanza fiscal del Impuesto sobre el Incremento de Valor de los Terrenos («plusvalía»)', `<p><b>Art. 1. Hecho imponible.</b> El incremento de valor de los terrenos urbanos que se pone de manifiesto al transmitirlos.</p>
               <p><b>Art. 2. Exenciones.</b> Las que diga la ley, y las de las personas que hayan esperado más de tres horas en esta ventanilla (en estudio desde 2009).</p>
@@ -1139,7 +1139,7 @@
               g.say('—16 de octubre de 2028, 225.000 €, 72 m² construidos, vivienda habitual... Fotocopiada. Tenga, no la pierda, que el Catastro se la va a pedir. Cuando aclare la plusvalía, presente el 600 en el terminal.', 'Funcionaria');
             },
           } },
-        { id: 'terminal', x: 70.3, y: 53.12, emoji: '🖥️', s: 6.5, on: 'mesa600', label: 'Terminal del modelo 600',
+        { id: 'terminal', x: 70, y: 53.12, emoji: '🖥️', s: 6.5, on: 'mesa600', label: 'Terminal del modelo 600',
           look(g) {
             if (!g.flag('ident')) return g.say('«Identifíquese con su documento de identidad.»', 'Terminal');
             if (!g.flag('escrOK')) return g.say('«Error 600-E: falta la copia de la escritura. Entréguela a la funcionaria de la Oficina Liquidadora.»', 'Terminal');
@@ -1149,15 +1149,15 @@
           use: {
             dni(g) { g.set('ident'); g.say('«Identificado/a: 07345189-R. Fecha de nacimiento: 20/10/1993. Le consta una inspección en 2028. Bienvenido/a otra vez, contribuyente.»', 'Terminal'); },
           } },
-        { id: 'cartera', x: 80.5, y: 54.45, emoji: '💼', s: 5, on: 'mesa600', label: 'Tu cartera',
+        { id: 'cartera', x: 81.8, y: 54.45, emoji: '💼', s: 5, on: 'mesa600', label: 'Tu cartera',
           look(g) {
             g.say('Una tarjeta del videoclub (ya no existe el videoclub, ni tu saldo) y la tarjeta de fidelización de la churrería: «a la décima porra, la undécima gratis». La sellas tú mismo/a.');
           } },
-        { id: 'carpeta', x: 75.8, y: 54.45, emoji: '🗂️', s: 5, on: 'mesa600', label: 'Tu carpeta de la compra',
+        { id: 'carpeta', x: 76.2, y: 54.45, emoji: '🗂️', s: 5, on: 'mesa600', label: 'Tu carpeta de la compra',
           look(g) {
             g.say('Fotocopias de fotocopias. Y el folleto del 0,99 % TAE, que guardas como recordatorio. Lo importante (escritura, recibo del IBI y DNI) ya lo llevas en la mano.');
           } },
-        { id: 'cola', x: 29, y: 57.15, emoji: '🧍', s: 25.7, label: 'Contribuyente en la cola',
+        { id: 'cola', x: 21, y: 57.15, emoji: '🧍', s: 25.7, label: 'Contribuyente en la cola',
           look(g) { g.say('—Yo pagué la plusvalía de la vendedora sin darme cuenta. Ahora ella me manda postales desde Benidorm.', 'Contribuyente'); } },
         { id: 'reloj', x: 20, y: 21.06, emoji: '🕐', s: 5, label: 'Reloj',
           look(g) { g.say('Faltan 29 días hábiles para que acabe el plazo. Aquí eso es mañana.'); } },
