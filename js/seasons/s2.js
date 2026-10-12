@@ -1222,12 +1222,12 @@
       carry: ['licencia'],
       scene: { wall: '#f1e3c6', floor: '#a0764f', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'door', l: 11.2, t: 25.6, w: 11.6, h: 42.3, color: '#4f6470' },
-        { kind: 'shutter', l: 10.6, t: 23.6, w: 12.8, h: 2.6, color: '#9aa0a6', z: 101 },
+        { kind: 'door', l: 10.0, t: 24.1, w: 14.0, h: 43.8, color: '#8fb3c2' },
         { kind: 'shelf', id: 'estante', l: 65.5, t: 28.5, w: 11, h: 1.4 },
         { kind: 'counter', id: 'barra', l: 56, t: 48.85, w: 35, h: 23.15 },
-        { emoji: '🪑', x: 50.5, y: 68.18, s: 13.3 },
-        { kind: 'pedestal', id: 'mesaRamona', l: 46.5, t: 63.97, w: 8, h: 18.03, color: '#c8553d' },
+        { kind: 'curtain', id: 'mesaRamona', l: 45.5, t: 63.97, w: 9.5, h: 18.03, color: '#efe7d8' },
+        { kind: 'box', l: 45.2, t: 63.3, w: 10.1, h: 1.4, color: '#f6f1e7', z: 156 },
+        { emoji: '🧂', x: 53.3, y: 62.55, s: 1.6, on: 'mesaRamona' },
       ],
       hotspots: [
         { id: 'pizarra', x: 86.5, y: 21.7, sign: 'PRECIOS (IVA incl.)', sub: '🖍️', w: 15, label: 'Pizarra de precios',
@@ -1281,7 +1281,7 @@
           use: {
             licencia(g) { g.say('La licencia no se pega en la persiana con celo: va en el marco, a la vista desde la entrada. Esto es un negocio serio. Más o menos.'); },
           } },
-        { id: 'ramona', x: 50.5, y: 55.57, emoji: '💁‍♀️', s: 10.83, behind: 'mesaRamona', label: 'Doña Ramona, primera clienta',
+        { id: 'ramona', x: 50.25, y: 55.57, emoji: '💁‍♀️', s: 10.83, behind: 'mesaRamona', label: 'Doña Ramona, primera clienta',
           show: (g) => !!g.flag('abierto'),
           look(g) {
             if (!g.flag('ramona')) {
