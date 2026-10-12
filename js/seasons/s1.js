@@ -755,14 +755,15 @@
       outro: 'Trámite electrónico presentado. Ha tardado solo cuatro horas y media, lo que constituye un récord nacional. Lamentablemente, al cruzar sus datos, la Agencia Tributaria ha detectado una irregularidad en su declaración de la renta.',
       scene: { wall: '#e8dcc8', floor: '#a0764f', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'rug', id: 'alfombra', l: 3, t: 80, w: 28, h: 8, color: '#8c5a3c', z: 101 },
+        { kind: 'rug', id: 'alfombra', l: 3, t: 80, w: 28, h: 8, color: '#7d3a3a', z: 101 },
         { kind: 'sofa', id: 'sofa', l: 1.5, t: 54.92, w: 23, h: 19.08 },
         { kind: 'shelf', id: 'estante', l: 2, t: 36.1, w: 16, h: 1.4 },
-        { kind: 'window', id: 'ventana', l: 34, t: 19.1, w: 12, h: 29.8 },
-        { kind: 'board', id: 'corcho', l: 47.5, t: 23.4, w: 14.3, h: 19.1 },
+        { kind: 'window', id: 'ventana', l: 32.5, t: 19.1, w: 12, h: 29.8 },
+        { kind: 'board', id: 'corcho', l: 46, t: 29.7, w: 10.7, h: 12.8 },
+        { kind: 'door', id: 'marco', l: 63.4, t: 24.0, w: 15.1, h: 44.0, color: '#e9e3d6' },
         { kind: 'table', id: 'mesa', l: 30, t: 57.17, w: 20, h: 16.83 },
         { kind: 'pedestal', id: 'aparador', l: 85.5, t: 58.29, w: 12, h: 15.71, color: '#8a6a4a' },
-        { kind: 'box', id: 'router', l: 92.5, t: 56.29, w: 5, h: 2.0, color: '#e6e6e6', z: 125 },
+        { kind: 'box', id: 'router', l: 93.4, t: 57.0, w: 3.2, h: 1.3, color: '#d9dde2', z: 125 },
         { emoji: '🐶', x: 24.5, y: 33.8, s: 4.4, z: 411 },
       ],
       hotspots: [
@@ -787,7 +788,7 @@
           look(g) { g.say('«Cómo sobrevivir a la Administración Electrónica», «Java para nostálgicos» y «El arte de reiniciar».'); } },
         { id: 'perroFoto', x: 24.5, y: 34.35, emoji: '🖼️', s: 8, label: 'Foto enmarcada',
           look(g) { g.say('Una foto de tu perro de cachorro. Detrás pone: «Tobi, el día que llegó a casa. Verano de 2015».'); } },
-        { id: 'postit', x: 54.5, y: 32.5, emoji: '🗒️', s: 5, label: 'Pósit en el corcho',
+        { id: 'postit', x: 51.35, y: 35, emoji: '🗒️', s: 5, label: 'Pósit en el corcho',
           look(g) {
             g.doc('🗒️ Pósit de tu cuñado («que sabe de informática»)', `<p>¡OJO!</p>
               <p>La Autofirma 1.9 <b>SOLO</b> funciona con <b>Java 8</b>. ¡Nada de Java 17 ni 21, que se rompe todo!</p>
@@ -813,7 +814,7 @@
           } },
         { id: 'perro', x: 20, y: 77.44, emoji: '🐕', s: 8.5, label: 'Tobi',
           look(g) { g.say('Tobi te mira. Él tampoco entiende la Sede Electrónica. Pero al menos no lo intenta.'); } },
-        { id: 'gato', x: 95, y: 51.85, emoji: '🐈', s: 5, on: 'router', z: 126, label: 'Gato sobre el router',
+        { id: 'gato', x: 95, y: 52.55, emoji: '🐈', s: 5, on: 'router', z: 126, label: 'Gato sobre el router',
           look(g) { g.say('El gato duerme encima del router porque está calentito. Por eso internet va lento. No lo muevas: no te lo perdonaría.'); } },
         { id: 'puerta', x: 71, y: 43.21, emoji: '🚪', s: 27.9, label: 'Puerta de casa',
           look(g) { g.say('No sales de casa hasta terminar el trámite online. Así lo manda la transformación digital.'); },
