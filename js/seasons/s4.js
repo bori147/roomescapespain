@@ -981,46 +981,47 @@
       scene: { wall: '#1f2a44', floor: '#2b2b35', floorH: 34, pattern: 'plain' },
       carry: ['barometro'],
       decor: [
-        { kind: 'rug', l: 3, t: 70.5, w: 53, h: 12, color: '#3a4f7a', z: 100 },
-        { kind: 'screen', l: 59, t: 12, w: 18, h: 11 },
-        { kind: 'lectern', id: 'atrAla', l: 1.5, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'lectern', id: 'atrFarol', l: 8, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'lectern', id: 'atrCana', l: 14.5, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'lectern', id: 'atrUva', l: 21, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'pedestal', id: 'mesaMod', l: 27.5, t: 53.12, w: 9, h: 15.88, color: '#9aa3b8' },
-        { kind: 'lectern', id: 'atrNidac', l: 38, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'lectern', id: 'atrTic', l: 44.5, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'lectern', id: 'atrZig', l: 51, t: 43.59, w: 5, h: 25.41, color: '#c9cfdc' },
-        { kind: 'pedestal', id: 'control', l: 57.5, t: 51.62, w: 21, h: 19.38, color: '#4a5263' },
-        { emoji: '🖥️', x: 61.5, y: 46.11, s: 6.2, on: 'control' },
-        { kind: 'table', id: 'tocador', l: 80.5, t: 53.99, w: 14.5, h: 16.01 },
-        { emoji: '💄', x: 88, y: 51.59, s: 2.7, on: 'tocador' },
-        { kind: 'pedestal', id: 'pieCam', l: 3.6, t: 60.91, w: 3, h: 27.09, color: '#4a5263' },
+        { kind: 'rug', l: 0, t: 66.5, w: 60.5, h: 9, color: '#3a4f7a', z: 100 },
+        { kind: 'screen', l: 64.75, t: 12, w: 11.5, h: 11 },
+        { kind: 'lectern', id: 'atrAla', l: 1, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'lectern', id: 'atrFarol', l: 8, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'lectern', id: 'atrCana', l: 15, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'lectern', id: 'atrUva', l: 22, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'pedestal', id: 'mesaMod', l: 29, t: 53.12, w: 9, h: 15.88, color: '#9aa3b8' },
+        { kind: 'lectern', id: 'atrNidac', l: 39.5, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'lectern', id: 'atrTic', l: 46.5, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'lectern', id: 'atrZig', l: 53.5, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
+        { kind: 'pedestal', id: 'control', l: 60.5, t: 48.39, w: 20, h: 22.61, color: '#4a5263' },
+        { emoji: '🖥️', x: 63.3, y: 43.5, s: 5.5, on: 'control' },
+        { emoji: '🎧', x: 79, y: 45.72, s: 3, on: 'control' },
+        { kind: 'table', id: 'tocador', l: 82, t: 53.99, w: 13, h: 16.01 },
+        { emoji: '💄', x: 93, y: 51.59, s: 2.7, on: 'tocador' },
+        { kind: 'pedestal', id: 'pieCam', l: 3.6, t: 62.41, w: 3, h: 27.09, color: '#4a5263' },
       ],
       hotspots: [
-        { id: 'cartel', x: 41.5, y: 18, sign: 'NIDAC', sub: '«Ni sí, ni no, sino todo lo contrario»', w: 22, label: 'Cartel de NIDAC (tras tu atril)',
+        { id: 'cartel', x: 42.25, y: 18, sign: 'NIDAC', sub: '«Ni sí, ni no, sino todo lo contrario»', w: 22, label: 'Cartel de NIDAC (tras tu atril)',
           look(g) { g.say('El lema oficial de NIDAC, tal cual: «Ni sí, ni no, sino todo lo contrario». Lo escribió un comité de doce personas. Seis querían «sí» y seis «no».'); } },
-        { id: 'moderadora', x: 32, y: 46.5, emoji: '👩‍💼', s: 9.8, behind: 'mesaMod', label: 'Matilde Repregunta, moderadora',
+        { id: 'moderadora', x: 33.5, y: 47.49, emoji: '👩‍💼', s: 8, behind: 'mesaMod', label: 'Matilde Repregunta, moderadora',
           look(g) { g.say('—Bienvenida, candidata. Cuando esté lista, colóquese en su atril. Le advierto que yo repregunto. Es mi apellido y mi vocación.', 'Matilde Repregunta'); } },
-        { id: 'r_ala', x: 4, y: 40.7, emoji: '👩‍🦰', s: 5.2, z: 113, tag: 'ALA', label: 'Herminia Titular (ALA)',
+        { id: 'r_ala', x: 3.75, y: 38.74, emoji: '💁‍♀️', s: 7.4, z: 113, tag: 'ALA', label: 'Herminia Titular (ALA)',
           look(g) { g.say('—Yo tengo un lema adecuado para cada pregunta. Y para cada respuesta, otro. Para esta conversación, por ejemplo: «Hablando se entiende la gente (que nos vota)».', 'Herminia Titular'); } },
-        { id: 'r_farol', x: 10.5, y: 40.7, emoji: '👨‍🦲', s: 5.2, z: 113, tag: 'FAROL', label: 'Anselmo Rotonda (FAROL)',
+        { id: 'r_farol', x: 10.75, y: 38.74, emoji: '🤵', s: 7.4, z: 113, tag: 'FAROL', label: 'Anselmo Rotonda (FAROL)',
           look(g) { g.say('—Esta noche pienso inaugurar una rotonda en el plató. Ya tengo la tijera y la cinta. Me falta la rotonda, pero eso es un detalle técnico.', 'Anselmo Rotonda'); } },
-        { id: 'r_cana', x: 17, y: 40.7, emoji: '🧔', s: 5.2, z: 113, tag: 'CAÑA', label: 'Paco Terraza (CAÑA)',
+        { id: 'r_cana', x: 17.75, y: 38.74, emoji: '🧑‍💼', s: 7.4, z: 113, tag: 'CAÑA', label: 'Paco Terraza (CAÑA)',
           look(g) { g.say('—Si el debate dura más de hora y media, propondré un descanso para el vermú. Es nuestra única propuesta, pero es firme.', 'Paco Terraza'); } },
-        { id: 'atril', x: 40.5, y: 40.6, emoji: '🎤', s: 5, on: 'atrNidac', tag: 'NIDAC', label: 'Tu atril',
+        { id: 'atril', x: 42.25, y: 40.59, emoji: '🎤', s: 5, on: 'atrNidac', tag: 'NIDAC', label: 'Tu atril',
           look(g) {
             if (!g.has('pinganillo')) return g.say('—¡Alto! ¿Sin pinganillo? ¡Si no le oye el asesor, a ver qué dice usted! El pinganillo lo tiene él, en el control.', 'Regidor');
             g.say('Te colocas en el atril. Se enciende el piloto rojo. Tres, dos, uno...', 'Plató');
             l5Debate(g, 0);
           } },
-        { id: 'r_uva', x: 23.5, y: 40.7, emoji: '👵', s: 5.2, z: 113, tag: 'UVA', label: 'Maripaz Queja (UVA)',
+        { id: 'r_uva', x: 24.75, y: 38.74, emoji: '🙍', s: 7.4, z: 113, tag: 'UVA', label: 'Maripaz Queja (UVA)',
           look(g) { g.say('—Me quejo de la iluminación, del atril, del orden de intervención y de que no me hayan dejado quejarme antes.', 'Maripaz Queja'); } },
-        { id: 'r_tic', x: 47, y: 38.74, emoji: '🧑‍💻', s: 7.4, z: 113, tag: 'TIC', label: 'Borja Disruptivo (TIC)',
+        { id: 'r_tic', x: 49.25, y: 38.74, emoji: '🧑‍💻', s: 7.4, z: 113, tag: 'TIC', label: 'Borja Disruptivo (TIC)',
           look(g) { g.say('—Voy a disrumpir el debate con una presentación de 84 diapositivas. Sin contenido, pero con transiciones.', 'Borja Disruptivo'); } },
-        { id: 'r_zig', x: 53.5, y: 63.4, emoji: '🪧', s: 8.25, z: 125, tag: 'ZIGZAG', label: 'Atril vacío de ZIGZAG',
+        { id: 'r_zig', x: 56.25, y: 40.59, emoji: '📄', s: 5, on: 'atrZig', z: 113, tag: 'ZIGZAG', label: 'Atril vacío de ZIGZAG',
           look(g) { g.say('Atril de ZIGZAG. Confirmaron que venían, luego que no, luego que sí. Al final mandaron un comunicado diciendo que habían ganado el debate.'); } },
-        { id: 'manual', x: 84, y: 49.55, emoji: '📘', s: 5, on: 'tocador', label: 'Manual del asesor (camerino)',
+        { id: 'manual', x: 85, y: 49.55, emoji: '📘', s: 5, on: 'tocador', label: 'Manual del asesor (camerino)',
           look(g) {
             g.doc('📘 Manual del Buen Esquivador — Asesoría de NIDAC', `<ol>
               <li>Jamás digas «<b>sí</b>» ni «<b>no</b>». Tampoco «claro», «por supuesto» ni «en absoluto», que son síes y noes disfrazados.</li>
@@ -1029,7 +1030,7 @@
               <li>Nunca pronuncies el nombre de otro candidato. Para eso existe la palabra «<b>otros</b>».</li></ol>
               <p class="small">Hay más normas, pero son secretas. Hasta para el manual.</p>`);
           } },
-        { id: 'espejo', x: 87.75, y: 38.27, emoji: '🪞', s: 8, label: 'Espejo de maquillaje (con un pósit)',
+        { id: 'espejo', x: 88.25, y: 41.36, emoji: '🪞', s: 8, label: 'Espejo de maquillaje (con un pósit)',
           look(g) { g.doc('🪞 Pósit en el espejo', '<div class="paper-note"><p>Si te preguntan por <b>CORRUPCIÓN</b>: habla del <b>tiempo</b>. Del meteorológico. Solo del tiempo.</p><p>— El asesor</p></div>'); } },
         { id: 'maquillaje', x: 91.5, y: 49.55, emoji: '🧴', s: 5, on: 'tocador', label: 'Mesa de maquillaje',
           look(g) {
@@ -1037,7 +1038,7 @@
             g.set('maq');
             g.say('La maquilladora te empolva la nariz y te peina con el flequillo de Paz Equidistante. —Ahora, el pinganillo. Lo tiene el asesor en el control, y no lo suelta sin datos. Es muy de datos. De los suyos.', 'Maquilladora');
           } },
-        { id: 'asesor', x: 68, y: 48.45, emoji: '🕴️', s: 24.8, behind: 'control', label: 'Asesor de NIDAC (en el control)',
+        { id: 'asesor', x: 69, y: 42.34, emoji: '👨‍💼', s: 8.5, behind: 'control', label: 'Asesor de NIDAC (en el control)',
           look(g) {
             if (g.flag('ping')) return g.say('—Escucha el pinganillo, cúmplelo todo y no improvises. La improvisación es para los que tienen ideas.', 'Asesor de NIDAC');
             g.say('—¿Tú eres la doble? Antes de darte el pinganillo necesito saber cómo vamos DE VERDAD. Lo de la tele está cocinado. ¿Traes el barómetro bueno?', 'Asesor de NIDAC');
@@ -1049,9 +1050,9 @@
               g.say('—NIDAC, un 6 %... Bien: con un 6 % no hay nada que perder, así que tampoco hay nada que decir. Estrategia: esquivarlo todo. Toma el pinganillo y escúchalo bien, que ya estoy hablando.', 'Asesor de NIDAC');
             },
           } },
-        { id: 'camara', x: 5.1, y: 53.52, emoji: '🎥', s: 8.31, on: 'pieCam', label: 'Cámara 2',
+        { id: 'camara', x: 5.1, y: 55.02, emoji: '🎥', s: 8.31, on: 'pieCam', label: 'Cámara 2',
           look(g) { g.say('Cámara 2. El cámara te susurra: —Si dudas, mira a la cámara con cara de estadista. Funciona hasta cuando no dices nada. Sobre todo cuando no dices nada.', 'Cámara'); } },
-        { id: 'regidor', x: 75, y: 47.18, emoji: '🎧', s: 5, on: 'control', label: 'Regidor',
+        { id: 'regidor', x: 77, y: 41.28, emoji: '🙋‍♂️', s: 9.7, behind: 'control', label: 'Regidor',
           look(g) { g.say('—Una respuesta fuera del manual y corto a publicidad. Y repetimos desde la primera pregunta: en la tele autonómica no se nota. Hemos repetido debates enteros y la audiencia ha subido.', 'Regidor'); } },
       ],
       hints: [
