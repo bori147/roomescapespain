@@ -1645,24 +1645,26 @@
       outro: 'Sales de la Delegación con el certificado en la mano y 2.121 € menos en la cuenta. Fuera hace sol. La churrería sigue abierta. Lucía ha hecho porras. Tu cuñado ya tiene «una idea de negocio».',
       scene: { wall: '#bfc5c2', floor: '#6f706a', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'board', id: 'tablero', l: 84.5, t: 21.2, w: 14.3, h: 19.1 },
+        { kind: 'board', id: 'tablero', l: 86.2, t: 22.4, w: 11.2, h: 14.4 },
+        { emoji: '📰', x: 88.6, y: 32.8, s: 3, z: 14 }, // el recorte de periódico
+        { emoji: '🏞️', x: 94.9, y: 32.8, s: 3, z: 14 }, // la foto de la furgoneta
         { kind: 'desk', id: 'mesaGestor', l: 10, t: 57.17, w: 26, h: 16.83 },
+        { emoji: '📦', x: 46, y: 67.9, s: 5.8, z: 124 }, // caja de expedientes bajo la mesa: tapa las piernas del inspector; antes que la mesa en el DOM para quedar detrás del faldón
         { kind: 'desk', id: 'mesaInspector', l: 38.5, t: 57.17, w: 20, h: 16.83 },
         { emoji: '☕', x: 54, y: 54.5, s: 3, on: 'mesaInspector' },
-        { emoji: '🗑️', x: 47.4, y: 67.17, s: 6, z: 124 }, // en el hueco de las rodillas: tapa los pies del inspector
         { emoji: '🪑', x: 46, y: 70.3, s: 13.6 },
       ],
       hotspots: [
         { id: 'fluorescente', x: 50, y: 5, emoji: '💡', s: 5, label: 'Fluorescente',
           look(g) { g.say('El fluorescente parpadea en morse. Dice: S-O-S. O eso, o «IVA». Se parecen.'); } },
-        { id: 'compensacion', x: 10, y: 31.3, sign: 'NORMAS DEL IVA', sub: '⚖️', w: 14, label: 'Normas de compensación del IVA',
+        { id: 'compensacion', x: 9, y: 31.3, sign: 'NORMAS DEL IVA', sub: '⚖️', w: 14, label: 'Normas de compensación del IVA',
           look(g) {
             g.doc('⚖️ Compensación de cuotas del IVA (simplificado)', `<ul>
               <li>Si un trimestre sale <b>positivo</b>, se ingresa.</li>
               <li>Si un trimestre sale <b>negativo</b>, no se devuelve: se <b>compensa</b>, restándolo del resultado del trimestre <b>siguiente</b>.</li>
               <li>Si en el <b>cuarto trimestre</b>, después de compensar, el resultado sigue siendo negativo, se pide la <b>devolución</b>. Una devolución no es un ingreso: es una esperanza.</li></ul>`);
           } },
-        { id: 'amortizacion', x: 31.5, y: 31.3, sign: 'TABLA DE AMORTIZACIÓN', sub: '📉', w: 20, z: 250, label: 'Tabla de amortización',
+        { id: 'amortizacion', x: 30.5, y: 31.3, sign: 'TABLA DE AMORTIZACIÓN', sub: '📉', w: 20, z: 250, label: 'Tabla de amortización',
           look(g) {
             g.doc('📉 Tabla de coeficientes de amortización (simplificada)', `<table class="tbl">
               <tr><td>Maquinaria de hostelería (freidoras, chocolateras, cafeteras)</td><td>10 % anual</td></tr>
@@ -1696,7 +1698,7 @@
             if (g.has('certificadoAEAT')) return g.say('—Ya tiene su certificado. Puede irse. No me haga cambiar de opinión.', 'Inspector de Hacienda');
             l10Menu(g);
           } },
-        { id: 'archivador', x: 13.2, y: 52.28, emoji: '🗃️', s: 5.5, on: 'mesaGestor', label: 'Archivador con candado',
+        { id: 'archivador', x: 32, y: 52.28, emoji: '🗃️', s: 5.5, on: 'mesaGestor', label: 'Archivador con candado',
           look(g) {
             if (g.flag('archOpen')) return g.say('El archivador está abierto y vacío. Lo importante ya lo tienes. Lo demás, mejor que siga cerrado.');
             g.input({
@@ -1711,7 +1713,7 @@
               },
             });
           } },
-        { id: 'gestor', x: 20, y: 51.49, emoji: '🧑‍💼', s: 10.7, behind: 'mesaGestor', label: 'Tu gestor',
+        { id: 'gestor', x: 15, y: 51.49, emoji: '🧑‍💼', s: 10.7, behind: 'mesaGestor', label: 'Tu gestor',
           look(g) {
             g.say(rand([
               '—Yo le recomendé deducirlo todo. Ahora le recomiendo no decir que se lo recomendé.',
@@ -1720,7 +1722,7 @@
               '—Tranquilo. En la peor inspección que he llevado, el cliente solo perdió el negocio. Y la casa. Pero ganó experiencia.',
             ]), 'Tu gestor');
           } },
-        { id: 'cunado', x: 30, y: 52.11, emoji: '🙋‍♂️', s: 10, behind: 'mesaGestor', label: 'Tu cuñado («de apoyo»)',
+        { id: 'cunado', x: 25, y: 51.6, emoji: '🙋‍♂️', s: 9, behind: 'mesaGestor', label: 'Tu cuñado («de apoyo»)',
           look(g) {
             g.say('—¿La «asesoría estratégica en porras»? Te dije que pusieras más azúcar. En una boda. Eso son 8.000 euros más IVA, cuñao, que el conocimiento se paga.', 'Tu cuñado');
             g.say('—...Bueno, vale: no hice nada más. Pero lo dije con mucha seguridad. Y te hice la factura, que eso sí que es trabajo.', 'Tu cuñado');
