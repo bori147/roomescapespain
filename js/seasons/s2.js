@@ -941,6 +941,9 @@
       scene: { wall: '#e3d3b3', floor: '#6b4f3a', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'bookcase', l: 84.5, t: 25.5, w: 12, h: 42.5 },
+        { kind: 'counter', id: 'garita', l: 1.2, t: 48.85, w: 8, h: 23.15 },
+        { emoji: '👮', x: 5.3, y: 43, s: 10.5, behind: 'garita' },
+        { kind: 'pedestal', l: 24.6, t: 63.5, w: 11.3, h: 12.5, color: '#5f4e3c' },
         { kind: 'desk', id: 'pupitreMesa', l: 24, t: 58.9, w: 18, h: 17.1 },
         { kind: 'counter', id: 'mostrador', l: 46.5, t: 48.85, w: 23, h: 23.15 },
         { kind: 'lectern', id: 'atril', l: 87.5, t: 48.19, w: 6, h: 25.81 },
@@ -1013,7 +1016,7 @@
             solicitudDen: l3Form,
             solicitudRellena(g) { g.say('Ya está rellena. Si te has equivocado, la registradora te lo dirá. Sin decirte en qué.'); },
           } },
-        { id: 'cunado', x: 30, y: 53.2, emoji: '🙋‍♂️', s: 9.3, behind: 'pupitreMesa', label: 'Tu cuñado',
+        { id: 'cunado', x: 30, y: 53.2, emoji: '🙋', s: 9.3, behind: 'pupitreMesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—Ponle «Real Churrería de España». Vende muchísimo. ¿Que está prohibido? Bah, eso lo dicen para que no lo pongas.',
