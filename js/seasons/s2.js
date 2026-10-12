@@ -1361,9 +1361,9 @@
           look(g) { g.say('Tu primer euro, enmarcado. Bueno, el marco. El euro te lo llevaste para pagar el IVA del primer día.'); } },
         { id: 'calendario', x: 68, y: 33.8, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Domingo, 18 de abril de 2027. Alguien (tú) ha escrito en el día 15: «domiciliar el 303». Y lo ha tachado. Y ha escrito «mañana». Y lo ha vuelto a tachar.'); } },
-        { id: 'gestor', x: 28, y: 46.62, emoji: '☎️', s: 5, on: 'obrador', label: 'Teléfono del gestor',
+        { id: 'gestor', x: 26.5, y: 46.62, emoji: '☎️', s: 5, on: 'obrador', label: 'Teléfono del gestor',
           look(g) { g.say('Contestador: «Hola, soy tu gestor. Estoy de vacaciones hasta el 21 de abril. Si es por el 303... ánimo».'); } },
-        { id: 'libroEmitidas', x: 40.5, y: 52.28, emoji: '📒', s: 5.5, on: 'escritorio', label: 'Libro de facturas emitidas',
+        { id: 'libroEmitidas', x: 39.8, y: 52.72, emoji: '📒', s: 5, on: 'escritorio', label: 'Libro de facturas emitidas',
           look(g) {
             const a = g.flag('anotada');
             g.doc('📒 Libro registro de facturas emitidas — 1T 2027', `<table class="tbl">
@@ -1382,9 +1382,9 @@
               g.say('Anotas la factura A-2027-0002 en el libro: base 10,00 € al 10 % y 10,00 € al 21 %. Y grapas la copia a la página. Verifactu ya lo sabía; ahora lo sabe también tu libro.', 'Libro de facturas emitidas');
             },
           } },
-        { id: 'ordenador', x: 48.5, y: 50.06, emoji: '💻', s: 8, on: 'escritorio', label: 'Ordenador (Sede de la AEAT)',
+        { id: 'ordenador', x: 46.93, y: 50.95, emoji: '💻', s: 7, on: 'escritorio', label: 'Ordenador (Sede de la AEAT)',
           look: l7Form },
-        { id: 'movil', x: 55.25, y: 52.73, emoji: '📱', s: 5, on: 'escritorio', label: 'Banca móvil',
+        { id: 'movil', x: 54.06, y: 52.73, emoji: '📱', s: 5, on: 'escritorio', label: 'Banca móvil',
           look(g) {
             if (g.has('nrc')) return g.say('Ya pagaste. El NRC está en tu inventario. El dinero, en Hacienda.', 'Banca móvil');
             g.input({
@@ -1396,14 +1396,14 @@
               ok: () => { g.give('nrc'); g.say('Pago de 128 € realizado. El banco te da un NRC de 22 caracteres. Y un mensaje: «¿Le interesa un préstamo para pagar sus impuestos?».', 'Banca móvil'); },
             });
           } },
-        { id: 'cajaZapatos', x: 60.25, y: 52.72, emoji: '📦', s: 5, on: 'escritorio', label: 'Caja de zapatos de facturas',
+        { id: 'cajaZapatos', x: 60.19, y: 52.72, emoji: '🗃️', s: 5, on: 'escritorio', label: 'Caja de zapatos de facturas',
           look(g) {
             if (g.flag('libroOK')) return g.say('La caja de zapatos guarda ahora solo lo que no se puede deducir. Es como un museo de errores.');
             l7Caja(g);
           } },
         { id: 'gato', x: 80, y: 56.97, emoji: '🐈', s: 5, on: 'cajas2026', label: 'Gato de la churrería',
           look(g) { g.say('El gato duerme sobre las facturas de 2026. No es deducible, pero desgrava el estrés.'); } },
-        { id: 'lucia', x: 20, y: 43, emoji: '👩‍🍳', s: 12.5, behind: 'obrador', label: 'Lucía',
+        { id: 'lucia', x: 18.5, y: 43, emoji: '👩‍🍳', s: 12.5, behind: 'obrador', label: 'Lucía',
           look(g) { g.say('—Jefe, me voy. Mañana entro a las seis. Bueno, a las cinco y media, que hay que hacer la masa. Pero tú pon las seis, como siempre.', 'Lucía'); } },
       ],
       hints: [
