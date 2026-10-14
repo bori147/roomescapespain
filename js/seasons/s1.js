@@ -1051,22 +1051,28 @@
       outro: 'La puerta se abre justo a las 00:00, cuando el decreto entra en vigor. Feliz año nuevo. Su DNI ya está listo para recoger en el Ministerio de Asuntos Pendientes, en la famosa Ventanilla Única.',
       scene: { wall: '#4a4540', floor: '#3a3632', floorH: 34, pattern: 'tiles' },
       decor: [
-        { kind: 'counter', l: 48, t: 66, w: 20, h: 7 },
-        { emoji: '📦', x: 6, y: 72, s: 5, o: 0.9 }, { emoji: '📦', x: 10, y: 80, s: 5, o: 0.9 },
+        { kind: 'pedestal', id: 'bancada', l: 10.3, t: 53.29, w: 13.4, h: 19.71, color: '#3d4247' },
+        { kind: 'counter', id: 'platina', l: 28, t: 49.2, w: 20, h: 22.8 },
+        { kind: 'board', l: 84, t: 26.8, w: 10.4, h: 12.4 },
+        { emoji: '📑', x: 86.3, y: 31.2, s: 4, z: 15, o: 0.85 }, { emoji: '📅', x: 90.3, y: 31.2, s: 4, z: 15 },
+        { emoji: '📰', x: 19.9, y: 49.2, s: 4.6, on: 'bancada' }, { emoji: '📰', x: 21.2, y: 49.38, s: 4.4, on: 'bancada' },
+        { kind: 'table', id: 'mesita', l: 83, t: 59.17, w: 12, h: 16.83 },
+        { emoji: '☕', x: 89.5, y: 57.39, s: 2, on: 'mesita' },
+        { emoji: '📦', x: 3.2, y: 66.67, s: 5.43 }, { emoji: '📦', x: 6.2, y: 72.01, s: 5.61 },
       ],
       hotspots: [
-        { id: 'lema', x: 48, y: 16, sign: 'LEMA DE LA CASA', sub: '«Lo importante siempre va al principio»', w: 26, label: 'Lema de la imprenta',
+        { id: 'lema', x: 41.5, y: 20, z: 250, sign: 'LEMA DE LA CASA', sub: '«Lo importante siempre va al principio»', w: 26, label: 'Lema de la imprenta',
           look(g) { g.say('«En el BOE, lo importante siempre va al principio». — Tradición de la casa, desde la Gazeta de 1661.'); } },
-        { id: 'reloj', x: 82, y: 15, emoji: '🕛', s: 6, label: 'Reloj: 23:59',
+        { id: 'reloj', x: 63, y: 12.3, emoji: '🕛', s: 5, label: 'Reloj: 23:59',
           look(g) { g.say('23:59. El reloj lleva marcando 23:59 toda la noche. En el BOE, todo se publica a las 23:59.'); } },
-        { id: 'rotativa', x: 22, y: 56, emoji: '🖨️', s: 14, label: 'Rotativa',
+        { id: 'rotativa', x: 14.7, y: 47.51, emoji: '🖨️', s: 6.5, on: 'bancada', label: 'Rotativa',
           look(g) {
             if (!g.flag('disc')) { g.set('disc'); g.say('Entre los rodillos, atascado, hay un disco de cifrado antiguo. Probablemente de la época de Felipe IV.'); g.give('disco'); }
             else g.say('La rotativa imprime a toda velocidad: decretos, órdenes, correcciones de errores de las correcciones de errores...');
           } },
-        { id: 'linotipista', x: 40, y: 62, emoji: '👷', s: 7, label: 'Linotipista',
+        { id: 'linotipista', x: 33.5, y: 42, emoji: '🧑‍🔧', s: 11.33, behind: 'platina', label: 'Linotipista',
           look(g) { g.say('—Aquí se imprime lo que el gobierno aprueba a última hora. Este decreto trae nueve artículos. No leas solo el texto: fíjate en cómo empiezan. Como dice el lema...', 'Linotipista'); } },
-        { id: 'boe', x: 58, y: 62, emoji: '📰', s: 7, label: 'BOE recién impreso',
+        { id: 'boe', x: 43.5, y: 44.13, emoji: '📰', s: 5.7, on: 'platina', label: 'BOE recién impreso',
           look(g) {
             g.doc('📰 BOLETÍN OFICIAL DEL ESTADO', `<div class="boe">
               <div class="boe-head">BOLETÍN OFICIAL DEL ESTADO<br><small>Núm. 314 · Jueves 31 de diciembre de 2026 · Sec. I</small></div>
@@ -1084,11 +1090,11 @@
               <p><b>Disposición final única.</b> El presente real decreto-ley entrará en vigor a las 00:00. Es decir, dentro de un minuto.</p></div>`);
           },
           use: { disco(g) { g.say('El BOE no está cifrado. Solo lo parece.'); } } },
-        { id: 'sobre', x: 74, y: 82, emoji: '✉️', s: 5, label: 'Sobre en el suelo', show: (g) => !g.flag('env'),
+        { id: 'sobre', x: 59, y: 69.6, emoji: '✉️', s: 5, label: 'Sobre en el suelo', show: (g) => !g.flag('env'),
           look(g) { g.set('env'); g.say('Un sobre lacrado: «PARA EL CIUDADANO — CIFRADO POR SU SEGURIDAD». Te lo guardas.'); g.give('sobre'); } },
-        { id: 'cafe', x: 88, y: 78, emoji: '☕', s: 5, label: 'Café abandonado',
+        { id: 'cafe', x: 87.5, y: 54.72, emoji: '📄', s: 5, on: 'mesita', label: 'Café abandonado',
           look(g) { g.say('Un café frío con una nota: «Recordatorio: el decreto trae un regalito para el ciudadano. Lo he cifrado a la antigua, como hacía Julio».'); } },
-        { id: 'puerta', x: 93, y: 46, emoji: '🚪', s: 13, label: 'Puerta con cerradura de letras',
+        { id: 'puerta', x: 63, y: 42.33, emoji: '🚪', s: 27.19, label: 'Puerta con cerradura de letras',
           look(g) {
             g.input({
               title: '🔠 Cerradura de letras', text: '«INTRODUZCA LA PALABRA»', numeric: false, maxLen: 30, placeholder: 'Escribe la palabra',
