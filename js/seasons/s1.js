@@ -860,12 +860,12 @@
             if (!g.flag('don')) { g.set('don'); g.say('En el bolsillo hay un recibo doblado: un donativo que hiciste en un arrebato de solidaridad.'); g.give('donativo'); }
             else g.say('Solo quedan caramelos de menta pegados al forro.');
           } },
-        { id: 'buzon', x: 28.5, y: 54.45, emoji: '✉️', s: 3.6, on: 'mesa', label: 'Tu correspondencia',
+        { id: 'buzon', x: 29, y: 54.45, emoji: '✉️', s: 5, on: 'mesa', label: 'Tu correspondencia',
           look(g) {
             if (!g.flag('pen')) { g.set('pen'); g.say('Entre la publicidad, una carta de tu plan de pensiones.'); g.give('pensiones'); }
             else g.say('Publicidad de un gimnasio y una oferta de fibra. Nada deducible.');
           } },
-        { id: 'gafas', x: 54.5, y: 54.45, emoji: '🧾', s: 3.7, on: 'escritorio', label: 'Factura sobre la mesa',
+        { id: 'gafas', x: 54.5, y: 54.45, emoji: '🧾', s: 5, on: 'escritorio', label: 'Factura sobre la mesa',
           look(g) {
             if (!g.flag('gaf')) { g.set('gaf'); g.say('Una factura de óptica. ¿Será deducible?'); g.give('gafas'); }
             else g.say('Aquí estaban las gafas. Ahora las llevas puestas, para leer mejor lo que vas a pagar.');
