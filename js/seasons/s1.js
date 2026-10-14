@@ -700,18 +700,18 @@
         { emoji: '💁‍♀️', x: 49.8, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '🧑‍💻', x: 66, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '👩‍💼', x: 79, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '🙎‍♂️', x: 88.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { kind: 'pedestal', id: 'pieTurnos', l: 19, t: 56.2, w: 4.5, h: 29.8, color: '#5d6670' },
+        { emoji: '🙎‍♂️', x: 91, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { kind: 'pedestal', id: 'pieTurnos', l: 24.5, t: 56.2, w: 4.5, h: 29.8, color: '#5d6670' },
         { emoji: '🧍', x: 40, y: 57.02, s: 24.7 },
-        { kind: 'bench', id: 'banco', l: 29.75, t: 65.72, w: 16.5, h: 21.28 },
+        { kind: 'bench', id: 'banco', l: 52, t: 65.72, w: 16.5, h: 21.28 },
         { kind: 'table', id: 'mesaTurnos', l: 79, t: 62.27, w: 11, h: 17.73 },
         { kind: 'counter', id: 'garita', l: 0.5, t: 64.67, w: 12, h: 27.33 },
-        { emoji: '👮', x: 6.75, y: 58.2, s: 13.5, behind: 'garita' },
+        { emoji: '👮', x: 6.75, y: 59.3, s: 12.3, behind: 'garita' },
       ],
       hotspots: [
         { id: 'pantalla', x: 67.5, y: 6.6, emoji: '📺', s: 5.5, on: 'soporte', label: (g) => `Pantalla de turnos: A-${pad(g.flag('turno'), 3)}`,
           look(g) { g.say(`TURNO: A-${pad(g.flag('turno'), 3)}. ${g.flag('turno') === 12 ? 'Lleva así desde las 8:00. El encargado de los turnos está en un curso de «Gestión eficiente de turnos».' : '¡Ha cambiado!'}`); } },
-        { id: 'dispensador', x: 21.25, y: 51.53, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
+        { id: 'dispensador', x: 26.75, y: 51.53, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
           look(g) {
             if (g.flag('ticketTaken')) return g.say('Ya tienes número. Coger otro sería ilegal. O peor: de mala educación.');
             g.set('ticketTaken'); g.say('Te toca el A-347. En pantalla van por el A-012. Haces cuentas y te entra frío.'); g.give('ticket');
