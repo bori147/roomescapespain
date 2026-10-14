@@ -1214,10 +1214,10 @@
         { kind: 'column', l: 0.5, t: 0, w: 1.8, h: 68 },
         { kind: 'column', l: 97.7, t: 0, w: 1.8, h: 68 },
         { kind: 'flag', l: 58.5, t: 14.9, w: 9, h: 10.7 },
-        { kind: 'shelf', id: 'percha', l: 25.9, t: 27.85, w: 1.2, h: 1 },
+        { kind: 'shelf', id: 'percha', l: 28.9, t: 27.85, w: 1.2, h: 1 },
         { kind: 'counter', id: 'mostrador', l: 51, t: 48.85, w: 21, h: 23.15 },
         { kind: 'pedestal', id: 'casillero', l: 75, t: 54.36, w: 8, h: 17.64, color: '#6d4c33' },
-        { kind: 'cabinet', id: 'libreria', l: 85, t: 43.69, w: 11.5, h: 27.31, color: '#6d4c33' },
+        { kind: 'bookcase', id: 'libreria', l: 85, t: 44.69, w: 11.5, h: 27.31, color: '#6d4c33' },
       ],
       hotspots: [
         { id: 'registro', x: 61.5, y: 43.6, emoji: '🧑‍💼', s: 11.5, behind: 'mostrador', label: 'Funcionario del Registro',
@@ -1237,7 +1237,7 @@
               g.say('—Ley de Simplificación de Reclamaciones... grapa única a 45°. Qué gusto da ver las cosas bien hechas. Adjuntada. Ahora dígame cuándo vence el plazo (hábleme otra vez).', 'Funcionario del Registro');
             },
           } },
-        { id: 'buzon', x: 79, y: 49.03, emoji: '🗃️', s: 6, on: 'casillero', label: 'Casillero de notificaciones',
+        { id: 'buzon', x: 79, y: 49.9, emoji: '🗃️', s: 5, on: 'casillero', label: 'Casillero de notificaciones',
           look(g) {
             g.doc('📬 Cédulas de notificación', `<div class="paper-note"><b>Cédula 1.</b> Recurso de inconstitucionalidad nº <b>1174-2033</b> (Ley de Rotondas). Notificada el <b>viernes 8 de julio de 2033</b>.</div><br>
               <div class="paper-note"><b>Cédula 2.</b> Recurso de inconstitucionalidad nº <b>1147-2033</b>. Notificada el <b>viernes 15 de julio de 2033</b>.</div>`);
@@ -1248,13 +1248,13 @@
               <p>El Pleno acuerda admitir a trámite el recurso y dar traslado al Gobierno para que, en el plazo de <b>QUINCE días</b>, pueda personarse y formular alegaciones.</p>
               <p class="small">Notifíquese. (Ya se ha notificado; ver casillero.)</p>`);
           } },
-        { id: 'lo', x: 87.6, y: 39.25, emoji: '📕', s: 5, on: 'libreria', label: 'Ley Orgánica del Tribunal',
+        { id: 'lo', x: 87.6, y: 40.25, emoji: '📕', s: 5, on: 'libreria', label: 'Ley Orgánica del Tribunal',
           look(g) {
             g.doc('📕 Ley Orgánica del Tribunal (extracto)', `<p><b>Art. 80.</b> Los plazos señalados por días se computan en <b>días hábiles</b>, conforme a la doctrina de este Tribunal.</p>
               <p>Los <b>domingos</b> y los <b>festivos nacionales</b> son siempre inhábiles.</p>
               <p>Si el último día del plazo fuera inhábil, se entenderá prorrogado al primer día hábil siguiente.</p>`);
           } },
-        { id: 'jurisp', x: 93, y: 38.36, emoji: '📚', s: 6, on: 'libreria', label: 'Estantería de jurisprudencia',
+        { id: 'jurisp', x: 93, y: 39.36, emoji: '📚', s: 6, on: 'libreria', label: 'Estantería de jurisprudencia',
           look(g) {
             g.doc('📚 Doctrina sobre cómputo de plazos (selección)', `<table class="s5-t">
               <tr><td>STC 9/2017 (<b>Pleno</b>)</td><td>El plazo se computa a partir del <b>día siguiente</b> al de la notificación.</td></tr>
@@ -1268,7 +1268,7 @@
               <tr><td>STC 60/2029 (Sala Segunda)</td><td>Agosto es hábil, que hay mucho trabajo.</td></tr>
               <tr><td>STC 70/2032 (Sala Primera)</td><td>Los sábados son hábiles.</td></tr></table>`);
           } },
-        { id: 'acuerdo', x: 45.5, y: 31.3, sign: 'ACUERDO DEL PLENO', sub: '⚖️', w: 17, label: 'Acuerdo del Pleno sobre doctrina',
+        { id: 'acuerdo', x: 46.5, y: 31.3, sign: 'ACUERDO DEL PLENO', sub: '⚖️', w: 17, label: 'Acuerdo del Pleno sobre doctrina',
           look(g) {
             g.doc('⚖️ Acuerdo del Pleno sobre doctrina contradictoria', `<ol><li>En caso de contradicción, la doctrina del <b>Pleno</b> prevalece sobre la de cualquier Sala, <b>sea cual sea su fecha</b>.</li>
               <li>Entre resoluciones del mismo órgano, prevalece la <b>más reciente</b>.</li></ol>
@@ -1278,7 +1278,7 @@
           look(g) { g.doc('📅 Calendario 2033 — Sede del Tribunal', TC_CAL()); } },
         { id: 'reloj', x: 69, y: 44.4, emoji: '⌛', s: 5, on: 'mostrador', label: 'Reloj de arena',
           look(g) { g.say('Un reloj de arena con una placa: «Para el cómputo de plazos». La arena está atascada. Muy apropiado.'); } },
-        { id: 'toga', x: 26.5, y: 34.45, emoji: '🥼', s: 15.8, z: 250, label: 'Toga colgada',
+        { id: 'toga', x: 29.5, y: 34.45, emoji: '🥼', s: 15.8, z: 250, label: 'Toga colgada',
           look(g) { g.say('Una toga con puñetas. En el bolsillo, una nota: «Recordar: el Pleno manda. Las Salas, opinan».'); } },
         { id: 'abogado', x: 13.5, y: 60.11, emoji: '🧍', s: 25.75, label: 'Abogado desolado',
           look(g) { g.say('—Yo conté los sábados como hábiles porque lo decía una sentencia de 2032. Del año pasado, ¿eh? Muy reciente. Pero era de Sala. Me lo han inadmitido.', 'Abogado desolado'); } },
