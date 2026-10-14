@@ -1646,16 +1646,16 @@
       scene: { wall: '#bfc5c2', floor: '#6f706a', floorH: 32, pattern: 'tiles' },
       decor: [
         { kind: 'board', id: 'tablero', l: 86.2, t: 22.4, w: 11.2, h: 14.4 },
-        { emoji: '📰', x: 88.6, y: 32.8, s: 3, z: 14 }, // el recorte de periódico
+        { emoji: '📰', x: 88.9, y: 31.74, s: 4.2, z: 14 }, // el recorte de periódico
         { emoji: '🏞️', x: 94.9, y: 32.8, s: 3, z: 14 }, // la foto de la furgoneta
         { kind: 'desk', id: 'mesaGestor', l: 10, t: 57.17, w: 26, h: 16.83 },
-        { emoji: '📦', x: 46, y: 67.9, s: 5.8, z: 124 }, // caja de expedientes bajo la mesa: tapa las piernas del inspector; antes que la mesa en el DOM para quedar detrás del faldón
+        { emoji: '📦', x: 49.2, y: 67.03, s: 6.9, z: 124 }, // caja de expedientes bajo la mesa: tapa las piernas del inspector; antes que la mesa en el DOM para quedar detrás del faldón
         { kind: 'desk', id: 'mesaInspector', l: 38.5, t: 57.17, w: 20, h: 16.83 },
-        { emoji: '☕', x: 54, y: 54.5, s: 3, on: 'mesaInspector' },
+        { emoji: '☕', x: 54, y: 55.39, s: 2, on: 'mesaInspector' },
         { emoji: '🪑', x: 46, y: 70.3, s: 13.6 },
       ],
       hotspots: [
-        { id: 'fluorescente', x: 50, y: 5, emoji: '💡', s: 5, label: 'Fluorescente',
+        { id: 'fluorescente', x: 50, y: 8, emoji: '💡', s: 5, label: 'Fluorescente',
           look(g) { g.say('El fluorescente parpadea en morse. Dice: S-O-S. O eso, o «IVA». Se parecen.'); } },
         { id: 'compensacion', x: 9, y: 31.3, sign: 'NORMAS DEL IVA', sub: '⚖️', w: 14, label: 'Normas de compensación del IVA',
           look(g) {
