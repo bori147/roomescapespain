@@ -990,21 +990,21 @@
       outro: 'La puerta se abre justo a las 00:00, cuando el decreto entra en vigor. Feliz año nuevo. Su DNI ya está listo para recoger en el Ministerio de Asuntos Pendientes, en la famosa Ventanilla Única.',
       scene: { wall: '#4a4540', floor: '#3a3632', floorH: 34, pattern: 'tiles' },
       decor: [
-        { kind: 'pedestal', id: 'bancada', l: 8, t: 53.29, w: 15.5, h: 19.71, color: '#3d4247' },
+        { kind: 'pedestal', id: 'bancada', l: 10.3, t: 53.29, w: 13.4, h: 19.71, color: '#3d4247' },
         { kind: 'counter', id: 'platina', l: 28, t: 49.2, w: 20, h: 22.8 },
         { kind: 'board', l: 84, t: 26.8, w: 10.4, h: 12.4 },
-        { emoji: '📄', x: 86.3, y: 31.2, s: 4, z: 15, o: 0.85 }, { emoji: '📅', x: 90.3, y: 31.2, s: 4, z: 15 },
+        { emoji: '📑', x: 86.3, y: 31.2, s: 4, z: 15, o: 0.85 }, { emoji: '📅', x: 90.3, y: 31.2, s: 4, z: 15 },
         { emoji: '📰', x: 19.9, y: 49.2, s: 4.6, on: 'bancada' }, { emoji: '📰', x: 21.2, y: 49.38, s: 4.4, on: 'bancada' },
         { kind: 'table', id: 'mesita', l: 83, t: 59.17, w: 12, h: 16.83 },
-        { emoji: '☕', x: 91.2, y: 57.39, s: 2, on: 'mesita' },
+        { emoji: '☕', x: 89.5, y: 57.39, s: 2, on: 'mesita' },
         { emoji: '📦', x: 3.2, y: 66.67, s: 5.43 }, { emoji: '📦', x: 6.2, y: 72.01, s: 5.61 },
       ],
       hotspots: [
-        { id: 'lema', x: 41.5, y: 16, z: 250, sign: 'LEMA DE LA CASA', sub: '«Lo importante siempre va al principio»', w: 26, label: 'Lema de la imprenta',
+        { id: 'lema', x: 41.5, y: 20, z: 250, sign: 'LEMA DE LA CASA', sub: '«Lo importante siempre va al principio»', w: 26, label: 'Lema de la imprenta',
           look(g) { g.say('«En el BOE, lo importante siempre va al principio». — Tradición de la casa, desde la Gazeta de 1661.'); } },
-        { id: 'reloj', x: 63, y: 11.5, emoji: '🕛', s: 5, label: 'Reloj: 23:59',
+        { id: 'reloj', x: 63, y: 11.5, emoji: '🕛', s: 4.1, label: 'Reloj: 23:59',
           look(g) { g.say('23:59. El reloj lleva marcando 23:59 toda la noche. En el BOE, todo se publica a las 23:59.'); } },
-        { id: 'rotativa', x: 14.5, y: 47.51, emoji: '🖨️', s: 6.5, on: 'bancada', label: 'Rotativa',
+        { id: 'rotativa', x: 14.7, y: 47.51, emoji: '🖨️', s: 6.5, on: 'bancada', label: 'Rotativa',
           look(g) {
             if (!g.flag('disc')) { g.set('disc'); g.say('Entre los rodillos, atascado, hay un disco de cifrado antiguo. Probablemente de la época de Felipe IV.'); g.give('disco'); }
             else g.say('La rotativa imprime a toda velocidad: decretos, órdenes, correcciones de errores de las correcciones de errores...');
@@ -1029,7 +1029,7 @@
               <p><b>Disposición final única.</b> El presente real decreto-ley entrará en vigor a las 00:00. Es decir, dentro de un minuto.</p></div>`);
           },
           use: { disco(g) { g.say('El BOE no está cifrado. Solo lo parece.'); } } },
-        { id: 'sobre', x: 59, y: 71.6, emoji: '✉️', s: 5, label: 'Sobre en el suelo', show: (g) => !g.flag('env'),
+        { id: 'sobre', x: 59, y: 69.6, emoji: '✉️', s: 5, label: 'Sobre en el suelo', show: (g) => !g.flag('env'),
           look(g) { g.set('env'); g.say('Un sobre lacrado: «PARA EL CIUDADANO — CIFRADO POR SU SEGURIDAD». Te lo guardas.'); g.give('sobre'); } },
         { id: 'cafe', x: 87.5, y: 54.72, emoji: '📄', s: 5, on: 'mesita', label: 'Café abandonado',
           look(g) { g.say('Un café frío con una nota: «Recordatorio: el decreto trae un regalito para el ciudadano. Lo he cifrado a la antigua, como hacía Julio».'); } },
