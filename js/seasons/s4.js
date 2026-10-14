@@ -808,7 +808,7 @@
           look(g) {
             g.say('—¡Por fin! El teleprompter está vacío y el candidato sale en cinco minutos. Elige una frase por bloque y que cumpla TODO el argumentario. La primera página está en la carpeta del atril. La segunda... la tenía en la mano hace un rato. Y la Dirección siempre deja correcciones en el espejo.', 'Jefa de campaña');
           } },
-        { id: 'teleprompter', x: 33, y: 48.92, emoji: '🖥️', s: 6, on: 'mesaProd', label: 'Teleprompter',
+        { id: 'teleprompter', x: 31, y: 48.92, emoji: '🖥️', s: 6, on: 'mesaProd', label: 'Teleprompter',
           look(g) {
             if (!g.flag('backstage')) return g.say('—¡Eh, eh! ¿Adónde vas? Detrás del cordón solo pasa personal acreditado. Y tú, de momento, eres público con prisa.', 'Segurata');
             l3Teleprompter(g);
@@ -842,7 +842,7 @@
               <li>La palabra «<b>gente</b>» tiene que salir <b>al menos una vez</b>. La gente quiere oír «gente».</li>
               <li>El <b>bocadillo</b>, como mucho, <b>una vez</b>. El catering lo comparten todos los partidos y no vamos a hacerles publicidad.</li></ol>`);
           } },
-        { id: 'catering', x: 90, y: 49.8, emoji: '🥖🥖', s: 4.2, on: 'mesaCatering', label: 'Mesa del catering',
+        { id: 'catering', x: 90, y: 49.8, emoji: '🥖🥖', s: 5, on: 'mesaCatering', label: 'Mesa del catering',
           look(g) { g.say('Bocadillos de calamares (hoy con banderita de FAROL clavada). Mañana, los mismos bocadillos llevarán la de ALA. El catering es lo único en lo que todos los partidos están de acuerdo.'); } },
         { id: 'publico', x: 74.25, y: 57.8, emoji: '🙋‍♀️🙋‍♂️', s: 10.5, behind: 'filaPublico', label: 'Público',
           look(g) { g.say('—Yo vengo a todos los mitines. A los de todos los partidos. Por el bocadillo y por el ambiente. A quién voto ya lo decidiré en el bocadillo número veinte.', 'Señor del público'); } },
