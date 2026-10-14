@@ -975,17 +975,19 @@
       stars: 3,
       intro: 'Es 31 de diciembre de 2032, 23:00. Si a medianoche no están <b>justificados los fondos europeos</b>, hay que devolverlos a Bruselas. Con intereses. Y con vergüenza.<br><br>Traes tu portátil (la plataforma solo funciona en equipos dados de alta por el CAU) y el cuadro de créditos fiscalizado (sin crédito acreditado, no se justifica ni un euro). Te esperan una caja de facturas, una guía de elegibilidad de 300 páginas, unas adendas que nadie ha leído y un auditor europeo que no parpadea.<br><br><b>Objetivo:</b> abre la plataforma CAFÉ-MRR y clasifica cada factura en su componente (o márcala como no elegible). El auditor solo firma si todo está bien.',
       outro: 'Fondos justificados a las 23:59:58, y el informe del auditor en tu mano. Bruselas te felicita... y te convoca a una reunión del Consejo para «armonizar criterios». Mañana, 1 de enero, que en Bruselas es laborable si hay algo que armonizar. Te llevan en un avión que despega dentro de una hora. El informe va contigo: la Representación Permanente lo está esperando.',
-      scene: { wall: '#dfe6ee', floor: '#5d6b7a', floorH: 34, pattern: 'carpet' },
+      scene: { wall: '#dfe6ee', floor: '#5d6b7a', floorH: 32, pattern: 'carpet' },
       carry: ['portatilOk', 'cuadroOk'],
       decor: [
-        { kind: 'flag-eu', l: 45, t: 6, w: 9, h: 11 },
-        { kind: 'counter', l: 36, t: 58, w: 26, h: 8 },
-        { kind: 'shelf', l: 12, t: 46, w: 16, h: 2 },
-        { kind: 'screen', l: 40, t: 22, w: 18, h: 14 },
-        { emoji: '🪑', x: 48, y: 78, s: 5, o: 0.85 },
+        { kind: 'flag', l: 53.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 64.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'desk', id: 'mesaBecario', l: 1.5, t: 57.17, w: 18, h: 16.83 },
+        { kind: 'desk', id: 'puesto', l: 28, t: 57.17, w: 18, h: 16.83 },
+        { kind: 'desk', id: 'mesaAuditor', l: 55, t: 57.17, w: 18, h: 16.83 },
+        { kind: 'pedestal', id: 'aparador', l: 80, t: 53.8, w: 14, h: 20.2, color: '#7a5a3c' },
+        { emoji: '🗂️', x: 15.5, y: 53.61, s: 4, on: 'mesaBecario' },
       ],
       hotspots: [
-        { id: 'plataforma', x: 48, y: 52, emoji: (g) => (g.flag('pc') ? '💻' : '🔌'), s: 7,
+        { id: 'plataforma', x: 34, y: 52.725, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🖥️'), s: 5,
           label: (g) => (g.flag('pc') ? (g.flag('credito') ? 'Plataforma CAFÉ-MRR (en tu portátil)' : 'Plataforma CAFÉ-MRR (pide el certificado de crédito)') : 'Puesto libre con toma de red'),
           look(g) {
             if (!g.flag('pc')) return g.say('Un puesto libre con toma de red. Un cartel: «La plataforma CAFÉ-MRR solo funciona en equipos dados de alta por el CAU. Equipos particulares, abstenerse. Equipos del CAU, también, si no arrancan».');
@@ -1003,11 +1005,11 @@
               g.say('Escaneas el cuadro de créditos fiscalizado. «Crédito acreditado. Fiscalización de conformidad: verificada». La plataforma, sorprendida, te deja pasar al paso 2 de 1.', 'Plataforma CAFÉ-MRR');
             },
           } },
-        { id: 'auditor', x: 79, y: 50, emoji: '🕵️', s: 7, label: 'Auditor europeo',
+        { id: 'auditor', x: 63.5, y: 50, emoji: '🕵️', s: 11, behind: 'mesaAuditor', label: 'Auditor europeo',
           look(g) {
             g.say('—Clasifique todas las facturas en la plataforma. Le recuerdo que primero se comprueba si un gasto es elegible y, solo si lo es, se le asigna componente. Yo firmo si todo es correcto. Si algo falla, no firmo. No doy pistas: eso es asistencia técnica, y va en otro programa.', 'Auditor europeo');
           } },
-        { id: 'guia', x: 20, y: 40, emoji: '📕', s: 5, label: 'Guía de elegibilidad (300 páginas)',
+        { id: 'guia', x: 83.5, y: 49.35, emoji: '📕', s: 5, on: 'aparador', label: 'Guía de elegibilidad (300 páginas)',
           look(g) {
             g.doc('📕 Guía de elegibilidad — Resumen ejecutivo (págs. 1 a 300)', `<p><b>A) ELEGIBILIDAD.</b> Un gasto es elegible si cumple <b>todo</b> lo siguiente:</p>
               <ol><li>Factura fechada entre el <b>1 de febrero y el 31 de diciembre de 2032</b>, ambos incluidos.</li>
@@ -1020,24 +1022,24 @@
               <li><b>Cohesión</b>: cualquier actuación en un municipio de <b>menos de 5.000 habitantes</b>. Prevalece sobre Verde y Digital.</li></ul>
               <p class="tiny">Las adendas publicadas modifican esta guía. Págs. 2 a 299: logotipos obligatorios.</p>`);
           } },
-        { id: 'tablon', x: 26, y: 20, sign: 'ADENDAS', sub: '📌', w: 12, label: 'Tablón de adendas',
+        { id: 'tablon', x: 26, y: 31.3, sign: 'ADENDAS', sub: '📌', w: 12, label: 'Tablón de adendas',
           look(g) {
             g.doc('📌 Tablón de adendas', `<p><b>ADENDA Nº 1.</b> Se modifica el apartado A.1 de la Guía: el periodo de elegibilidad comienza el <b>1 de enero de 2032</b> (y sigue terminando el 31 de diciembre de 2032).</p>
               <p><b>ADENDA Nº 2.</b> <i>(Aquí solo queda una chincheta y un trocito de papel. Alguien se la llevó. O la tiró.)</i></p>
               <p><b>ADENDA Nº 3.</b> Se recuerda la obligatoriedad de incluir el logotipo en todos los documentos, incluidos los pósits.</p>`);
           } },
-        { id: 'padron', x: 72, y: 20, sign: 'PADRÓN', sub: '🏘️', w: 12, label: 'Extracto del padrón',
+        { id: 'padron', x: 43.5, y: 31.3, sign: 'PADRÓN', sub: '🏘️', w: 12, label: 'Extracto del padrón',
           look(g) {
             g.doc('🏘️ Padrón municipal (cifras oficiales a 1 de enero)', `<table class="tbl"><tr><td>Ciudad Sede</td><td>1.204.330</td></tr><tr><td>Villabajo</td><td>5.012</td></tr><tr><td>Villarriba</td><td>4.987</td></tr><tr><td>Quintanilla del Expediente</td><td>312</td></tr></table><p class="small">Villarriba y Villabajo llevan años discutiendo quién tiene más habitantes. Ahora ya lo saben.</p>`);
           } },
-        { id: 'caja', x: 14, y: 74, emoji: '📦', s: 7, label: 'Caja de facturas',
+        { id: 'caja', x: 50.5, y: 76.22, emoji: '📦', s: 6.5, label: 'Caja de facturas',
           look(g) { g.doc('📦 Caja de facturas', `<p class="small">Once facturas, ordenadas por número de registro de entrada (R-01 es la primera que entró).</p><div class="s5-scroll">${factTable()}</div>`); } },
-        { id: 'papelera', x: 34, y: 84, emoji: '🗑️', s: 5, label: 'Papelera',
+        { id: 'papelera', x: 23.5, y: 73.75, emoji: '🗑️', s: 5.9, label: 'Papelera',
           look(g) {
             if (!g.flag('ad2')) { g.set('ad2'); g.say('Entre envoltorios de turrón aparece un papel arrugado con una chincheta: ¡la Adenda nº 2!'); g.give('adenda2'); return; }
             g.say('Envoltorios de turrón y un borrador de discurso: «Hemos ejecutado el 100 % de los fondos (de los que hemos ejecutado)».');
           } },
-        { id: 'becario', x: 88, y: 80, emoji: '🧑‍🎓', s: 6, label: 'Becario',
+        { id: 'becario', x: 8, y: 50, emoji: '🧑‍🎓', s: 11, behind: 'mesaBecario', label: 'Becario',
           look(g) {
             g.say(rand([
               '—Yo esta mañana he ordenado el tablón. He tirado lo que sobraba. Bueno, lo que me parecía que sobraba.',
@@ -1046,11 +1048,11 @@
               '—La factura de los churros es de una churrería de Villatrámite. Dicen que la administra alguien de este Ministerio. Qué casualidad, ¿no?',
             ]), 'Becario');
           } },
-        { id: 'reloj', x: 90, y: 22, emoji: '🕚', s: 5, label: 'Reloj (23:00)',
+        { id: 'reloj', x: 87, y: 22.1, emoji: '🕚', s: 5, label: 'Reloj (23:00)',
           look(g) { g.say('Las 23:00 del 31 de diciembre. Faltan 60 minutos para devolver millones a Bruselas. El reloj, por solidaridad, ha decidido no adelantarse.'); } },
-        { id: 'cava', x: 64, y: 80, emoji: '🍾', s: 5, label: 'Botella de cava',
+        { id: 'cava', x: 90, y: 49.35, emoji: '🍾', s: 5, on: 'aparador', label: 'Botella de cava',
           look(g) { g.say('Cava para celebrar la justificación. Etiqueta: «Factura R-12, catering». Ni lo mires: no es elegible.'); } },
-        { id: 'telefono', x: 63, y: 52, emoji: '☎️', s: 4, label: 'Teléfono',
+        { id: 'telefono', x: 41.5, y: 52.72, emoji: '☎️', s: 5, on: 'puesto', label: 'Teléfono',
           look(g) { g.say('—Aquí Bruselas. ¿Cómo van esos hitos? ...¿Diga? ¿Diga? —Cuelgas. Ya te llamarán en el siguiente hito.', 'Teléfono'); } },
       ],
       hints: [
