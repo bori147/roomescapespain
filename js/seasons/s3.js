@@ -1010,16 +1010,16 @@
             if (d.length === 5) { g.set('docsOK'); g.sfx('stamp'); g.say('—¡Completo! Ahora extienda el cheque al vendedor en el talonario. Lea bien la forma de pago del borrador... y su nota simple, que para eso la trae.', 'Oficial'); }
             else g.say(`—Recibido. Van ${d.length} de 5.`, 'Oficial');
           }])) },
-        { id: 'b1', x: 44.72, y: 57.75, emoji: '🧔', s: 5.5, behind: 'silla1', label: 'Apoderado del banco del vendedor',
+        { id: 'b1', x: 44.72, y: 59, emoji: '👨‍💼', s: 10.4, behind: 'silla1', label: 'Apoderado del banco del vendedor',
           look(g) {
             if (!g.flag('saldoT')) { g.set('saldoT'); g.give('certSaldo'); g.say('—Traigo el certificado de saldo pendiente: 61.420 €. Tome, para el oficial.', 'Apoderado (banco del vendedor)'); }
             g.say('—Yo firmo <b>antes que el vendedor</b>. Nadie vende mi garantía sin que yo la cancele primero. Antes, ¿eh? Inmediatamente o no, me da igual, pero antes.', 'Apoderado (banco del vendedor)');
           } },
-        { id: 'vendedor', x: 52.16, y: 57.75, emoji: '👴', s: 5.5, behind: 'silla2', label: 'Don Anselmo, el vendedor',
+        { id: 'vendedor', x: 52.16, y: 56.5, emoji: '👴', s: 6.6, behind: 'silla2', label: 'Don Anselmo, el vendedor',
           look(g) {
             g.say('—¿El recibo del IBI? Eso lo lleva mi mujer, que es la que manda. Y otra cosa: <b>mi mujer firma antes que el comprador</b>, que si no, luego el comprador se arrepiente y ella se enfada.', 'Don Anselmo');
           } },
-        { id: 'conyuge', x: 59.6, y: 57.75, emoji: '👵', s: 5.5, behind: 'silla3', label: 'Doña Visitación, cónyuge del vendedor',
+        { id: 'conyuge', x: 59.6, y: 56.5, emoji: '👵', s: 6.6, behind: 'silla3', label: 'Doña Visitación, cónyuge del vendedor',
           look(g) {
             if (!g.flag('ibiT')) { g.set('ibiT'); g.give('reciboIBI'); g.say('—El recibo del IBI, aquí lo tengo, en el bolso. Pagado, que en esta casa se paga todo... salvo la comunidad y Hacienda.', 'Doña Visitación'); }
             g.say('—Yo firmo <b>pegadita a mi marido: justo antes o justo después</b>. Y <b>nunca justo después de un banco</b>, que me da alergia.', 'Doña Visitación');
