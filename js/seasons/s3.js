@@ -1186,7 +1186,6 @@
         { kind: 'counter', id: 'ventanilla', l: 54, t: 48.85, w: 22, h: 23.15 },
         { kind: 'desk', id: 'mesaTerminal', l: 78, t: 58.9, w: 12.5, h: 17.1 },
         { kind: 'cabinet', id: 'maquinaCafe', l: 92, t: 32.96, w: 7.5, h: 40.04, color: '#6a2c2c' },
-        { kind: 'screen', l: 92.6, t: 35.2, w: 6.3, h: 12, z: 121 },
         { kind: 'screen', l: 94, t: 56, w: 3.5, h: 6, z: 121 },
       ],
       hotspots: [
@@ -1230,12 +1229,12 @@
           } },
         { id: 'dron', x: 29, y: 9.67, emoji: '🛸', s: 6, label: 'El dron, colgado del techo',
           look(g) { g.say('El dron culpable, colgado del techo como trofeo. Tiene una pegatina: «Este lado arriba». Está colgado del revés.'); } },
-        { id: 'cafe', x: 95, y: 40, emoji: '☕', s: 5, z: 122, label: 'Máquina de café',
+        { id: 'cafe', x: 95.2, y: 37.5, sign: 'CAFÉ', sub: '☕ 0,80 €', w: 5.6, z: 122, label: 'Máquina de café',
           look(g) { g.say('Café: 0,80 €. Superficie útil del vaso: 0,003 m². El Catastro dice que 0,005.'); } },
         { id: 'vecino', x: 44, y: 60.44, emoji: '🧍', s: 26.5, label: 'Vecino del 2ºA (en la cola)',
           look(g) { g.say('—A mí el dron me ha dicho que tengo un trastero de más. Ojalá. No me haga devolvérselo, que ya he metido la bici.', 'Vecino'); } },
         { id: 'cartelTurno', x: 4.75, y: 41.86, emoji: '🎫', s: 5, on: 'dispensador', label: 'Dispensador de turnos',
-          look(g) { g.say('Turno C-0001. No hay nadie más: el resto de la ciudad aún no ha abierto la carta del dron.'); } },
+          look(g) { g.say('Turno C-0001. Delante de ti solo el vecino del 2ºA; detrás, nadie: el resto de la ciudad aún no ha abierto la carta del dron.'); } },
       ],
       combos: {
         'cinta+plano'(g) { g.take('plano'); g.give('planoAcotado'); g.say('Mides todo, habitación por habitación. Hasta el altillo, a gatas. Apuntas las medidas en el plano. Míralo en el inventario.'); },
