@@ -947,7 +947,7 @@
         { kind: 'desk', id: 'pupitreMesa', l: 24, t: 58.9, w: 18, h: 17.1 },
         { kind: 'counter', id: 'mostrador', l: 46.5, t: 48.85, w: 23, h: 23.15 },
         { kind: 'lectern', id: 'atril', l: 87.5, t: 48.19, w: 6, h: 25.81 },
-        { emoji: '📁', x: 79.5, y: 54.5, s: 5.5, z: 117 },
+        { emoji: '📁', x: 79.5, y: 53.7, s: 6.4, z: 117 },
       ],
       hotspots: [
         { id: 'normas', x: 31.5, y: 31.3, sign: 'ART. 408', sub: '⚖️ Identidad', w: 12, z: 250, label: 'Normas sobre identidad de nombres',
@@ -1016,7 +1016,7 @@
             solicitudDen: l3Form,
             solicitudRellena(g) { g.say('Ya está rellena. Si te has equivocado, la registradora te lo dirá. Sin decirte en qué.'); },
           } },
-        { id: 'cunado', x: 30, y: 53.2, emoji: '🙋', s: 9.3, behind: 'pupitreMesa', label: 'Tu cuñado',
+        { id: 'cunado', x: 32, y: 53.2, emoji: '🙋', s: 9.3, behind: 'pupitreMesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—Ponle «Real Churrería de España». Vende muchísimo. ¿Que está prohibido? Bah, eso lo dicen para que no lo pongas.',
@@ -1026,7 +1026,7 @@
           } },
         { id: 'senor', x: 76.55, y: 51.18, emoji: '🧍', s: 23.42, label: 'Señor con una carpeta enorme',
           look(g) { g.say('—Llevo catorce denegaciones: «Bar Manolo», «Bar Manolo 2», «Manolo Bar», «Bar de Manolo», «Barra Manolo»... Mañana pruebo con «Bar Pepe». Por cambiar.', 'Señor'); } },
-        { id: 'puerta', x: 14, y: 43.59, emoji: '🚪', s: 28, label: 'Salida',
+        { id: 'puerta', x: 16.6, y: 43.59, emoji: '🚪', s: 28, label: 'Salida',
           look(g) { g.say('El vigilante no deja salir a nadie sin papeles. «Sin certificado no se va usted de aquí. ¿Qué haría fuera, sin nombre?»'); },
           use: {
             certDen(g) { g.say('Enseñas el certificado. El vigilante lo lee dos veces, asiente y abre la puerta: «Porras del Trámite... Iré a probarlas». No irá.'); g.win(); },
