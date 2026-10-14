@@ -972,7 +972,7 @@
         { emoji: '🗂️', x: 15.5, y: 53.61, s: 4, on: 'mesaBecario' },
       ],
       hotspots: [
-        { id: 'plataforma', x: 34, y: 52.725, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🔌'), s: 5,
+        { id: 'plataforma', x: 34, y: 52.725, on: 'puesto', emoji: (g) => (g.flag('pc') ? '💻' : '🖥️'), s: 5,
           label: (g) => (g.flag('pc') ? (g.flag('credito') ? 'Plataforma CAFÉ-MRR (en tu portátil)' : 'Plataforma CAFÉ-MRR (pide el certificado de crédito)') : 'Puesto libre con toma de red'),
           look(g) {
             if (!g.flag('pc')) return g.say('Un puesto libre con toma de red. Un cartel: «La plataforma CAFÉ-MRR solo funciona en equipos dados de alta por el CAU. Equipos particulares, abstenerse. Equipos del CAU, también, si no arrancan».');
@@ -1007,13 +1007,13 @@
               <li><b>Cohesión</b>: cualquier actuación en un municipio de <b>menos de 5.000 habitantes</b>. Prevalece sobre Verde y Digital.</li></ul>
               <p class="tiny">Las adendas publicadas modifican esta guía. Págs. 2 a 299: logotipos obligatorios.</p>`);
           } },
-        { id: 'tablon', x: 23.5, y: 31.3, sign: 'ADENDAS', sub: '📌', w: 12, label: 'Tablón de adendas',
+        { id: 'tablon', x: 26, y: 31.3, sign: 'ADENDAS', sub: '📌', w: 12, label: 'Tablón de adendas',
           look(g) {
             g.doc('📌 Tablón de adendas', `<p><b>ADENDA Nº 1.</b> Se modifica el apartado A.1 de la Guía: el periodo de elegibilidad comienza el <b>1 de enero de 2032</b> (y sigue terminando el 31 de diciembre de 2032).</p>
               <p><b>ADENDA Nº 2.</b> <i>(Aquí solo queda una chincheta y un trocito de papel. Alguien se la llevó. O la tiró.)</i></p>
               <p><b>ADENDA Nº 3.</b> Se recuerda la obligatoriedad de incluir el logotipo en todos los documentos, incluidos los pósits.</p>`);
           } },
-        { id: 'padron', x: 41, y: 31.3, sign: 'PADRÓN', sub: '🏘️', w: 12, label: 'Extracto del padrón',
+        { id: 'padron', x: 43.5, y: 31.3, sign: 'PADRÓN', sub: '🏘️', w: 12, label: 'Extracto del padrón',
           look(g) {
             g.doc('🏘️ Padrón municipal (cifras oficiales a 1 de enero)', `<table class="tbl"><tr><td>Ciudad Sede</td><td>1.204.330</td></tr><tr><td>Villabajo</td><td>5.012</td></tr><tr><td>Villarriba</td><td>4.987</td></tr><tr><td>Quintanilla del Expediente</td><td>312</td></tr></table><p class="small">Villarriba y Villabajo llevan años discutiendo quién tiene más habitantes. Ahora ya lo saben.</p>`);
           } },
