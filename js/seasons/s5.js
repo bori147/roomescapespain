@@ -1073,15 +1073,22 @@
       scene: { wall: '#c9ced8', floor: '#3d4a6b', floorH: 36, pattern: 'carpet' },
       carry: ['informe'],
       decor: [
-        { kind: 'flag-eu', l: 36, t: 32, w: 7, h: 9 },
-        { kind: 'flag-eu', l: 57, t: 32, w: 7, h: 9 },
-        { kind: 'column', l: 16, t: 4, w: 3, h: 58 },
-        { kind: 'column', l: 72, t: 4, w: 3, h: 58 },
-        { kind: 'counter', l: 24, t: 62, w: 52, h: 8 },
-        { emoji: '🪑', x: 34, y: 78, s: 4, o: 0.8 }, { emoji: '🪑', x: 58, y: 78, s: 4, o: 0.8 },
+        { kind: 'screen', l: 36.25, t: 12.1, w: 17.5, h: 17.5, z: 5 },
+        { kind: 'vitrine', id: 'cristalera', l: 56, t: 19, w: 19, h: 45, color: '#7a8494' },
+        { kind: 'shelf', id: 'pupitre', l: 62, t: 45.2, w: 10, h: 1.4 },
+        { emoji: '🎧', x: 68, y: 41.64, s: 4, on: 'pupitre' },
+        { kind: 'flag-eu', l: 83, t: 20, w: 9, h: 10.7 },
+        { kind: 'pedestal', id: 'aparador', l: 79, t: 49.4, w: 17, h: 18.6, color: '#6d5238' },
+        { kind: 'table', id: 'mesa', l: 24, t: 59.5, w: 29, h: 16.5 },
+        { emoji: '🪑', x: 37, y: 62.85, s: 11.42, behind: 'mesa' },
+        { emoji: '🪑', x: 46.5, y: 62.85, s: 11.42, behind: 'mesa' },
+        { emoji: '🎙️', x: 40, y: 55.94, s: 4, on: 'mesa' },
+        { emoji: '🎙️', x: 51, y: 55.94, s: 4, on: 'mesa' },
+        { emoji: '🔢', x: 23, y: 37.78, s: 2.5 },
+        { emoji: '🪴', x: 91, y: 83.56, s: 9.5 },
       ],
       hotspots: [
-        { id: 'puerta', x: 7, y: 42, emoji: '🚪', s: 11, label: 'Puerta de la sala (código de 4 cifras)',
+        { id: 'puerta', x: 14, y: 40.67, emoji: '🚪', s: 26.25, label: 'Puerta de la sala (código de 4 cifras)',
           look(g) {
             g.input({
               title: '🚪 Puerta de la sala', text: 'Cerradura electrónica. «Introduzca el código (4 cifras).»', numeric: true, maxLen: 4,
@@ -1090,7 +1097,7 @@
               ok: () => { g.say('Bip. La puerta se abre. En el pasillo, un ujier te ofrece un croissant: es el último. Te lo has ganado. Y, con una reverencia, una grapadora homologada UE: «De parte de la Representación, por lo del informe».'); g.give('grapadoraUE'); g.win(); },
             });
           } },
-        { id: 'cabina', x: 86, y: 28, emoji: '🎧', s: 6, label: 'Cabina de interpretación (ES)',
+        { id: 'cabina', x: 61, y: 38.8, emoji: '👩‍💼', s: 8, behind: 'cristalera', label: 'Cabina de interpretación (ES)',
           look(g) {
             if (!g.flag('nota')) return g.say('—¿Es usted el/la de los fondos? La Representación ha dejado una nota para usted. Pero me han dicho que solo se la dé a cambio del informe del auditor. Órdenes. En veinticuatro idiomas.', 'Intérprete');
             g.say('—Llevo seis horas traduciendo «llegaremos a un acuerdo en la próxima cumbre». Ya me sale en sueños. En húngaro.', 'Intérprete');
@@ -1102,9 +1109,9 @@
               g.give('nota');
             },
           } },
-        { id: 'regA', x: 32, y: 58, emoji: '📘', s: 5, label: 'Reglamento (UE) 2032/118', look: (g) => regDoc(g, 'A') },
-        { id: 'regB', x: 66, y: 58, emoji: '📙', s: 5, label: 'Reglamento (UE) 2032/97', look: (g) => regDoc(g, 'B') },
-        { id: 'manual', x: 11, y: 80, emoji: '📒', s: 5, label: 'Manual del becario',
+        { id: 'regA', x: 28, y: 55.05, emoji: '📘', s: 5, on: 'mesa', label: 'Reglamento (UE) 2032/118', look: (g) => regDoc(g, 'A') },
+        { id: 'regB', x: 33, y: 55.05, emoji: '📙', s: 5, on: 'mesa', label: 'Reglamento (UE) 2032/97', look: (g) => regDoc(g, 'B') },
+        { id: 'manual', x: 81.5, y: 44.96, emoji: '📒', s: 5, on: 'aparador', label: 'Manual del becario',
           look(g) {
             g.doc('📒 Manual del becario de la Representación', `<p><b>Capítulo 7. Notas cifradas.</b></p>
               <p>Las notas internas se cifran con el sistema «considerando-palabra»: cada pareja <b>(c, p)</b> remite a la <b>palabra número p</b> del <b>considerando número c</b> del <b>último Reglamento publicado</b> en el Diario Oficial.</p>
@@ -1112,19 +1119,19 @@
               <p><b>Capítulo 8.</b> Cómo poner cara de entender el francés.</p>
               <p><b>Capítulo 9.</b> Dónde están los croissants (y por qué ya no quedan).</p>`);
           } },
-        { id: 'calendario', x: 28, y: 22, emoji: '📅', s: 5, label: 'Calendario de sesiones',
+        { id: 'calendario', x: 30.5, y: 33.56, emoji: '📅', s: 5, label: 'Calendario de sesiones',
           look(g) { g.doc('📅 Calendario de sesiones', `${calHTML(2032, 5)}${calHTML(2032, 6)}<p class="small">Las sesiones se convocan con la antelación suficiente para que nadie pueda prepararlas.</p>`); } },
-        { id: 'pantalla', x: 50, y: 14, sign: 'ORDEN DEL DÍA', sub: '📺', w: 16, label: 'Pantalla: orden del día',
+        { id: 'pantalla', x: 45, y: 20.9, sign: 'ORDEN DEL DÍA', sub: '📺', w: 15, label: 'Pantalla: orden del día',
           look(g) { g.doc('📺 Orden del día', '<ol><li>Aprobación del orden del día.</li><li>Debate sobre la conveniencia de debatir.</li><li>Foto de familia.</li><li>Cena de trabajo (sin trabajo).</li><li>Conclusiones (redactadas el día anterior).</li></ol>'); } },
-        { id: 'glosario', x: 92, y: 80, emoji: '📖', s: 5, label: 'Glosario de eurojerga',
+        { id: 'glosario', x: 87.5, y: 44.96, emoji: '📖', s: 5, on: 'aparador', label: 'Glosario de eurojerga',
           look(g) {
             g.doc('📖 Glosario de eurojerga (uso interno)', `<ul><li><b>Subsidiariedad:</b> no es cosa nuestra.</li><li><b>Trílogo:</b> tres instituciones discutiendo quién paga la cena.</li>
               <li><b>Comitología:</b> el arte de crear un comité para decidir qué comité decide.</li><li><b>Acervo:</b> todo lo que ya no se puede cambiar.</li>
               <li><b>Hoja de ruta:</b> documento que no lleva a ninguna parte.</li><li><b>Avance significativo:</b> nada.</li><li><b>Paso histórico:</b> casi nada.</li></ul>`);
           } },
-        { id: 'delegado', x: 46, y: 82, emoji: '🧔', s: 6, label: 'Delegado de un Estado frugal',
+        { id: 'delegado', x: 46.5, y: 52.55, emoji: '👨‍💼', s: 9.5, behind: 'mesa', label: 'Delegado de un Estado frugal',
           look(g) { g.say('—Mi país propone recortar el presupuesto de los croissants. Y el de las servilletas. Y el de esta conversación.', 'Delegado frugal'); } },
-        { id: 'croissants', x: 72, y: 82, emoji: '🥐', s: 5, label: 'Bandeja de croissants',
+        { id: 'croissants', x: 93.5, y: 44.96, emoji: '🍽️', s: 5, on: 'aparador', label: 'Bandeja de croissants',
           look(g) { g.say('Una bandeja vacía con migas. Un cartel: «Croissants de cortesía». La cortesía se acabó a las 9:03.'); } },
       ],
       hints: [
