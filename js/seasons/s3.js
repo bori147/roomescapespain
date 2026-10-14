@@ -1093,7 +1093,7 @@
               <li><b>50 %</b> para familias numerosas. (Un gato no computa como miembro de la unidad familiar, aunque mande más que nadie.)</li>
               <li><b>100 %</b> para quien entienda a la primera este cartel.</li></ul>`);
           } },
-        { id: 'catastro', x: 4.5, y: 46.83, emoji: '🖥️', s: 6, on: 'quiosco', label: 'Quiosco del Catastro',
+        { id: 'catastro', x: 4.5, y: 47.27, emoji: '🖨️', s: 5.5, on: 'quiosco', label: 'Quiosco del Catastro',
           look(g) {
             if (g.has('certVR')) return g.say('El quiosco imprime un anuncio: «¿Sabía que el valor de referencia NO es el valor de mercado? Nosotros tampoco».');
             g.input({
@@ -1112,7 +1112,7 @@
               <p><b>Art. 5. Plazo.</b> 30 días hábiles desde la transmisión.</p>
               <p><b>Art. 6. Recaudación.</b> Si el transmitente no paga, la ventanilla intentará cobrárselo al comprador igualmente, por si cuela.</p>`);
           } },
-        { id: 'plusvalia', x: 38.5, y: 22, sign: 'PLUSVALÍA', sub: '🙋‍♂️', w: 11, z: 250, label: 'Ventanilla de plusvalía (Ayuntamiento)',
+        { id: 'plusvalia', x: 38.5, y: 27, sign: 'PLUSVALÍA', sub: '🙋‍♂️', w: 11, z: 250, label: 'Ventanilla de plusvalía (Ayuntamiento)',
           look(g) {
             if (g.has('noSujecion')) return g.say('—Ya le di la diligencia. No me mire así, que yo solo intento cobrar.', 'Funcionario de plusvalía');
             g.choice({
@@ -1157,7 +1157,7 @@
           look(g) {
             g.say('Fotocopias de fotocopias. Y el folleto del 0,99 % TAE, que guardas como recordatorio. Lo importante (escritura, recibo del IBI y DNI) ya lo llevas en la mano.');
           } },
-        { id: 'cola', x: 21, y: 57.15, emoji: '🧍', s: 25.7, label: 'Contribuyente en la cola',
+        { id: 'cola', x: 27.5, y: 57.15, emoji: '🧍', s: 25.7, label: 'Contribuyente en la cola',
           look(g) { g.say('—Yo pagué la plusvalía de la vendedora sin darme cuenta. Ahora ella me manda postales desde Benidorm.', 'Contribuyente'); } },
         { id: 'reloj', x: 20, y: 21.06, emoji: '🕐', s: 5, label: 'Reloj',
           look(g) { g.say('Faltan 29 días hábiles para que acabe el plazo. Aquí eso es mañana.'); } },
