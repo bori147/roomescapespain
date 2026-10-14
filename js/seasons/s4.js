@@ -876,13 +876,13 @@
         { emoji: '🍳', x: 70.8, y: 43.71, s: 4.2, on: 'fogon', o: 0.9 },
       ],
       hotspots: [
-        { id: 'puerta', x: 19.3, y: 36.8, emoji: '🔢', s: 5, z: 101, label: 'Puerta trasera (teclado de 4 cifras)',
+        { id: 'puerta', x: 20, y: 36.8, emoji: '🔢', s: 5, z: 101, label: 'Puerta trasera (teclado de 4 cifras)',
           look(g) {
             g.input({
               title: '🚪 Puerta trasera', text: 'El becario ha puesto un teclado: «Los valores REALES de las dos cifras cocinadas, en el orden en que aparecen en la nota de prensa. Dos cifras cada uno».',
               numeric: true, maxLen: 4,
               check: (v) => v === '1816',
-              failText: (v) => (v === '2314' ? 'Esas son las cifras cocinadas. El becario quiere las reales.' : v === '1618' ? 'Los valores parecen buenos... pero el orden es el de la nota de prensa.' : 'La puerta no se abre. El becario, desde dentro: «Pondera por la población, no por las entrevistas».'),
+              failText: (v) => (v === '2314' ? 'Esas son las cifras cocinadas. El becario quiere las reales.' : v === '1618' ? 'Los valores parecen buenos... pero el orden es el de la nota de prensa.' : 'La puerta no se abre. El becario, desde su mesa: «Pondera por la población, no por las entrevistas».'),
               ok: () => {
                 g.say('—¡Eso es! TIC no tiene un 23: tiene un 18. Y UVA no tiene un 14: tiene un 16. Les han «ponderado» por las entrevistas, que es como ponderar con la mano en la balanza. ¡Abro!', 'Becario');
                 g.give('barometro');
@@ -891,7 +891,7 @@
               },
             });
           } },
-        { id: 'nota', x: 35, y: 30.2, sign: 'BARÓMETRO DE MAYO', sub: '📊', w: 14, z: 250, label: 'Nota de prensa (ya publicada)',
+        { id: 'nota', x: 35, y: 27.5, sign: 'BARÓMETRO DE MAYO', sub: '📊', w: 14, z: 250, label: 'Nota de prensa (ya publicada)',
           look(g) {
             g.doc('📊 Nota de prensa — Barómetro de mayo', `<p><b>«TIC, PRIMERA FUERZA»</b></p>
               <table class="tbl"><tr><td><b>Estimación de voto</b></td><td><b>%</b></td></tr>
@@ -901,7 +901,7 @@
           } },
         { id: 'tele', x: 91.5, y: 15.93, emoji: '📺', s: 6.45, on: 'baldaTele', label: 'Televisión',
           look(g) { g.say('—«...y según el último barómetro, TIC sería primera fuerza. Hemos preguntado a TIC y están de acuerdo con la encuesta». Corte a publicidad.', 'Informativo'); } },
-        { id: 'recetario', x: 66.3, y: 30.62, emoji: '📕', s: 5, on: 'especias', label: 'Recetario de la casa',
+        { id: 'recetario', x: 65.9, y: 30.62, emoji: '📕', s: 5, on: 'especias', label: 'Recetario de la casa',
           look(g) {
             g.doc('📕 Recetario de Cocina &amp; Sondeos', `<p><b>Receta n.º 1: la ponderación</b> (la de verdad)</p>
               <p>Cada grupo de edad pesa lo que pesa en la <b>POBLACIÓN</b>, no lo que pesa en la muestra. Para cada partido, multiplica su porcentaje en cada grupo por el peso de ese grupo en la población, y suma.</p>
@@ -909,7 +909,7 @@
               <p><b>Receta n.º 2: la cocina</b> (la de la casa)</p>
               <p>Ingredientes: un cliente, dos cifras y mucha cara. Se sube al cliente y se baja a quien le haga sombra. Las demás cifras, ni tocarlas: así nadie sospecha.</p>`);
           } },
-        { id: 'especiero', x: 70.4, y: 30.62, emoji: '🫙', s: 5, on: 'especias', label: 'Especiero',
+        { id: 'especiero', x: 70.9, y: 30.62, emoji: '🫙', s: 5, on: 'especias', label: 'Especiero',
           look(g) { g.say('Tarros etiquetados: «Margen de error», «Voto oculto», «Indecisos al gusto», «Tendencia» y uno vacío: «Rigor». Se acabó en 2008.'); } },
         { id: 'telefono', x: 59.5, y: 45.03, emoji: '☎️', s: 5, on: 'isla', label: 'Teléfono',
           look(g) { g.say('Suena. —¿Cocina &amp; Sondeos? Soy de TIC. ¿Para cuándo la siguiente? Queremos salir primeros otra vez, pero esta vez con más margen.', 'Teléfono'); } },
