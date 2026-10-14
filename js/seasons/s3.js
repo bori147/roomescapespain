@@ -1537,7 +1537,7 @@
       ],
       hotspots: [
         { id: 'informes', x: 29.5, y: 28, z: 250, sign: 'INFORMES ITE', sub: '📌', w: 10, label: 'Tablón con los informes de ITE', look: informesDoc },
-        { id: 'estatutos', x: 71.5, y: 63.44, emoji: '📘', s: 3.8, on: 'mesaAdmin', label: 'Estatutos (reparto de gastos)',
+        { id: 'estatutos', x: 71.8, y: 63.43, emoji: '📘', s: 5, on: 'mesaAdmin', label: 'Estatutos (reparto de gastos)',
           look(g) {
             g.doc('📘 Estatutos — Reparto de gastos extraordinarios', `<ul>
               <li><b>Fachada:</b> se reparte entre <b>todos</b> los propietarios según su coeficiente.</li>
