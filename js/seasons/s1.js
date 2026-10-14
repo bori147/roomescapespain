@@ -941,9 +941,9 @@
         { emoji: '🖼️', x: 29, y: 30.2, s: 6.6 },
         { kind: 'box', l: 81.9, t: 63.2, w: 4.9, h: 2.6, color: '#3a3d42', z: 125 },
         { emoji: '📄', x: 84, y: 60.7, s: 3.6, z: 114 },
-        { kind: 'pedestal', id: 'cajaFuerte', l: 61.4, t: 82, w: 9.2, h: 14.5, color: '#3b4048' },
-        { kind: 'box', l: 62.3, t: 83.4, w: 7.4, h: 12, color: '#565c66', z: 220 },
-        { kind: 'box', l: 68.7, t: 87.6, w: 0.7, h: 4, color: '#c9c2b0', z: 225 },
+        { kind: 'pedestal', id: 'cajaFuerte', l: 61.1, t: 82, w: 9.7, h: 14.5, color: '#3b4048' },
+        { kind: 'box', l: 62.1, t: 83.4, w: 7.8, h: 12, color: '#565c66', z: 220 },
+        { kind: 'box', l: 69, t: 87.6, w: 0.7, h: 4, color: '#c9c2b0', z: 225 },
       ],
       hotspots: [
         { id: 'cartel', x: 50, y: 11, sign: 'COMISIÓN DE INVESTIGACIÓN', sub: 'sobre el retraso de su trámite', w: 27, label: 'Cartel de la comisión',
@@ -974,7 +974,7 @@
             if (g.flag('docOK')) return g.say(ITEMS.informe.desc, '📋 Informe reconstruido');
             shredModal(g);
           } },
-        { id: 'caja', x: 66, y: 86.6, emoji: '🔐', s: 4.8, z: 236, label: 'Caja fuerte «B» (3 cifras)',
+        { id: 'caja', x: 66, y: 86.6, emoji: '🔐', s: 5, z: 236, label: 'Caja fuerte «B» (3 cifras)',
           look(g) {
             if (g.flag('safeOpen')) return g.say('La caja está vacía. Solo huele a billetes de 500 que ya no existen.');
             g.input({
