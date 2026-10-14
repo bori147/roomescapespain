@@ -830,10 +830,10 @@
       outro: 'Declaración presentada correctamente. Sin embargo, para corregir su expediente anterior hace falta aprobar una ley. Y para aprobar una ley hace falta un gobierno. Llevamos 287 días en funciones.',
       scene: { wall: '#d9e0d0', floor: '#8a8f7f', floorH: 32, pattern: 'carpet' },
       decor: [
-        { kind: 'shelf', id: 'perchero', l: 5.5, t: 28.4, w: 7, h: 1.4 },
+        { kind: 'shelf', id: 'perchero', l: 3.5, t: 28.4, w: 11, h: 1.4 },
         { kind: 'window', l: 83, t: 19.1, w: 13, h: 29.8 },
         { kind: 'table', id: 'mesa', l: 17, t: 58.9, w: 16, h: 17.1 },
-        { kind: 'desk', id: 'escritorio', l: 38, t: 58.9, w: 22, h: 17.1 },
+        { kind: 'desk', id: 'escritorio', l: 38, t: 58.9, w: 19, h: 17.1 },
         { kind: 'desk', id: 'puesto2', l: 81.5, t: 58.9, w: 16, h: 17.1 },
         { emoji: '🖨️', x: 89.5, y: 54.81, s: 4.6, on: 'puesto2' },
       ],
@@ -860,12 +860,12 @@
             if (!g.flag('don')) { g.set('don'); g.say('En el bolsillo hay un recibo doblado: un donativo que hiciste en un arrebato de solidaridad.'); g.give('donativo'); }
             else g.say('Solo quedan caramelos de menta pegados al forro.');
           } },
-        { id: 'buzon', x: 28.5, y: 54.45, emoji: '✉️', s: 5, on: 'mesa', label: 'Tu correspondencia',
+        { id: 'buzon', x: 28.5, y: 54.45, emoji: '✉️', s: 3.6, on: 'mesa', label: 'Tu correspondencia',
           look(g) {
             if (!g.flag('pen')) { g.set('pen'); g.say('Entre la publicidad, una carta de tu plan de pensiones.'); g.give('pensiones'); }
             else g.say('Publicidad de un gimnasio y una oferta de fibra. Nada deducible.');
           } },
-        { id: 'gafas', x: 54.5, y: 54.45, emoji: '🧾', s: 5, on: 'escritorio', label: 'Factura sobre la mesa',
+        { id: 'gafas', x: 54.5, y: 54.45, emoji: '🧾', s: 3.7, on: 'escritorio', label: 'Factura sobre la mesa',
           look(g) {
             if (!g.flag('gaf')) { g.set('gaf'); g.say('Una factura de óptica. ¿Será deducible?'); g.give('gafas'); }
             else g.say('Aquí estaban las gafas. Ahora las llevas puestas, para leer mejor lo que vas a pagar.');
