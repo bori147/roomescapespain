@@ -833,14 +833,15 @@
       carry: ['dni', 'contrato', 'copia036'],
       scene: { wall: '#cfd9e3', floor: '#9aa3a8', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'window', l: 44, t: 25.2, w: 11, h: 29.8 },
+        { kind: 'window', l: 44, t: 19.1, w: 11, h: 29.8 },
         { kind: 'flag', l: 58.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 69.5, t: 14.9, w: 9, h: 10.7 },
         { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
         { kind: 'desk', id: 'mesaTerminal', l: 19, t: 58.9, w: 19, h: 17.1 },
         { kind: 'counter', id: 'ventanilla', l: 57, t: 48.85, w: 23, h: 23.15 },
-        { kind: 'box', id: 'cajas', l: 81.5, t: 64.33, w: 9.2, h: 12.67, color: '#b98a5b' },
-        { kind: 'box', id: 'cajasArriba', l: 82.0, t: 51.66, w: 8.2, h: 12.67, color: '#c99a68', z: 137 },
+        { emoji: '📦', id: 'cajas', x: 83.9, y: 71.88, s: 5.76 },
+        { emoji: '📦', x: 88.5, y: 71.88, s: 5.76 },
+        { emoji: '📦', x: 86.2, y: 63.0, s: 5.76, on: 'cajas' },
         { emoji: '🪴', x: 89, y: 87.4, s: 10.8 },
       ],
       hotspots: [
@@ -902,7 +903,7 @@
               g.give('prevision'); g.give('cocheLetra');
             } else g.say('Nada más. Bueno, un caramelo de menta con pelusa. No.');
           } },
-        { id: 'repartidor', x: 86.2, y: 44.2, emoji: '👷', s: 11, behind: 'cajas', label: 'Repartidor de harina',
+        { id: 'repartidor', x: 86.2, y: 50.3, emoji: '👷', s: 11, behind: 'cajas', label: 'Repartidor de harina',
           look(g) {
             if (!g.flag('harina')) {
               g.set('harina');
