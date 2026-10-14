@@ -745,8 +745,8 @@
       decor: [
         { kind: 'screen', l: 41.5, t: 12.8, w: 12, h: 12.7 },
         { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
-        { kind: 'pedestal', id: 'revistero', l: 18.5, t: 72.1, w: 5, h: 10.9, color: '#5b6470' },
-        { kind: 'table', id: 'mesaImpresos', l: 21, t: 57.17, w: 13.5, h: 16.83 },
+        { kind: 'pedestal', id: 'revistero', l: 19.3, t: 72.1, w: 4.5, h: 10.9, color: '#5b6470' },
+        { kind: 'table', id: 'mesaImpresos', l: 25.2, t: 57.17, w: 9.3, h: 16.83 },
         { kind: 'desk', id: 'mesaGestor', l: 36.5, t: 57.17, w: 18.5, h: 16.83 },
         { kind: 'door', id: 'puertaDirector', l: 59.85, t: 23.37, w: 12, h: 44.63, color: '#6d4c33' },
         { kind: 'pedestal', id: 'terminal', l: 85.5, t: 51.87, w: 6, h: 21.13, color: '#4a5560' },
@@ -754,7 +754,7 @@
       hotspots: [
         { id: 'euribor', x: 47.5, y: 19.15, emoji: '📈', s: 5, z: 14, label: 'Pantalla de cotizaciones',
           look(g) { g.say('<b>EURÍBOR HOY: 2,40 %</b> · Hace un año: 3,10 % · Récord histórico: 5,39 % · Índice de sonrisa del director: 98 %', 'Pantalla de cotizaciones'); } },
-        { id: 'tae', x: 11, y: 30, sign: '¡TAE 0,99 %!', sub: '🏡<br>*ver condiciones', w: 20, label: 'Cartel publicitario gigante',
+        { id: 'tae', x: 11, y: 29, sign: '¡TAE 0,99 %!', sub: '<span aria-hidden="true" style="display:block;font-size:max(30px,5.2cqw);line-height:1.15">🏡</span>*ver condiciones', w: 20, label: 'Cartel publicitario gigante',
           look(g) {
             g.doc('¡¡HIPOTECA AL 0,99 % TAE!!*', `<p class="big-num">0,99 % TAE*</p>
               <p class="tiny">*Durante los 3 primeros meses, para clientes que contraten 11 productos, domicilien la nómina, la pensión y la de sus padres, tengan un yate amarrado en una de nuestras oficinas costeras y nos lo pidan en latín. Después: lo que diga la FEIN. Esta oferta no aparece en la FEIN. Esta oferta no existe.</p>`);
@@ -782,19 +782,19 @@
             dossier(g) { g.take('dossier'); g.set('dosOK'); hipFein(g, 'Nómina de Porras del Trámite, S.L.... ¿Es usted administrador/a de una churrería? Mire, los autónomos nos dan un poco de miedo, pero con certificado de Hacienda y todo... Me quedo el dossier para el expediente.'); },
             solicitudHip(g) { g.say('—Sin firmar no vale. Firme aquí, aquí, aquí y en las otras once páginas.', 'Íñigo (gestor)'); },
           } },
-        { id: 'mesa', x: 31.25, y: 51.84, emoji: '🗃️', s: 6, on: 'mesaImpresos', label: 'Mesa de impresos',
+        { id: 'mesa', x: 29.85, y: 53.17, emoji: '🗃️', s: 4.5, on: 'mesaImpresos', label: 'Mesa de impresos',
           look(g) {
             if (g.flag('imp')) return g.say('Impresos de seguros, de alarmas, de planes de pensiones y uno para «solicitar no recibir más impresos».');
             g.set('imp'); g.give('solicitudHip');
             g.say('Coges una solicitud de hipoteca. Siete páginas. La letra pequeña tiene letra pequeña.');
           } },
-        { id: 'caramelos', x: 51.5, y: 52.72, emoji: '🥣', s: 5, on: 'mesaGestor', label: 'Bol de caramelos',
+        { id: 'caramelos', x: 51.5, y: 53.61, emoji: '🥣', s: 4, on: 'mesaGestor', label: 'Bol de caramelos',
           look(g) {
             if (g.flag('boliT')) return g.say('Quedan caramelos de menta del año del euro. Mejor no.');
             g.set('boliT'); g.give('boli');
             g.say('Entre caramelos de menta fosilizados hay un bolígrafo con el logo del banco. Lo coges. Es lo único gratis de la oficina.');
           } },
-        { id: 'folleto', x: 21, y: 67.66, emoji: '📰', s: 5, on: 'revistero', label: 'Revistero con folletos',
+        { id: 'folleto', x: 21.55, y: 67.66, emoji: '📰', s: 5, on: 'revistero', label: 'Revistero con folletos',
           look(g) {
             g.doc('📰 Folleto: «Protege lo que más quieres (a nosotros)»', `<table class="tbl">
               <tr><td>🛡️ Seguro de vida «Por si acaso»</td><td>45 €/mes</td></tr>
@@ -818,7 +818,7 @@
               ok: () => { g.give('ofertaVinc'); g.say('«OPCIÓN 2 — VARIABLE. Coste primer año: 5.320 €. Oferta vinculante emitida.» El gestor pone cara de haber perdido una comisión.', 'Simulador'); },
             });
           } },
-        { id: 'director', x: 65.85, y: 37, sign: 'DIRECTOR', sub: 'Llame antes<br>de entrar', w: 9, z: 101, label: 'Despacho del director',
+        { id: 'director', x: 65.85, y: 37, sign: 'DIRECTOR', sub: 'Llame antes<br>de entrar', w: 7, z: 101, label: 'Despacho del director',
           look(g) { g.say('Una puerta con placa dorada: «DIRECTOR. Llame antes de entrar. O mejor, no llame». Dentro se oye un campo de golf en la tele.'); },
           use: {
             ofertaVinc(g) {
@@ -827,11 +827,11 @@
             },
             fein(g) { g.say('—Eso es la FEIN, no una oferta. Pase por el simulador.', 'Director (desde dentro)'); },
           } },
-        { id: 'cliente', x: 24.75, y: 49.4, emoji: '🙍', s: 10, behind: 'mesaImpresos', label: 'Cliente sollozando',
+        { id: 'cliente', x: 9.5, y: 56.2, emoji: '🙍', s: 8.2, behind: 'banco', label: 'Cliente sollozando',
           look(g) { g.say('—Firmé la del cartel del 0,99 %. Me cobraron el yate. Y yo no tenía yate.', 'Cliente'); } },
-        { id: 'hucha', x: 77.5, y: 63.4, emoji: '🐖', s: 12.5, label: 'Hucha gigante',
+        { id: 'hucha', x: 79, y: 63.4, emoji: '🐖', s: 12.5, label: 'Hucha gigante',
           look(g) { g.say('Una hucha decorativa de un metro. Tiene una ranura para meter, pero ninguna para sacar. Muy del banco.'); } },
-        { id: 'calendario', x: 49, y: 31.7, emoji: '📅', s: 5, label: 'Calendario de pared',
+        { id: 'calendario', x: 44, y: 32.5, emoji: '📅', s: 5, label: 'Calendario de pared',
           look(g) { g.say('Un calendario de 2008 abierto en septiembre. Nadie se ha atrevido a pasar la hoja.'); } },
       ],
       combos: {
