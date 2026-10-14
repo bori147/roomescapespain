@@ -502,11 +502,11 @@
   //  NIVEL 10: tránsfuga, cifrado y marcador
   // =========================================================
   const L10_SUS = [
-    { id: 'veleta', name: 'Ginés Veleta', party: 'ZIG', seat: 61, x: 34, y: 38.11, s: 6, on: 'alaIzq', emoji: '🧑‍🦱', says: '—Lo único que sé seguro es que el tránsfuga no es ni de ALA ni de NIDAC. Y eso que yo cambio de opinión cada cuarto de hora.' },
-    { id: 'bisagra', name: 'Leonor Bisagra', party: 'NIDAC', seat: 44, x: 19.5, y: 38.11, s: 6, on: 'alaIzq', emoji: '👩‍🦳', says: '—Begoña Mudanza miente. Se le nota en el flequillo.' },
-    { id: 'chaqueta', name: 'Fermín Chaqueta', party: 'ALA', seat: 7, x: 76, y: 38.11, s: 6, on: 'alaDer', emoji: '🧔', says: '—Ginés Veleta dice la verdad. Por raro que suene.' },
-    { id: 'mudanza', name: 'Begoña Mudanza', party: 'CANA', seat: 33, x: 64, y: 38.11, s: 6, on: 'alaDer', emoji: '👩', says: '—El tránsfuga se sienta en un escaño par. Búsquenlo por ahí, por los pares.' },
-    { id: 'pendulo', name: 'Casimiro Péndulo', party: 'TIC', seat: 52, x: 87, y: 38.11, s: 6, on: 'alaDer', emoji: '👨‍🦲', says: '—De Leonor Bisagra y Fermín Chaqueta, exactamente uno miente. No diré cuál: sería poco disruptivo.' },
+    { id: 'veleta', name: 'Ginés Veleta', party: 'ZIG', seat: 61, x: 33, y: 51.4, s: 10, behind: 'alaIzq', emoji: '👨‍💼', says: '—Lo único que sé seguro es que el tránsfuga no es ni de ALA ni de NIDAC. Y eso que yo cambio de opinión cada cuarto de hora.' },
+    { id: 'bisagra', name: 'Leonor Bisagra', party: 'NIDAC', seat: 44, x: 21, y: 51.4, s: 10, behind: 'alaIzq', emoji: '👩‍💼', says: '—Begoña Mudanza miente. Se le nota en el flequillo.' },
+    { id: 'chaqueta', name: 'Fermín Chaqueta', party: 'ALA', seat: 7, x: 75.5, y: 51.4, s: 10, behind: 'alaDer', emoji: '🧑‍💼', says: '—Ginés Veleta dice la verdad. Por raro que suene.' },
+    { id: 'mudanza', name: 'Begoña Mudanza', party: 'CANA', seat: 33, x: 68, y: 51.4, s: 10, behind: 'alaDer', emoji: '👩‍💼', says: '—El tránsfuga se sienta en un escaño par. Búsquenlo por ahí, por los pares.' },
+    { id: 'pendulo', name: 'Casimiro Péndulo', party: 'TIC', seat: 52, x: 83, y: 51.4, s: 10, behind: 'alaDer', emoji: '👨‍💼', says: '—De Leonor Bisagra y Fermín Chaqueta, exactamente uno miente. No diré cuál: sería poco disruptivo.' },
   ];
   function l10Maquina(g) {
     g.modal({
@@ -1438,10 +1438,11 @@
       decor: [
         // Pleno visto desde el pasillo central (floorH 22: así la barra de la cafetería, en primer plano a la derecha, sostiene
         // un café tocable sin pasar de ×2,5). Al fondo, la Mesa de la Presidencia (tarima de 40 cm + mesa de 85) con el
-        // marcador alto y las banderas; escaños (3 filas, 150 cm) a ambos lados con los diputados en sus pupitres; puerta con
-        // el ujier tras la barandilla del guardarropa; delante, la mesa de prensa y la de taquígrafos (75 cm), más estrecha que la
-        // tarima para que se vea su canto. Diputados: 2 en el ala izquierda y 3 en la derecha, para que las etiquetas partido·escaño
-        // no se pisen a 360 px. Defecto conocido del motor: la etiqueta (.hs-tag) va dentro del botón y sube la cabeza ~1,5 %.
+        // marcador alto y las banderas; bancadas de 95 cm (3 filas) a ambos lados, con los diputados como bustos DETRÁS
+        // (sentados: se ve de pecho para arriba); puerta con el ujier tras la barandilla del guardarropa; delante, la mesa de
+        // prensa y la de taquígrafos (75 cm). Las etiquetas partido·escaño quedan tapadas por la bancada (el motor las pone
+        // dentro del botón, bajo la imagen): partido y escaño salen igualmente en el título del diálogo y en la lista del ujier.
+        // Carteles a ~200 cm: más abajo chocarían con las cabezas.
         { kind: 'screen', l: 40, t: 3, w: 20, h: 13 },
         { kind: 'flag', l: 39, t: 19.5, w: 10, h: 12.2 },
         { kind: 'flag-eu', l: 51, t: 19.5, w: 10, h: 12.2 },
@@ -1449,12 +1450,12 @@
         { kind: 'platform', id: 'tarima', l: 40.5, t: 70, w: 19, h: 10, color: '#6d4c2f' },
         { kind: 'counter', id: 'mesaPresidencia', l: 41.5, t: 48.7, w: 17, h: 21.3 },
         { kind: 'pedestal', id: 'barandilla', l: 1, t: 56.3, w: 12.5, h: 25.7, color: '#6d4c2f' },
-        { kind: 'seats', id: 'alaIzq', l: 15.5, t: 43.44, w: 23.5, h: 38.56, color: '#9b2d2d' },
-        { kind: 'seats', id: 'alaDer', l: 60.5, t: 43.44, w: 30, h: 38.56, color: '#9b2d2d' },
+        { kind: 'seats', id: 'alaIzq', l: 13.8, t: 57.58, w: 26.7, h: 24.42, color: '#9b2d2d' },
+        { kind: 'seats', id: 'alaDer', l: 60.5, t: 57.58, w: 29, h: 24.42, color: '#9b2d2d' },
         { kind: 'table', id: 'mesaTaquigrafos', l: 41, t: 73.23, w: 18, h: 22.77 },
-        { kind: 'desk', id: 'prensa', l: 16, t: 68.72, w: 19, h: 21.28 },
-        { emoji: '📸', x: 32, y: 65.16, s: 4, on: 'prensa' },
-        { kind: 'counter', id: 'barra', l: 87, t: 66.72, w: 11, h: 33.28 },
+        { kind: 'desk', id: 'prensa', l: 17.5, t: 71.3, w: 19, h: 21.9 },
+        { emoji: '📸', x: 33.5, y: 67.75, s: 4, on: 'prensa' },
+        { kind: 'counter', id: 'barra', l: 87, t: 66.72, w: 12.5, h: 33.28 },
       ],
       hotspots: [
         ...L10_SUS.map((s) => ({
@@ -1462,7 +1463,7 @@
           label: `${s.name} (${sig(s.party)}) · escaño ${s.seat}`,
           look(g) { g.say(s.says, `${s.name} — ${sig(s.party)}, escaño ${s.seat}`); },
         })),
-        { id: 'portavoces', x: 13, y: 13, sign: 'JUNTA DE PORTAVOCES', sub: '📋', w: 19, label: 'Posiciones anunciadas ante la moción',
+        { id: 'portavoces', x: 24, y: 24, sign: 'JUNTA DE PORTAVOCES', sub: '📋', w: 14, label: 'Posiciones anunciadas ante la moción',
           look(g) {
             const ok = g.flag('acuerdoReg');
             const rows = [['FAROL', 19, 'Sí', '«Es nuestra moción. Faltaría más.»'], ['CANA', 11, 'Sí', '«A cambio de terrazas.»'], ['TIC', 6, 'Sí', '«Por la disrupción.»'],
@@ -1513,7 +1514,7 @@
               },
             });
           } },
-        { id: 'chuleta', x: 86, y: 13, sign: 'CHULETA DEL GRUPO MIXTO', sub: '🔐', w: 22, label: 'Chuleta de cifrado (cafetería)',
+        { id: 'chuleta', x: 80, y: 24, sign: 'CHULETA DEL GRUPO MIXTO', sub: '🔐', w: 16, label: 'Chuleta de cifrado (cafetería)',
           look(g) {
             g.doc('🔐 Cifrado de palabra clave (para pasarse notas en el pleno)', `<ol>
               <li>Escribe la palabra clave sin repetir letras.</li>
@@ -1523,7 +1524,7 @@
               <p><i>Ejemplo, clave CAFE → alfabeto cifrado CAFEBDGHIJ... Así, «CAFE» se escribe «FCDB».</i></p>
               <p class="small">La descifradora de la sala lo hace sola: solo hay que darle la clave.</p>`);
           } },
-        { id: 'periodista', x: 24, y: 62.9, emoji: '🧑‍💻', s: 12.5, behind: 'prensa', label: 'Periodista parlamentaria',
+        { id: 'periodista', x: 27, y: 65.5, emoji: '🧑‍💻', s: 12.5, behind: 'prensa', label: 'Periodista parlamentaria',
           look(g) {
             g.say('—Mi fuente sobre el tránsfuga solo habla por la frecuencia de las asesorías, y yo no tengo pinganillo. Quien lo tenga, que lo enchufe en la mesa de sonido.', 'Periodista parlamentaria');
             g.say('—Lo que sí sé es lo de siempre: ZIGZAG hace lo contrario de lo que anuncia. ASPA, en cambio, hace exactamente lo que dice: es un solo diputado, no le da para más.', 'Periodista parlamentaria');
@@ -1534,7 +1535,7 @@
             l10Maquina(g);
           },
           use: { servilleta: (g) => l10Maquina(g) } },
-        { id: 'cafe', x: 92.5, y: 62.28, emoji: '☕', s: 5, on: 'barra', label: 'Barra de la cafetería',
+        { id: 'cafe', x: 93.3, y: 62.28, emoji: '☕', s: 5, on: 'barra', label: 'Barra de la cafetería',
           look(g) { g.say('Café de la cafetería de las Cortes: 0,80 €. Subvencionado. Es lo único que se aprueba por unanimidad.'); } },
         { id: 'ujier', x: 7.5, y: 47.5, emoji: '🤵', s: 11.5, behind: 'barandilla', label: 'Ujier (guardarropa)',
           look(g) {
