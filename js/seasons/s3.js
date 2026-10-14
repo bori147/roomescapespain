@@ -1249,17 +1249,21 @@
       carry: ['planoAcotado'],
       scene: { wall: '#e4d6bd', floor: '#6c6158', floorH: 24, pattern: 'tiles' },
       decor: [
-        { kind: 'board', l: 13, t: 23.75, w: 22, h: 21.38, z: 11 },
+        { kind: 'board', l: 10, t: 23.75, w: 22, h: 21.38, z: 11 },
         { kind: 'door', l: 89.5, t: 26.12, w: 9.5, h: 49.88, color: '#9aa0a6' },
         { emoji: '🛗', x: 94.25, y: 20.27, s: 4.45 },
-        { kind: 'bench', id: 'sillasIzq', l: 13, t: 56.26, w: 20, h: 20.34, color: '#5d6670' },
+        { kind: 'bench', id: 'sillasIzq', l: 13, t: 56.26, w: 21, h: 20.34, color: '#5d6670' },
         { kind: 'bench', id: 'sillasDer', l: 67, t: 56.26, w: 21, h: 20.34, color: '#5d6670' },
-        { kind: 'box', l: 13, t: 56.26, w: 20, h: 8.3, color: '#56606a', z: 102 },
-        { kind: 'box', l: 67, t: 56.26, w: 21, h: 8.3, color: '#56606a', z: 102 },
+        { kind: 'box', l: 13, t: 56.26, w: 6.5, h: 8.3, color: '#56606a', z: 102 },
+        { kind: 'box', l: 20.25, t: 56.26, w: 6.5, h: 8.3, color: '#56606a', z: 102 },
+        { kind: 'box', l: 27.5, t: 56.26, w: 6.5, h: 8.3, color: '#56606a', z: 102 },
+        { kind: 'box', l: 67, t: 56.26, w: 6.5, h: 8.3, color: '#56606a', z: 102 },
+        { kind: 'box', l: 74.25, t: 56.26, w: 6.5, h: 8.3, color: '#56606a', z: 102 },
+        { kind: 'box', l: 81.5, t: 56.26, w: 6.5, h: 8.3, color: '#56606a', z: 102 },
         { kind: 'pedestal', id: 'mesaPres', l: 35, t: 65.96, w: 30, h: 20.04, color: '#7b2d2d' },
       ],
       hotspots: [
-        { id: 'convocatoria', x: 20, y: 34.4, w: 12, sign: 'CONVOCATORIA', sub: '📌', label: 'Convocatoria de la junta',
+        { id: 'convocatoria', x: 17, y: 34.4, w: 12, sign: 'CONVOCATORIA', sub: '📌', label: 'Convocatoria de la junta',
           look(g) {
             g.doc('📌 Convocatoria de junta ordinaria', `<p>Puntos que el presidente/a puede incluir, en el orden que decida:</p>
               <ul><li>${J_PTS.P}</li><li>${J_PTS.A}</li><li>${J_PTS.B}</li></ul>
@@ -1274,7 +1278,7 @@
               <li>El presidente/a no vota en los puntos ordinarios: modera. En las obras de su propia vivienda, sí vota.</li>
               <li>Las delegaciones de voto solo valen si se entregan al administrador antes de la junta.</li></ul>`);
           } },
-        { id: 'coef', x: 32, y: 37.47, s: 5.94, emoji: '📊', label: 'Cuadro de coeficientes',
+        { id: 'coef', x: 29, y: 37.47, s: 5.94, emoji: '📊', label: 'Cuadro de coeficientes',
           look(g) {
             g.doc('📊 Coeficientes de participación', `<table class="tbl">${J_OWN.map((o) => `<tr><td>${o.name}</td><td>${o.c} %</td></tr>`).join('')}<tr><td><b>Total (9 propietarios)</b></td><td><b>100 %</b></td></tr></table>`);
           } },
@@ -1303,15 +1307,15 @@
             if (!g.flag('planoOK')) return g.say('El administrador te tapa el orden del día: —Sin el plano de la obra no la meto en la junta, presidente/a. Démelo primero.', 'Administrador');
             juntaModal(g);
           } },
-        { id: 'remedios', x: 16.5, y: 52.24, s: 5.8, behind: 'sillasIzq', emoji: '👵', label: 'Doña Engracia (1ºA)',
+        { id: 'remedios', x: 16.25, y: 52.78, s: 10.6, behind: 'sillasIzq', emoji: '💁‍♀️', label: 'Doña Engracia (1ºA)',
           look(g) { g.say('—Yo voto que sí a lo del portero automático y a pintar, que el portal está hecho un asco. A lo de las bicis, que no: mi nieto viene en bici. ¿Lo de tu terraza? Solo si <b>antes</b> se ha aprobado el portero automático, que no oigo a mi nieto cuando llama. Y los Peláez votan lo que yo, que me han delegado. Ah, y dígale a su tía Remedios que las porras del martes estaban duras.', 'Doña Engracia'); } },
-        { id: 'fulgencio', x: 23, y: 52.24, s: 5.8, behind: 'sillasIzq', emoji: '🧓', label: 'Don Fulgencio (1ºB)',
+        { id: 'fulgencio', x: 23.5, y: 52.78, s: 10.6, behind: 'sillasIzq', emoji: '🙎‍♂️', label: 'Don Fulgencio (1ºB)',
           look(g) { g.say('—Yo, a todo lo que sea derrama, que NO: ni portero ni pintura. Lo de prohibir las bicis, que sí. ¿Tu terraza? Me da igual, voto que sí... salvo que en esta junta ya se haya aprobado alguna derrama: entonces, por despecho, que no.', 'Don Fulgencio'); } },
-        { id: 'paco', x: 83.6, y: 54.92, s: 10.93, behind: 'sillasDer', emoji: '🧑‍🍳', label: 'Fermín, del bar «El Recurso» (local)',
+        { id: 'paco', x: 84.75, y: 52.48, s: 10.93, behind: 'sillasDer', emoji: '🧑‍🍳', label: 'Fermín, del bar «El Recurso» (local)',
           look(g) { g.say('—Lo de las bicis, NO: mis mejores clientes vienen en bici. Y como se apruebe, me voy al bar y no vuelvo en toda la junta. Pintar, tampoco, que me cierran la terraza un día. El portero, sí. ¿Tu obra? Que sí... a no ser que antes se haya aprobado pintar: si pintan, que nadie más toque la fachada en un año.', 'Fermín (bar)'); } },
-        { id: 'bermejo', x: 70.1, y: 52.24, s: 5.8, behind: 'sillasDer', emoji: '🧔', label: 'Sr. Bermejo (3ºA)',
+        { id: 'bermejo', x: 70, y: 52.42, s: 11, behind: 'sillasDer', emoji: '🙋‍♂️', label: 'Sr. Bermejo (3ºA)',
           look(g) { g.say('—El portero, no: yo tengo el telefonillo de 1974 y funciona. Pintar y prohibir bicis, sí. ¿Lo tuyo? Solo si antes se ha <b>votado</b> lo de las bicis, salga lo que salga. Que conste en acta que yo lo pedí.', 'Sr. Bermejo'); } },
-        { id: 'pura', x: 76.4, y: 52.24, s: 5.8, behind: 'sillasDer', emoji: '👩‍🦳', label: 'Doña Pura (4ºA)',
+        { id: 'pura', x: 77.5, y: 52.78, s: 10.6, behind: 'sillasDer', emoji: '🙅‍♀️', label: 'Doña Pura (4ºA)',
           look(g) { g.say('—Yo, al <b>primer punto</b> que se vote, siempre NO. Por principio. Luego, a todo que sí... menos a tu terraza: a eso solo si antes se ha aprobado pintar el portal. Si el portal está bonito, que cada uno haga en su casa lo que quiera.', 'Doña Pura'); } },
         { id: 'yeray', x: 62.6, y: 61.51, s: 5, on: 'mesaPres', emoji: '💻', label: 'Yeray (4ºB), por videollamada',
           look(g) { g.say('—¿Se me oye? En el primer punto me abstengo, que estoy conectándome. Luego, para equilibrar, voto siempre <b>lo contrario de lo que salió en el punto anterior</b>: si se aprobó, no; si se rechazó, sí. Es mi filosofía de vida.', 'Yeray (videollamada)'); } },
