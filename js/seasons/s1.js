@@ -920,25 +920,42 @@
       stars: 4,
       intro: 'Para aprobar la ley que arregla tu expediente hace falta un <b>gobierno</b>. Y el Congreso lleva 287 días sin conseguirlo.<br><br>El ujier ha cerrado las puertas: nadie sale hasta que haya investidura. Ni tú, que solo venías a entregar un papel.<br><br><b>Objetivo:</b> forma una mayoría de al menos 176 escaños que cumpla las condiciones de todos sus socios.',
       outro: 'Hay gobierno. Se aprueba su ley por urgencia en solo 14 meses. Pero la oposición exige una comisión de investigación sobre por qué su trámite ha costado tanto. Y le citan a usted como testigo.',
-      scene: { wall: '#7a2e2e', floor: '#5a3b2a', floorH: 50, pattern: 'carpet' },
+      scene: { wall: '#7a2e2e', floor: '#5a3b2a', floorH: 36, pattern: 'carpet' },
       decor: [
-        { kind: 'arc' },
-        { emoji: '📸', x: 6, y: 20, s: 4, o: 0.85 }, { emoji: '🎥', x: 94, y: 20, s: 4, o: 0.85 },
+        // Vista desde la tribuna: bancadas de escaños (3 filas, 150 cm) en herradura; las alas, más cerca
+        { kind: 'screen', l: 38, t: 2, w: 20, h: 14.5 },
+        { kind: 'seats', id: 'bancoCentro', l: 25, t: 34, w: 46, h: 30, color: '#3a5a3a' },
+        { kind: 'door', l: 85, t: 22, w: 10.1, h: 42, color: '#6d4c2f' },
+        { kind: 'shelf', id: 'soporteCam', l: 2, t: 14, w: 7.5, h: 1.4 },
+        { emoji: '🎥', x: 5.75, y: 8, s: 6.75, on: 'soporteCam' },
+        { kind: 'seats', id: 'alaIzq', l: 2, t: 43, w: 27, h: 33, color: '#3a5a3a' },
+        { emoji: '👨‍💼', x: 15, y: 37.4, s: 8, behind: 'alaIzq', o: 0.85 },
+        { kind: 'seats', id: 'alaDer', l: 61.5, t: 43, w: 20, h: 33, color: '#3a5a3a' },
+        { emoji: '👩‍💼', x: 79, y: 36.9, s: 8.5, behind: 'alaDer', o: 0.85 },
+        { kind: 'counter', id: 'barandilla', l: 83, t: 57.9, w: 14, h: 20.1 },
+        { kind: 'table', id: 'mesaTaquigrafos', l: 6, t: 68.25, w: 15, h: 17.75 },
+        { kind: 'lectern', id: 'atril', l: 43.95, t: 60.4, w: 8.1, h: 27.6, color: '#6d4c2f' },
       ],
       hotspots: [
         ...PARTIES.map((p, i) => {
-          const pos = { PPA: [12, 72], VYV: [22, 55], TRM: [35, 47], PIN: [50, 44], PSA: [65, 47], CPM: [78, 55], PRR: [88, 72], UNO: [50, 62] }[p.id];
+          // [x, y, s, apoyo]: emblemas (~44 cm) sobre el pupitre de su bancada (y +1,45: la placa con el nombre sube el objeto); el PIN, su portavoz tras el escaño
+          const pos = {
+            PPA: [8.5, 39.03, 6.1, { on: 'alaIzq' }], VYV: [31, 30.47, 5.6, { on: 'bancoCentro' }],
+            TRM: [40, 29.32, 6.9, { on: 'bancoCentro' }], PIN: [22.5, 35.12, 10.5, { on: 'alaIzq' }],
+            PSA: [58.5, 27.98, 8.4, { on: 'bancoCentro' }], CPM: [66.5, 29.85, 6.3, { on: 'bancoCentro' }],
+            PRR: [72.5, 39.43, 5.65, { on: 'alaDer' }], UNO: [49, 30.47, 5.6, { on: 'bancoCentro' }],
+          }[p.id];
           return {
-            id: 'p_' + p.id, x: pos[0], y: pos[1], emoji: p.emoji, s: 6, tag: p.id, label: `${p.id} · ${p.name} (${p.seats} escaños)`,
+            id: 'p_' + p.id, x: pos[0], y: pos[1], emoji: p.emoji, s: pos[2], ...pos[3], tag: p.id, label: `${p.id} · ${p.name} (${p.seats} escaños)`,
             look(g) { g.say(p.demand, `${p.emoji} Portavoz del ${p.id} — ${p.name} (${p.seats})`); },
           };
         }),
-        { id: 'marcador', x: 50, y: 15, sign: 'MARCADOR', sub: 'Mayoría: 176', w: 14, label: 'Marcador de votaciones',
+        { id: 'marcador', x: 48, y: 9, sign: 'MARCADOR', sub: 'Mayoría: 176', w: 14, label: 'Marcador de votaciones',
           look(g) { g.say('Mayoría absoluta: 176 de 350 escaños. Días sin gobierno: 287. Récord de cafés servidos en la cafetería: batido cada semana.'); } },
-        { id: 'tribuna', x: 50, y: 85, emoji: '🎤', s: 7, label: 'Tribuna de oradores', look: coalitionModal },
-        { id: 'ujier', x: 94, y: 88, emoji: '🤵', s: 6, label: 'Ujier',
+        { id: 'tribuna', x: 48, y: 55.96, emoji: '🎤', s: 5, on: 'atril', label: 'Tribuna de oradores', look: coalitionModal },
+        { id: 'ujier', x: 89.5, y: 50.25, emoji: '🤵', s: 10.4, behind: 'barandilla', label: 'Ujier',
           look(g) { g.say('—Nadie sale de aquí hasta que haya gobierno. Tengo órdenes. Y bocadillos para tres semanas.', 'Ujier'); } },
-        { id: 'escanos', x: 5, y: 88, emoji: '📋', s: 5, label: 'Reparto de escaños',
+        { id: 'escanos', x: 13.5, y: 63.45, emoji: '📋', s: 5.4, on: 'mesaTaquigrafos', label: 'Reparto de escaños',
           look(g) {
             g.doc('📋 Reparto de escaños', `<table class="tbl">${PARTIES.map((p) => `<tr><td>${p.emoji} <b>${p.id}</b> — ${p.name}</td><td>${p.seats}</td></tr>`).join('')}<tr><td><b>Total</b></td><td><b>350</b></td></tr></table><p class="small">Habla con cada bancada para conocer sus condiciones.</p>`);
           } },
