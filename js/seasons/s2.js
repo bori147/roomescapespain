@@ -1542,18 +1542,17 @@
       carry: ['actaITSS'],
       scene: { wall: '#dbe3e6', floor: '#a0764f', floorH: 30, pattern: 'wood' },
       decor: [
-        { kind: 'shutter', l: 2, t: 19.69, w: 14, h: 50.31, color: '#9aa0a6' },
+        { kind: 'shutter', l: 2, t: 19.69, w: 16, h: 50.31, color: '#9aa0a6' },
         { kind: 'window', l: 75, t: 19.68, w: 14, h: 30.63 },
         { kind: 'shelf', id: 'balda', l: 47, t: 35, w: 18, h: 1.2 },
         { kind: 'counter', id: 'barra', l: 38, t: 49.34, w: 30, h: 23.66 },
-        { kind: 'pedestal', id: 'mesa', color: '#b5463c', l: 71.5, t: 61.95, w: 23, h: 18.05 },
-        { kind: 'box', l: 75.7, t: 37.5, w: 12.6, h: 12.8, color: '#cdbda4', z: 15 },
+        { kind: 'pedestal', id: 'mesa', color: '#d9d2c3', l: 72.5, t: 61.95, w: 21, h: 18.05 },
+        { kind: 'box', l: 75.7, t: 37.5, w: 12.6, h: 12.8, color: '#b9afa2', z: 15 },
         { kind: 'box', l: 81.75, t: 37.5, w: 0.5, h: 12.8, color: '#f4f1ea', z: 15 },
         { emoji: '📗', x: 53.5, y: 31.89, s: 3.5, on: 'balda' },
-        { emoji: '🧂', x: 61.5, y: 46.67, s: 3, on: 'barra' },
+        { emoji: '🍩', x: 61.5, y: 46.67, s: 2.5, on: 'barra' },
         { emoji: '☕', x: 65.5, y: 46.67, s: 3, on: 'barra' },
         { emoji: '☕', x: 82, y: 59.28, s: 3, on: 'mesa' },
-        { emoji: '📰', x: 14.5, y: 67.1, s: 5.9 },
       ],
       init(g) { g.set('saldo', 312); },
       hotspots: [
@@ -1570,7 +1569,7 @@
           } },
         { id: 'calendario', x: 69, y: 27.28, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Hoy termina el plazo de justificación. A las 23:59, cómo no. El portal suele caerse a las 23:00, por tradición.'); } },
-        { id: 'cajero', x: 79, y: 41, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
+        { id: 'cajero', x: 79.5, y: 45.1, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
           look(g) { g.say('El cajero de tu banco, en la acera de enfrente. Admite ingresos en efectivo. Para sacar dinero, cobra comisión; para meterlo, de momento no.'); },
           use: {
             efectivo(g) {
@@ -1606,7 +1605,7 @@
               g.give('efectivo');
             } else g.say('Vacía. Como tus fines de semana.');
           } },
-        { id: 'buzon', x: 9, y: 67.75, emoji: '✉️', s: 5, label: 'Buzón',
+        { id: 'buzon', x: 27, y: 67.75, emoji: '✉️', s: 5, label: 'Buzón',
           look(g) {
             if (!g.flag('mail')) {
               g.set('mail');
@@ -1624,7 +1623,7 @@
               <tr><td>2027 · Descuento del 10 % en la ferretería de tu cuñado (un «favor»)</td><td>14 €</td></tr></table>
               <p class="small">El premio de la porra está enmarcado. La ayuda de los toldos, también: el toldo se lo llevó el viento.</p>`);
           } },
-        { id: 'cunado', x: 75, y: 54, emoji: '🙋‍♂️', s: 9.5, behind: 'mesa', label: 'Tu cuñado',
+        { id: 'cunado', x: 75, y: 53.55, emoji: '🙋‍♂️', s: 10, behind: 'mesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—¿Kit Digital? Yo te hacía la web gratis. En Comic Sans y con musiquita.',
@@ -1632,7 +1631,7 @@
               '—¿Que no tienes saldo? Pues paga en efectivo, hombre. ¿Que las bases dicen que no? Las bases, las bases...',
             ]), 'Tu cuñado');
           } },
-        { id: 'comercial', x: 89, y: 52.9, emoji: '🧑‍💻', s: 10.8, behind: 'mesa', label: 'Comercial del agente digitalizador',
+        { id: 'comercial', x: 89, y: 53.4, emoji: '🧑‍💻', s: 10.2, behind: 'mesa', label: 'Comercial del agente digitalizador',
           look(g) { g.say('—La web está lista. Si no la justifica hoy, el bono no llega y nos debe usted los 2.000 €. Sin presión. ¿Un café? Lo pago yo... con su bono.', 'Comercial'); } },
       ],
       hints: [
