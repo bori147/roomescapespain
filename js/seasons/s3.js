@@ -1414,18 +1414,18 @@
         { kind: 'pedestal', id: 'barra', l: 61, t: 45, w: 17.5, h: 21, color: '#e9e5dc' },
         { kind: 'pedestal', id: 'encimera', l: 80, t: 46.29, w: 10, h: 17.71, color: '#8a6a4a' },
         { emoji: '🚰', x: 88, y: 43, s: 3.7, on: 'encimera' },
-        // Carcasa blanca de la caldera mural (el ♨️ queda como su placa), con aire a la derecha de la nevera
-        { kind: 'box', l: 61.5, t: 10.5, w: 7, h: 13.5, color: '#f1efe9' },
-        // Placa del enchufe en el muro de fachada, a unos 40 cm del suelo
-        { kind: 'box', l: 50.4, t: 54.9, w: 1.8, h: 2.2, color: '#f5f3ee', z: 17 },
+        // Carcasa blanca de la caldera mural (el ♨️ queda como su placa), colgada sobre el mueble bajo (base a ~145 cm del suelo)
+        { kind: 'box', l: 76.5, t: 16.6, w: 7, h: 13.5, color: '#f1efe9' },
+        // Placa del enchufe en el muro de fachada, a ~105 cm del suelo, entre la ventana y la nevera
+        { kind: 'box', l: 50.1, t: 37.9, w: 1.8, h: 2.2, color: '#f5f3ee', z: 17 },
       ],
       hotspots: [
-        { id: 'ventana', x: 42.75, y: 33.55, emoji: '🪟', s: 12.4, label: 'Ventana del salón',
+        { id: 'ventana', x: 42.2, y: 33.55, emoji: '🪟', s: 12.4, label: 'Ventana del salón',
           look(g) { g.say('Una ventana con su cristal. ¿Simple? ¿Doble? A simple vista, transparente. Que es lo mínimo que se le pide a un cristal.'); },
           use: {
             mechero(g) { g.set('llamas'); g.say('Acercas la llama del mechero al cristal y miras el reflejo: ves <b>cuatro</b> llamitas. Michi también las ve y se asusta.'); },
           } },
-        { id: 'guia', x: 88, y: 27.5, z: 250, sign: 'GUÍA DEL<br>CERTIFICADOR', sub: '📗', w: 12, label: 'Guía del técnico certificador',
+        { id: 'guia', x: 91.5, y: 27.5, z: 250, sign: 'GUÍA DEL<br>CERTIFICADOR', sub: '📗', w: 12, label: 'Guía del técnico certificador',
           look(g) {
             g.doc('📗 Guía rápida del certificador (CEE simplificado municipal)', `<table class="tbl s3-tbl">
               <tr><th>Elemento</th><th>Puntos</th></tr>
@@ -1464,12 +1464,12 @@
             g.set('mech'); g.give('mechero');
             g.say('Entre gomas y pilas encuentras un mechero.');
           } },
-        { id: 'enchufe', x: 51.3, y: 56.0, emoji: '🔌', s: 2.6, label: 'Enchufe de la pared exterior',
+        { id: 'enchufe', x: 51, y: 39, emoji: '🔌', s: 5, label: 'Enchufe de la pared exterior',
           look(g) { g.say('Un enchufe en el muro de fachada. La tapa está atornillada. Detrás se esconde la verdad sobre tu aislamiento.'); },
           use: {
             destornillador(g) { g.set('camara'); g.say('Quitas la tapa: detrás del ladrillo hay una <b>cámara de aire vacía</b>. Ni lana, ni corcho, ni nada: aire y una pelusa de 1974.'); },
           } },
-        { id: 'caldera', x: 65, y: 16.33, emoji: '♨️', s: 7, label: 'Caldera',
+        { id: 'caldera', x: 80, y: 22.43, emoji: '♨️', s: 7, label: 'Caldera',
           look(g) { g.say('Placa de la caldera: «Caldera mural de <b>gas natural</b>. Año de fabricación: <b>1998</b>. Tipo: estándar». De condensación, nada. De ruido, mucho.'); } },
         { id: 'termo', x: 30.25, y: 53.36, emoji: '🛁', s: 8, z: 101, label: 'Baño (termo)',
           look(g) { g.say('En el baño hay un <b>termo eléctrico</b> de 80 litros. El agua caliente dura exactamente lo que tardas en enjabonarte.'); } },
