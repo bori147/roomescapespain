@@ -1362,13 +1362,24 @@
       scene: { wall: '#d6dbe0', floor: '#77706a', floorH: 32, pattern: 'tiles' },
       init(g) { g.set('tram', { have: {}, days: 0, dead: false }); },
       decor: [
-        { kind: 'counter', l: 6, t: 56, w: 66, h: 8 },
-        { kind: 'flag', l: 82, t: 6, w: 5, h: 8 },
-        { kind: 'screen', l: 75, t: 26, w: 12, h: 10 },
-        { emoji: '🪴', x: 95, y: 84, s: 4, o: 0.9 },
+        // Fondo: mostrador corrido de 105 cm con las cuatro ventanillas (un funcionario tras cada cartel)
+        { kind: 'counter', id: 'ventanillas', l: 17, t: 48.85, w: 63, h: 23.15 },
+        { emoji: '🧑‍💼', x: 27.5, y: 41.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '👩‍💼', x: 41.5, y: 41.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '🧑‍💻', x: 55.5, y: 41.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '🙎‍♂️', x: 69.5, y: 41.6, s: 11.5, behind: 'ventanillas' },
+        // Derecha: escritorio de 75 cm con el terminal de la Sede
+        { kind: 'desk', id: 'mesaSede', l: 82, t: 55.45, w: 14, h: 16.55 },
+        // Centro, delante del mostrador y dejando un pasillo hasta las ventanillas: mesa de 75 cm y 2,6 m con faldón (tapa piernas y sillas) donde esperan tu prima y el albañil
+        { kind: 'pedestal', id: 'mesaEspera', l: 34, t: 70.78, w: 38.5, h: 19.22, color: '#8b6a46' },
+        { emoji: '🪴', x: 88, y: 82.8, s: 11.5 },
+        // Izquierda: balda alta para el reloj de sobremesa, por encima del cartel de requisitos
+        { kind: 'shelf', id: 'baldaReloj', l: 6, t: 17.5, w: 6, h: 1.4 },
+        // Izquierda: pie plano de 8 cm del soporte de la placa del catálogo, bajo el cartel de requisitos
+        { kind: 'pedestal', id: 'basePlaca', l: 5, t: 72.1, w: 4, h: 1.9, color: '#3c3f44' },
       ],
       hotspots: [
-        { id: 'requisitos', x: 13, y: 20, sign: 'REQUISITOS', sub: 'Licencia obra menor', w: 14, label: 'Requisitos de la licencia',
+        { id: 'requisitos', x: 9.5, y: 33, sign: 'REQUISITOS', sub: 'Licencia obra menor', w: 14, label: 'Requisitos de la licencia',
           look(g) {
             g.doc('📋 Licencia de obra menor — Requisitos', `<ul>
               <li>Autorización de la comunidad de propietarios (acta), aportada en Registro.</li>
@@ -1378,37 +1389,37 @@
               <li>Medio de evacuación de escombros: <b>licencia de vía pública para contenedor</b> <i>o</i> <b>comunicación de uso de sacos</b> (obras pequeñas).</li>
               <li>En edificios catalogados, además, informe de Patrimonio Histórico.</li></ul>`);
           } },
-        { id: 'carta', x: 30, y: 20, sign: 'CARTA DE SERVICIOS', sub: '⏱️', w: 14, label: 'Carta de servicios',
+        { id: 'carta', x: 89, y: 32, sign: 'CARTA DE SERVICIOS', sub: '⏱️', w: 17, label: 'Carta de servicios',
           look(g) {
             g.doc('⏱️ Carta de servicios: plazos de tramitación', `<table class="tbl">${DOCS8.map((d) => `<tr><td>${d.name.replace('🏗️ ', '')}</td><td>${d.d} día${d.d > 1 ? 's' : ''} hábil${d.d > 1 ? 'es' : ''}</td></tr>`).join('')}</table>
               <p class="small">Plazos orientativos. Muy orientativos. Las solicitudes denegadas consumen 1 día.</p>`);
           } },
-        { id: 'catalogo', x: 46, y: 16, emoji: '🪧', s: 5, label: 'Placa del catálogo de edificios',
+        { id: 'catalogo', x: 7, y: 62.14, emoji: '🪧', s: 11.2, on: 'basePlaca', label: 'Placa del catálogo de edificios',
           look(g) { g.say('«Catálogo municipal de edificios protegidos. C/ del Olvido, 14: <b>NO CATALOGADO</b>. Valor histórico: ninguno. Valor sentimental: el de sus vecinos.»'); } },
-        { id: 'registro', x: 12, y: 44, sign: 'REGISTRO', sub: '🧑‍💼', w: 10, label: 'Ventanilla de Registro',
+        { id: 'registro', x: 27.5, y: 22, sign: 'REGISTRO', sub: '🧑‍💼', w: 10, label: 'Ventanilla de Registro',
           look(g) { g.say(g.flag('actaOK') ? '—El acta ya consta. Siga con lo suyo en la Sede.' : '—Si tiene la autorización de la comunidad, entréguemela aquí. Sin acta no hay licencia, ni aunque traiga al Papa.', 'Registro'); },
           use: { actaFirmada(g) { g.take('actaFirmada'); g.set('actaOK'); g.sfx('stamp'); g.say('—Acta registrada. ¡PUM! Sello. Ahora tramite lo demás en la Sede de Urbanismo.', 'Registro'); } } },
-        { id: 'viapublica', x: 29, y: 44, sign: 'VÍA PÚBLICA', sub: '🚧', w: 11, label: 'Ventanilla de Vía Pública',
+        { id: 'viapublica', x: 41.5, y: 22, sign: 'VÍA PÚBLICA', sub: '🚧', w: 11, label: 'Ventanilla de Vía Pública',
           look(g) { g.say('—¿Contenedor? Para poner un contenedor en la calle necesita licencia de vía pública, y para eso necesita... la licencia de obra. ¿Que la licencia de obra pide el contenedor? Ya. Es un círculo. Muy bonito, ¿verdad? ...Si la obra es pequeña, pruebe con <b>sacos</b>, que no ocupan vía pública.', 'Vía Pública'); } },
-        { id: 'residuos', x: 46, y: 44, sign: 'RESIDUOS', sub: '♻️', w: 10, label: 'Ventanilla de Residuos',
+        { id: 'residuos', x: 55.5, y: 22, sign: 'RESIDUOS', sub: '♻️', w: 10, label: 'Ventanilla de Residuos',
           look(g) { g.say('—La fianza de residuos exige el <b>contrato con un gestor de residuos</b> y la estimación de escombros, que viene en el <b>documento técnico</b> (memoria o proyecto). Sin las dos cosas, ni lo intente.', 'Residuos'); } },
-        { id: 'tributos', x: 63, y: 44, sign: 'TRIBUTOS', sub: '💶', w: 10, label: 'Ventanilla de Tributos',
+        { id: 'tributos', x: 69.5, y: 22, sign: 'TRIBUTOS', sub: '💶', w: 10, label: 'Ventanilla de Tributos',
           look(g) { g.say('—El ICIO se calcula sobre el presupuesto de ejecución que figura en el <b>documento técnico</b> (memoria o proyecto). Sin él no sé cuánto cobrarle. Y cobrarle es lo que más me gusta.', 'Tributos'); } },
-        { id: 'sede', x: 81, y: 31, emoji: '🖥️', s: 5, label: 'Terminal de la Sede de Urbanismo', look: tramModal },
-        { id: 'albanil', x: 86, y: 62, emoji: '👷', s: 7, label: 'Tomás, el albañil',
+        { id: 'sede', x: 89, y: 49.94, emoji: '🖥️', s: 6.2, on: 'mesaSede', label: 'Terminal de la Sede de Urbanismo', look: tramModal },
+        { id: 'albanil', x: 51, y: 62.68, emoji: '👷', s: 12.6, behind: 'mesaEspera', label: 'Tomás, el albañil',
           look(g) { g.say('—Yo empiezo dentro de 24 días hábiles. Si no hay licencia, me voy a otra obra. Para el <b>presupuesto</b> tengo que <b>ir a verla</b> antes, claro. En el presupuesto pondré que el escombro cabe en <b>sacos</b>: menos de un metro cúbico.', 'Tomás (albañil)'); },
           use: {
             licencia(g) { g.say('—¡Licencia! Le hago una foto y se la devuelvo, que el inspector de la cédula se la va a pedir. Pues el lunes empiezo. Bueno, el martes, que el lunes es San Expediente. Y no se preocupe, que en tres días le cierro la terraza. O en tres semanas. Tres algo.', 'Tomás (albañil)'); g.win(); },
           } },
-        { id: 'arquitecta', x: 66, y: 76, emoji: '👩‍🔧', s: 6, label: 'Tu prima, arquitecta técnica',
+        { id: 'arquitecta', x: 65.5, y: 62.68, emoji: '👷‍♀️', s: 12.6, behind: 'mesaEspera', label: 'Tu prima, arquitecta técnica',
           look(g) { g.say('—La <b>memoria valorada</b> te la hago en 4 días, pero necesito el <b>presupuesto del albañil</b>. Un proyecto visado son 20 días: para cerrar una terraza es matar moscas a cañonazos. Y de Patrimonio, olvídate si el edificio no está catalogado.', 'Tu prima (arquitecta)'); } },
-        { id: 'folleto', x: 46, y: 80, emoji: '📰', s: 5, label: 'Folleto de una gestoría',
+        { id: 'folleto', x: 36.5, y: 65.45, emoji: '📰', s: 6, on: 'mesaEspera', label: 'Folleto de una gestoría',
           look(g) { g.say('«GESTORÍA RÁPIDA: ¡El certificado de “no es obra mayor” es IMPRESCINDIBLE! (No lo pide nadie, pero por si acaso.) Solo 300 €.» El folleto huele a comisión.'); } },
-        { id: 'carpeta', x: 14, y: 80, emoji: '🗂️', s: 5, label: 'Tu carpeta',
+        { id: 'carpeta', x: 42, y: 66.33, emoji: '🗂️', s: 5, on: 'mesaEspera', label: 'Tu carpeta',
           look(g) {
             g.say('Recuerdos de la junta: un hueso de aceituna de Fermín, una amenaza de Doña Pura y la cuenta de lo que llevas gastado, que mejor no mirar.');
           } },
-        { id: 'reloj', x: 64, y: 16, emoji: '🕰️', s: 4, label: 'Reloj',
+        { id: 'reloj', x: 9, y: 13.05, emoji: '🕰️', s: 5, on: 'baldaReloj', label: 'Reloj',
           look(g) { g.say('El reloj del Área de Urbanismo va con 20 minutos de retraso. Como todo lo demás, pero en minutos.'); } },
       ],
       hints: [
