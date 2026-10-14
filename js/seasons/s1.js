@@ -974,16 +974,29 @@
       stars: 4,
       intro: 'La comisión investiga el retraso de tu trámite. La presidenta exige encontrar la contabilidad de la misteriosa <b>Caja Ñ</b>, y ha cerrado la sala con todos dentro.<br><br>Los testigos no recuerdan nada. Absolutamente nada.<br><br><b>Objetivo:</b> abre la caja fuerte y entrega su contenido a la presidenta.',
       outro: 'La comisión recibe el pendrive... que resulta estar formateado 35 veces. Se cierran los trabajos sin conclusiones, como es tradición. Queda un último paso: que el decreto que le afecta se publique en el BOE. Esta noche. A las 23:59.',
-      scene: { wall: '#3f4b5b', floor: '#6e5a48', floorH: 36, pattern: 'wood' },
+      scene: { wall: '#3f4b5b', floor: '#6e5a48', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 30, t: 44, w: 40, h: 8 },
-        { emoji: '🎙️', x: 40, y: 43, s: 3, o: 0.9 }, { emoji: '🎙️', x: 60, y: 43, s: 3, o: 0.9 },
-        { kind: 'counter', l: 12, t: 74, w: 52, h: 6 },
+        { kind: 'flag', l: 68.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 79.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'cabinet', id: 'archivo', l: 89.5, t: 40.37, w: 9, h: 27.63, color: '#6b6f76' },
+        { emoji: '🗂️', x: 94, y: 35.92, s: 5, on: 'archivo' },
+        { kind: 'platform', id: 'tarima', l: 45, t: 64.45, w: 33, h: 6.55, color: '#5e4430' },
+        { kind: 'counter', id: 'estrado', l: 47, t: 48.06, w: 29, h: 16.39 },
+        { emoji: '🎙️', x: 56.5, y: 44.33, s: 4.2, on: 'estrado' },
+        { kind: 'desk', id: 'prensa', l: 1.5, t: 57.17, w: 12, h: 16.83 },
+        { kind: 'counter', id: 'testigos', l: 15, t: 54.39, w: 28, h: 24.61 },
+        { emoji: '🎙️', x: 24.2, y: 51.19, s: 3.6, on: 'testigos' },
+        { emoji: '🖼️', x: 29, y: 30.2, s: 6.6 },
+        { kind: 'box', l: 81.9, t: 63.2, w: 4.9, h: 2.6, color: '#3a3d42', z: 125 },
+        { emoji: '📄', x: 84, y: 60.7, s: 3.6, z: 114 },
+        { kind: 'pedestal', id: 'cajaFuerte', l: 61.1, t: 82, w: 9.7, h: 14.5, color: '#3b4048' },
+        { kind: 'box', l: 62.1, t: 83.4, w: 7.8, h: 12, color: '#565c66', z: 220 },
+        { kind: 'box', l: 69, t: 87.6, w: 0.7, h: 4, color: '#c9c2b0', z: 225 },
       ],
       hotspots: [
-        { id: 'cartel', x: 50, y: 12, sign: 'COMISIÓN DE INVESTIGACIÓN', sub: 'sobre el retraso de su trámite', w: 30, label: 'Cartel de la comisión',
+        { id: 'cartel', x: 50, y: 11, sign: 'COMISIÓN DE INVESTIGACIÓN', sub: 'sobre el retraso de su trámite', w: 27, label: 'Cartel de la comisión',
           look(g) { g.say('Comisión de investigación nº 47 de esta legislatura. Las 46 anteriores concluyeron que «no consta».'); } },
-        { id: 'presidenta', x: 50, y: 34, emoji: '👩‍⚖️', s: 8, label: 'Presidenta de la comisión',
+        { id: 'presidenta', x: 61, y: 42.2, emoji: '👩‍⚖️', s: 10, behind: 'estrado', label: 'Presidenta de la comisión',
           look(g) {
             g.say('—Esta comisión no se levantará hasta que aparezca la contabilidad de la Caja Ñ. Nadie sale. Ni yo, y eso que tengo pádel.', 'Presidenta');
             if (!g.flag('docOK')) g.say('—Por cierto, alguien intentó triturar un documento antes de la sesión. La máquina se atascó. Qué mala suerte... para él.', 'Presidenta');
@@ -992,24 +1005,24 @@
             pendriveB(g) { g.take('pendriveB'); g.say('—¡La contabilidad de la Caja Ñ! Se levanta la sesión... Un momento, ¿está formateado? Bueno, da igual: ya ha salido en los periódicos. Pueden irse.', 'Presidenta'); g.win(); },
             informe(g) { g.say('—Muy interesante, pero quiero el CONTENIDO de la caja, no instrucciones para abrirla.', 'Presidenta'); },
           } },
-        { id: 'tesorero', x: 22, y: 64, emoji: '🧔', s: 7, label: 'Testigo: el tesorero',
+        { id: 'tesorero', x: 20, y: 50.58, emoji: '🧔', s: 5.3, behind: 'testigos', label: 'Testigo: el tesorero',
           look(g) {
             g.doc('🧔 Declaración del tesorero', `<p>—Señorías, lo digo claramente: no me consta. ¿La Caja Ñ? No me consta. Yo me limitaba a llevar la contabilidad, y la contabilidad, francamente, no me consta. ¿Las facturas del catering? Eran de la cena de Navidad. ¿Que era julio? Pues no me consta.</p>`);
           } },
-        { id: 'exministro', x: 38, y: 66, emoji: '👴', s: 7, label: 'Testigo: el exministro',
+        { id: 'exministro', x: 28.5, y: 50.13, emoji: '👴', s: 5.8, behind: 'testigos', label: 'Testigo: el exministro',
           look(g) {
             g.doc('👴 Declaración del exministro', `<p>—Quiero empezar diciendo que no me consta. Y termino diciendo que no me consta. Entre medias: no me consta, no me consta y, si me apuran, no me consta. ¿Que si conozco al tesorero? No me consta. ¿Que salgo con él en esta foto, en un yate? Eso es un montaje. Y además, no me consta.</p>`);
           } },
-        { id: 'cunado', x: 54, y: 66, emoji: '🙋‍♂️', s: 7, label: 'Testigo: el cuñado del tesorero',
+        { id: 'cunado', x: 38, y: 51.85, emoji: '🙋‍♂️', s: 9.5, behind: 'testigos', label: 'Testigo: el cuñado del tesorero',
           look(g) {
             g.doc('🙋‍♂️ Declaración del cuñado', `<p>—Yo pasaba por aquí. ¿El tesorero? Es mi cuñado, sí, pero de su trabajo no me consta nada. ¿Que tengo un chalé en Marbella a mi nombre? Eso es de un amigo. ¿Qué amigo? No me consta. Oiga, ¿y usted de qué equipo es?</p>`);
           } },
-        { id: 'trituradora', x: 76, y: 72, emoji: '🗑️', s: 8, label: 'Trituradora de papel (atascada)',
+        { id: 'trituradora', x: 84, y: 67.78, emoji: '🗑️', s: 7, label: 'Trituradora de papel (atascada)',
           look(g) {
             if (g.flag('docOK')) return g.say(ITEMS.informe.desc, '📋 Informe reconstruido');
             shredModal(g);
           } },
-        { id: 'caja', x: 91, y: 55, emoji: '🔐', s: 9, label: 'Caja fuerte «B» (3 cifras)',
+        { id: 'caja', x: 66, y: 86.6, emoji: '🔐', s: 5, z: 236, label: 'Caja fuerte «B» (3 cifras)',
           look(g) {
             if (g.flag('safeOpen')) return g.say('La caja está vacía. Solo huele a billetes de 500 que ya no existen.');
             g.input({
@@ -1019,7 +1032,7 @@
               ok: () => { g.set('safeOpen'); g.say('¡Clac! Dentro hay un solo objeto: un pendrive con la contabilidad B.'); g.give('pendriveB'); },
             });
           } },
-        { id: 'periodista', x: 8, y: 44, emoji: '🧑‍💻', s: 6, label: 'Periodista',
+        { id: 'periodista', x: 7.5, y: 50.06, emoji: '🧑‍💻', s: 8, on: 'prensa', label: 'Periodista',
           look(g) { g.say('—Llevo tres semanas contando los «no me consta» del exministro. Para la crónica, ¿sabes? Es un buen titular.', 'Periodista'); } },
       ],
       hints: [
