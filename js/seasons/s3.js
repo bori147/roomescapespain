@@ -1410,14 +1410,14 @@
         { emoji: '🐈', x: 34.5, y: 80.9, s: 4.6 },
         { emoji: '🪴', x: 90, y: 69.3, s: 9.8 },
         // Cocina abierta: nevera, barra de desayuno de 105 cm (con el inspector detrás) y mueble bajo de 90 cm
-        { kind: 'cabinet', id: 'nevera', l: 52.5, t: 27.5, w: 7, h: 35, color: '#eceeee' },
+        { kind: 'cabinet', id: 'nevera', l: 53.3, t: 27.5, w: 7, h: 35, color: '#eceeee' },
         { kind: 'pedestal', id: 'barra', l: 61, t: 45, w: 17.5, h: 21, color: '#e9e5dc' },
         { kind: 'pedestal', id: 'encimera', l: 80, t: 46.29, w: 10, h: 17.71, color: '#8a6a4a' },
         { emoji: '🚰', x: 88, y: 43, s: 3.7, on: 'encimera' },
         // Carcasa blanca de la caldera mural (el ♨️ queda como su placa), con aire a la derecha de la nevera
         { kind: 'box', l: 61.5, t: 10.5, w: 7, h: 13.5, color: '#f1efe9' },
         // Placa del enchufe en el muro de fachada, a unos 40 cm del suelo
-        { kind: 'box', l: 50.4, t: 52.7, w: 1.6, h: 2.0, color: '#f5f3ee', z: 17 },
+        { kind: 'box', l: 50.4, t: 54.9, w: 1.8, h: 2.2, color: '#f5f3ee', z: 17 },
       ],
       hotspots: [
         { id: 'ventana', x: 42.75, y: 33.55, emoji: '🪟', s: 12.4, label: 'Ventana del salón',
@@ -1456,7 +1456,7 @@
               <li><b>Vestidor:</b> sin requisitos de ventana; máximo 6 m².</li></ul>
               <p class="small">Toda pieza debe declararse con un uso que cumpla sus requisitos.</p>`);
           } },
-        { id: 'nevera', x: 56, y: 34.3, emoji: '📝', s: 5, z: 103, label: 'Nota en la nevera',
+        { id: 'nevera', x: 56.8, y: 34.3, emoji: '📝', s: 5, z: 103, label: 'Nota en la nevera',
           look(g) { g.say('Nota de tu pareja: «Las persianas del salón: por la mañana no entra ni un rayo, pero a partir de las cinco de la tarde aquello es un horno. Compra cortinas. Y no te gastes más de lo que tenemos. Te quiero.»'); } },
         { id: 'cajon', x: 84, y: 41.85, emoji: '🗃️', s: 5, on: 'encimera', z: 109, label: 'Cajón de la cocina',
           look(g) {
@@ -1464,7 +1464,7 @@
             g.set('mech'); g.give('mechero');
             g.say('Entre gomas y pilas encuentras un mechero.');
           } },
-        { id: 'enchufe', x: 51.1, y: 56.35, emoji: '🔌', s: 5, label: 'Enchufe de la pared exterior',
+        { id: 'enchufe', x: 51.3, y: 56.0, emoji: '🔌', s: 2.6, label: 'Enchufe de la pared exterior',
           look(g) { g.say('Un enchufe en el muro de fachada. La tapa está atornillada. Detrás se esconde la verdad sobre tu aislamiento.'); },
           use: {
             destornillador(g) { g.set('camara'); g.say('Quitas la tapa: detrás del ladrillo hay una <b>cámara de aire vacía</b>. Ni lana, ni corcho, ni nada: aire y una pelusa de 1974.'); },
