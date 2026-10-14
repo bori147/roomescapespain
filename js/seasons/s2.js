@@ -1422,16 +1422,16 @@
       scene: { wall: '#efe3cf', floor: '#9a7b58', floorH: 32, pattern: 'wood' },
       decor: [
         { kind: 'door', id: 'puerta', l: 1.5, t: 23.37, w: 10.7, h: 44.63, color: '#7a5a3c' },
-        { kind: 'window', l: 17.2, t: 19.1, w: 7.4, h: 29.8 },
+        { kind: 'window', l: 17.2, t: 19.1, w: 10.5, h: 29.8 },
         { kind: 'table', id: 'mesa', l: 27.5, t: 58.9, w: 15, h: 17.1 },
         { emoji: '🪑', x: 34.5, y: 61.59, s: 11.71 },
         { kind: 'counter', id: 'barra', l: 46, t: 48.85, w: 28, h: 23.15 },
-        { emoji: '☕', x: 41, y: 56.23, s: 3, on: 'mesa' },
+        { emoji: '☕', x: 39.8, y: 56.23, s: 3, on: 'mesa' },
         { kind: 'shelf', id: 'soporte', l: 4.6, t: 19, w: 4.5, h: 1.4 },
         { emoji: '☕', x: 62, y: 46.18, s: 3, on: 'barra' },
       ],
       hotspots: [
-        { id: 'convenio', x: 38.4, y: 28, sign: 'CONVENIO DE CHURRERÍAS', sub: '📕', w: 22, z: 250, label: 'Convenio colectivo',
+        { id: 'convenio', x: 38.4, y: 28, sign: 'CONVENIO DE<br>CHURRERÍAS', sub: '📕', w: 13, z: 250, label: 'Convenio colectivo',
           look(g) {
             g.doc('📕 Convenio colectivo de churrerías, buñolerías y afines', `<p><b>Art. 12. Limpieza:</b> tras el último cobro del día, la persona que cierra dedica <b>15 minutos</b> a limpiar la freidora. Ese tiempo es tiempo de trabajo.</p>
               <p><b>Art. 13. Tiempo efectivo:</b> desde la entrada hasta la salida. El bocadillo cuenta: en esta casa no se para.</p>
@@ -1459,7 +1459,7 @@
               <tr><td>Viernes 14</td><td>6:00 – 13:00</td></tr></table>
               <p class="small">Fichadora homologada. Lo que no está homologado es la harina.</p>`);
           } },
-        { id: 'archivador', x: 84.5, y: 61.33, emoji: '🗄️', s: 12, label: 'Archivador de personal',
+        { id: 'archivador', x: 84.5, y: 58.2, emoji: '🗄️', s: 15.5, label: 'Archivador de personal',
           look(g) {
             if (!g.flag('arch')) {
               g.set('arch');
@@ -1467,7 +1467,7 @@
               g.give('contratoLucia'); g.give('registroPapel');
             } else g.say('Solo quedan las nóminas. Te dan menos miedo que el registro horario. Un poco menos.');
           } },
-        { id: 'caja', x: 68, y: 44.4, emoji: '📠', s: 5, on: 'barra', label: 'Caja registradora',
+        { id: 'caja', x: 68, y: 44.4, emoji: '🧾', s: 5, on: 'barra', label: 'Caja registradora',
           look(g) {
             g.doc('🧾 Memoria de la caja: últimos tiques del día', `<p class="small">La caja solo conserva miércoles y jueves (los demás días se borraron al cambiar el rollo).</p>
               <table class="tbl">
