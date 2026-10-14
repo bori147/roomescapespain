@@ -1373,9 +1373,9 @@
       ],
       hotspots: [
         ...L9_IDS.map((id) => {
-          const pos = { ALA: [4.5, 49.7, 'bancadaIzq'], CANA: [12.1, 49.7, 'bancadaIzq'], NIDAC: [20.9, 49.7, 'bancadaIzq'], UVA: [28.8, 49.7, 'bancadaIzq'], ZIG: [71, 49.7, 'bancadaDer'], ASPA: [80.2, 49.7, 'bancadaDer'], TIC: [87.2, 50.58, 'bancadaDer'], FAROL: [95, 49.7, 'bancadaDer'] }[id];
+          const pos = { ALA: [4.5, 49.7, 'bancadaIzq'], CANA: [12.1, 49.7, 'bancadaIzq'], NIDAC: [20.9, 49.7, 'bancadaIzq'], UVA: [28.8, 49.7, 'bancadaIzq'], ZIG: [71, 49.7, 'bancadaDer'], ASPA: [80.2, 49.7, 'bancadaDer'], TIC: [87.2, 49.7, 'bancadaDer'], FAROL: [95, 49.7, 'bancadaDer'] }[id];
           return {
-            id: 'p_' + id, x: pos[0], y: pos[1], emoji: P[id].emoji, s: id === 'TIC' ? 4 : 5, on: pos[2], tag: P[id].sigla,
+            id: 'p_' + id, x: pos[0], y: pos[1], emoji: P[id].emoji, s: 5, on: pos[2], tag: P[id].sigla,
             label: (g) => `${P[id].sigla} · ${P[id].name}${g.flag('comp') ? ` (${L9_SEATS[id]} escaños)` : ''}`,
             look(g) { g.say(L9_SAYS[id], `${P[id].emoji} ${P[id].lider} — ${P[id].sigla}${g.flag('comp') ? ` (${L9_SEATS[id]})` : ''}`); },
           };
