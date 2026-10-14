@@ -841,7 +841,8 @@
         { kind: 'counter', id: 'ventanilla', l: 57, t: 48.85, w: 23, h: 23.15 },
         { emoji: '📦', id: 'cajas', x: 83.9, y: 71.88, s: 5.76 },
         { emoji: '📦', x: 88.5, y: 71.88, s: 5.76 },
-        { emoji: '📦', x: 86.2, y: 63.0, s: 5.76, on: 'cajas' },
+        { emoji: '📦', x: 83.9, y: 63.0, s: 5.76, on: 'cajas' },
+        { emoji: '📦', x: 88.5, y: 63.0, s: 5.76, on: 'cajas' },
         { emoji: '🪴', x: 89, y: 87.4, s: 10.8 },
       ],
       hotspots: [
