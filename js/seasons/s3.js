@@ -1187,16 +1187,23 @@
       intro: 'Un dron del Catastro ha sobrevolado tu edificio y ha llegado a dos conclusiones: que tu piso mide <b>96 m²</b> (contando el patio de luces, «que tiene mucha luz») y que tu trastero es el <b>3871</b>, que casualmente es el del vecino.<br><br>Toca medir, leer planos y llevar la contraria al dron. Por suerte, traes la escritura: lo que dice la escritura no lo tumba ni un dron.<br><br><b>Objetivo:</b> presenta el modelo 902 con la referencia correcta de tu trastero y la superficie útil real de tu vivienda.',
       outro: 'Catastro rectificado. Tu piso mide lo que mide, tu trastero es tuyo y tu IBI sube igual. Mirando tu plano acotado, se te ocurre cerrar la terraza (4,00 × 1,50) para ganar un poco de espacio. Para eso, primero, la comunidad de vecinos. Te llevas el plano.',
       carry: ['escritura'],
-      scene: { wall: '#dfe3e8', floor: '#8c8f93', floorH: 30, pattern: 'tiles' },
+      scene: { wall: '#dfe3e8', floor: '#8c8f93', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'counter', l: 52, t: 58, w: 34, h: 9 },
-        { kind: 'screen', l: 66, t: 9, w: 16, h: 14 },
-        { kind: 'flag-eu', l: 88, t: 8, w: 7, h: 9 },
-        { kind: 'rug', l: 8, t: 78, w: 30, h: 10, color: '#7a6a8c' },
+        { kind: 'bracket', id: 'varilla', l: 28.7, t: 0, w: 0.6, h: 7.5 },
+        { kind: 'flag', l: 55.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 66.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'screen', id: 'pantalla', l: 78.5, t: 10.6, w: 13, h: 12.8 },
+        { kind: 'lectern', id: 'dispensador', l: 2.5, t: 46.3, w: 4.5, h: 26.7, color: '#6b7785' },
+        { kind: 'screen', l: 3.0, t: 47.5, w: 3.5, h: 3.5, z: 121 },
+        { kind: 'bench', id: 'banco', l: 9, t: 62.4, w: 15, h: 20.6 },
+        { kind: 'counter', id: 'ventanilla', l: 54, t: 48.85, w: 22, h: 23.15 },
+        { kind: 'desk', id: 'mesaTerminal', l: 78, t: 58.9, w: 12.5, h: 17.1 },
+        { kind: 'cabinet', id: 'maquinaCafe', l: 92, t: 32.96, w: 7.5, h: 40.04, color: '#6a2c2c' },
+        { kind: 'screen', l: 94, t: 56, w: 3.5, h: 6, z: 121 },
       ],
       hotspots: [
-        { id: 'plansot', x: 24, y: 20, sign: 'PLANO DEL SÓTANO', sub: 'C/ del Olvido 14', w: 16, label: 'Plano catastral del sótano', look: sotanoModal },
-        { id: 'normas', x: 46, y: 20, sign: 'NORMAS DE MEDICIÓN', sub: '📏', w: 14, label: 'Normas de medición',
+        { id: 'plansot', x: 18, y: 31.3, sign: 'PLANO DEL SÓTANO', sub: 'C/ del Olvido 14', w: 16, label: 'Plano catastral del sótano', look: sotanoModal },
+        { id: 'normas', x: 40, y: 31.3, sign: 'NORMAS DE MEDICIÓN', sub: '📏', w: 18, z: 250, label: 'Normas de medición',
           look(g) {
             g.doc('📏 Normas para el cálculo de la superficie útil', `<ul>
               <li>Superficie útil: el suelo de la vivienda <b>dentro de sus muros</b>. Se cuentan todas las habitaciones, pasillos y cuartos interiores.</li>
@@ -1206,9 +1213,9 @@
               <li>Los trasteros situados fuera de la vivienda no computan.</li></ul>
               <p class="small">Superficie de un rectángulo: largo × ancho. (Lo ponemos por si el dron lee esto.)</p>`);
           } },
-        { id: 'ortofoto', x: 74, y: 16, emoji: '🛰️', s: 5, label: 'Pantalla con la ortofoto',
+        { id: 'ortofoto', x: 85, y: 17, emoji: '🛰️', s: 6, label: 'Pantalla con la ortofoto',
           look(g) { g.say('La ortofoto del dron muestra tu terraza en azul: la ha catalogado como «piscina». Es una lona de cuando llovió en 2019.'); } },
-        { id: 'funcionaria', x: 62, y: 49, emoji: '👩‍💼', s: 7, label: 'Funcionaria del Catastro',
+        { id: 'funcionaria', x: 65, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'ventanilla', label: 'Funcionaria del Catastro',
           look(g) {
             if (!g.flag('planoT')) return g.say('—¿Que su piso no mide 96? ¿Y usted quién es? Enséñeme la escritura, que aquí cualquiera viene a decir que un piso es suyo. Hasta los drones.', 'Funcionaria');
             g.say('—Necesito la referencia de SU trastero, según los linderos de su escritura, y la superficie útil real según las normas. Nada de «a ojo».', 'Funcionaria');
@@ -1220,27 +1227,27 @@
               g.say('—Finca 4478, 3ºB... Vale, es usted. Le devuelvo la escritura: fíjese en los <b>linderos del trastero</b>. ¿Que su piso no mide 96? Pues mídalo. Tenga el plano que tenemos: sin cotas, que las cotas las carga el diablo. Cuando lo tenga todo, rellene el 902 en el terminal.', 'Funcionaria');
             },
           } },
-        { id: 'terminal', x: 79, y: 50, emoji: '🖥️', s: 6, label: 'Terminal del modelo 902', look: m902Modal },
-        { id: 'carpeta', x: 10, y: 60, emoji: '🗂️', s: 5, label: 'Tu carpeta',
+        { id: 'terminal', x: 82, y: 53.2, emoji: '🖥️', s: 6.4, on: 'mesaTerminal', label: 'Terminal del modelo 902', look: m902Modal },
+        { id: 'carpeta', x: 87.8, y: 54.45, emoji: '🗂️', s: 5, on: 'mesaTerminal', label: 'Tu carpeta',
           look(g) {
             if (g.flag('carpT')) return g.say('Facturas, garantías, la nota simple (que ya te sabes de memoria) y el justificante del ITP, que miras de vez en cuando para llorar un poco.');
             g.set('carpT'); g.give('notificacion');
             g.say('Sacas la notificación del Catastro, con su foto aérea y su optimismo.');
           } },
-        { id: 'estuche', x: 30, y: 62, emoji: '🧰', s: 5, label: 'Caja de herramientas (olvidada por un técnico)',
+        { id: 'estuche', x: 28.5, y: 79.22, emoji: '🧰', s: 6.5, label: 'Caja de herramientas (olvidada por un técnico)',
           look(g) {
             if (g.flag('cintaT')) return g.say('Un nivel, un lápiz de carpintero y una brújula rota que apunta a la máquina de café.');
             g.set('cintaT'); g.give('cinta');
             g.say('Un técnico se ha dejado la caja de herramientas. Tomas prestada una cinta métrica. Ya se la devolverás. En unos años.');
           } },
-        { id: 'dron', x: 40, y: 40, emoji: '🛸', s: 5, label: 'El dron, colgado del techo',
+        { id: 'dron', x: 29, y: 9.67, emoji: '🛸', s: 6, label: 'El dron, colgado del techo',
           look(g) { g.say('El dron culpable, colgado del techo como trofeo. Tiene una pegatina: «Este lado arriba». Está colgado del revés.'); } },
-        { id: 'cafe', x: 92, y: 74, emoji: '☕', s: 5, label: 'Máquina de café',
+        { id: 'cafe', x: 95.2, y: 37.5, sign: 'CAFÉ', sub: '☕ 0,80 €', w: 5.6, z: 122, label: 'Máquina de café',
           look(g) { g.say('Café: 0,80 €. Superficie útil del vaso: 0,003 m². El Catastro dice que 0,005.'); } },
-        { id: 'vecino', x: 50, y: 82, emoji: '🙎‍♂️', s: 5, label: 'Vecino del 2ºA (en la cola)',
+        { id: 'vecino', x: 44, y: 60.44, emoji: '🧍', s: 26.5, label: 'Vecino del 2ºA (en la cola)',
           look(g) { g.say('—A mí el dron me ha dicho que tengo un trastero de más. Ojalá. No me haga devolvérselo, que ya he metido la bici.', 'Vecino'); } },
-        { id: 'cartelTurno', x: 8, y: 30, emoji: '🎫', s: 4, label: 'Dispensador de turnos',
-          look(g) { g.say('Turno C-0001. No hay nadie más: el resto de la ciudad aún no ha abierto la carta del dron.'); } },
+        { id: 'cartelTurno', x: 4.75, y: 41.86, emoji: '🎫', s: 5, on: 'dispensador', label: 'Dispensador de turnos',
+          look(g) { g.say('Turno C-0001. Delante de ti solo el vecino del 2ºA; detrás, nadie: el resto de la ciudad aún no ha abierto la carta del dron.'); } },
       ],
       combos: {
         'cinta+plano'(g) { g.take('plano'); g.give('planoAcotado'); g.say('Mides todo, habitación por habitación. Hasta el altillo, a gatas. Apuntas las medidas en el plano. Míralo en el inventario.'); },
