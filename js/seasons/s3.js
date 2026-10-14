@@ -1611,7 +1611,7 @@
               ok: () => { g.give('justDerrama'); g.say('—7.020 €: 4.320 de fachada y 2.700 de cubierta. Exacto. Aquí tiene el justificante. Y la factura de mis honorarios, que va aparte.', 'Administrador'); },
             });
           } },
-        { id: 'pura', x: 45, y: 58.58, emoji: '🧍‍♀️', s: 21.85, z: 99, label: 'Doña Pura, en la acera',
+        { id: 'pura', x: 40, y: 58.58, emoji: '🧍‍♀️', s: 21.85, z: 150, label: 'Doña Pura, en la acera',
           look(g) { g.say('—Yo voté que no a la ITE. Por principio. Ahora llevo dos días durmiendo en casa de mi hermana, que también vota que no a todo. Nos entendemos.', 'Doña Pura'); } },
       ],
       hints: [
