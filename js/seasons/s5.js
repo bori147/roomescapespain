@@ -1468,16 +1468,17 @@
         { kind: 'counter', id: 'ventanillas', l: 1.5, t: 41.12, w: 28, h: 18.88 },
         { emoji: '👩‍💼', x: 7, y: 36.85, s: 9.31, behind: 'ventanillas' },
         { emoji: '👨‍💼', x: 21, y: 36.85, s: 9.31, behind: 'ventanillas' },
-        // Centro: las cuatro puertas del Senado (210 cm; la cuarta es el objeto tocable) y la mesa de los ujieres
-        { emoji: '🚪', x: 36.9, y: 35.12, s: 23.49 },
-        { emoji: '🚪', x: 50.1, y: 35.12, s: 23.49 },
-        { emoji: '🚪', x: 63.3, y: 35.12, s: 23.49 },
-        { kind: 'desk', id: 'mesaUjieres', l: 38, t: 53.8, w: 37.5, h: 14.2 },
-        // Derecha: mesa del Secretario de Estado (75 cm) bajo la bandera de la UE
+        // Centro: las cuatro puertas del Senado (210 cm; la segunda es el objeto tocable, en el centro de la primera vista del móvil) y la mesa de los ujieres, uno ante cada puerta
+        { emoji: '🚪', x: 37, y: 35.12, s: 23.49 },
+        { emoji: '🚪', x: 61, y: 35.12, s: 23.49 },
+        { emoji: '🚪', x: 73, y: 35.12, s: 23.49 },
+        { kind: 'desk', id: 'mesaUjieres', l: 32, t: 53.8, w: 47, h: 14.2 },
+        // Derecha: calendario de pared (el del texto final), mesa del Secretario de Estado (75 cm) bajo la bandera de la UE
+        { emoji: '📅', x: 82.8, y: 26, s: 4.2 },
         { kind: 'flag-eu', l: 86.35, t: 17.5, w: 10.3, h: 12.25 },
         { kind: 'desk', id: 'mesaSecretario', l: 84, t: 48.34, w: 15, h: 13.66 },
         // Delante a la izquierda: la mesa presidencial (75 cm) con la pluma, el reloj de arena y la Caja
-        { kind: 'desk', id: 'mesaPresidencial', l: 21, t: 70.19, w: 19, h: 15.81 },
+        { kind: 'desk', id: 'mesaPresidencial', l: 34, t: 71.7, w: 20, h: 15.81 },
         { emoji: '🪴', x: 89, y: 83.66, s: 10.5 },
       ],
       hotspots: [
@@ -1487,9 +1488,9 @@
             g.doc('📑 Índice del expediente de Simplificación Total', `<p>La combinación de la Caja de los Cuatro Sellos se forma con la <b>cifra de cada sello</b>, en el orden en que el expediente los necesita:</p>
               <ol><li>Primero, <b>Europa</b> (sin fondos no hay nada).</li><li>Después, <b>Hacienda</b> (la tasa).</li><li>Luego, el <b>Senado</b> (la ley).</li><li>Y por último, el <b>Registro</b> (sí: el Registro de Entrada va al final. Es tradición).</li></ol>`);
           } },
-        { id: 'bandera', x: 89.5, y: 10, sign: 'BANDERA DE LA UE', sub: '★ ★ ★', w: 16, label: 'Bandera de la Unión Europea',
+        { id: 'bandera', x: 89.5, y: 8.2, sign: 'BANDERA DE LA UE', sub: '★ ★ ★', w: 16, label: 'Bandera de la Unión Europea',
           look(g) { g.say('La bandera de la Unión Europea: doce estrellas doradas en círculo sobre fondo azul. Siempre doce, entren o salgan los Estados que sean. Es lo único estable de Bruselas.'); } },
-        { id: 'teletipo', x: 26.5, y: 36.68, emoji: '📠', s: 5, on: 'ventanillas', label: 'Teletipo (telegrama cifrado)', look: teletipoModal },
+        { id: 'teletipo', x: 26.5, y: 36.94, emoji: '📠', s: 4.7, on: 'ventanillas', label: 'Teletipo (telegrama cifrado)', look: teletipoModal },
         { id: 'vHacienda', x: 7, y: 14, sign: 'HACIENDA', sub: '💶', w: 11, label: 'Ventanilla de Hacienda (Sello de Hacienda)',
           look(g) {
             if (g.has('selloHacienda')) return g.say('—Ya tiene su sello. No vuelva hasta la próxima campaña de la renta.', 'Hacienda');
@@ -1517,13 +1518,13 @@
               <div class="paper-note">Recibo 3: 1 timbre + 2 estampillas = <b>11 €</b></div>
               <p class="small">Precios unitarios no desglosados, por simplificación administrativa.</p>`);
           } },
-        { id: 'ujieres', x: 56.7, y: 47.3, emoji: '💂💂💂💂', s: 9, behind: 'mesaUjieres', label: 'Los cuatro ujieres del Senado',
+        { id: 'ujieres', x: 55, y: 45.34, emoji: '💂💂💂💂', s: 11.2, behind: 'mesaUjieres', label: 'Los cuatro ujieres del Senado',
           look(g) {
             g.doc('💂 Los cuatro ujieres del Senado', `<p>Custodian las cuatro puertas que llevan al Sello del Senado. Solo una puerta es la buena. Por tradición, <b>exactamente uno</b> de los cuatro ujieres dice la verdad; los otros tres mienten.</p>
               <ul><li><b>Ujier 1:</b> «La puerta buena no es la 1».</li><li><b>Ujier 2:</b> «La puerta buena es la 3».</li>
               <li><b>Ujier 3:</b> «El ujier 2 miente».</li><li><b>Ujier 4:</b> «La puerta buena es la 2 o la 3».</li></ul>`);
           } },
-        { id: 'puertas', x: 76.5, y: 35.12, emoji: '🚪', s: 23.49, label: 'Las cuatro puertas del Senado',
+        { id: 'puertas', x: 49, y: 35.12, emoji: '🚪', s: 23.49, label: 'Las cuatro puertas del Senado',
           look(g) {
             if (g.has('selloSenado')) return g.say('Ya tienes el Sello del Senado. Las otras tres puertas siguen dando a pasillos que vuelven aquí.');
             const wrong = (n) => (gg, msg) => { msg(`Abres la puerta ${n}: da a un pasillo que da a otro pasillo que vuelve aquí. Has perdido veinte minutos y un poco de fe.`, true); return false; };
@@ -1537,7 +1538,7 @@
               ],
             });
           } },
-        { id: 'caja', x: 36.5, y: 63.97, emoji: '🧰', s: 7, on: 'mesaPresidencial', label: 'Caja de los Cuatro Sellos',
+        { id: 'caja', x: 50, y: 65.48, emoji: '🧰', s: 7, on: 'mesaPresidencial', label: 'Caja de los Cuatro Sellos',
           look(g) {
             if (g.flag('cajaOpen')) return g.say('La Caja está abierta y vacía. Solo queda el eco de cuatro siglos de sellos.');
             if (!g.flag('acredCaja')) return g.say('La Caja de los Cuatro Sellos tiene cuatro ranuras, un teclado apagado y, encima, una quinta ranura con una placa: «Introduzca el Real Decreto de nombramiento. Sin acreditación no se atiende, ni siquiera aquí».');
@@ -1557,7 +1558,7 @@
               g.say('Introduces el Real Decreto 1147/2036 por la quinta ranura. Un engranaje lo lee, lo sella y se lo traga. Una lucecita verde: «PRESIDENTE/A DE LA COMISIÓN PARA LA SIMPLIFICACIÓN TOTAL — ACREDITADO/A. Coloque los cuatro sellos».');
             },
           } },
-        { id: 'mesaPres', x: 25, y: 65.75, emoji: '🖋️', s: 5, on: 'mesaPresidencial', label: 'Mesa presidencial',
+        { id: 'mesaPres', x: 38, y: 67.52, emoji: '🖋️', s: 4.7, on: 'mesaPresidencial', label: 'Mesa presidencial',
           look(g) {
             if (g.flag('firmado')) return g.say('El Decreto, firmado, con la tinta aún brillante. Solo falta que el Secretario de Estado valide tu firma.');
             g.say('La mesa presidencial. Una pluma estilográfica con tinta, por primera vez en la historia. Aquí se firma el Decreto, cuando lo tengas.');
@@ -1582,7 +1583,7 @@
             },
             rdAprobado(g) { g.say('—Eso acredita su cargo, no su identidad. Para su identidad, el DNI. Como todo el mundo.', 'Secretario de Estado'); },
           } },
-        { id: 'reloj', x: 30.5, y: 65.75, emoji: '⏳', s: 5, on: 'mesaPresidencial', label: 'Reloj de arena',
+        { id: 'reloj', x: 43, y: 67.25, emoji: '⏳', s: 5, on: 'mesaPresidencial', label: 'Reloj de arena',
           look(g) { g.say('Un reloj de arena con una placa: «Plazo para simplificar el Estado». La arena lleva cayendo desde 1978.'); } },
       ],
       hints: [
