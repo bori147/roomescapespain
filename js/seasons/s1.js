@@ -1002,7 +1002,7 @@
       hotspots: [
         { id: 'lema', x: 41.5, y: 20, z: 250, sign: 'LEMA DE LA CASA', sub: '«Lo importante siempre va al principio»', w: 26, label: 'Lema de la imprenta',
           look(g) { g.say('«En el BOE, lo importante siempre va al principio». — Tradición de la casa, desde la Gazeta de 1661.'); } },
-        { id: 'reloj', x: 63, y: 11.5, emoji: '🕛', s: 4.1, label: 'Reloj: 23:59',
+        { id: 'reloj', x: 63, y: 12.3, emoji: '🕛', s: 5, label: 'Reloj: 23:59',
           look(g) { g.say('23:59. El reloj lleva marcando 23:59 toda la noche. En el BOE, todo se publica a las 23:59.'); } },
         { id: 'rotativa', x: 14.7, y: 47.51, emoji: '🖨️', s: 6.5, on: 'bancada', label: 'Rotativa',
           look(g) {
