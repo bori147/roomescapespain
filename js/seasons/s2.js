@@ -1222,12 +1222,11 @@
       carry: ['licencia'],
       scene: { wall: '#f1e3c6', floor: '#a0764f', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'door', l: 10.0, t: 24.1, w: 14.0, h: 43.8, color: '#8fb3c2' },
-        { kind: 'shelf', id: 'estante', l: 65.5, t: 28.5, w: 11, h: 1.4 },
+        { kind: 'door', l: 10.6, t: 24.8, w: 12.8, h: 43.1, color: '#6f8a96' },
+        { kind: 'shelf', id: 'estante', l: 64, t: 28.5, w: 10.5, h: 1.4 },
         { kind: 'counter', id: 'barra', l: 56, t: 48.85, w: 35, h: 23.15 },
-        { kind: 'curtain', id: 'mesaRamona', l: 45.5, t: 63.97, w: 9.5, h: 18.03, color: '#efe7d8' },
-        { kind: 'box', l: 45.2, t: 63.3, w: 10.1, h: 1.4, color: '#f6f1e7', z: 156 },
-        { emoji: '🧂', x: 53.3, y: 62.55, s: 1.6, on: 'mesaRamona' },
+        { kind: 'table', id: 'mesaRamona', l: 47.5, t: 63.97, w: 9.5, h: 18.03 },
+        { emoji: '🧂', x: 55.3, y: 62.55, s: 1.6, on: 'mesaRamona' },
       ],
       hotspots: [
         { id: 'pizarra', x: 86.5, y: 21.7, sign: 'PRECIOS (IVA incl.)', sub: '🖍️', w: 15, label: 'Pizarra de precios',
@@ -1240,7 +1239,7 @@
               <tr><td>Taza de recuerdo «Porras del Trámite»</td><td>12,10 €</td></tr></table>
               <p class="small">Todos los precios llevan el IVA incluido, como manda la ley y el sentido común.</p>`);
           } },
-        { id: 'normas', x: 55, y: 26.5, sign: 'NORMAS VERIFACTU', sub: '🔗', w: 16, z: 250, label: 'Normas de facturación',
+        { id: 'normas', x: 53.5, y: 26.5, sign: 'NORMAS VERIFACTU', sub: '🔗', w: 16, z: 250, label: 'Normas de facturación',
           look(g) {
             g.doc('🔗 Normas de facturación (Verifactu, versión de la casa)', `<ul>
               <li><b>Factura completa</b> (con NIF del cliente): <b>serie A</b>. Tique o factura simplificada: serie T.</li>
@@ -1250,7 +1249,7 @@
               <li><b>Huella</b> = huella de la última factura de la <b>MISMA serie</b> + total de la nueva factura <b>en céntimos</b>. Quédese con las <b>4 últimas cifras</b>.</li>
               <li>Una factura registrada en Verifactu <b>no se puede borrar</b>. Ni la de prueba.</li></ul>`);
           } },
-        { id: 'marco', x: 31, y: 31.3, sign: (g) => (g.flag('abierto') ? 'LICENCIA' : 'MARCO VACÍO'), sub: (g) => (g.flag('abierto') ? '🪧 Provisional' : '⬜'), w: 11, z: 250, label: 'Marco junto a la entrada',
+        { id: 'marco', x: 33, y: 29.8, sign: (g) => (g.flag('abierto') ? 'LICENCIA' : 'MARCO VACÍO'), sub: (g) => (g.flag('abierto') ? '🪧 Provisional' : '⬜'), w: 11, z: 250, label: 'Marco junto a la entrada',
           look(g) {
             if (g.flag('abierto')) return g.say('Tu licencia provisional, enmarcada y a la vista. Al lado has dejado sitio para la definitiva. Va a estar vacío una temporada. Larga.');
             g.say('Un marco vacío junto a la entrada. Debajo, una pegatina municipal: «La licencia de actividad deberá exhibirse en lugar visible desde la entrada. Sin ella, no se abre». Lucía no subirá la persiana hasta verla colgada.');
@@ -1261,7 +1260,7 @@
               g.say('Cuelgas la licencia provisional en el marco. Lucía sube la persiana con un estruendo de feria: ¡ABIERTO! Entra el olor de la calle, la cola de curiosos... y tu primera clienta, doña Ramona.', 'Marco');
             },
           } },
-        { id: 'tazas', x: 71, y: 25.52, emoji: '☕☕☕', s: 3.35, on: 'estante', label: 'Estantería de tazas de recuerdo',
+        { id: 'tazas', x: 69.2, y: 25.52, emoji: '☕☕☕', s: 3.35, on: 'estante', label: 'Estantería de tazas de recuerdo',
           look(g) { g.say('Tazas «Porras del Trámite», con un sello de registro de entrada dibujado. 12,10 € cada una. Tu cuñado ya se ha llevado tres «para promoción».'); } },
         { id: 'lucia', x: 80, y: 41.4, emoji: '👩‍🍳', s: 11.2, behind: 'barra', label: 'Lucía, la churrera',
           look(g) {
@@ -1281,7 +1280,7 @@
           use: {
             licencia(g) { g.say('La licencia no se pega en la persiana con celo: va en el marco, a la vista desde la entrada. Esto es un negocio serio. Más o menos.'); },
           } },
-        { id: 'ramona', x: 50.25, y: 55.57, emoji: '💁‍♀️', s: 10.83, behind: 'mesaRamona', label: 'Doña Ramona, primera clienta',
+        { id: 'ramona', x: 52.25, y: 55.57, emoji: '💁‍♀️', s: 10.83, behind: 'mesaRamona', label: 'Doña Ramona, primera clienta',
           show: (g) => !!g.flag('abierto'),
           look(g) {
             if (!g.flag('ramona')) {
@@ -1301,7 +1300,7 @@
             },
             tarjetaRamona(g) { g.say('—Quédatela, que la necesitas para la factura. Yo tengo cuatrocientas.', 'Doña Ramona'); },
           } },
-        { id: 'papelera', x: 94, y: 78, emoji: '🗑️', s: 6, label: 'Papelera',
+        { id: 'papelera', x: 67, y: 78.5, emoji: '🗑️', s: 6, label: 'Papelera',
           look(g) {
             g.doc('🗑️ Papeles en la papelera', `<div class="paper-note"><p><b>Tique T-2027-0005</b> — 1 café — 1,65 €<br>Huella: <b>3310</b></p></div><br>
               <div class="paper-note"><p><b>Factura A-2027-0001</b> — «PRUEBA PRUEBA, NO VALE» — 0,01 €<br>Huella: <b>8947</b><br><i>Registrada en Verifactu. No se puede anular. Ya lo has intentado.</i></p></div>
@@ -1315,7 +1314,7 @@
               '—Ponle la serie T, que es de «Todo». ¿Cómo que no? Bueno, tú verás.',
             ]), 'Tu cuñado');
           } },
-        { id: 'cola', x: 29, y: 51, emoji: '🧍‍♂️🧍‍♀️', s: 24.2, label: 'Cola de clientes',
+        { id: 'cola', x: 31, y: 51, emoji: '🧍‍♂️🧍‍♀️', s: 23, label: 'Cola de clientes',
           show: (g) => !!g.flag('abierto'),
           look(g) {
             g.say(rand([
