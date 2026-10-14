@@ -743,21 +743,23 @@
       carry: ['dossier', 'anuncio'],
       scene: { wall: '#d9e1e6', floor: '#8a8f94', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'screen', l: 42, t: 8, w: 18, h: 16 },
-        { kind: 'counter', l: 28, t: 57, w: 38, h: 9 },
-        { kind: 'column', l: 3, t: 6, w: 3, h: 62 },
-        { kind: 'rug', l: 60, t: 76, w: 24, h: 12, color: '#3d5a80' },
-        { emoji: '💺', x: 78, y: 82, s: 4, o: 0.85 },
+        { kind: 'screen', l: 41.5, t: 12.8, w: 12, h: 12.7 },
+        { kind: 'bench', id: 'banco', l: 1.5, t: 62.4, w: 16, h: 20.6 },
+        { kind: 'pedestal', id: 'revistero', l: 19.3, t: 72.1, w: 4.5, h: 10.9, color: '#5b6470' },
+        { kind: 'table', id: 'mesaImpresos', l: 25.2, t: 57.17, w: 9.3, h: 16.83 },
+        { kind: 'desk', id: 'mesaGestor', l: 36.5, t: 57.17, w: 18.5, h: 16.83 },
+        { kind: 'door', id: 'puertaDirector', l: 59.85, t: 23.37, w: 12, h: 44.63, color: '#6d4c33' },
+        { kind: 'pedestal', id: 'terminal', l: 85.5, t: 51.87, w: 6, h: 21.13, color: '#4a5560' },
       ],
       hotspots: [
-        { id: 'euribor', x: 51, y: 16, emoji: '📈', s: 5, label: 'Pantalla de cotizaciones',
+        { id: 'euribor', x: 47.5, y: 19.15, emoji: '📈', s: 5, z: 14, label: 'Pantalla de cotizaciones',
           look(g) { g.say('<b>EURÍBOR HOY: 2,40 %</b> · Hace un año: 3,10 % · Récord histórico: 5,39 % · Índice de sonrisa del director: 98 %', 'Pantalla de cotizaciones'); } },
-        { id: 'tae', x: 22, y: 22, sign: '¡TAE 0,99 %!', sub: '*ver condiciones', w: 13, label: 'Cartel publicitario gigante',
+        { id: 'tae', x: 11, y: 29, sign: '¡TAE 0,99 %!', sub: '<span aria-hidden="true" style="display:block;font-size:max(30px,5.2cqw);line-height:1.15">🏡</span>*ver condiciones', w: 20, label: 'Cartel publicitario gigante',
           look(g) {
             g.doc('¡¡HIPOTECA AL 0,99 % TAE!!*', `<p class="big-num">0,99 % TAE*</p>
               <p class="tiny">*Durante los 3 primeros meses, para clientes que contraten 11 productos, domicilien la nómina, la pensión y la de sus padres, tengan un yate amarrado en una de nuestras oficinas costeras y nos lo pidan en latín. Después: lo que diga la FEIN. Esta oferta no aparece en la FEIN. Esta oferta no existe.</p>`);
           } },
-        { id: 'guia', x: 84, y: 22, sign: 'CÓMO COMPARAR', sub: '🧮', w: 13, label: 'Guía «Cómo comparar hipotecas»',
+        { id: 'guia', x: 33, y: 31.3, sign: 'CÓMO COMPARAR', sub: '🧮', w: 13, label: 'Guía «Cómo comparar hipotecas»',
           look(g) {
             g.doc('🧮 Cómo comparar hipotecas (versión para humanos)', `<p>Cortesía de la <i>Asociación de Hipotecados Anónimos</i>. Para comparar ofertas, calcula el <b>coste del primer año</b>:</p>
               <p class="paper-note">Coste del 1.er año = capital × TIN final<br>+ lo que pagas por los productos contratados <b>ese primer año</b><br>+ comisiones (apertura).</p>
@@ -767,7 +769,7 @@
               <li>Ojo a los precios mensuales: un año tiene 12 meses, aunque el banco prefiera no recordártelo.</li></ul>
               <p class="small">Y no te fíes de la TAE de los carteles.</p>`);
           } },
-        { id: 'gestor', x: 40, y: 49, emoji: '🤵', s: 8, label: 'Íñigo, gestor de hipotecas',
+        { id: 'gestor', x: 43, y: 53.6, emoji: '👨‍💼', s: 10.8, behind: 'mesaGestor', label: 'Íñigo, gestor de hipotecas',
           look(g) {
             if (g.has('fein') || g.has('ofertaVinc')) { feinDoc(g); return; }
             const falta = [];
@@ -780,19 +782,19 @@
             dossier(g) { g.take('dossier'); g.set('dosOK'); hipFein(g, 'Nómina de Porras del Trámite, S.L.... ¿Es usted administrador/a de una churrería? Mire, los autónomos nos dan un poco de miedo, pero con certificado de Hacienda y todo... Me quedo el dossier para el expediente.'); },
             solicitudHip(g) { g.say('—Sin firmar no vale. Firme aquí, aquí, aquí y en las otras once páginas.', 'Íñigo (gestor)'); },
           } },
-        { id: 'mesa', x: 56, y: 52, emoji: '🗃️', s: 6, label: 'Mesa de impresos',
+        { id: 'mesa', x: 29.85, y: 53.17, emoji: '🗃️', s: 5, on: 'mesaImpresos', label: 'Mesa de impresos',
           look(g) {
             if (g.flag('imp')) return g.say('Impresos de seguros, de alarmas, de planes de pensiones y uno para «solicitar no recibir más impresos».');
             g.set('imp'); g.give('solicitudHip');
             g.say('Coges una solicitud de hipoteca. Siete páginas. La letra pequeña tiene letra pequeña.');
           } },
-        { id: 'caramelos', x: 66, y: 52, emoji: '🍬', s: 5, label: 'Bol de caramelos',
+        { id: 'caramelos', x: 51.5, y: 53.61, emoji: '🥣', s: 5, on: 'mesaGestor', label: 'Bol de caramelos',
           look(g) {
             if (g.flag('boliT')) return g.say('Quedan caramelos de menta del año del euro. Mejor no.');
             g.set('boliT'); g.give('boli');
             g.say('Entre caramelos de menta fosilizados hay un bolígrafo con el logo del banco. Lo coges. Es lo único gratis de la oficina.');
           } },
-        { id: 'folleto', x: 12, y: 60, emoji: '📰', s: 5, label: 'Revistero con folletos',
+        { id: 'folleto', x: 21.55, y: 67.66, emoji: '📰', s: 5, on: 'revistero', label: 'Revistero con folletos',
           look(g) {
             g.doc('📰 Folleto: «Protege lo que más quieres (a nosotros)»', `<table class="tbl">
               <tr><td>🛡️ Seguro de vida «Por si acaso»</td><td>45 €/mes</td></tr>
@@ -803,7 +805,7 @@
               <tr><td>☂️ Seguro de protección de pagos</td><td>390 €/año</td></tr></table>
               <p class="small">Precios sin compromiso (el compromiso es suyo).</p>`);
           } },
-        { id: 'simulador', x: 84, y: 52, emoji: '🖥️', s: 6, label: 'Simulador de hipotecas',
+        { id: 'simulador', x: 88.5, y: 46.54, emoji: '🖥️', s: 6, on: 'terminal', label: 'Simulador de hipotecas',
           look(g) {
             if (g.has('ofertaVinc')) return g.say('El simulador te felicita con una animación de confeti. Lleva la oferta al director.');
             if (!g.has('fein')) return g.say('«Introduzca su FEIN para comenzar». Sin la ficha del gestor, el simulador solo muestra fotos de familias felices en la playa.');
@@ -816,7 +818,7 @@
               ok: () => { g.give('ofertaVinc'); g.say('«OPCIÓN 2 — VARIABLE. Coste primer año: 5.320 €. Oferta vinculante emitida.» El gestor pone cara de haber perdido una comisión.', 'Simulador'); },
             });
           } },
-        { id: 'director', x: 93, y: 40, emoji: '🚪', s: 11, label: 'Despacho del director',
+        { id: 'director', x: 65.85, y: 37, sign: 'DIRECTOR', sub: 'Llame antes<br>de entrar', w: 7, z: 101, label: 'Despacho del director',
           look(g) { g.say('Una puerta con placa dorada: «DIRECTOR. Llame antes de entrar. O mejor, no llame». Dentro se oye un campo de golf en la tele.'); },
           use: {
             ofertaVinc(g) {
@@ -825,11 +827,11 @@
             },
             fein(g) { g.say('—Eso es la FEIN, no una oferta. Pase por el simulador.', 'Director (desde dentro)'); },
           } },
-        { id: 'cliente', x: 30, y: 82, emoji: '😭', s: 5, label: 'Cliente sollozando',
+        { id: 'cliente', x: 9.5, y: 56.2, emoji: '🙍', s: 8.2, behind: 'banco', label: 'Cliente sollozando',
           look(g) { g.say('—Firmé la del cartel del 0,99 %. Me cobraron el yate. Y yo no tenía yate.', 'Cliente'); } },
-        { id: 'hucha', x: 52, y: 80, emoji: '🐷', s: 6, label: 'Hucha gigante',
+        { id: 'hucha', x: 79, y: 63.4, emoji: '🐖', s: 12.5, label: 'Hucha gigante',
           look(g) { g.say('Una hucha decorativa de un metro. Tiene una ranura para meter, pero ninguna para sacar. Muy del banco.'); } },
-        { id: 'calendario', x: 68, y: 22, emoji: '📅', s: 4, label: 'Calendario de pared',
+        { id: 'calendario', x: 44, y: 32.5, emoji: '📅', s: 5, label: 'Calendario de pared',
           look(g) { g.say('Un calendario de 2008 abierto en septiembre. Nadie se ha atrevido a pasar la hoja.'); } },
       ],
       combos: {
