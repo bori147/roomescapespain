@@ -1562,15 +1562,21 @@
       carry: ['actaITSS'],
       scene: { wall: '#dbe3e6', floor: '#a0764f', floorH: 30, pattern: 'wood' },
       decor: [
-        { kind: 'window', l: 72, t: 8, w: 20, h: 30 },
-        { kind: 'counter', l: 34, t: 58, w: 34, h: 8 },
-        { kind: 'shelf', l: 4, t: 36, w: 14, h: 2 },
-        { emoji: '📗', x: 14, y: 32, s: 3, o: 0.9 },
-        { emoji: '🪑', x: 84, y: 86, s: 4, o: 0.8 },
+        { kind: 'shutter', l: 2, t: 19.69, w: 16, h: 50.31, color: '#9aa0a6' },
+        { kind: 'window', l: 75, t: 19.68, w: 14, h: 30.63 },
+        { kind: 'shelf', id: 'balda', l: 47, t: 35, w: 18, h: 1.2 },
+        { kind: 'counter', id: 'barra', l: 38, t: 49.34, w: 30, h: 23.66 },
+        { kind: 'pedestal', id: 'mesa', color: '#d9d2c3', l: 72.5, t: 61.95, w: 21, h: 18.05 },
+        { kind: 'box', l: 75.7, t: 37.5, w: 12.6, h: 12.8, color: '#b9afa2', z: 15 },
+        { kind: 'box', l: 81.75, t: 37.5, w: 0.5, h: 12.8, color: '#f4f1ea', z: 15 },
+        { emoji: '📗', x: 53.5, y: 31.89, s: 3.5, on: 'balda' },
+        { emoji: '🍩', x: 61.5, y: 46.67, s: 2.5, on: 'barra' },
+        { emoji: '☕', x: 65.5, y: 46.67, s: 3, on: 'barra' },
+        { emoji: '☕', x: 82, y: 59.28, s: 3, on: 'mesa' },
       ],
       init(g) { g.set('saldo', 312); },
       hotspots: [
-        { id: 'bases', x: 26, y: 16, sign: 'BASES DEL KIT DIGITAL', sub: '📜', w: 17, label: 'Bases de la convocatoria',
+        { id: 'bases', x: 34, y: 32.4, sign: 'BASES DEL KIT DIGITAL', sub: '📜', w: 20, label: 'Bases de la convocatoria',
           look(g) {
             g.doc('📜 Bases del Kit Digital (resumen para supervivientes)', `<p>Para justificar la ayuda, presente en el portal:</p>
               <ol><li><b>Captura de la web</b> con los logotipos que exige el <b>Manual de publicidad</b>.</li>
@@ -1581,9 +1587,9 @@
               <p><b>Pago:</b> el bono cubre la <b>base imponible</b> de la factura y se abona directamente al agente digitalizador. El beneficiario solo paga el <b>IVA</b>, por transferencia bancaria. En efectivo, no.</p>
               <p><b>De minimis:</b> declare el total de <b>ayudas públicas</b> recibidas en <b>2025, 2026 y 2027</b>. Los premios de entidades privadas no son ayudas públicas.</p>`);
           } },
-        { id: 'calendario', x: 50, y: 14, emoji: '📅', s: 5, label: 'Calendario',
+        { id: 'calendario', x: 69, y: 27.28, emoji: '📅', s: 5, label: 'Calendario',
           look(g) { g.say('Hoy termina el plazo de justificación. A las 23:59, cómo no. El portal suele caerse a las 23:00, por tradición.'); } },
-        { id: 'cajero', x: 82, y: 24, emoji: '🏧', s: 6, label: 'Cajero automático (acera de enfrente)',
+        { id: 'cajero', x: 79.5, y: 45.1, emoji: '🏧', s: 5, z: 16, label: 'Cajero automático (acera de enfrente)',
           look(g) { g.say('El cajero de tu banco, en la acera de enfrente. Admite ingresos en efectivo. Para sacar dinero, cobra comisión; para meterlo, de momento no.'); },
           use: {
             efectivo(g) {
@@ -1591,7 +1597,7 @@
               g.say(`Cruzas la calle con la recaudación y la ingresas en el cajero. Nuevo saldo: ${g.flag('saldo')} €. El cajero te da las gracias. Es lo único que te las da hoy.`, 'Cajero');
             },
           } },
-        { id: 'manual', x: 9, y: 30, emoji: '📘', s: 5, label: 'Manual de publicidad (88 páginas)',
+        { id: 'manual', x: 50, y: 30.56, emoji: '📘', s: 5, on: 'balda', label: 'Manual de publicidad (88 páginas)',
           look(g) {
             g.doc('📘 Manual de publicidad de las ayudas (extracto de la página 61)', `<p>El pie de la web del beneficiario mostrará <b>exactamente</b> estos logotipos, ni uno más ni uno menos:</p>
               <ul><li>El emblema de la Unión Europea <b>con el texto</b> «Financiado por la Unión Europea – NextGenerationEU». <b>Nunca la bandera sola</b>.</li>
@@ -1600,7 +1606,7 @@
               <li>El logotipo del programa: «Kit Digital».</li></ul>
               <p class="small">Cualquier otro logotipo (de su cuñado, de su abuela o de sus sentimientos) invalida la justificación.</p>`);
           } },
-        { id: 'portatil', x: 48, y: 52, emoji: '💻', s: 7, label: 'Portátil',
+        { id: 'portatil', x: 49, y: 44.45, emoji: '💻', s: 5.5, on: 'barra', label: 'Portátil',
           look(g) {
             g.choice({
               title: '💻 Portátil', text: 'El portátil arranca con tres actualizaciones pendientes y un antivirus caducado. ¿Qué abres?',
@@ -1611,7 +1617,7 @@
               ],
             });
           } },
-        { id: 'caja', x: 62, y: 52, emoji: '💰', s: 5, label: 'Caja registradora',
+        { id: 'caja', x: 56, y: 44.45, emoji: '💰', s: 5.5, on: 'barra', label: 'Caja registradora',
           look(g) {
             if (!g.flag('cash')) {
               g.set('cash');
@@ -1619,7 +1625,7 @@
               g.give('efectivo');
             } else g.say('Vacía. Como tus fines de semana.');
           } },
-        { id: 'buzon', x: 92, y: 62, emoji: '📬', s: 6, label: 'Buzón',
+        { id: 'buzon', x: 27, y: 67.75, emoji: '✉️', s: 5, label: 'Buzón',
           look(g) {
             if (!g.flag('mail')) {
               g.set('mail');
@@ -1627,7 +1633,7 @@
               g.give('facturaAgente');
             } else g.say('Solo propaganda: «¡Digitalice su negocio! (Si ya lo ha hecho, digitalícelo otra vez)».');
           } },
-        { id: 'ayudas', x: 14, y: 80, emoji: '🗃️', s: 6, label: 'Carpeta «Ayudas recibidas»',
+        { id: 'ayudas', x: 60, y: 30.56, emoji: '🗂️', s: 5, on: 'balda', label: 'Carpeta «Ayudas recibidas»',
           look(g) {
             g.doc('🗃️ Ayudas y premios que has recibido', `<table class="tbl">
               <tr><td>2023 · Subvención autonómica «Emprende Ya» (pública)</td><td>1.000 €</td></tr>
@@ -1637,7 +1643,7 @@
               <tr><td>2027 · Descuento del 10 % en la ferretería de tu cuñado (un «favor»)</td><td>14 €</td></tr></table>
               <p class="small">El premio de la porra está enmarcado. La ayuda de los toldos, también: el toldo se lo llevó el viento.</p>`);
           } },
-        { id: 'cunado', x: 40, y: 82, emoji: '🙋‍♂️', s: 6, label: 'Tu cuñado',
+        { id: 'cunado', x: 75, y: 53.55, emoji: '🙋‍♂️', s: 10, behind: 'mesa', label: 'Tu cuñado',
           look(g) {
             g.say(rand([
               '—¿Kit Digital? Yo te hacía la web gratis. En Comic Sans y con musiquita.',
@@ -1645,7 +1651,7 @@
               '—¿Que no tienes saldo? Pues paga en efectivo, hombre. ¿Que las bases dicen que no? Las bases, las bases...',
             ]), 'Tu cuñado');
           } },
-        { id: 'comercial', x: 66, y: 80, emoji: '🧑‍💻', s: 6, label: 'Comercial del agente digitalizador',
+        { id: 'comercial', x: 89, y: 53.4, emoji: '🧑‍💻', s: 10.2, behind: 'mesa', label: 'Comercial del agente digitalizador',
           look(g) { g.say('—La web está lista. Si no la justifica hoy, el bono no llega y nos debe usted los 2.000 €. Sin presión. ¿Un café? Lo pago yo... con su bono.', 'Comercial'); } },
       ],
       hints: [
