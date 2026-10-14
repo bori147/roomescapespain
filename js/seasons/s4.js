@@ -1194,12 +1194,12 @@
         { kind: 'counter', id: 'barrera', l: 63.5, t: 48.85, w: 33.5, h: 23.15 },
         { kind: 'flag', l: 74.7, t: 14.9, w: 9, h: 10.7 },
         { kind: 'flag-eu', l: 85.7, t: 14.9, w: 9, h: 10.7 },
-        { kind: 'shelf', id: 'baldaReloj', l: 2.6, t: 20.2, w: 6, h: 1.4 },
-        { emoji: '🕰️', x: 5.6, y: 16.66, s: 3.98, on: 'baldaReloj' },
+        { kind: 'shelf', id: 'baldaReloj', l: 2.6, t: 17.5, w: 6, h: 1.4 },
+        { emoji: '🕰️', x: 5.6, y: 13.96, s: 3.98, on: 'baldaReloj' },
         { emoji: '📦', x: 29, y: 70.45, s: 5.69 },
       ],
       hotspots: [
-        { id: 'pantalla', x: 45.5, y: 12, sign: 'ESCRUTADO: 99,99 %', sub: '📊', w: 20, label: 'Pantalla de resultados',
+        { id: 'pantalla', x: 45.5, y: 12, sign: 'ESCRUTADO: 99,99 %', sub: '📺', w: 20, label: 'Pantalla de resultados',
           look(g) {
             if (g.flag('grapada')) return g.say('«Escrutado: 100 %». Los tertulianos, decepcionados, pasan a analizar lo que podría haber pasado si no hubiera llegado tu mesa.');
             g.say('«Escrutado: 99,99 %. Falta: Mesa 03-013-C». Llevan así una hora. Los tertulianos ya han analizado tres veces lo que podría pasar con ese 0,01 %.');
@@ -1249,7 +1249,7 @@
           } },
         { id: 'chaqueta', x: 17.9, y: 39.5, emoji: '🧥', s: 9, label: 'Tu chaqueta',
           look(g) { g.say('Tu chaqueta huele a urna, a bocadillo de calamares y a doce horas de interventora. En el bolsillo, la credencial de presidente/a de mesa: ya es un recuerdo de guerra.'); } },
-        { id: 'magistrado', x: 56, y: 53.8, emoji: '👨‍⚖️', s: 11, behind: 'mesaJunta', label: 'Presidente de la Junta (dormido)',
+        { id: 'magistrado', x: 57.6, y: 53.8, emoji: '👨‍⚖️', s: 11, behind: 'mesaJunta', label: 'Presidente de la Junta (dormido)',
           look(g) { g.say('—Zzz... cocientes... de mayor a menor... ¿quién ha dejado entrar a los nulos?... Zzz.', 'Magistrado'); } },
         { id: 'periodistas', x: 90, y: 44.4, emoji: '🎤📸', s: 5, on: 'barrera', label: 'Periodistas',
           look(g) { g.say('—¿Ya? ¿Ya? ¿Quién se lleva el último escaño? Llevamos dos horas en directo diciendo «todo está muy abierto».', 'Periodistas'); } },
