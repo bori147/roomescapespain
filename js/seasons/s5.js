@@ -1565,7 +1565,7 @@
               <div class="paper-note">Recibo 3: 1 timbre + 2 estampillas = <b>11 €</b></div>
               <p class="small">Precios unitarios no desglosados, por simplificación administrativa.</p>`);
           } },
-        { id: 'ujieres', x: 55, y: 45.34, emoji: '💂💂💂💂', s: 11.2, behind: 'mesaUjieres', label: 'Los cuatro ujieres del Senado',
+        { id: 'ujieres', x: 55, y: 46.0, emoji: '💂💂💂💂', s: 11.2, behind: 'mesaUjieres', label: 'Los cuatro ujieres del Senado',
           look(g) {
             g.doc('💂 Los cuatro ujieres del Senado', `<p>Custodian las cuatro puertas que llevan al Sello del Senado. Solo una puerta es la buena. Por tradición, <b>exactamente uno</b> de los cuatro ujieres dice la verdad; los otros tres mienten.</p>
               <ul><li><b>Ujier 1:</b> «La puerta buena no es la 1».</li><li><b>Ujier 2:</b> «La puerta buena es la 3».</li>
