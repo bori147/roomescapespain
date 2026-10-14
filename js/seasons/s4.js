@@ -653,11 +653,10 @@
       carry: ['dni'],
       decor: [
         { kind: 'box', l: 0, t: 6, w: 100, h: 3, color: '#1f3f7a' },
-        { kind: 'pedestal', id: 'pieTurnos', l: 3, t: 53.8, w: 6, h: 20.2, color: '#c9cdd3' },
+        { kind: 'pedestal', id: 'pieTurnos', l: 3, t: 47.07, w: 6, h: 26.93, color: '#c9cdd3' },
         { kind: 'bench', id: 'banco', l: 11, t: 62.4, w: 14, h: 20.6 },
         { kind: 'shelf', id: 'soporte', l: 41.5, t: 22.3, w: 6.5, h: 1.4 },
         { kind: 'counter', id: 'mostrador', l: 42, t: 48.85, w: 34, h: 23.15 },
-        { emoji: '👩‍💼', x: 60, y: 43.6, s: 11.5, behind: 'mostrador' },
         { emoji: '🧍‍♀️', x: 40, y: 57.51, s: 24.17 },
       ],
       hotspots: [
@@ -667,26 +666,26 @@
               <p>cada botón da el turno del servicio que figura en el botón situado a su <b>DERECHA</b>. El último botón da el turno del primero.</p>
               <p class="small">Disculpen las molestias. Llevamos así desde 2019. La modernización avanza a buen ritmo.</p>`);
           } },
-        { id: 'dispensador', x: 6, y: 49.36, emoji: '🎟️', s: 5, on: 'pieTurnos', label: 'Dispensador de turnos', look: l2Dispensador },
+        { id: 'dispensador', x: 6, y: 42.63, emoji: '🎟️', s: 5, on: 'pieTurnos', label: 'Dispensador de turnos', look: l2Dispensador },
         { id: 'pantalla', x: 44.75, y: 16.2, emoji: '📺', s: 6.9, on: 'soporte', label: 'Pantalla de turnos',
           look(g) { g.say('Pantalla: «A-998 · B-111 · C-046 · D-300». Todas las colas van por el número anterior al siguiente tique. Es lo único que funciona en esta oficina.'); } },
-        { id: 'capicua', x: 26, y: 31.3, sign: '¿SABÍA QUE...?', sub: '🔢', w: 14, z: 250, label: 'Cartel «¿Sabía que...?»',
+        { id: 'capicua', x: 30, y: 31.3, sign: '¿SABÍA QUE...?', sub: '🔢', w: 14, z: 250, label: 'Cartel «¿Sabía que...?»',
           look(g) {
             g.doc('🔢 ¿SABÍA QUE...?', `<p>Para evitar falsificaciones, todos los números de solicitud de voto por correo son <b>capicúas</b> (se leen igual al derecho que al revés) y la <b>suma de sus cifras es 26</b>.</p>
               <p class="small">Lo diseñó un comité de expertos. Tardaron dos años. El comité sigue reuniéndose, por si acaso.</p>`);
           } },
-        { id: 'instrucciones', x: 86, y: 31.3, sign: 'CÓMO VOTAR POR CORREO', sub: '✉️', w: 20, label: 'Instrucciones oficiales',
+        { id: 'instrucciones', x: 81, y: 31.3, sign: 'CÓMO VOTAR POR CORREO', sub: '✉️', w: 20, label: 'Instrucciones oficiales',
           look(g) {
             g.doc('✉️ Instrucciones para el voto por correo', `<ol>
               <li>Introduzca la papeleta de su elección (<b>UNA</b>) en el <b>sobre de votación</b>, de color sepia. Si desea votar en blanco, no introduzca ninguna.</li>
               <li><b>Cierre</b> el sobre de votación.</li>
               <li>Introduzca el sobre de votación, ya cerrado, en el <b>sobre dirigido a la Mesa</b>, junto con el <b>certificado de inscripción en el censo</b>. El certificado <b>nunca</b> va dentro del sobre de votación: rompería el secreto del voto.</li>
               <li>Cierre el sobre dirigido a la Mesa y entréguelo en ventanilla, que lo enviará certificado y urgente. Gratis. (A nosotros también nos sorprende.)</li></ol>
-              <p class="small">Nota: el adhesivo de los sobres es de la anterior legislatura y ya no pega. Utilice la barra de pegamento del mostrador.</p>`);
+              <p class="small">Nota: el adhesivo de los sobres es de la anterior legislatura y ya no pega. Utilice el pegamento del mostrador.</p>`);
           } },
         { id: 'reloj', x: 76, y: 14.7, emoji: '🕑', s: 5, label: 'Reloj: 13:52',
           look(g) { g.say('13:52. Cierran a las 14:00. A las 13:55 empiezan a «cuadrar caja», que es como se dice «no le atiendo» en idioma postal.'); } },
-        { id: 'ventanilla', x: 60, y: 22, sign: 'VENTANILLA 3', sub: '👩‍💼', w: 13, label: 'Ventanilla 3 — Voto por correo',
+        { id: 'ventanilla', x: 60, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'mostrador', label: 'Ventanilla 3 — Voto por correo',
           look(g) {
             if (g.flag('atendido')) return g.say('—Ya tiene su documentación. Siga el folleto al pie de la letra, cierre bien los sobres y tráigame el sobre dirigido a la Mesa. Me quedan siete minutos de paciencia.', 'Funcionaria de Correos');
             if (g.flag('turnoOk')) return g.say('—C-047, voto por correo, sí. Ahora el DNI, por favor. Sin DNI no le doy ni la hora.', 'Funcionaria de Correos');
@@ -728,8 +727,10 @@
             sobreVotoAbierto(g) { g.say('—Eso está abierto y suelto. ¿Usted ha leído el folleto o lo ha usado de abanico?', 'Funcionaria de Correos'); },
             resguardo(g) { g.say('—Esto es una pelota de papel. Primero coja número. Y luego dígame la solicitud de memoria, si puede.', 'Funcionaria de Correos'); },
           } },
-        { id: 'pegamento', x: 48, y: 44.4, emoji: '🧴', s: 5, on: 'mostrador', label: 'Barra de pegamento (encadenada al mostrador)',
-          look(g) { g.say('Una barra de pegamento atada al mostrador con una cadena de 30 centímetros. Material sensible: la última se la llevaron en 2017.'); },
+        { id: 'cartelVentanilla', x: 60, y: 25, sign: 'VENTANILLA 3', sub: '🪟', w: 13, label: 'Cartel de la ventanilla',
+          look(g) { g.say('Cartel de la ventanilla 3: «Voto por correo. Por turno, por favor». En letra pequeña: «Tener turno no garantiza ser atendido».'); } },
+        { id: 'pegamento', x: 48, y: 44.4, emoji: '🧴', s: 5, on: 'mostrador', label: 'Bote de pegamento (encadenado al mostrador)',
+          look(g) { g.say('Un bote de pegamento atado al mostrador con una cadena de 30 centímetros. Material sensible: la última se la llevaron en 2017.'); },
           use: {
             sobreVotoAbierto(g) { g.take('sobreVotoAbierto'); g.give('sobreVoto'); g.sfx('stamp'); g.say('Pegas bien la solapa del sobre de votación. Cerrado. Secreto. Irreversible. Como un buen voto.'); },
             sobreVotacion(g) { g.take('sobreVotacion'); g.give('sobreVoto'); g.set('voto', 'en blanco'); g.sfx('stamp'); g.say('Cierras el sobre de votación vacío: voto en blanco. Respetable. Y el más barato de imprimir.'); },
@@ -749,9 +750,9 @@
           } },
         { id: 'cola', x: 32, y: 60.92, emoji: '🧍', s: 26, label: 'Cola',
           look(g) { g.say('—Yo vine a recoger un paquete en marzo. Me dieron número de Giros. Desde entonces solo hago giros.', 'Señor de la cola'); } },
-        { id: 'buzon', x: 85, y: 65.09, emoji: '📮', s: 14.5, label: 'Buzón amarillo',
-          look(g) { g.say('Un buzón amarillo con un cartel: «NO introduzca aquí su voto por correo. Sí, ya sabemos que es un buzón de correos».'); } },
-        { id: 'paquete', x: 71, y: 43.52, emoji: '📦', s: 6, on: 'mostrador', label: 'Paquete retenido',
+        { id: 'buzon', x: 85, y: 65.09, emoji: '📮', s: 14.5, label: 'Buzón de Correos',
+          look(g) { g.say('Un buzón con un cartel: «NO introduzca aquí su voto por correo. Sí, ya sabemos que es un buzón de correos».'); } },
+        { id: 'paquete', x: 69, y: 43.52, emoji: '📦', s: 6, on: 'mostrador', label: 'Paquete retenido',
           look(g) { g.say('«Paquete retenido en aduana: pague 1,99 €». Es de 2023. Nadie lo ha reclamado. Probablemente sea una estafa en sí mismo.'); } },
       ],
       combos: {
