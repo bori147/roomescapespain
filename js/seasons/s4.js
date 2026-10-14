@@ -539,17 +539,18 @@
       stars: 2,
       intro: 'Acabas de estrenar casa: el 3ºB de la C/ del Olvido 14, con tu pareja, con Michi y con 359 cuotas de hipoteca por delante. La primera carta que llega al buzón nuevo es una certificada de las que dan miedo: «Ha sido usted designado/a para formar parte de la mesa electoral...». El domingo 26 de mayo de 2030, desde las 8:00 hasta que se acabe el escrutinio (o tú). Michi la ha recibido tirándote el café encima.<br><br>Hoy es el último día para alegar una excusa, y has venido con una carpeta llena de ellas... y con la escritura del piso, por si acaso. Lástima que casi ninguna excusa valga.<br><br><b>Objetivo:</b> presenta la única excusa válida, acredita tu domicilio actual y sal de la Junta con la credencial de tu mesa.',
       outro: 'Credencial expedida: Presidente/a de la Mesa 03-013-C. Al llegar a casa (Michi duerme encima del sobre de la Junta, como si fuera suyo) caes en la cuenta: como pensabas irte al congreso, hace semanas pediste el voto por correo. Y quien lo pide ya no puede votar en persona, ni siquiera en la mesa que preside. El último día para depositarlo es el jueves 23. En Correos. Con el DNI, que es lo único que piden siempre.',
-      scene: { wall: '#d9d2bd', floor: '#8b8478', floorH: 34, pattern: 'tiles' },
+      scene: { wall: '#d9d2bd', floor: '#8b8478', floorH: 32, pattern: 'tiles' },
       carry: ['escritura'],
       decor: [
-        { kind: 'counter', l: 64, t: 55, w: 33, h: 10 },
-        { kind: 'flag', l: 92, t: 8, w: 5, h: 8 },
-        { kind: 'flag-eu', l: 84, t: 8, w: 5, h: 8 },
-        { emoji: '🪑', x: 24, y: 80, s: 5, o: 0.8 }, { emoji: '🪑', x: 34, y: 80, s: 5, o: 0.8 },
-        { emoji: '🗄️', x: 70, y: 46, s: 5, o: 0.85 },
+        { kind: 'shelf', id: 'perchero', l: 2, t: 30.4, w: 10, h: 1.4 },
+        { kind: 'flag', l: 61, t: 14.9, w: 8.5, h: 10.7 },
+        { kind: 'flag-eu', l: 70.5, t: 14.9, w: 8.5, h: 10.7 },
+        { kind: 'counter', id: 'mostrador', l: 56, t: 48.85, w: 23, h: 23.15 },
+        { kind: 'bench', id: 'banco', l: 81.5, t: 62.4, w: 17, h: 20.6 },
+        { emoji: '🧍‍♀️', x: 54, y: 57.51, s: 24.17 },
       ],
       hotspots: [
-        { id: 'tablon', x: 12, y: 22, sign: 'INSTRUCCIÓN 1/2030', sub: '⚖️', w: 14, label: 'Tablón: causas de excusa',
+        { id: 'tablon', x: 24.5, y: 29.5, sign: 'INSTRUCCIÓN 1/2030', sub: '⚖️', w: 17, z: 250, label: 'Tablón: causas de excusa',
           look(g) {
             g.doc('⚖️ Instrucción 1/2030 de la Junta Electoral de Zona', `<p><b>Sobre las excusas de los miembros de mesa</b> (versión para el público, con dibujos no incluidos).</p>
               <p><b>1. Plazo.</b> Las excusas se presentan dentro de los <b>7 días naturales</b> siguientes a la notificación. Se presenta <b>un</b> documento acreditativo por persona.</p>
@@ -563,7 +564,7 @@
               <p><b>4. Credencial.</b> Para expedirla, el interesado deberá <b>acreditar su domicilio actual</b> con un documento fehaciente. El DNI no sirve: nadie actualiza el domicilio del DNI.</p>
               <p class="small">La Junta agradece su colaboración. Y la exige.</p>`);
           } },
-        { id: 'callejero', x: 31, y: 22, sign: 'CALLEJERO ELECTORAL', sub: '🗺️', w: 14, label: 'Callejero electoral del distrito 03',
+        { id: 'callejero', x: 47.75, y: 29.5, sign: 'CALLEJERO ELECTORAL', sub: '🗺️', w: 18.5, z: 250, label: 'Callejero electoral del distrito 03',
           look(g) {
             g.doc('🗺️ Callejero electoral — Distrito 03', `<table class="tbl">
               <tr><td><b>Calle o tramo</b></td><td><b>Sección · Mesas</b></td></tr>
@@ -576,13 +577,13 @@
               <p>La sección corresponde al domicilio del <b>padrón</b> (el mismo al que se envía la notificación), no al que figure en el DNI. Dentro de cada sección, la mesa se asigna por la <b>inicial del primer apellido</b>.</p>
               <p class="small">Formato oficial: DD-SSS-M (distrito, sección, mesa). Ejemplo: 05-021-B.</p>`);
           } },
-        { id: 'cartel', x: 50, y: 16, sign: 'SI TE TOCA, TE TOCA', sub: '🗳️', w: 14, label: 'Cartel institucional',
+        { id: 'cartel', x: 88.75, y: 34.5, sign: 'SI TE TOCA, TE TOCA', sub: '🗳️', w: 16, label: 'Cartel institucional',
           look(g) { g.say('«Formar parte de una mesa electoral es un deber cívico». Debajo, a boli: «y una lotería que nadie quiere ganar».'); } },
-        { id: 'calendario', x: 64, y: 18, emoji: '📅', s: 5, label: 'Calendario: lunes 13 de mayo',
+        { id: 'calendario', x: 76, y: 31.68, emoji: '📅', s: 5, label: 'Calendario: lunes 13 de mayo',
           look(g) { g.say('Lunes 13 de mayo de 2030. Alguien ha rodeado la fecha en rojo y ha escrito: «Último día de excusas para los notificados el día 6. Hoy viene todo el barrio».'); } },
-        { id: 'reloj', x: 76, y: 16, emoji: '🕰️', s: 4, label: 'Reloj de pared',
+        { id: 'reloj', x: 88.5, y: 14.7, emoji: '🕜', s: 5, label: 'Reloj de pared',
           look(g) { g.say('13:45. La Junta cierra a las 14:00. El funcionario ya ha empezado a ordenar los bolígrafos, que es su forma de despedirse.'); } },
-        { id: 'funcionario', x: 82, y: 46, emoji: '🧑‍💼', s: 8, label: 'Funcionario de la Junta',
+        { id: 'funcionario', x: 67.5, y: 43.6, emoji: '🧑‍💼', s: 11.5, behind: 'mostrador', label: 'Funcionario de la Junta',
           look(g) {
             if (!g.flag('excusa')) return g.say('—Negociado de excusas. ¿Le ha tocado mesa? Enhorabuena. ¿Viene a excusarse? Como todos. Entrégueme UN documento que acredite una causa de la Instrucción 1/2030. Uno. Esto no es un bufé libre.', 'Funcionario de la Junta');
             if (!g.flag('domicilio')) return g.say('—Antes de la credencial, acredíteme su domicilio ACTUAL con un documento fehaciente (punto 4 de la Instrucción). El DNI no me vale: en el DNI todo el mundo sigue viviendo donde vivía.', 'Funcionario de la Junta');
@@ -604,33 +605,33 @@
             },
             ...Object.fromEntries(Object.entries(L1_REJECT).map(([k, t]) => [k, (g) => { if (!['notificacion', 'dni'].includes(k)) g.sfx('bad'); g.say(t, 'Funcionario de la Junta'); }])),
           } },
-        { id: 'abrigo', x: 6, y: 47, emoji: '🧥', s: 7, label: 'Tu abrigo, en el perchero',
+        { id: 'abrigo', x: 7, y: 36.8, emoji: '🧥', s: 13.1, z: 250, label: 'Tu abrigo, en el perchero',
           look(g) {
             if (g.flag('abrigo')) return g.say('Un clínex usado, un caramelo de 2026 y medio Michi en pelos. Ninguno es excusa.');
             g.set('abrigo'); g.give('notificacion'); g.give('dni');
             g.say('En los bolsillos: la notificación (con su mancha de café, cortesía de Michi en el desayuno) y tu DNI, el de la renovación épica de 2026.');
           } },
-        { id: 'carpeta', x: 24, y: 70, emoji: '📂', s: 5, label: 'Tu carpeta de excusas',
+        { id: 'carpeta', x: 90, y: 65.31, emoji: '📂', s: 5.5, z: 161, label: 'Tu carpeta de excusas',
           look(g) {
             if (g.flag('carpeta')) return g.say('La carpeta está vacía. Ahora solo contiene esperanza.');
             g.set('carpeta'); g.give('invitacion'); g.give('certMedico'); g.give('billete');
             g.say('Abres la carpeta de las excusas: una invitación de boda, un certificado médico y un billete de avión. Algo tiene que valer.');
           } },
-        { id: 'movil', x: 35, y: 72, emoji: '📱', s: 4, label: 'Tu móvil',
+        { id: 'movil', x: 95, y: 66.19, emoji: '📱', s: 5, z: 161, label: 'Tu móvil',
           look(g) {
             if (g.flag('movil')) return g.say('Notificaciones: 14 grupos de WhatsApp comentando que a alguien le ha tocado mesa. Ese alguien eres tú.');
             g.set('movil'); g.give('congreso'); g.give('whatsapp');
             g.say('Rebuscas en el correo y en los mensajes. Capturas dos cosas: la inscripción a un congreso al que ibas a ir y un mensaje de la tía Remedios, tu socia en la churrería.');
           } },
-        { id: 'cunado', x: 50, y: 72, emoji: '🧔', s: 8, label: 'Tu cuñado (te ha acompañado)',
+        { id: 'cunado', x: 20, y: 60.27, emoji: '🧍‍♂️', s: 26.7, label: 'Tu cuñado (te ha acompañado)',
           look(g) {
             if (g.flag('cunado')) return g.say('—Si no cuela lo del crucero, di que tienes alergia a las urnas. A mí me funcionó en 2027. Bueno, no me funcionó.', 'Tu cuñado Paco');
             g.set('cunado'); g.give('crucero');
             g.say('—Toma, la reserva de mi crucero. Enséñasela, que esta gente no mira los nombres. Lo sé de buena tinta: es como lo de la licencia de la churrería, que también iba a colar.', 'Tu cuñado Paco');
           } },
-        { id: 'periodico', x: 15, y: 84, emoji: '📰', s: 4, label: 'Periódico en el banco',
+        { id: 'periodico', x: 84.25, y: 65.31, emoji: '📰', s: 5.5, z: 161, label: 'Periódico en el banco',
           look(g) { g.say('Horóscopo de la semana. Libra: «Evite las urnas el día 26». Lástima que la Instrucción diga que los horóscopos no son causa. La Junta ya lo había pensado.'); } },
-        { id: 'cola', x: 86, y: 82, emoji: '🧍‍♀️🧍🧍‍♂️', s: 5, label: 'Gente esperando su turno',
+        { id: 'cola', x: 46.5, y: 60.44, emoji: '🧍', s: 26.5, label: 'Gente esperando su turno',
           look(g) {
             g.say('—Yo he traído un certificado de que soy alérgico al metacrilato de las urnas. —¿Y le han creído? —Me han puesto de suplente.', 'Alguien de la cola');
           } },
