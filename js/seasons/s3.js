@@ -782,13 +782,13 @@
             dossier(g) { g.take('dossier'); g.set('dosOK'); hipFein(g, 'Nómina de Porras del Trámite, S.L.... ¿Es usted administrador/a de una churrería? Mire, los autónomos nos dan un poco de miedo, pero con certificado de Hacienda y todo... Me quedo el dossier para el expediente.'); },
             solicitudHip(g) { g.say('—Sin firmar no vale. Firme aquí, aquí, aquí y en las otras once páginas.', 'Íñigo (gestor)'); },
           } },
-        { id: 'mesa', x: 29.85, y: 53.17, emoji: '🗃️', s: 4.5, on: 'mesaImpresos', label: 'Mesa de impresos',
+        { id: 'mesa', x: 29.85, y: 53.17, emoji: '🗃️', s: 5, on: 'mesaImpresos', label: 'Mesa de impresos',
           look(g) {
             if (g.flag('imp')) return g.say('Impresos de seguros, de alarmas, de planes de pensiones y uno para «solicitar no recibir más impresos».');
             g.set('imp'); g.give('solicitudHip');
             g.say('Coges una solicitud de hipoteca. Siete páginas. La letra pequeña tiene letra pequeña.');
           } },
-        { id: 'caramelos', x: 51.5, y: 53.61, emoji: '🥣', s: 4, on: 'mesaGestor', label: 'Bol de caramelos',
+        { id: 'caramelos', x: 51.5, y: 53.61, emoji: '🥣', s: 5, on: 'mesaGestor', label: 'Bol de caramelos',
           look(g) {
             if (g.flag('boliT')) return g.say('Quedan caramelos de menta del año del euro. Mejor no.');
             g.set('boliT'); g.give('boli');
