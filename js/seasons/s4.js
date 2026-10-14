@@ -785,32 +785,40 @@
       scene: { wall: '#3d4a5c', floor: '#b07d4f', floorH: 36, pattern: 'wood' },
       carry: ['acreditacion'],
       decor: [
-        { kind: 'counter', l: 30, t: 56, w: 40, h: 8 },
-        { kind: 'box', l: 32, t: 22, w: 3, h: 34, color: '#d35400' }, { kind: 'box', l: 65, t: 22, w: 3, h: 34, color: '#d35400' },
-        { kind: 'counter', l: 80, t: 57, w: 17, h: 6 },
-        { kind: 'rug', l: 36, t: 74, w: 28, h: 18, color: '#7a4a2a' },
+        { kind: 'curtain', id: 'fondo', l: 59, t: 13, w: 24, h: 39, color: '#d35400' },
+        { kind: 'curtain', id: 'bastidor', l: 13.5, t: 18, w: 31.5, h: 46, color: '#23272f' },
+        { kind: 'platform', id: 'escenario', l: 58, t: 52, w: 26, h: 12, color: '#3a3f4a' },
+        { kind: 'lectern', id: 'atril', l: 67.6, t: 30.6, w: 6.8, h: 23 },
+        { kind: 'table', id: 'tocador', l: 3, t: 54.25, w: 9.5, h: 15.75 },
+        { kind: 'desk', id: 'mesaProd', l: 15, t: 54.25, w: 31, h: 15.75 },
+        { kind: 'table', id: 'mesaCatering', l: 85.5, t: 54.25, w: 13, h: 15.75 },
+        { emoji: '🥤', x: 96.5, y: 51.58, s: 3, on: 'mesaCatering' },
+        { kind: 'partition', id: 'cordon', l: 14, t: 56.2, w: 31, h: 19.8, color: '#9aa1ab' },
+        { kind: 'partition', id: 'valla', l: 45, t: 56.2, w: 11.5, h: 19.8, color: '#9aa1ab' },
+        { kind: 'bench', id: 'filaPublico', l: 61.5, t: 65.88, w: 24, h: 20.12, color: '#2f3542' },
+        { kind: 'box', id: 'cajaBanderas', l: 4, t: 82.1, w: 10, h: 9.9, color: '#b58b5a' },
       ],
       hotspots: [
-        { id: 'pancarta', x: 50, y: 12, sign: 'FAROL', sub: '¡Rotondas para todos!', w: 24, label: 'Pancarta de FAROL',
+        { id: 'pancarta', x: 71, y: 9, sign: 'FAROL', sub: '¡Rotondas para todos!', w: 22, label: 'Pancarta de FAROL',
           look(g) { g.say('«FAROL — ¡Rotondas para todos!». La pancarta es reversible: por detrás pone «ALA — ¡Un lema para cada ocasión!». La imprenta es la misma. La consultora, también.'); } },
-        { id: 'marcador', x: 86, y: 14, sign: 'LOCAL 0 · VISITANTE 0', sub: 'Aplausómetro', w: 16, label: 'Marcador del polideportivo',
+        { id: 'marcador', x: 14, y: 12, sign: 'LOCAL 0 · VISITANTE 0', sub: 'Aplausómetro', w: 18, label: 'Marcador del polideportivo',
           look(g) { g.say('El marcador hace de aplausómetro. Récord: 112 decibelios, el día que un candidato dijo «futuro» tres veces seguidas y regaló bocadillos.'); } },
-        { id: 'espejo', x: 9, y: 26, emoji: '🪞', s: 5, label: 'Espejo del camerino (con un pósit)',
+        { id: 'espejo', x: 7.75, y: 37.3, emoji: '🪞', s: 7.5, label: 'Espejo del camerino (con un pósit)',
           look(g) {
             g.doc('🪞 Pósit pegado en el espejo', `<div class="paper-note"><p><b>CORRECCIÓN DE ÚLTIMA HORA</b></p>
               <p>Lo de que «futuro» suene <b>tres</b> veces era para el mitin de ayer. Hoy, <b>DOS</b>. Ni una más ni una menos.</p>
               <p>Todo lo demás del argumentario, igual.</p><p>— La Dirección</p></div>`);
           } },
-        { id: 'jefa', x: 22, y: 49, emoji: '👩‍💼', s: 7, label: 'Jefa de campaña',
+        { id: 'jefa', x: 40, y: 49.47, emoji: '👩‍💼', s: 11, behind: 'mesaProd', label: 'Jefa de campaña',
           look(g) {
             g.say('—¡Por fin! El teleprompter está vacío y el candidato sale en cinco minutos. Elige una frase por bloque y que cumpla TODO el argumentario. La primera página está en la carpeta del atril. La segunda... la tenía en la mano hace un rato. Y la Dirección siempre deja correcciones en el espejo.', 'Jefa de campaña');
           } },
-        { id: 'teleprompter', x: 39, y: 48, emoji: '🖥️', s: 6, label: 'Teleprompter',
+        { id: 'teleprompter', x: 31, y: 48.92, emoji: '🖥️', s: 6, on: 'mesaProd', label: 'Teleprompter',
           look(g) {
             if (!g.flag('backstage')) return g.say('—¡Eh, eh! ¿Adónde vas? Detrás del cordón solo pasa personal acreditado. Y tú, de momento, eres público con prisa.', 'Segurata');
             l3Teleprompter(g);
           } },
-        { id: 'segurata', x: 31, y: 68, emoji: '💂', s: 6, label: 'Segurata del cordón (backstage)',
+        { id: 'segurata', x: 51.5, y: 48.7, emoji: '👮', s: 12.6, behind: 'valla', label: 'Segurata del cordón (backstage)',
           look(g) {
             if (g.flag('backstage')) return g.say('—Pase, pase, redactor/a. Que aquí el que escribe manda más que el que lee.', 'Segurata');
             g.say('—Backstage: solo personal ACREDITADO. Ni candidatos sin pase, ni cuñados, ni gente que dice «es que soy de la organización».', 'Segurata');
@@ -822,7 +830,7 @@
               g.say('—Argumentarios Universales... ¡Haberlo dicho antes! Ustedes escriben a todos: ayer a ALA, hoy a FAROL, mañana a quien pague. Pase al teleprompter.', 'Segurata');
             },
           } },
-        { id: 'carpeta', x: 50, y: 50, emoji: '📁', s: 5, label: 'Carpeta del atril',
+        { id: 'carpeta', x: 71, y: 26.15, emoji: '📁', s: 5, on: 'atril', label: 'Carpeta del atril',
           look(g) {
             g.doc('📁 Argumentario oficial de FAROL — Página 1', `<p><b>NORMAS PARA DISCURSOS</b> (de obligado cumplimiento)</p>
               <ol><li><b>Cero cifras.</b> Una cifra se puede comprobar; un adjetivo, no.</li>
@@ -830,22 +838,22 @@
               <li>La palabra «<b>futuro</b>» debe sonar exactamente <b>TRES</b> veces en el discurso. Ni una más (empalaga) ni una menos (parece que no tenemos).</li></ol>
               <p class="small">Continúa en la página 2.</p>`);
           } },
-        { id: 'candidato', x: 62, y: 46, emoji: '👨‍🦲', s: 8, label: 'Anselmo Rotonda, candidato de FAROL',
+        { id: 'candidato', x: 22, y: 49.47, emoji: '👨‍💼', s: 11, behind: 'mesaProd', label: 'Anselmo Rotonda, candidato de FAROL',
           look(g) { g.say('—Yo leo lo que me pongan. Si pone rotondas, rotondas. Si pone «futuro», futuro. Si pone «pausa dramática», lo leo también: me pasó en Villaespera, y aún me aplauden por ello.', 'Anselmo Rotonda'); } },
-        { id: 'papelera', x: 9, y: 64, emoji: '🗑️', s: 5, label: 'Papelera',
+        { id: 'papelera', x: 7.75, y: 65.5, emoji: '🗑️', s: 5.1, label: 'Papelera',
           look(g) {
             g.doc('🗑️ Una hoja arrugada: Argumentario — Página 2', `<p><i>(Alguien la ha usado para envolver un bocadillo. Se lee perfectamente.)</i></p>
               <ol start="4"><li>Prohibidas las palabras «<b>promesa</b>», «<b>promesas</b>» y «<b>prometemos</b>». Dan mal fario.</li>
               <li>La palabra «<b>gente</b>» tiene que salir <b>al menos una vez</b>. La gente quiere oír «gente».</li>
               <li>El <b>bocadillo</b>, como mucho, <b>una vez</b>. El catering lo comparten todos los partidos y no vamos a hacerles publicidad.</li></ol>`);
           } },
-        { id: 'catering', x: 88, y: 50, emoji: '🥪', s: 5, label: 'Mesa del catering',
-          look(g) { g.say('Bocadillos de calamares con una banderita de FAROL. Mañana, los mismos bocadillos llevarán la de ALA. El catering es lo único en lo que todos los partidos están de acuerdo.'); } },
-        { id: 'publico', x: 50, y: 84, emoji: '🙌🙌🙌', s: 5, label: 'Público',
+        { id: 'catering', x: 90, y: 49.8, emoji: '🥖🥖', s: 5, on: 'mesaCatering', label: 'Mesa del catering',
+          look(g) { g.say('Bocadillos de calamares (hoy con banderita de FAROL clavada). Mañana, los mismos bocadillos llevarán la de ALA. El catering es lo único en lo que todos los partidos están de acuerdo.'); } },
+        { id: 'publico', x: 74.25, y: 57.8, emoji: '🙋‍♀️🙋‍♂️', s: 10.5, behind: 'filaPublico', label: 'Público',
           look(g) { g.say('—Yo vengo a todos los mitines. A los de todos los partidos. Por el bocadillo y por el ambiente. A quién voto ya lo decidiré en el bocadillo número veinte.', 'Señor del público'); } },
-        { id: 'canon', x: 80, y: 80, emoji: '🎉', s: 5, label: 'Cañón de confeti',
+        { id: 'canon', x: 61, y: 47.55, emoji: '🎉', s: 5, on: 'escenario', label: 'Cañón de confeti',
           look(g) { g.say('Un cañón de confeti cargado con papelitos naranjas. Si alguien lo dispara antes de tiempo, el candidato se queda sin final. Ha pasado. Dos veces.'); } },
-        { id: 'banderitas', x: 22, y: 82, emoji: '🚩', s: 5, label: 'Caja de banderitas',
+        { id: 'banderitas', x: 9, y: 80.2, emoji: '🚩🚩', s: 5, behind: 'cajaBanderas', label: 'Caja de banderitas',
           look(g) { g.say('Banderitas de FAROL. En el fondo de la caja quedan algunas de ALA, de UVA y de TIC. Mismo proveedor, mismo palo, distinto color.'); } },
       ],
       hints: [
