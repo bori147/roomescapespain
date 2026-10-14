@@ -1057,18 +1057,18 @@
       scene: { wall: '#d8cfc0', floor: '#7c6d5d', floorH: 32, pattern: 'tiles' },
       init(g) { g.set('day', 8); },
       decor: [
-        { kind: 'counter', id: 'ventanillas', l: 1.5, t: 48.85, w: 60.5, h: 23.15 },
+        { kind: 'counter', id: 'ventanillas', l: 1.5, t: 48.85, w: 58, h: 23.15 },
         { emoji: '🧑‍💼', x: 8, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '👨‍💼', x: 24, y: 43.6, s: 11.5, behind: 'ventanillas' },
         { emoji: '👩‍💼', x: 41, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { emoji: '👨‍💼', x: 56.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
-        { kind: 'table', id: 'mesaImpresos', l: 4, t: 62.27, w: 16, h: 17.73 },
+        { emoji: '🧑‍💼', x: 55, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { kind: 'table', id: 'mesaImpresos', l: 4, t: 72.3, w: 16, h: 19.7 },
         { kind: 'desk', id: 'mesaUjier', l: 81, t: 60.57, w: 16, h: 17.43 },
-        { emoji: '👨‍💼', x: 89, y: 54.05, s: 12.5, behind: 'mesaUjier' },
-        { emoji: '🪴', x: 89, y: 84.26, s: 9.8 },
+        { emoji: '👨‍💼', x: 89, y: 54.05, s: 11.9, behind: 'mesaUjier' },
+        { emoji: '🪴', x: 89, y: 85.4, s: 9.8 },
       ],
       hotspots: [
-        { id: 'organigrama', x: 89.5, y: 21, sign: 'ORGANIGRAMA', sub: '🔄', w: 13, z: 250, label: 'Organigrama del Ministerio',
+        { id: 'organigrama', x: 89.5, y: 24.5, sign: 'ORGANIGRAMA', sub: '🔄', w: 13, z: 250, label: 'Organigrama del Ministerio',
           look(g) {
             g.doc('🔄 Organigrama del procedimiento', `<ul>
               <li><b>Registro (1):</b> emite la Resolución a quien presente la Solicitud sellada.</li>
@@ -1104,7 +1104,7 @@
             g.say('—Le informo: si no tiene número de expediente, puede sustituirlo por una DECLARACIÓN RESPONSABLE, bien rellenada y firmada.', 'Información');
             g.say('—Eso sí: acompañada del justificante de la tasa 790, pagada en Caja. Todo ello, junto a la solicitud genérica, se presenta en Sellos. Los impresos están en la mesa. ¿Algo más? No, ¿verdad? Siguiente.', 'Información');
           } },
-        { id: 'v4', x: 58, y: 27.5, sign: '4 · CAJA', sub: '🧔', w: 11, z: 250, label: 'Ventanilla 4: Caja',
+        { id: 'v4', x: 55.5, y: 27.5, sign: '4 · CAJA', sub: '🧔', w: 10, z: 250, label: 'Ventanilla 4: Caja',
           look(g) { g.say('—Caja. Aquí se pagan las tasas. Si no trae nada que pagar, no me haga perder el tiempo, que tengo mucho que no hacer.', 'Caja'); },
           use: {
             modelo790(g) {
@@ -1116,8 +1116,8 @@
               });
             },
           } },
-        { id: 'calendario', x: 89.5, y: 38.46, emoji: '📅', s: 5.5, label: (g) => `Calendario (${g.flag('day')} de octubre)`, look: calendarModal },
-        { id: 'mesa', x: 12, y: 56.94, emoji: '🗂️', s: 6, on: 'mesaImpresos', label: 'Mesa de impresos',
+        { id: 'calendario', x: 87, y: 38.46, emoji: '📅', s: 5.5, label: (g) => `Calendario (${g.flag('day')} de octubre)`, look: calendarModal },
+        { id: 'mesa', x: 12, y: 67, emoji: '🗂️', s: 6, on: 'mesaImpresos', label: 'Mesa de impresos',
           look(g) {
             if (!g.flag('forms')) {
               g.set('forms');
@@ -1125,7 +1125,7 @@
               g.give('solicitud'); g.give('declaracion'); g.give('modelo790');
             } else g.say('Impresos de todos los colores. El bolígrafo encadenado a la mesa no tiene tinta, como manda la tradición.');
           } },
-        { id: 'ujier', x: 89, y: 50.4, emoji: '😴', s: 6.5, behind: 'mesaUjier', label: 'Ujier dormido',
+        { id: 'ujier', x: 89.2, y: 51, emoji: '😴', s: 5.6, behind: 'mesaUjier', label: 'Ujier dormido',
           look(g) {
             if (!g.flag('pen')) { g.set('pen'); g.say('Zzz... El ujier ronca plácidamente. Del bolsillo de su chaqueta asoma un bolígrafo. Con tinta. Lo tomas prestado.'); g.give('boli'); }
             else g.say('Zzz... Sueña que le suben el complemento de destino.');
