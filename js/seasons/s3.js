@@ -617,9 +617,9 @@
         { kind: 'board', l: 1, t: 21.6, w: 19, h: 15.4 },
         { kind: 'shelf', id: 'balda', l: 46.5, t: 32.9, w: 7, h: 1.4 },
         { kind: 'counter', id: 'mesaBorja', l: 33, t: 50.43, w: 24, h: 23.57 },
-        { kind: 'pedestal', id: 'mesaCasero', l: 63, t: 58.87, w: 14, h: 17.13, color: '#6b5a48' },
+        { kind: 'counter', id: 'mesaCasero', l: 63, t: 58.87, w: 14, h: 17.13, color: '#8a6f52' },
         { kind: 'pedestal', id: 'aparador', l: 83, t: 52.68, w: 15, h: 17.32, color: '#7a5b3e' },
-        { emoji: '🧍‍♀️', x: 60.5, y: 57.51, s: 24.17 },
+        { emoji: '🧍‍♀️', x: 62, y: 57.51, s: 24.17 },
       ],
       hotspots: [
         { id: 'tablon', x: 10.5, y: 29, sign: 'PISOS EN ALQUILER', sub: '🏘️', w: 17, z: 250, label: 'Tablón de anuncios', look: pisosDoc },
@@ -642,7 +642,7 @@
           } },
         { id: 'foto', x: 91, y: 27.98, emoji: '🖼️', s: 8, label: 'Foto del «piso piloto»',
           look(g) { g.say('La foto del piso piloto: 30 m² que, con gran angular, parecen el Palacio Real. Al fondo se intuye un pie del fotógrafo.'); } },
-        { id: 'impresora', x: 88.5, y: 47.35, emoji: '🖨️', s: 6, on: 'aparador', label: 'Impresora de la agencia',
+        { id: 'impresora', x: 87.5, y: 47.35, emoji: '🖨️', s: 6, on: 'aparador', label: 'Impresora de la agencia',
           look(g) { g.say('Una impresora con un cartel: «Solo para clientes. Imprimir cuesta 2 €. Mirarla, 1 €».'); },
           use: {
             movil(g) {
@@ -686,7 +686,7 @@
             if (g.has('solicitudAlq')) return g.say('La solicitud ya está impresa. Entrégasela al casero.');
             ordenadorL1(g);
           } },
-        { id: 'casero', x: 70, y: 51.55, emoji: '🕴️', s: 25.25, behind: 'mesaCasero', label: 'Don Ulpiano, el casero',
+        { id: 'casero', x: 70, y: 49.55, emoji: '🕴️', s: 27.5, behind: 'mesaCasero', label: 'Don Ulpiano, el casero',
           look(g) {
             g.say(rand([
               '—Yo solo alquilo a gente seria. Sin niños, sin perros, sin fiestas y, a ser posible, sin vida.',
