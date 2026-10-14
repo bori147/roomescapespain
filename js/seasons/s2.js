@@ -257,7 +257,7 @@
       }],
     });
   }
-  const L4_SIGNERS = { tia: '🙎‍♀️ Tía Remedios', tu: '🙂 Tú', cunado: '🙋‍♂️ Cuñado Paco', notario: '🧑‍⚖️ Notario' };
+  const L4_SIGNERS = { tia: '🙎‍♀️ Tía Remedios', tu: '🙂 Tú', cunado: '🙋‍♂️ Cuñado Paco', notario: '👨‍💼 Notario' };
   function l4Firmas(g) {
     let seq = [];
     g.modal({
@@ -1046,8 +1046,8 @@
       carry: ['dni', 'contrato', 'certDen'],
       scene: { wall: '#4f3b33', floor: '#5a3b2a', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'rug', l: 39, t: 69.5, w: 40, h: 17.5, color: '#6b2e2e', z: 100 },
-        { kind: 'pedestal', id: 'mesaFirmasD', l: 2, t: 57.17, w: 39, h: 16.83, color: '#6f5c47' },
+        { kind: 'rug', l: 22, t: 69.5, w: 58, h: 17.5, color: '#6b2e2e', z: 100 },
+        { kind: 'pedestal', id: 'mesaFirmasD', l: 7, t: 57.17, w: 34.5, h: 16.83, color: '#6f5c47' },
         { kind: 'pedestal', id: 'mesaNotario', l: 42.5, t: 56.32, w: 18, h: 16.68, color: '#6f5c47' },
         { kind: 'pedestal', id: 'mesaOficial', l: 62, t: 56.32, w: 14, h: 16.68, color: '#6f5c47' },
         { kind: 'shelf', id: 'repisa', l: 60, t: 25.5, w: 6, h: 1.4 },
@@ -1062,14 +1062,14 @@
         { id: 'reloj', x: 63, y: 21.05, emoji: '🕰️', s: 5, on: 'repisa', label: 'Reloj',
           look(g) { g.say('Son las 10:00. La firma era a las 9:30. En las notarías el tiempo transcurre distinto: se factura por minuto, pero se espera por horas.'); } },
         { id: 'retrato', x: 51.5, y: 27.3, emoji: '🖼️', s: 9.9, label: 'Retrato de familia',
-          look(g) { g.say('Don Fulgencio con su padre, notario, y su abuelo, notario. Al fondo, un bebé con toga. Es su nieto. Ya tiene plaza.'); } },
+          look(g) { g.say('Pone «retrato de familia» y se ve un paisaje: el pintor cobró por adelantado. Debajo, dicen, están don Fulgencio con su padre, notario, y su abuelo, notario. Al fondo, un bebé con toga. Es su nieto. Ya tiene plaza.'); } },
         { id: 'cartel', x: 33, y: 31.3, sign: 'ORDEN DE FIRMA', sub: '✒️', w: 14, z: 250, label: 'Cartel: orden de firma',
           look(g) {
             g.doc('✒️ Orden de firma', `<p>Los otorgantes firman primero, <b>en el orden que acuerden entre ellos</b>.</p>
               <p>El <b>notario firma siempre el último</b>: «Ante mí». Si firma antes, deja de ser «ante él» y pasa a ser «antes que usted», que no es lo mismo.</p>
               <p class="small">Si un otorgante se niega a firmar, no hay escritura. Si se niegan dos, hay comida familiar.</p>`);
           } },
-        { id: 'notario', x: 51, y: 51.3, emoji: '🧑‍⚖️', s: 11.4, behind: 'mesaNotario', label: 'Don Fulgencio, notario',
+        { id: 'notario', x: 51.5, y: 51.1, emoji: '👨‍💼', s: 11.8, behind: 'mesaNotario', label: 'Don Fulgencio, notario',
           look(g) {
             if (!g.flag('borradorOK')) return g.say('—Yo no firmo nada con erratas. Revise el borrador con mi oficial. Y luego, a la mesa de firmas. Yo firmo el último, como manda la tradición. Y la minuta.', 'Notario');
             if (!g.flag('certIn') || !g.flag('dniIn')) {
@@ -1097,27 +1097,27 @@
             if (!g.flag('carp')) g.say('—Aquí tiene el borrador. Antes de revisarlo, tenga a mano sus documentos: certificado de denominación, certificado del banco (¿lo trae en esa carpeta?) y contrato del local.', 'Oficial');
             l4Borrador(g);
           } },
-        { id: 'mesaFirmas', x: 38, y: 52.72, emoji: '✒️', s: 5, on: 'mesaFirmasD', z: 126, label: 'Mesa de firmas',
+        { id: 'mesaFirmas', x: 38.3, y: 52.72, emoji: '✒️', s: 5, on: 'mesaFirmasD', z: 126, label: 'Mesa de firmas',
           look(g) {
             if (!g.flag('borradorOK')) return g.say('Sobre la mesa, la pluma estilográfica del notario. Nadie firma nada hasta que el borrador esté corregido.');
-            if (!g.flag('certIn') || !g.flag('dniIn')) return g.say('El notario tapa la pluma con la mano: «Antes de firmar, déme el certificado de denominación original y su DNI. Lo dice el Reglamento Notarial. Y mi minuta».');
+            if (!g.flag('certIn') || !g.flag('dniIn')) return g.say('El notario te mira desde su mesa: «Antes de firmar, déme el certificado de denominación original y su DNI. Lo dice el Reglamento Notarial. Y mi minuta».');
             l4Firmas(g);
           } },
-        { id: 'tia', x: 7.5, y: 49.4, emoji: '🙎‍♀️', s: 10, behind: 'mesaFirmasD', label: 'Tía Remedios',
+        { id: 'tia', x: 12.5, y: 49.4, emoji: '🙎‍♀️', s: 10, behind: 'mesaFirmasD', label: 'Tía Remedios',
           look(g) {
             g.say(rand([
               '—Yo pongo mis 900 euros, pero firmo ANTES que tu cuñado. A ese no le fío ni el bolígrafo.',
               '—Hijo/a, yo firmo antes que el Paco, que luego dice que lo ha hecho todo él. Lo demás me da igual.',
             ]), 'Tía Remedios');
           } },
-        { id: 'cunado', x: 22, y: 48.97, emoji: '🙋‍♂️', s: 10.5, behind: 'mesaFirmasD', label: 'Tu cuñado Paco',
+        { id: 'cunado', x: 27.5, y: 48.97, emoji: '🙋‍♂️', s: 10.5, behind: 'mesaFirmasD', label: 'Tu cuñado Paco',
           look(g) {
             g.say(rand([
               '—Yo firmo JUSTO después de ti, cuñao. Justo después: ni antes, ni con nadie en medio. Así salimos juntos en la foto.',
               '—Lo mío es firmar inmediatamente detrás de ti. Que se vea que somos un equipo. Aunque yo ponga 450 y tú 1.650.',
             ]), 'Tu cuñado Paco');
           } },
-        { id: 'carpeta', x: 33, y: 52.72, emoji: '📁', s: 5, on: 'mesaFirmasD', label: 'Tu carpeta',
+        { id: 'carpeta', x: 33.6, y: 52.72, emoji: '📁', s: 5, on: 'mesaFirmasD', label: 'Tu carpeta',
           look(g) {
             if (!g.flag('carp')) {
               g.set('carp');
