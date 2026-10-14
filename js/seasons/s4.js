@@ -502,11 +502,11 @@
   //  NIVEL 10: tránsfuga, cifrado y marcador
   // =========================================================
   const L10_SUS = [
-    { id: 'veleta', name: 'Ginés Veleta', party: 'ZIG', seat: 61, x: 18, y: 60, emoji: '🧑‍🦱', says: '—Lo único que sé seguro es que el tránsfuga no es ni de ALA ni de NIDAC. Y eso que yo cambio de opinión cada cuarto de hora.' },
-    { id: 'bisagra', name: 'Leonor Bisagra', party: 'NIDAC', seat: 44, x: 34, y: 49, emoji: '👩‍🦳', says: '—Begoña Mudanza miente. Se le nota en el flequillo.' },
-    { id: 'chaqueta', name: 'Fermín Chaqueta', party: 'ALA', seat: 7, x: 50, y: 45, emoji: '🧔', says: '—Ginés Veleta dice la verdad. Por raro que suene.' },
-    { id: 'mudanza', name: 'Begoña Mudanza', party: 'CANA', seat: 33, x: 66, y: 49, emoji: '👩', says: '—El tránsfuga se sienta en un escaño par. Búsquenlo por ahí, por los pares.' },
-    { id: 'pendulo', name: 'Casimiro Péndulo', party: 'TIC', seat: 52, x: 82, y: 60, emoji: '👨‍💼', says: '—De Leonor Bisagra y Fermín Chaqueta, exactamente uno miente. No diré cuál: sería poco disruptivo.' },
+    { id: 'veleta', name: 'Ginés Veleta', party: 'ZIG', seat: 61, x: 33, y: 51.4, s: 10, behind: 'alaIzq', emoji: '👨‍💼', says: '—Lo único que sé seguro es que el tránsfuga no es ni de ALA ni de NIDAC. Y eso que yo cambio de opinión cada cuarto de hora.' },
+    { id: 'bisagra', name: 'Leonor Bisagra', party: 'NIDAC', seat: 44, x: 21, y: 51.4, s: 10, behind: 'alaIzq', emoji: '👩‍💼', says: '—Begoña Mudanza miente. Se le nota en el flequillo.' },
+    { id: 'chaqueta', name: 'Fermín Chaqueta', party: 'ALA', seat: 7, x: 75.5, y: 51.4, s: 10, behind: 'alaDer', emoji: '🧑‍💼', says: '—Ginés Veleta dice la verdad. Por raro que suene.' },
+    { id: 'mudanza', name: 'Begoña Mudanza', party: 'CANA', seat: 33, x: 68, y: 51.4, s: 10, behind: 'alaDer', emoji: '👩‍💼', says: '—El tránsfuga se sienta en un escaño par. Búsquenlo por ahí, por los pares.' },
+    { id: 'pendulo', name: 'Casimiro Péndulo', party: 'TIC', seat: 52, x: 83, y: 51.4, s: 10, behind: 'alaDer', emoji: '👨‍💼', says: '—De Leonor Bisagra y Fermín Chaqueta, exactamente uno miente. No diré cuál: sería poco disruptivo.' },
   ];
   function l10Maquina(g) {
     g.modal({
@@ -1498,20 +1498,37 @@
       stars: 5,
       intro: 'Seis meses después, ya en pleno invierno. FAROL presenta una moción de censura contra la presidenta Paz Equidistante. Para prosperar necesita mayoría absoluta: <b>41 síes</b>. En los pasillos solo se habla de un <b>tránsfuga</b>... y nadie sabe quién es.<br><br>Te han nombrado letrado/a provisional de las Cortes (por tu experiencia en actas). Aquí el resultado se carga en el marcador antes de votar: «así se ahorra tiempo». Traes el único ejemplar firmado del acuerdo de gobierno y, en el bolsillo, el pinganillo del debate, que sigue captando la frecuencia de las asesorías.<br><br><b>Objetivo:</b> desenmascara al tránsfuga, descifra su mensaje y carga en el marcador los síes, noes y abstenciones exactos.',
       outro: 'Sí: 40. No: 17. Abstenciones: 24. La moción decae por un solo voto. La presidenta, agotada de tanta estabilidad, disuelve las Cortes esa misma tarde y convoca elecciones anticipadas. Vuelves a la C/ del Olvido arrastrando los pies. En el buzón, debajo del recibo de la hipoteca, te espera una carta certificada. De las que dan miedo. Michi la mira y se va a otra habitación.',
-      scene: { wall: '#5a2430', floor: '#43302a', floorH: 50, pattern: 'carpet' },
+      scene: { wall: '#5a2430', floor: '#43302a', floorH: 22, pattern: 'carpet' },
       carry: ['acuerdo', 'pinganillo'],
       decor: [
-        { kind: 'arc' },
-        { kind: 'counter', l: 60, t: 88, w: 22, h: 6 },
-        { emoji: '📸', x: 4, y: 36, s: 4, o: 0.85 },
+        // Pleno visto desde el pasillo central (floorH 22: así la barra de la cafetería, en primer plano a la derecha, sostiene
+        // un café tocable sin pasar de ×2,5). Al fondo, la Mesa de la Presidencia (tarima de 40 cm + mesa de 85) con el
+        // marcador alto y las banderas; bancadas de 95 cm (3 filas) a ambos lados, con los diputados como bustos DETRÁS
+        // (sentados: se ve de pecho para arriba); puerta con el ujier tras la barandilla del guardarropa; delante, la mesa de
+        // prensa y la de taquígrafos (75 cm). Las etiquetas partido·escaño quedan tapadas por la bancada (el motor las pone
+        // dentro del botón, bajo la imagen): partido y escaño salen igualmente en el título del diálogo y en la lista del ujier.
+        // Carteles a ~200 cm: más abajo chocarían con las cabezas.
+        { kind: 'screen', l: 40, t: 3, w: 20, h: 13 },
+        { kind: 'flag', l: 39, t: 19.5, w: 10, h: 12.2 },
+        { kind: 'flag-eu', l: 51, t: 19.5, w: 10, h: 12.2 },
+        { kind: 'door', l: 2, t: 26.8, w: 11, h: 51.2, color: '#6d4c2f' },
+        { kind: 'platform', id: 'tarima', l: 40.5, t: 70, w: 19, h: 10, color: '#6d4c2f' },
+        { kind: 'counter', id: 'mesaPresidencia', l: 41.5, t: 48.7, w: 17, h: 21.3 },
+        { kind: 'pedestal', id: 'barandilla', l: 1, t: 56.3, w: 12.5, h: 25.7, color: '#6d4c2f' },
+        { kind: 'seats', id: 'alaIzq', l: 13.8, t: 57.58, w: 26.7, h: 24.42, color: '#9b2d2d' },
+        { kind: 'seats', id: 'alaDer', l: 60.5, t: 57.58, w: 29, h: 24.42, color: '#9b2d2d' },
+        { kind: 'table', id: 'mesaTaquigrafos', l: 41, t: 73.23, w: 18, h: 22.77 },
+        { kind: 'desk', id: 'prensa', l: 17.5, t: 71.3, w: 19, h: 21.9 },
+        { emoji: '📸', x: 33.5, y: 67.75, s: 4, on: 'prensa' },
+        { kind: 'counter', id: 'barra', l: 87, t: 66.72, w: 12.5, h: 33.28 },
       ],
       hotspots: [
         ...L10_SUS.map((s) => ({
-          id: s.id, x: s.x, y: s.y, emoji: s.emoji, s: 6, tag: `${sig(s.party)} · ${s.seat}`,
+          id: s.id, x: s.x, y: s.y, emoji: s.emoji, s: s.s, on: s.on, tag: `${sig(s.party)} · ${s.seat}`,
           label: `${s.name} (${sig(s.party)}) · escaño ${s.seat}`,
           look(g) { g.say(s.says, `${s.name} — ${sig(s.party)}, escaño ${s.seat}`); },
         })),
-        { id: 'portavoces', x: 15, y: 14, sign: 'JUNTA DE PORTAVOCES', sub: '📋', w: 16, label: 'Posiciones anunciadas ante la moción',
+        { id: 'portavoces', x: 24, y: 24, sign: 'JUNTA DE PORTAVOCES', sub: '📋', w: 14, label: 'Posiciones anunciadas ante la moción',
           look(g) {
             const ok = g.flag('acuerdoReg');
             const rows = [['FAROL', 19, 'Sí', '«Es nuestra moción. Faltaría más.»'], ['CANA', 11, 'Sí', '«A cambio de terrazas.»'], ['TIC', 6, 'Sí', '«Por la disrupción.»'],
@@ -1521,7 +1538,7 @@
             g.doc('📋 Junta de Portavoces — posiciones anunciadas', `<table class="tbl">${rows.map((r) => `<tr><td>${P[r[0]].emoji} <b>${sig(r[0])}</b> (${r[1]}) <span class="small">${r[3]}</span></td><td>${r[2]}</td></tr>`).join('')}</table>
               <p class="small">Mayoría necesaria para aprobar la moción: <b>41</b> (absoluta). Total: 81 escaños, todos presentes.${ok ? '' : ' Los cuatro grupos del Gobierno se remiten a la cláusula de lealtad de su acuerdo, que aún no se ha registrado en la Mesa de la Cámara.'}</p>`);
           } },
-        { id: 'presidenta', x: 50, y: 30, emoji: '👩‍⚖️', s: 5, label: 'Presidenta de las Cortes',
+        { id: 'presidenta', x: 50, y: 44.5, emoji: '👩‍⚖️', s: 11.5, behind: 'mesaPresidencia', label: 'Presidenta de las Cortes',
           look(g) {
             if (g.flag('acuerdoReg')) return g.say('—Acuerdo registrado. Ya puede cargar el marcador, letrado/a. Y, por favor, que cuadre: no quiero salir en los memes.', 'Presidenta de las Cortes');
             g.say('—Letrado/a: para cargar el marcador necesito la posición oficial de los grupos del Gobierno. Se remiten a la cláusula de lealtad de su acuerdo, y el único ejemplar firmado lo tiene usted, que hizo de facilitador/a. Regístremelo.', 'Presidenta de las Cortes');
@@ -1533,7 +1550,7 @@
               g.say('—«Pacto de la Equidistancia». Cláusula 7: NIDAC, UVA y ZIGZAG anuncian No a cualquier moción. Cláusula 7 bis: ASPA se abstiene mientras no haya autovía. Registrado y trasladado a la Junta de Portavoces. Otra cosa es lo que voten de verdad.', 'Presidenta de las Cortes');
             },
           } },
-        { id: 'sonido', x: 50, y: 88, emoji: '🎛️', s: 5, label: 'Mesa de sonido (frecuencia de asesorías)',
+        { id: 'sonido', x: 45, y: 68.43, emoji: '🎛️', s: 5.4, on: 'mesaTaquigrafos', label: 'Mesa de sonido (frecuencia de asesorías)',
           look(g) { g.say('Una mesa de sonido con una toma rotulada «Frecuencia de las asesorías». Sin un pinganillo sintonizado, solo se oye estática y, de fondo, a alguien pidiendo un cortado.'); },
           use: {
             pinganillo(g) {
@@ -1541,7 +1558,7 @@
               g.say('Enchufas el pinganillo del debate. Sigue sintonizado. La voz del asesor de NIDAC susurra a su presidenta: «...confirmado por mi fuente: de esos cinco que cuchichean en sus escaños, exactamente DOS mienten. Y el tránsfuga es uno de los dos. No sé cuál. Si lo supiera, cobraría el doble».', 'Pinganillo');
             },
           } },
-        { id: 'marcador', x: 50, y: 14, sign: 'MARCADOR', sub: 'Moción de censura', w: 16, label: 'Marcador de votación',
+        { id: 'marcador', x: 50, y: 9.5, sign: 'MARCADOR', sub: 'Moción de censura', w: 16, label: 'Marcador de votación',
           look(g) {
             if (!g.flag('acuerdoReg')) return g.say('—El marcador no se carga sin la posición oficial de los grupos del Gobierno —dice la Presidenta de las Cortes—. Y esa consta en un acuerdo que, que yo sepa, tiene usted.', 'Presidenta de las Cortes');
             g.input({
@@ -1562,7 +1579,7 @@
               },
             });
           } },
-        { id: 'chuleta', x: 85, y: 14, sign: 'CHULETA DEL GRUPO MIXTO', sub: '🔐', w: 16, label: 'Chuleta de cifrado (cafetería)',
+        { id: 'chuleta', x: 80, y: 24, sign: 'CHULETA DEL GRUPO MIXTO', sub: '🔐', w: 16, label: 'Chuleta de cifrado (cafetería)',
           look(g) {
             g.doc('🔐 Cifrado de palabra clave (para pasarse notas en el pleno)', `<ol>
               <li>Escribe la palabra clave sin repetir letras.</li>
@@ -1572,20 +1589,20 @@
               <p><i>Ejemplo, clave CAFE → alfabeto cifrado CAFEBDGHIJ... Así, «CAFE» se escribe «FCDB».</i></p>
               <p class="small">La descifradora de la sala lo hace sola: solo hay que darle la clave.</p>`);
           } },
-        { id: 'periodista', x: 7, y: 86, emoji: '🧑‍💻', s: 5, label: 'Periodista parlamentaria',
+        { id: 'periodista', x: 27, y: 65.5, emoji: '🧑‍💻', s: 12.5, behind: 'prensa', label: 'Periodista parlamentaria',
           look(g) {
             g.say('—Mi fuente sobre el tránsfuga solo habla por la frecuencia de las asesorías, y yo no tengo pinganillo. Quien lo tenga, que lo enchufe en la mesa de sonido.', 'Periodista parlamentaria');
             g.say('—Lo que sí sé es lo de siempre: ZIGZAG hace lo contrario de lo que anuncia. ASPA, en cambio, hace exactamente lo que dice: es un solo diputado, no le da para más.', 'Periodista parlamentaria');
           } },
-        { id: 'maquina', x: 30, y: 84, emoji: '⌨️', s: 5, label: 'Descifradora del Grupo Mixto',
+        { id: 'maquina', x: 54, y: 66.56, emoji: '⌨️', s: 7.5, on: 'mesaTaquigrafos', label: 'Descifradora del Grupo Mixto',
           look(g) {
             if (!g.has('servilleta')) return g.say('Una máquina de escribir modificada para descifrar notas. Sin nada que descifrar, solo hace «clac».');
             l10Maquina(g);
           },
           use: { servilleta: (g) => l10Maquina(g) } },
-        { id: 'cafe', x: 71, y: 84, emoji: '☕', s: 5, label: 'Barra de la cafetería',
+        { id: 'cafe', x: 93.3, y: 62.28, emoji: '☕', s: 5, on: 'barra', label: 'Barra de la cafetería',
           look(g) { g.say('Café de la cafetería de las Cortes: 0,80 €. Subvencionado. Es lo único que se aprueba por unanimidad.'); } },
-        { id: 'ujier', x: 93, y: 86, emoji: '🤵', s: 6, label: 'Ujier (guardarropa)',
+        { id: 'ujier', x: 7.5, y: 47.5, emoji: '🤵', s: 11.5, behind: 'barandilla', label: 'Ujier (guardarropa)',
           look(g) {
             if (g.has('servilleta')) return g.say('—Ya tiene lo que buscaba. Yo no he visto nada. Yo nunca veo nada: por eso llevo 30 años en el puesto.', 'Ujier');
             g.choice({
