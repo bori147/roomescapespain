@@ -854,14 +854,15 @@
       carry: ['dni', 'anuncio'],
       scene: { wall: '#e9e2cf', floor: '#6f5a46', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'shelf', l: 4, t: 22, w: 16, h: 2 }, { kind: 'shelf', l: 4, t: 38, w: 16, h: 2 },
-        { emoji: '📚', x: 8, y: 34, s: 4, o: 0.9 }, { emoji: '📚', x: 16, y: 34, s: 4, o: 0.9 },
-        { kind: 'counter', l: 42, t: 56, w: 30, h: 9 },
-        { kind: 'flag', l: 52, t: 6, w: 5, h: 8 },
-        { emoji: '🪑', x: 26, y: 84, s: 4, o: 0.8 },
+        { kind: 'bookcase', id: 'libreria', l: 1.5, t: 25.5, w: 10, h: 42.5 },
+        { kind: 'table', id: 'mesaConsulta', l: 13, t: 58.9, w: 20, h: 17.1 },
+        { kind: 'flag', l: 57.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'flag-eu', l: 68.5, t: 14.9, w: 9, h: 10.7 },
+        { kind: 'counter', id: 'mostrador', l: 56, t: 48.85, w: 22, h: 23.15 },
+        { emoji: '🪴', x: 77, y: 79.6, s: 9.47 },
       ],
       hotspots: [
-        { id: 'libro', x: 12, y: 16, emoji: '📕', s: 5, label: 'Libro índice de fincas',
+        { id: 'libro', x: 16.5, y: 54.45, emoji: '📕', s: 5, on: 'mesaConsulta', label: 'Libro índice de fincas',
           look(g) {
             g.doc('📕 Libro índice — C/ del Olvido, 14', `<table class="tbl s3-tbl">
               <tr><th>Escalera izquierda</th><th>Finca</th><th>Escalera derecha</th><th>Finca</th></tr>
@@ -876,18 +877,18 @@
               <tr><td>—</td><td>—</td><td>4ºB</td><td>4480</td></tr></table>
               <p class="small">Hay dos 3ºB. Como hay dos de casi todo en este edificio, salvo ascensores.</p>`);
           } },
-        { id: 'plano', x: 30, y: 24, sign: 'PLANO DEL EDIFICIO', sub: 'División horizontal', w: 15, label: 'Plano de división horizontal',
+        { id: 'plano', x: 24.5, y: 31.3, sign: 'PLANO DEL EDIFICIO', sub: 'División horizontal', w: 18, z: 250, label: 'Plano de división horizontal',
           look(g) {
             g.doc('📐 Plano de división horizontal — C/ del Olvido, 14', `<div class="s3-twin">
               <div><b>ESCALERA IZQUIERDA</b><br>Bajos A y B, y del 1º al 3º.<br>🪜 <b>Sin ascensor</b> (hueco reservado desde 1979, «para cuando haya presupuesto»).</div>
               <div><b>ESCALERA DERECHA</b><br>Local, y del 1º al 4º.<br>🛗 <b>Con ascensor</b> (cuando funciona).</div></div>
               <p class="small">Inscrito en 2001. Revisado por última vez en 2001.</p>`);
           } },
-        { id: 'tasador', x: 76, y: 22, emoji: '🧐', s: 6, label: 'Informe del tasador (en un clip)',
+        { id: 'tasador', x: 22, y: 54.45, emoji: '📄', s: 5, on: 'mesaConsulta', label: 'Informe del tasador (en un clip)',
           look(g) { g.doc('🧐 Informe de tasación', '<p>Valor de tasación: <b>225.000 €</b>. Exactamente lo que pide el vendedor. Exactamente lo que necesita el banco. Exactamente lo que estabas temiendo.</p><p class="small">Visita realizada: desde el coche, en doble fila.</p>'); } },
-        { id: 'reloj', x: 89, y: 15, emoji: '🕰️', s: 4, label: 'Reloj',
+        { id: 'reloj', x: 6.5, y: 21.06, emoji: '🕰️', s: 5, on: 'libreria', label: 'Reloj',
           look(g) { g.say('Horario de atención: de 9:00 a 14:00. Son las 13:58. La registradora ya tiene el bolso en la mano.'); } },
-        { id: 'terminal', x: 34, y: 58, emoji: '🖥️', s: 7, label: 'Terminal de publicidad registral',
+        { id: 'terminal', x: 28, y: 52.68, emoji: '🖥️', s: 7, on: 'mesaConsulta', label: 'Terminal de publicidad registral',
           look(g) {
             if (!g.flag('ident')) return g.say('«Identifíquese para solicitar información registral.» Hay un lector de documentos que parpadea con impaciencia.', 'Terminal');
             g.input({
@@ -926,7 +927,7 @@
               g.say('El lector traga tu DNI, lo mira, lo duda y lo devuelve. «Identificación correcta. Puede solicitar notas simples.»', 'Terminal');
             },
           } },
-        { id: 'registradora', x: 58, y: 47, emoji: '👩‍⚖️', s: 8, label: 'Doña Inmaculada, registradora',
+        { id: 'registradora', x: 67, y: 44.9, emoji: '👩‍💼', s: 10, behind: 'mostrador', label: 'Doña Inmaculada, registradora',
           look(g) {
             if (!g.has('notaSimple')) return g.say('—La certificación de cargas se la doy cuando me diga usted qué cargas tiene la finca. Pida la nota simple en el terminal. Con su número de finca, que yo no adivino.', 'Registradora');
             g.input({
@@ -942,15 +943,15 @@
               },
             });
           } },
-        { id: 'bolso', x: 16, y: 72, emoji: '👜', s: 6, label: 'Tu bolsa',
+        { id: 'bolso', x: 12, y: 73.1, emoji: '👜', s: 5, label: 'Tu bolsa',
           look(g) {
             g.say('Pañuelos, un caramelo del banco (no), la oferta vinculante bien doblada y una porra de la churrería envuelta en servilleta, por si la registradora se ablanda. A las 13:58 no se ablanda nadie.');
           } },
-        { id: 'archivo', x: 86, y: 62, emoji: '🗄️', s: 8, label: 'Archivo de legajos',
+        { id: 'archivo', x: 85, y: 55.01, emoji: '🗄️', s: 14.61, label: 'Archivo de legajos',
           look(g) { g.say('Legajos desde 1861. Huele a papel antiguo, a humedad y a herencias mal repartidas.'); } },
-        { id: 'cola', x: 44, y: 83, emoji: '👴', s: 5, label: 'Señor en la cola',
+        { id: 'cola', x: 47.5, y: 60.44, emoji: '🧍', s: 26.5, label: 'Señor en la cola',
           look(g) { g.say('—Yo vengo a ver si mi finca sigue siendo mía. Desde que mi cuñado vino a «ayudarme con unos papeles», lo compruebo cada mes.', 'Señor'); } },
-        { id: 'cartel', x: 74, y: 40, sign: 'AVISO', sub: '📢', w: 10, label: 'Aviso',
+        { id: 'cartel', x: 88, y: 31.3, sign: 'AVISO', sub: '📢', w: 10, label: 'Aviso',
           look(g) { g.say('«Se ruega no confundir la nota simple con una nota sencilla. La nota simple es complicada. La nota sencilla no existe.»'); } },
       ],
       hints: [
