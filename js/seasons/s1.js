@@ -552,17 +552,22 @@
       outro: 'Documentación recibida: una fotocopia para el expediente, otra para el archivo y otra para tirarla. Siguiente paso: acreditar su domicilio. Le derivamos al Ayuntamiento.',
       scene: { wall: '#c9d6cf', floor: '#7b6a58', floorH: 32, pattern: 'wood' },
       decor: [
-        { kind: 'counter', l: 38, t: 50, w: 26, h: 12 },
-        { kind: 'window', l: 70, t: 8, w: 12, h: 26 },
-        { emoji: '🗄️', x: 64, y: 60, s: 5, o: 0.9 },
+        { kind: 'shelf', id: 'perchero', l: 3, t: 29.8, w: 11, h: 1.4 },
+        { kind: 'pedestal', id: 'muebleCopiadora', l: 16.75, t: 56.32, w: 6.5, h: 16.68, color: '#8e949c' },
+        { kind: 'counter', id: 'mostrador', l: 36, t: 48.85, w: 23, h: 23.15 },
+        { emoji: '🖥️', x: 55.5, y: 43.34, s: 6.2, on: 'mostrador' },
+        { kind: 'window', l: 76, t: 19.1, w: 9.5, h: 29.8 },
+        { kind: 'vitrine', id: 'maquinaFrente', l: 87.5, t: 31.21, w: 8, h: 23.15, color: '#6b1f2a' },
+        { kind: 'pedestal', id: 'maquina', l: 87.5, t: 54.36, w: 8, h: 17.64, color: '#6b1f2a' },
+        { kind: 'box', l: 89.5, t: 49.5, w: 4, h: 4.5, color: '#2a0d12' },
       ],
       hotspots: [
-        { id: 'abrigo', x: 7, y: 40, emoji: '🧥', s: 8, label: 'Tu abrigo, en el perchero',
+        { id: 'abrigo', x: 8.5, y: 36.24, emoji: '🧥', s: 13.45, label: 'Tu abrigo, en el perchero',
           look(g) {
             if (!g.flag('coat')) { g.set('coat'); g.say('En el bolsillo interior encuentras tu DNI caducado. Y un tique de aparcamiento de 2016.'); g.give('dni'); }
             else g.say('Solo quedan pelusas y el tique de 2016. Algún día lo pagarás.');
           } },
-        { id: 'requisitos', x: 22, y: 24, sign: 'REQUISITOS', sub: '📋', w: 12, label: 'Cartel de requisitos',
+        { id: 'requisitos', x: 28, y: 31.3, sign: 'REQUISITOS', sub: '📋', w: 12, label: 'Cartel de requisitos',
           look(g) {
             g.doc('📋 DOCUMENTACIÓN NECESARIA', `<ul>
               <li>DNI original (caducado vale: total, ya lo tenemos).</li>
@@ -571,28 +576,28 @@
               <p>La fotocopiadora de esta sala solo acepta <b>monedas de 10 céntimos</b>.</p>
               <p>Esta Administración <b>no dispone de cambio</b>. Pruebe en la máquina de café.</p>`);
           } },
-        { id: 'ventanilla', x: 51, y: 30, sign: (g) => (g.flag('back') ? 'VENTANILLA 1' : 'DESAYUNANDO'), sub: (g) => (g.flag('back') ? '🪟' : '☕ Vuelvo en 5 min'), w: 14,
+        { id: 'ventanilla', x: 47.5, y: 22, sign: (g) => (g.flag('back') ? 'VENTANILLA 1' : 'DESAYUNANDO'), sub: (g) => (g.flag('back') ? '🪟' : '☕ Vuelvo en 5 min'), w: 18,
           label: 'Ventanilla 1',
           look(g) {
             if (!g.flag('back')) g.say('Un cartel: «DESAYUNANDO. VUELVO EN 5 MINUTOS». El celo está amarillento. Huele a 1998. Quizá algo la haga volver...');
             else g.say('—Tres fotocopias del DNI. No, el original no me vale: podría ser falso.', 'Funcionaria');
           },
           use: L2_USE },
-        { id: 'funcionaria', x: 51, y: 50, emoji: '👩‍💼', s: 8, label: 'Funcionaria', show: (g) => g.flag('back'),
+        { id: 'funcionaria', x: 47.5, y: 43.6, emoji: '👩‍💼', s: 11.5, behind: 'mostrador', label: 'Funcionaria', show: (g) => g.flag('back'),
           look(g) { g.say('—Tres fotocopias del DNI. No, el original no me vale: podría ser falso.', 'Funcionaria'); },
           use: L2_USE },
-        { id: 'maceta', x: 93, y: 72, emoji: '🪴', s: 6, label: 'Maceta',
+        { id: 'maceta', x: 6, y: 81.46, emoji: '🪴', s: 9.61, label: 'Maceta',
           look(g) {
             if (!g.flag('euroFound')) { g.set('euroFound'); g.say('Entre la tierra de la maceta brilla algo... ¡Una moneda de 1 €!'); g.give('euro'); }
             else g.say('Tierra. Y más tierra. Y una colilla de 2011.');
           } },
-        { id: 'cafetera', x: 80, y: 52, emoji: '☕', s: 8, label: 'Máquina de café',
+        { id: 'cafetera', x: 91.5, y: 37.5, sign: 'CAFÉ', sub: '☕', w: 7, z: 250, label: 'Máquina de café',
           look(g) { g.say('Cortado: 0,70 €. Solo acepta monedas de 1 €. Devuelve el cambio en monedas de 10 céntimos, como castigo.'); },
           use: {
             euro(g) { g.take('euro'); g.say('Clonc. Sale un cortado humeante y 0,30 € de cambio en monedas de 10 céntimos.'); g.give('cafe'); g.give('monedas'); },
             monedas(g) { g.say('La máquina no acepta monedas pequeñas. Solo las devuelve.'); },
           } },
-        { id: 'fotocopiadora', x: 25, y: 64, emoji: '🖨️', s: 9, label: 'Fotocopiadora',
+        { id: 'fotocopiadora', x: 20, y: 50.36, emoji: '🖨️', s: 6.7, on: 'muebleCopiadora', label: 'Fotocopiadora',
           look(g) { g.say('Fotocopiadora. 0,10 € por copia. Solo monedas de 10 céntimos. Tiene más atascos que la M-30 en hora punta.'); },
           use: {
             dni(g) {
@@ -605,9 +610,9 @@
             },
             euro(g) { g.say('Solo monedas de 10 céntimos. Un euro entero es demasiado dinero para esta máquina.'); },
           } },
-        { id: 'papelera', x: 40, y: 82, emoji: '🗑️', s: 5, label: 'Papelera',
+        { id: 'papelera', x: 30, y: 70.92, emoji: '🗑️', s: 5.71, label: 'Papelera',
           look(g) { g.say('Formularios del modelo 2023. Ya no valen: ahora es el modelo 2023-bis. Que es igual, pero con otro número.'); } },
-        { id: 'cola2', x: 66, y: 80, emoji: '🧓', s: 6, label: 'Señora esperando',
+        { id: 'cola2', x: 68, y: 57.02, emoji: '🧍‍♀️', s: 24.7, label: 'Señora esperando',
           look(g) { g.say('—Yo vengo cada día. La funcionaria vuelve cuando huele a café. Es como un gato, pero con trienios.', 'Señora'); } },
       ],
       hints: [
