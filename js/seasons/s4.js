@@ -789,7 +789,7 @@
         { kind: 'table', id: 'mesaCatering', l: 85.5, t: 54.25, w: 13, h: 15.75 },
         { emoji: '🥤', x: 96.5, y: 51.58, s: 3, on: 'mesaCatering' },
         { kind: 'partition', id: 'cordon', l: 14, t: 56.2, w: 31, h: 19.8, color: '#9aa1ab' },
-        { kind: 'counter', id: 'valla', l: 46.5, t: 57.85, w: 10, h: 24.15 },
+        { kind: 'partition', id: 'valla', l: 45, t: 56.2, w: 11.5, h: 19.8, color: '#9aa1ab' },
         { kind: 'bench', id: 'filaPublico', l: 61.5, t: 65.88, w: 24, h: 20.12, color: '#2f3542' },
         { kind: 'box', id: 'cajaBanderas', l: 4, t: 82.1, w: 10, h: 9.9, color: '#b58b5a' },
       ],
@@ -798,7 +798,7 @@
           look(g) { g.say('«FAROL — ¡Rotondas para todos!». La pancarta es reversible: por detrás pone «ALA — ¡Un lema para cada ocasión!». La imprenta es la misma. La consultora, también.'); } },
         { id: 'marcador', x: 14, y: 12, sign: 'LOCAL 0 · VISITANTE 0', sub: 'Aplausómetro', w: 18, label: 'Marcador del polideportivo',
           look(g) { g.say('El marcador hace de aplausómetro. Récord: 112 decibelios, el día que un candidato dijo «futuro» tres veces seguidas y regaló bocadillos.'); } },
-        { id: 'espejo', x: 7.75, y: 33.33, emoji: '🪞', s: 7.5, label: 'Espejo del camerino (con un pósit)',
+        { id: 'espejo', x: 7.75, y: 37.3, emoji: '🪞', s: 7.5, label: 'Espejo del camerino (con un pósit)',
           look(g) {
             g.doc('🪞 Pósit pegado en el espejo', `<div class="paper-note"><p><b>CORRECCIÓN DE ÚLTIMA HORA</b></p>
               <p>Lo de que «futuro» suene <b>tres</b> veces era para el mitin de ayer. Hoy, <b>DOS</b>. Ni una más ni una menos.</p>
@@ -842,9 +842,9 @@
               <li>La palabra «<b>gente</b>» tiene que salir <b>al menos una vez</b>. La gente quiere oír «gente».</li>
               <li>El <b>bocadillo</b>, como mucho, <b>una vez</b>. El catering lo comparten todos los partidos y no vamos a hacerles publicidad.</li></ol>`);
           } },
-        { id: 'catering', x: 90, y: 49.8, emoji: '🥖🥖', s: 5, on: 'mesaCatering', label: 'Mesa del catering',
-          look(g) { g.say('Bocadillos de calamares con una banderita de FAROL. Mañana, los mismos bocadillos llevarán la de ALA. El catering es lo único en lo que todos los partidos están de acuerdo.'); } },
-        { id: 'publico', x: 74.5, y: 57, emoji: '🙋‍♀️🙋‍♂️', s: 11.4, behind: 'filaPublico', label: 'Público',
+        { id: 'catering', x: 90, y: 49.8, emoji: '🥖🥖', s: 4.2, on: 'mesaCatering', label: 'Mesa del catering',
+          look(g) { g.say('Bocadillos de calamares (hoy con banderita de FAROL clavada). Mañana, los mismos bocadillos llevarán la de ALA. El catering es lo único en lo que todos los partidos están de acuerdo.'); } },
+        { id: 'publico', x: 74.25, y: 57.8, emoji: '🙋‍♀️🙋‍♂️', s: 10.5, behind: 'filaPublico', label: 'Público',
           look(g) { g.say('—Yo vengo a todos los mitines. A los de todos los partidos. Por el bocadillo y por el ambiente. A quién voto ya lo decidiré en el bocadillo número veinte.', 'Señor del público'); } },
         { id: 'canon', x: 61, y: 47.55, emoji: '🎉', s: 5, on: 'escenario', label: 'Cañón de confeti',
           look(g) { g.say('Un cañón de confeti cargado con papelitos naranjas. Si alguien lo dispara antes de tiempo, el candidato se queda sin final. Ha pasado. Dos veces.'); } },
