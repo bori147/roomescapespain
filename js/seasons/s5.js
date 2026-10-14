@@ -752,7 +752,7 @@
             if (!g.flag('mal')) { g.set('mal'); g.say('En el maletín: una foto de la toma de posesión que aún no ha ocurrido (optimismo), una foto de Michi y un táper de porras que te ha puesto la tía Remedios: «Para el primer día. De Porras del Trámite, que se note de dónde vienes».'); return; }
             g.say('Queda el táper de porras. Frías, pero con dignidad. Lo reservas para el microondas de la planta 3, que tiene una cola de 40 minutos.');
           } },
-        { id: 'terminal', x: 37, y: 43.88, emoji: '🖥️', s: 6, on: 'mostradorCAU', label: 'Terminal de autoservicio del CAU',
+        { id: 'terminal', x: 36.6, y: 43.88, emoji: '🖥️', s: 6, on: 'mostradorCAU', label: 'Terminal de autoservicio del CAU',
           look(g) {
             if (g.flag('tk')) return g.say('«Su incidencia INC-3906 ya está registrada. Tiempo estimado de resolución: entre 5 minutos y la jubilación.»', 'Terminal del CAU');
             g.input({
@@ -762,7 +762,7 @@
               ok: () => { g.set('tk'); g.say('Bip. «Incidencia INC-3906 registrada.» La impresora escupe un ticket. Recójalo en el mostrador del CAU.', 'Terminal del CAU'); g.give('ticket'); },
             });
           } },
-        { id: 'tecnico', x: 42.7, y: 44.88, emoji: '🧑‍💻', s: 10.5, behind: 'mostradorCAU', label: 'Técnico del CAU',
+        { id: 'tecnico', x: 44.2, y: 45.76, emoji: '🧑‍💻', s: 9.5, behind: 'mostradorCAU', label: 'Técnico del CAU',
           look(g) {
             if (g.flag('pcGiven')) return g.say('—Si no enciende, apáguelo y vuélvalo a encender. Si tampoco, abra otra incidencia.', 'Técnico del CAU');
             g.say('—Sin ticket, la incidencia no existe. Y si no existe, no le puedo dar un ordenador. Saque ticket en el terminal con su NRP.', 'Técnico del CAU');
