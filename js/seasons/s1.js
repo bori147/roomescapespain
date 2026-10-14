@@ -47,7 +47,7 @@
     renta2025: { emoji: '📂', name: 'Renta del año pasado', desc: '<b>Declaración IRPF 2025</b> (copia arrugada)<br>Casilla 505 · Base liquidable general: <b>21.340</b><br>Resultado: 3 € a devolver (todavía esperando).' },
     // Nivel 8
     informe: { emoji: '📋', name: 'Informe reconstruido', desc: 'Informe confidencial reconstruido: <i>«Clave de la caja fuerte: cuántas veces dice "no me consta" cada testigo, en este orden: tesorero, exministro y cuñado (una cifra por testigo).»</i>' },
-    pendriveB: { emoji: '💽', name: 'Pendrive de la Caja B', desc: 'Pendrive con la etiqueta «CONTABILIDAD B — NO ABRIR — BORRAR — NO, MEJOR NO».' },
+    pendriveB: { emoji: '💽', name: 'Pendrive de la Caja Ñ', desc: 'Pendrive con la etiqueta «CONTABILIDAD Ñ — NO ABRIR — BORRAR — NO, MEJOR NO».' },
     // Nivel 9
     disco: { emoji: '🎡', name: 'Disco de cifrado', desc: 'Un disco de cifrado antiguo: dos anillos con el alfabeto que giran. Seguro que sirve para descifrar algo (combínalo con lo que quieras descifrar).' },
     sobre: { emoji: '✉️', name: 'Sobre cifrado', desc: `Sobre lacrado: «PARA EL CIUDADANO — CIFRADO POR SU SEGURIDAD». Dentro, una línea:<br><code class="cipher">${CIPHER}</code>` },
@@ -924,7 +924,7 @@
       title: 'No me consta',
       place: 'Sala de Comisiones de Investigación',
       stars: 4,
-      intro: 'La comisión investiga el retraso de tu trámite. La presidenta exige encontrar la contabilidad de la misteriosa <b>Caja B</b>, y ha cerrado la sala con todos dentro.<br><br>Los testigos no recuerdan nada. Absolutamente nada.<br><br><b>Objetivo:</b> abre la caja fuerte y entrega su contenido a la presidenta.',
+      intro: 'La comisión investiga el retraso de tu trámite. La presidenta exige encontrar la contabilidad de la misteriosa <b>Caja Ñ</b>, y ha cerrado la sala con todos dentro.<br><br>Los testigos no recuerdan nada. Absolutamente nada.<br><br><b>Objetivo:</b> abre la caja fuerte y entrega su contenido a la presidenta.',
       outro: 'La comisión recibe el pendrive... que resulta estar formateado 35 veces. Se cierran los trabajos sin conclusiones, como es tradición. Queda un último paso: que el decreto que le afecta se publique en el BOE. Esta noche. A las 23:59.',
       scene: { wall: '#3f4b5b', floor: '#6e5a48', floorH: 36, pattern: 'wood' },
       decor: [
@@ -937,16 +937,16 @@
           look(g) { g.say('Comisión de investigación nº 47 de esta legislatura. Las 46 anteriores concluyeron que «no consta».'); } },
         { id: 'presidenta', x: 50, y: 34, emoji: '👩‍⚖️', s: 8, label: 'Presidenta de la comisión',
           look(g) {
-            g.say('—Esta comisión no se levantará hasta que aparezca la contabilidad de la Caja B. Nadie sale. Ni yo, y eso que tengo pádel.', 'Presidenta');
+            g.say('—Esta comisión no se levantará hasta que aparezca la contabilidad de la Caja Ñ. Nadie sale. Ni yo, y eso que tengo pádel.', 'Presidenta');
             if (!g.flag('docOK')) g.say('—Por cierto, alguien intentó triturar un documento antes de la sesión. La máquina se atascó. Qué mala suerte... para él.', 'Presidenta');
           },
           use: {
-            pendriveB(g) { g.take('pendriveB'); g.say('—¡La contabilidad de la Caja B! Se levanta la sesión... Un momento, ¿está formateado? Bueno, da igual: ya ha salido en los periódicos. Pueden irse.', 'Presidenta'); g.win(); },
+            pendriveB(g) { g.take('pendriveB'); g.say('—¡La contabilidad de la Caja Ñ! Se levanta la sesión... Un momento, ¿está formateado? Bueno, da igual: ya ha salido en los periódicos. Pueden irse.', 'Presidenta'); g.win(); },
             informe(g) { g.say('—Muy interesante, pero quiero el CONTENIDO de la caja, no instrucciones para abrirla.', 'Presidenta'); },
           } },
         { id: 'tesorero', x: 22, y: 64, emoji: '🧔', s: 7, label: 'Testigo: el tesorero',
           look(g) {
-            g.doc('🧔 Declaración del tesorero', `<p>—Señorías, lo digo claramente: no me consta. ¿La Caja B? No me consta. Yo me limitaba a llevar la contabilidad, y la contabilidad, francamente, no me consta. ¿Los sobres? Eran para felicitar la Navidad. ¿Que era julio? Pues no me consta.</p>`);
+            g.doc('🧔 Declaración del tesorero', `<p>—Señorías, lo digo claramente: no me consta. ¿La Caja Ñ? No me consta. Yo me limitaba a llevar la contabilidad, y la contabilidad, francamente, no me consta. ¿Las facturas del catering? Eran de la cena de Navidad. ¿Que era julio? Pues no me consta.</p>`);
           } },
         { id: 'exministro', x: 38, y: 66, emoji: '👴', s: 7, label: 'Testigo: el exministro',
           look(g) {

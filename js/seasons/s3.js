@@ -180,7 +180,7 @@
     // Traídos de la temporada 2 (y de la 1)
     nomina: { emoji: '📃', name: 'Nómina de la churrería', desc: '<b>Nómina de abril de 2028.</b> Empresa: <b>Porras del Trámite, S.L.</b> (Calle del Trámite 12, Villatrámite). Trabajador/a: tú, administrador/a. Firma por la empresa: tú. Firma el/la trabajador/a: tú también. Neto a percibir: <b>2.400 €</b> al mes. Bruto: más. Ilusión: menos.' },
     certificadoAEAT: { emoji: '✅', name: 'Certificado de estar al corriente', desc: '<b>CERTIFICADO</b>: «PORRAS DEL TRÁMITE, S.L.» se encuentra al corriente de sus obligaciones tributarias. Expedido en marzo de 2028, al salir de la inspección. Válido 12 meses o hasta la próxima ocurrencia normativa, lo que llegue antes. Lo llevas encima desde entonces, como un amuleto.' },
-    dni: { emoji: '🪪', name: 'DNI', desc: 'Tu DNI nº <b>07345189-R</b>, válido hasta el 01/10/2036. <b>Fecha de nacimiento: 20/10/1993.</b> Lo renovaste en 2026 con sangre, sudor y cita previa. Desde entonces lo enseñas con orgullo.' },
+    dni: { emoji: '🪪', name: 'DNI', desc: 'Tu DNI nº <b>12345181-X</b>, válido hasta el 01/10/2036. <b>Fecha de nacimiento: 20/10/1993.</b> Lo renovaste en 2026 con sangre, sudor y cita previa. Desde entonces lo enseñas con orgullo.' },
     // Nivel 1
     movil: { emoji: '📱', name: 'Tu móvil', desc: `💬 <b>Tu pareja:</b> «Repaso lo que hablamos: 1) Entre alquiler y comunidad (si no va incluida), <b>máximo 1.000 € al mes</b>. 2) Michi viene con nosotros: <b>tienen que admitir gatos</b>. 3) <b>Bajos no</b>, que Michi se escapa. 4) Si es un <b>tercero o más alto, con ascensor</b>, que tu espalda ya no está para subir la compra. 5) Para la entrada <b>solo tenemos lo que hay en la cuenta</b>, ni un euro más. ¡Suerte! Y trae porras, que dice Lucía que hoy le han salido de concurso 😘»<br>🏦 <b>App del banco:</b> saldo disponible <b>4.000,00 €</b>. <i>(La agencia lo quiere impreso. En papel. Como en 1995.)</i>` },
     carpeta: { emoji: '📁', name: 'Carpeta azul', desc: (g) => {
@@ -668,7 +668,7 @@
             dni(g) {
               if (g.flag('dniOK')) return g.say('—Ya tengo la fotocopia. Una. Con dos me sentiría un ladrón. Bueno, con dos le cobraría 4 €.', 'Borja (agente)');
               g.take('dni'); g.set('dniOK'); g.give('dni');
-              g.say(`—07345189-R... válido hasta 2036. Qué DNI más bonito, se nota que costó lo suyo. Fotocopia: 2 €. Tenga, se lo devuelvo.${g.flag('dossierOK') ? ' Ya puede elegir piso en el ordenador.' : ''}`, 'Borja (agente)');
+              g.say(`—12345181-X... válido hasta 2036. Qué DNI más bonito, se nota que costó lo suyo. Fotocopia: 2 €. Tenga, se lo devuelvo.${g.flag('dossierOK') ? ' Ya puede elegir piso en el ordenador.' : ''}`, 'Borja (agente)');
             },
             carpeta(g) {
               const falta = Object.keys(CARPETA_PARTES).filter((k) => !(g.flag('carpIn') || []).includes(k)).map((k) => CARPETA_PARTES[k]);
@@ -1144,7 +1144,7 @@
             m600Modal(g);
           },
           use: {
-            dni(g) { g.set('ident'); g.say('«Identificado/a: 07345189-R. Fecha de nacimiento: 20/10/1993. Le consta una inspección en 2028. Bienvenido/a otra vez, contribuyente.»', 'Terminal'); },
+            dni(g) { g.set('ident'); g.say('«Identificado/a: 12345181-X. Fecha de nacimiento: 20/10/1993. Le consta una inspección en 2028. Bienvenido/a otra vez, contribuyente.»', 'Terminal'); },
           } },
         { id: 'cartera', x: 12, y: 80, emoji: '👛', s: 5, label: 'Tu cartera',
           look(g) {

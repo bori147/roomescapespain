@@ -38,14 +38,14 @@
   // =========================================================
   const ITEMS = {
     // De la Temporada 1
-    dni: { emoji: '🪪', name: 'DNI nuevo', desc: '<b>DOCUMENTO NACIONAL DE IDENTIDAD</b><br>Nº <b>07345189-R</b> · Válido hasta el <b>01/10/2036</b><br>Te costó diez trámites, una investidura y un decreto publicado a las 23:59. En la foto sales con cara de haber hecho cola. Porque la hiciste.' },
+    dni: { emoji: '🪪', name: 'DNI nuevo', desc: '<b>DOCUMENTO NACIONAL DE IDENTIDAD</b><br>Nº <b>12345181-X</b> · Válido hasta el <b>01/10/2036</b><br>Te costó diez trámites, una investidura y un decreto publicado a las 23:59. En la foto sales con cara de haber hecho cola. Porque la hiciste.' },
     // Nivel 1
     plan: { emoji: '📊', name: 'Plan de empresa', desc: '<b>Plan de empresa — Churrería</b> (previsión de facturación)<br>· Churros y porras para llevar, en cucurucho: <b>25 %</b><br>· Chocolate con churros servido en mesa: <b>35 %</b><br>· Chocolate para llevar, en vaso: <b>15 %</b><br>· Cafés en barra: <b>20 %</b><br>· Patatas fritas de bolsa, para llevar: <b>5 %</b><br><i>Beneficio previsto: «mucho». Firmado: tu cuñado.</i>' },
     contrato: { emoji: '🏠', name: 'Contrato de alquiler', desc: '<b>Contrato de alquiler de local comercial</b><br>Dirección: <b>Calle del Trámite, 12, bajo, Villatrámite</b><br>Renta: <b>900 €/mes</b>. Fianza: dos meses. Aval: tu alma.<br><i>Cláusula 14: «El arrendatario renuncia a quejarse del olor a fritanga del vecino, que es usted».</i>' },
     modelo036: { emoji: '📄', name: 'Modelo 036 (en blanco)', desc: 'Modelo 036, «Declaración censal de alta, modificación y baja». 23 páginas. Hay que rellenarlo en algún sitio con un bolígrafo que funcione.' },
     modelo037: { emoji: '📃', name: 'Modelo 037', desc: 'Modelo 037, «Declaración censal SIMPLIFICADA». Solo 4 páginas. Demasiado bonito para ser verdad.' },
     modelo036Relleno: { emoji: '📝', name: 'Modelo 036 relleno', desc: 'Tu modelo 036, relleno y firmado. NIF, casilla, epígrafe y domicilio. Lo miras con el orgullo de quien ha entendido un impreso oficial.' },
-    copia036: { emoji: '📑', name: 'Copia sellada del 036', desc: '<b>Declaración censal — Copia para el interesado</b><br>NIF: <b>07345189-R</b> · Causa: <b>111</b> (alta)<br>Epígrafe del IAE: <b>644.6</b><br>Domicilio de la actividad: Calle del Trámite, 12, bajo, Villatrámite<br>Registro de entrada: 11/01/2027.<br><i>«Consérvela. Se la pedirán.» (Se la pedirán.)</i>' },
+    copia036: { emoji: '📑', name: 'Copia sellada del 036', desc: '<b>Declaración censal — Copia para el interesado</b><br>NIF: <b>12345181-X</b> · Causa: <b>111</b> (alta)<br>Epígrafe del IAE: <b>644.6</b><br>Domicilio de la actividad: Calle del Trámite, 12, bajo, Villatrámite<br>Registro de entrada: 11/01/2027.<br><i>«Consérvela. Se la pedirán.» (Se la pedirán.)</i>' },
     // Nivel 2
     prevision: { emoji: '📈', name: 'Previsión de ingresos', desc: '<b>Previsión de ingresos de la churrería</b><br>Ventas mensuales previstas: <b>2.900 €</b><br><i>(Calculado a ojo. Con optimismo. Mucho optimismo.)</i>' },
     cocheLetra: { emoji: '🚗', name: 'Letra del coche', desc: '<b>Préstamo del coche</b>: <b>300 €/mes</b>.<br>Es el coche de los domingos: lo usas para ir a la playa y al pueblo en agosto. En la churrería no ha entrado nunca (no cabe).' },
@@ -109,7 +109,7 @@
       buttons: [{ label: 'Cancelar' }, {
         label: '✍️ Firmar el 036', cls: 'primary', onClick(close, el) {
           const v = ['#s2-causa', '#s2-epi', '#s2-dom'].map((s) => el.querySelector(s).value);
-          if (alnum(el.querySelector('#s2-nif1').value) !== '07345189R') {
+          if (alnum(el.querySelector('#s2-nif1').value) !== '12345181X') {
             g.sfx('bad');
             msgIn(el, 's2-m1')('El NIF del declarante no coincide con el de tu DNI. Hacienda lo cruza todo; hasta los dedos.', true);
             return false;
@@ -156,7 +156,7 @@
   function l2Terminal(g) {
     g.input({
       title: '🖥️ Import@ss — Informe de vida laboral',
-      text: 'DNI 07345189-R leído. Introduzca ahora su número de afiliación a la Seguridad Social (12 cifras, sin barras).',
+      text: 'DNI 12345181-X leído. Introduzca ahora su número de afiliación a la Seguridad Social (12 cifras, sin barras).',
       numeric: true, maxLen: 12,
       check: (v) => v === '280347121534',
       failText: () => 'Número de afiliación no encontrado. ¿Seguro que es usted quien dice ser? Míralo en tu tarjeta.',
@@ -755,14 +755,14 @@
             dni(g) {
               if (g.flag('ident')) return g.say('—Ya le he identificado. Dos veces sería acoso.', 'Funcionario');
               g.take('dni'); g.set('ident'); g.sfx('stamp');
-              g.say('—A ver... 07345189-R, válido hasta el 1 de octubre de 2036. Nuevecito: todavía huele a decreto. Le hago una fotocopia. Una sola: aquí somos modernos.', 'Funcionario');
+              g.say('—A ver... 12345181-X, válido hasta el 1 de octubre de 2036. Nuevecito: todavía huele a decreto. Le hago una fotocopia. Una sola: aquí somos modernos.', 'Funcionario');
               g.say('—Tome su DNI. No lo pierda: en este país, sin DNI no se puede ni abrir una churrería. Bueno, con DNI tampoco, pero ya lo irá viendo.', 'Funcionario');
               g.give('dni');
             },
             modelo036Relleno(g) {
               if (!g.flag('ident')) return g.say('—Muy bonito el impreso. ¿Y usted quién es? Identifíquese primero: DNI original. El NIF del impreso lo puede haber escrito cualquiera.', 'Funcionario');
               g.take('modelo036Relleno');
-              g.say('—NIF 07345189-R, casilla 111, epígrafe 644.6, local de la calle del Trámite, 12... Impecable. Es usted el primer churrero que no se da de alta como «belén viviente». Tenga su copia sellada. Queda dado de alta.', 'Funcionario');
+              g.say('—NIF 12345181-X, casilla 111, epígrafe 644.6, local de la calle del Trámite, 12... Impecable. Es usted el primer churrero que no se da de alta como «belén viviente». Tenga su copia sellada. Queda dado de alta.', 'Funcionario');
               g.give('copia036');
               g.win();
             },
@@ -819,7 +819,7 @@
       hints: [
         'Enséñale tu DNI al funcionario: sin identificarte no te atiende. En tu mochila tienes el plan de empresa y el contrato del local. El expositor tiene dos impresos: lee la guía antes de elegir.',
         'El NIF es el número de tu DNI. El epígrafe es el de la actividad que más factura, pero sumando antes todo lo que cae en un mismo epígrafe (mira el tomo de Tarifas: el chocolate en mesa y el chocolate para llevar no van al mismo). El domicilio es el del local. Rellena el impreso en la mesa.',
-        'Usa el DNI con el funcionario. Coge el 036 (el 037 ya no existe) y úsalo en la mesa: NIF 07345189-R, casilla 111, epígrafe 644.6 (25 % + 15 % + 5 % = 45 %, más que el 35 % del 676) y Calle del Trámite, 12. Entrega el 036 relleno al funcionario.',
+        'Usa el DNI con el funcionario. Coge el 036 (el 037 ya no existe) y úsalo en la mesa: NIF 12345181-X, casilla 111, epígrafe 644.6 (25 % + 15 % + 5 % = 45 %, más que el 35 % del 676) y Calle del Trámite, 12. Entrega el 036 relleno al funcionario.',
       ],
     },
 
@@ -866,7 +866,7 @@
             copia036(g) {
               if (g.flag('censo')) return g.say('—Ya la he visto. Y la he fotocopiado. Y he fotocopiado la fotocopia, por si acaso.', 'Funcionaria');
               g.set('censo'); g.sfx('stamp');
-              g.say('—NIF 07345189-R, epígrafe 644.6, Calle del Trámite, 12, Villatrámite. Existe usted para Hacienda: ya puede existir para nosotros. Quédese la copia, que es suya. Ahora, vida laboral y cuota.', 'Funcionaria');
+              g.say('—NIF 12345181-X, epígrafe 644.6, Calle del Trámite, 12, Villatrámite. Existe usted para Hacienda: ya puede existir para nosotros. Quédese la copia, que es suya. Ahora, vida laboral y cuota.', 'Funcionaria');
             },
             vidaLaboral: l2Cuota,
             contrato(g) { g.say('—El contrato del local no lo necesito. Lo que pone dentro, a lo mejor sí: para sus cuentas.', 'Funcionaria'); },
@@ -884,7 +884,7 @@
               if (g.has('vidaLaboral')) return g.say('Ya imprimiste tu vida laboral. El lector te reconoce igual, por cariño.');
               if (g.flag('dniLeido')) return l2Terminal(g);
               g.set('dniLeido'); g.sfx('ok');
-              g.say('El lector pita: «07345189-R. Válido hasta 2036. Bienvenido/a». Es la primera máquina de la Administración que te reconoce a la primera. Casi lloras.', 'Terminal Import@ss');
+              g.say('El lector pita: «12345181-X. Válido hasta 2036. Bienvenido/a». Es la primera máquina de la Administración que te reconoce a la primera. Casi lloras.', 'Terminal Import@ss');
               l2Terminal(g);
             },
           } },
@@ -974,7 +974,7 @@
             dni(g) {
               if (g.flag('ident')) return g.say('—Ya le tengo fichado. En el buen sentido. Creo.', 'Registradora');
               g.set('ident'); g.sfx('stamp');
-              g.say('—07345189-R... Le hago fotocopia por las dos caras. ¿Ve? Recta. Así se hace. Ya consta usted como solicitante: cada solicitud que entregue irá a su nombre. Tome su DNI.', 'Registradora');
+              g.say('—12345181-X... Le hago fotocopia por las dos caras. ¿Ve? Recta. Así se hace. Ya consta usted como solicitante: cada solicitud que entregue irá a su nombre. Tome su DNI.', 'Registradora');
             },
             solicitudRellena(g) {
               if (!g.flag('ident')) return g.say('—¿Y quién la solicita? ¿El espíritu santo? Identifíquese primero: DNI original.', 'Registradora');
@@ -1085,7 +1085,7 @@
             dni(g) {
               if (g.flag('dniIn')) return g.say('—Ya le he identificado. Sigue usted siendo usted, ¿verdad?', 'Notario');
               g.set('dniIn'); g.sfx('stamp');
-              g.say('—07345189-R, válido hasta 2036. Comparece usted, «a quien identifico por su documento nacional de identidad», como diremos en la escritura. Bonita foto. Se le ve cara de haber pedido cita previa.', 'Notario');
+              g.say('—12345181-X, válido hasta 2036. Comparece usted, «a quien identifico por su documento nacional de identidad», como diremos en la escritura. Bonita foto. Se le ve cara de haber pedido cita previa.', 'Notario');
             },
           } },
         { id: 'oficial', x: 16, y: 58, emoji: '👩‍💼', s: 7, label: 'Oficial de la notaría',
@@ -1779,7 +1779,7 @@
     subtitle: 'Abrir una churrería. Qué podría salir mal.',
     badge: 'Emprendedor',
     emoji: '💼',
-    intro: 'Tras diez trámites, una investidura y un decreto publicado a las 23:59, por fin tienes tu DNI nuevo: 07345189-R, válido hasta 2036. Ahora quieres usarlo para algo grande: abrir una churrería en Villatrámite. Hacienda, la Seguridad Social, el Registro, la notaría, el Ayuntamiento y dos inspecciones te separan de freír la primera porra en paz. Guarda cada papel que te den: te lo volverán a pedir.',
+    intro: 'Tras diez trámites, una investidura y un decreto publicado a las 23:59, por fin tienes tu DNI nuevo: 12345181-X, válido hasta 2036. Ahora quieres usarlo para algo grande: abrir una churrería en Villatrámite. Hacienda, la Seguridad Social, el Registro, la notaría, el Ayuntamiento y dos inspecciones te separan de freír la primera porra en paz. Guarda cada papel que te den: te lo volverán a pedir.',
     items: ITEMS,
     levels: LEVELS,
     ending: {

@@ -8,14 +8,14 @@ Todas las temporadas cuentan la vida del **mismo protagonista** (sin nombre ni g
 | Dato | Valor |
 |---|---|
 | Ciudad | **Villatrámite** (otras localidades pueden aparecer como sitios de paso) |
-| DNI del protagonista | **07345189-R**, renovado en octubre de 2026, **válido hasta el 01/10/2036** |
+| DNI del protagonista | **12345181-X**, renovado en octubre de 2026, **válido hasta el 01/10/2036** |
 | Organismo-chiste recurrente | Ministerio de Asuntos Pendientes |
 
 ## Línea temporal
 
 | Temporada | Cuándo | Qué pasa | Con qué termina (lo que se lleva a la siguiente) |
 |---|---|---|---|
-| **T1 · El DNI** | Octubre 2026 | Renueva el DNI tras diez trámites. | 🪪 DNI nuevo (07345189-R, válido hasta 2036). |
+| **T1 · El DNI** | Octubre 2026 | Renueva el DNI tras diez trámites. | 🪪 DNI nuevo (12345181-X, válido hasta 2036). |
 | **T2 · Hazte autónomo** | 2027 – marzo 2028 | Abre una churrería: **Porras del Trámite, S.L.**, en **Calle del Trámite 12, Villatrámite**. Socios: **tía Remedios** y **cuñado Paco**. Empleada: **Lucía**, la churrera. Epígrafe IAE 644.6. | 📜 Certificado de estar al corriente con Hacienda; la churrería funciona. La licencia definitiva llega «con fecha del día de tu jubilación». |
 | **T3 · Mi casa es un expediente** | 2028 – 2029 | Sigue llevando la churrería (es administrador/a de la S.L.: sus ingresos salen de ahí). Con su **pareja** y el gato **Michi** busca piso y acaba comprando el **3ºB de la C/ del Olvido 14** (finca **4478**), con hipoteca a 30 años. | 🔑 Llaves de casa / escritura del piso: ya vive en C/ del Olvido 14, 3ºB. |
 | **T4 · Campaña electoral** | Siguientes elecciones autonómicas (≈ 2030) | La notificación de mesa electoral llega **a su piso de la C/ del Olvido 14**; su mesa se deduce de esa dirección: **mesa 03-013-C**. Partidos ficticios: ALA, FAROL, NIDAC, CAÑA, UVA, TIC, ZIGZAG, ASPA (Cortes de Ventanilla Alta). | 🗳️ Elecciones anticipadas y otra carta: le vuelve a tocar mesa. Harto/a de la política, decide cambiar de bando. |

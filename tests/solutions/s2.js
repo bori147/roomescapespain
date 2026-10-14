@@ -6,7 +6,7 @@ module.exports = [
     h.use('dni', 'funcionario');
     h.click('expositor'); h.choose('modelo 036');
     h.use('modelo036', 'mesa');
-    h.setValue('#s2-nif1', '07345189-R');
+    h.setValue('#s2-nif1', '12345181-X');
     h.setValue('#s2-causa', '111'); h.setValue('#s2-epi', '644.6'); h.setValue('#s2-dom', 'local');
     h.btn('Firmar el 036');
     h.use('modelo036Relleno', 'funcionario');

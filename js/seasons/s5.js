@@ -31,7 +31,7 @@
   // =========================================================
   //  OBJETOS
   // =========================================================
-  const DNI_DESC = 'DNI nº <b>07345189-R</b>. PACIENTE SUFRIDO/A, CIUDADANO/A. <b>Válido hasta el 01-10-2036.</b> Lo renovaste en octubre de 2026, con sangre, sudor y cita previa. Desde entonces no te has separado de él.';
+  const DNI_DESC = 'DNI nº <b>12345181-X</b>. PACIENTE SUFRIDO/A, CIUDADANO/A. <b>Válido hasta el 01-10-2036.</b> Lo renovaste en octubre de 2026, con sangre, sudor y cita previa. Desde entonces no te has separado de él.';
   const ITEMS = {
     // Traídos de temporadas anteriores
     dni: { emoji: '🪪', name: 'Tu DNI', desc: DNI_DESC },
@@ -43,7 +43,7 @@
     impreso: { emoji: '📋', name: 'Impreso L-2 (en blanco)', desc: 'Impreso L-2: «Solicitud de material fungible de escritura (lápiz)». Campo obligatorio: <b>nº de opositor</b>. Al pie: «Rellénese con bolígrafo: el lápiz se borra».' },
     impresoOk: { emoji: '🗒️', name: 'Impreso L-2 relleno', desc: 'Impreso L-2 relleno a bolígrafo con tu número de opositor. Canjeable por un (1) lápiz.' },
     lapiz: { emoji: '✏️', name: 'Lápiz del nº 2', desc: 'Un lápiz del nº 2, con punta. Te ha costado un impreso, un bolígrafo y diez minutos de examen.' },
-    apto: { emoji: '🎓', name: 'Certificado de APTO', desc: 'Certificado del tribunal calificador: <b>APTO/A</b>. Opositor/a nº <b>1147</b> · DNI 07345189-R. Debajo, tres sellos más: segundo, tercer y cuarto ejercicio. Sin este papel no se toma posesión de nada.' },
+    apto: { emoji: '🎓', name: 'Certificado de APTO', desc: 'Certificado del tribunal calificador: <b>APTO/A</b>. Opositor/a nº <b>1147</b> · DNI 12345181-X. Debajo, tres sellos más: segundo, tercer y cuarto ejercicio. Sin este papel no se toma posesión de nada.' },
     // Nivel 2
     ticket: { emoji: '🎫', name: 'Ticket INC-3906', desc: 'Ticket del CAU: «Incidencia INC-3906. El usuario no tiene ordenador. Prioridad: baja. Causa probable: el usuario».' },
     portatil: { emoji: '💻', name: 'Portátil sin batería', desc: 'Un portátil de 2014 con pegatina del CAU. Batería: 0 %. Sin cargador: «el cargador, en el almacén», dijo el técnico, como quien dice «en Narnia».' },
@@ -615,7 +615,7 @@
               if (g.flag('ident')) return g.say('—Ya le he identificado. Dos veces sería sospechoso.', 'Presidenta del tribunal');
               g.set('ident');
               g.take('dni');
-              g.say('—07345189-R... válido hasta 2036. Correcto. El DNI se queda en mi mesa hasta que me entregue la hoja: es el protocolo antichuletas. Aquí tiene el cuadernillo y la hoja de respuestas. Tiene 90 minutos. Bueno, 87. Y no copie del de al lado: copia mal.', 'Presidenta del tribunal');
+              g.say('—12345181-X... válido hasta 2036. Correcto. El DNI se queda en mi mesa hasta que me entregue la hoja: es el protocolo antichuletas. Aquí tiene el cuadernillo y la hoja de respuestas. Tiene 90 minutos. Bueno, 87. Y no copie del de al lado: copia mal.', 'Presidenta del tribunal');
               g.say('—Ah, y en la lista definitiva hay tres aspirantes con su mismo nombre. Su número de opositor es el que corresponde a SU domicilio exacto. Si no se lo sabe de memoria, vendrá en cualquier carta oficial que le hayan mandado.', 'Presidenta del tribunal');
               g.give('cuadernillo'); g.give('hoja');
             },
@@ -854,7 +854,7 @@
           use: {
             apto(g) {
               g.take('apto'); g.set('acred');
-              g.say('—APTO/A, opositor/a 1147, DNI 07345189-R... Coincide con el BOE. Acreditado/a. Me lo quedo para su expediente personal, donde descansará en paz.', 'Subsecretaria');
+              g.say('—APTO/A, opositor/a 1147, DNI 12345181-X... Coincide con el BOE. Acreditado/a. Me lo quedo para su expediente personal, donde descansará en paz.', 'Subsecretaria');
               if (!(g.flag('sentado') && g.flag('pc'))) g.say('—Ahora, su puesto: silla y ordenador operativo en su mesa. Luego hablamos.', 'Subsecretaria');
             },
             dni(g) { g.say('—Sí, sí, ya veo que es usted. Pero el DNI no dice que haya aprobado nada. Quiero el certificado de APTO.', 'Subsecretaria'); },
@@ -870,7 +870,7 @@
       hints: [
         'Tu NRP sale en el BOE, pero hay cuatro personas que se llaman como tú. El DNI publicado está enmascarado: compara con el tuyo (lo traes en el inventario). A la Subsecretaria tendrás que entregarle el certificado de APTO.',
         'El terminal del CAU te da un ticket para el técnico. El conserje cambia la llave del almacén por una grapadora, y la grapadora está en la cajonera del compañero: mira su respuesta automática y el calendario.',
-        'Tu DNI 07345189: cifras 4.ª a 7.ª = 4518 → NRP 3906. El compañero vuelve el martes 21 (el lunes 20 es festivo) → cajonera 2109.',
+        'Tu DNI 12345181: cifras 4.ª a 7.ª = 4518 → NRP 3906. El compañero vuelve el martes 21 (el lunes 20 es festivo) → cajonera 2109.',
         'Solución: terminal 3906 → ticket al técnico → cajonera 2109 → grapadora al conserje → llave en el almacén (cargador) → silla PAT-0317-B → cargador + portátil → silla y portátil a la mesa → certificado de APTO a la Subsecretaria → Subsecretaria: «Juro…» o «Prometo…» con la fórmula completa.',
       ],
     },
@@ -1567,7 +1567,7 @@
           use: {
             dni(g) {
               if (!g.flag('firmado')) return g.say('—Todavía no ha firmado nada. Guárdeselo, que se lo voy a pedir enseguida.', 'Secretario de Estado');
-              g.say('El Secretario de Estado coge tu DNI. 07345189-R. Lo mira. Lo vuelve a mirar. Mira el calendario de la pared: jueves, 2 de octubre de 2036. Carraspea...', 'Secretario de Estado');
+              g.say('El Secretario de Estado coge tu DNI. 12345181-X. Lo mira. Lo vuelve a mirar. Mira el calendario de la pared: jueves, 2 de octubre de 2036. Carraspea...', 'Secretario de Estado');
               g.win();
             },
             rdAprobado(g) { g.say('—Eso acredita su cargo, no su identidad. Para su identidad, el DNI. Como todo el mundo.', 'Secretario de Estado'); },
@@ -1601,7 +1601,7 @@
       title: '¡Has llegado a lo más alto del Estado!',
       html: `<p>Firmas el <b>Decreto de Simplificación Total</b>. Quedan abolidas las colas, las ventanillas, los impresos por triplicado y las fotocopias compulsadas. Durante tres segundos, el país entero respira.</p>
         <p>Entonces el Secretario de Estado, que sostiene tu DNI para validar la firma, carraspea y te lo enseña:</p>
-        <div class="s5-end-card"><div><small>DNI Nº</small><b>07345189-R</b></div><div><small>VÁLIDO HASTA</small><b class="s5-red">01 10 2036</b></div><div><small>HOY ES</small><b>02 10 2036</b></div></div>
+        <div class="s5-end-card"><div><small>DNI Nº</small><b>12345181-X</b></div><div><small>VÁLIDO HASTA</small><b class="s5-red">01 10 2036</b></div><div><small>HOY ES</small><b>02 10 2036</b></div></div>
         <p class="s5-end-q">—Vaya. Caducó ayer. No se preocupe: puede renovarlo sin problema. Solo necesita <b>cita previa</b>.</p>
         <p>En toda España no queda ni una desde 2019. La próxima disponible: <b>14 de marzo de 2039, en Ceuta</b>.</p>
         <p class="small">Fin de la Temporada 5 (y, de momento, del juego). Gracias por su paciencia, que no por su comprensión.</p>`,

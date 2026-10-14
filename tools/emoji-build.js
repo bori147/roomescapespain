@@ -23,6 +23,32 @@ const code = (g) => [...g].map((c) => c.codePointAt(0).toString(16).padStart(4, 
 // Mismo orden de búsqueda que GameUtils.emojiKey (js/core.js)
 const keyFor = (g) => { const c = code(g); return [c, c.replace(/-fe0f/g, ''), c + '-fe0f'].find((k) => have.has(k)) || null; };
 
+const LICENCIA = `Imágenes: Fluent Emoji (estilo 3D) — https://github.com/microsoft/fluentui-emoji
+Paquete de origen: @lobehub/fluent-emoji-3d (MIT) — https://github.com/lobehub/fluent-emoji
+
+MIT License
+
+Copyright (c) Microsoft Corporation.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+`;
+
 const seg = new Intl.Segmenter('es', { granularity: 'grapheme' });
 const found = new Map(); const missing = new Set();
 for (const f of SCAN) {
@@ -83,8 +109,6 @@ async function measure(list) {
     `/* Generado por tools/emoji-build.js — no editar a mano. Imágenes: Fluent Emoji 3D (Microsoft, MIT).\n` +
     `   box: parte visible de cada imagen en px de 256 → [margen inferior, borde izquierdo, borde derecho]. */\n` +
     `window.EMOJI_IMG = { base: 'img/emoji/', keys: ${JSON.stringify(keys.join(' '))},\n  box: ${JSON.stringify(box)} };\n`);
-  fs.writeFileSync(path.join(OUT, 'LICENCIA.txt'),
-    'Imágenes: Fluent Emoji (estilo 3D) © Microsoft Corporation — MIT License — https://github.com/microsoft/fluentui-emoji\n' +
-    'Paquete de origen: @lobehub/fluent-emoji-3d (MIT) — https://github.com/lobehub/fluent-emoji\n');
+  fs.writeFileSync(path.join(OUT, 'LICENCIA.txt'), LICENCIA);
   console.log(`${keys.length} imágenes (${Math.round(bytes / 1024)} KB) en img/emoji/` + (missing.size ? ` · sin imagen (se ven como emoji del sistema): ${[...missing].join(' ')}` : ''));
 })();
