@@ -974,10 +974,15 @@
         { kind: 'counter', id: 'recepcionMueble', l: 23, t: 49.34, w: 14, h: 23.66 },
         { kind: 'table', id: 'mesaFirmas', l: 39, t: 56.1, w: 40, h: 16.9 },
         { kind: 'desk', id: 'mesaOficial', l: 81, t: 56.1, w: 17, h: 16.9 },
-        { kind: 'bench', id: 'sillas', l: 42, t: 55.94, w: 35.5, h: 24.06, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla1', l: 41.52, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla2', l: 48.96, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla3', l: 56.4, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla4', l: 63.84, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla5', l: 71.28, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
+        { emoji: '📑', x: 48.44, y: 53.17, s: 3.3, on: 'mesaFirmas' },
       ],
       hotspots: [
-        { id: 'notaria', x: 67, y: 49.04, emoji: '👩‍⚖️', s: 10.08, behind: 'mesaFirmas', label: 'Doña Leocadia, notaria',
+        { id: 'notaria', x: 67, y: 50, emoji: '👩‍⚖️', s: 9, behind: 'mesaFirmas', label: 'Doña Leocadia, notaria',
           look(g) {
             if (!g.flag('docsOK')) return g.say('—No firmamos nada hasta que mi oficial tenga toda la documentación. Y yo firmo la última, como siempre. Es lo único que me gusta de este oficio.', 'Notaria');
             if (!g.flag('chequeOK')) return g.say('—Falta el cheque al vendedor. Calcúlelo bien: aquí todo el mundo cuenta, y el señor Anselmo, dos veces.', 'Notaria');
@@ -992,7 +997,7 @@
             g.set('borr'); g.give('borrador');
             g.say('—Aquí tiene el borrador de la escritura. Léalo bien: luego la notaria lo lee en voz alta y nadie escucha.', 'Recepcionista');
           } },
-        { id: 'oficial', x: 89, y: 48.82, emoji: '🧑‍💻', s: 8.64, behind: 'mesaOficial', label: 'Oficial de la notaría',
+        { id: 'oficial', x: 89.2, y: 47.97, emoji: '🧑‍💻', s: 9.6, behind: 'mesaOficial', label: 'Oficial de la notaría',
           look(g) {
             if (g.flag('docsOK')) return g.say('—Documentación completa. Ahora el cheque al vendedor, en el talonario de la mesa.', 'Oficial');
             const need = { certCargas: 'la certificación de cargas del Registro', ofertaVinc: 'la oferta vinculante de su hipoteca (la notaria tiene que hacer el acta de transparencia)', certSaldo: 'el certificado de saldo pendiente de la hipoteca del vendedor (se lo da su banco)', certComunidad: 'el certificado de deudas con la comunidad (llame al administrador)', reciboIBI: 'el último recibo del IBI (lo tendrá el vendedor... o quien mande en casa)' };
@@ -1005,26 +1010,26 @@
             if (d.length === 5) { g.set('docsOK'); g.sfx('stamp'); g.say('—¡Completo! Ahora extienda el cheque al vendedor en el talonario. Lea bien la forma de pago del borrador... y su nota simple, que para eso la trae.', 'Oficial'); }
             else g.say(`—Recibido. Van ${d.length} de 5.`, 'Oficial');
           }])) },
-        { id: 'b1', x: 44.72, y: 52.05, emoji: '🧔', s: 5.45, behind: 'sillas', label: 'Apoderado del banco del vendedor',
+        { id: 'b1', x: 59.6, y: 54.73, emoji: '🧔', s: 6.2, behind: 'silla3', label: 'Apoderado del banco del vendedor',
           look(g) {
             if (!g.flag('saldoT')) { g.set('saldoT'); g.give('certSaldo'); g.say('—Traigo el certificado de saldo pendiente: 61.420 €. Tome, para el oficial.', 'Apoderado (banco del vendedor)'); }
             g.say('—Yo firmo <b>antes que el vendedor</b>. Nadie vende mi garantía sin que yo la cancele primero. Antes, ¿eh? Inmediatamente o no, me da igual, pero antes.', 'Apoderado (banco del vendedor)');
           } },
-        { id: 'vendedor', x: 52.16, y: 52.05, emoji: '👴', s: 5.45, behind: 'sillas', label: 'Don Anselmo, el vendedor',
+        { id: 'vendedor', x: 52.16, y: 54.73, emoji: '👴', s: 6.2, behind: 'silla2', label: 'Don Anselmo, el vendedor',
           look(g) {
             g.say('—¿El recibo del IBI? Eso lo lleva mi mujer, que es la que manda. Y otra cosa: <b>mi mujer firma antes que el comprador</b>, que si no, luego el comprador se arrepiente y ella se enfada.', 'Don Anselmo');
           } },
-        { id: 'conyuge', x: 59.6, y: 52.05, emoji: '👵', s: 5.45, behind: 'sillas', label: 'Doña Visitación, cónyuge del vendedor',
+        { id: 'conyuge', x: 44.72, y: 54.73, emoji: '👵', s: 6.2, behind: 'silla1', label: 'Doña Visitación, cónyuge del vendedor',
           look(g) {
             if (!g.flag('ibiT')) { g.set('ibiT'); g.give('reciboIBI'); g.say('—El recibo del IBI, aquí lo tengo, en el bolso. Pagado, que en esta casa se paga todo... salvo la comunidad y Hacienda.', 'Doña Visitación'); }
             g.say('—Yo firmo <b>pegadita a mi marido: justo antes o justo después</b>. Y <b>nunca justo después de un banco</b>, que me da alergia.', 'Doña Visitación');
           } },
-        { id: 'b2', x: 73.9, y: 53.35, emoji: '👩‍💼', s: 8.6, behind: 'sillas', z: 110, label: 'Apoderada de tu banco',
+        { id: 'b2', x: 74.48, y: 56.6, emoji: '👩‍💼', s: 10.4, behind: 'silla5', label: 'Apoderada de tu banco',
           look(g) { g.say('—Yo firmo la hipoteca <b>justo después del comprador</b>. Ni antes, ni dos puestos después: justo después. Es lo que dice el protocolo, y el protocolo soy yo. ¿La oferta vinculante? Désela al oficial: la notaria tiene que levantar el acta de transparencia. Se llama así, pero es opaca.', 'Apoderada (tu banco)'); },
           use: { ofertaVinc(g) { g.say('—A mí no, al oficial. Yo solo firmo. Y cobro.', 'Apoderada (tu banco)'); } } },
         { id: 'agente', x: 12.1, y: 55.54, emoji: '🧍', s: 24.14, label: 'Agente inmobiliaria',
           look(g) { g.say('—Yo también firmo, ¿eh? Por si acaso. Para que quede claro que esta venta es mía y que mi factura del 3 % + IVA también.', 'Agente inmobiliaria'); } },
-        { id: 'tarjetas', x: 89.5, y: 32.93, emoji: '📇', s: 5, label: 'Corcho con tarjetas',
+        { id: 'tarjetas', x: 89.5, y: 32.93, emoji: '🗒️', s: 5, label: 'Corcho con tarjetas',
           look(g) { g.say('Entre tarjetas de cerrajeros y de un tarotista, una dice: «Fincas Morosas S.L. — Administración de comunidades. Tel. <b>555 01 47</b>».'); } },
         { id: 'telefono', x: 95, y: 51.66, emoji: '☎️', s: 5, on: 'mesaOficial', label: 'Teléfono de la notaría',
           look(g) {
@@ -1047,13 +1052,13 @@
               ok: () => { g.set('chequeOK'); g.say('—134.830 €. Correcto. El vendedor recibe el cheque con lágrimas en los ojos: «Es lo más bonito que me ha pasado desde mi boda». Su mujer le mira. «...Igual de bonito».', 'Oficial'); },
             });
           } },
-        { id: 'carpeta', x: 67, y: 77.45, emoji: '💼', s: 6.24, label: 'Tu cartera de documentos',
+        { id: 'carpeta', x: 67, y: 83.94, emoji: '💼', s: 5.69, label: 'Tu cartera de documentos',
           look(g) {
             if (g.flag('carp')) return g.say('Solo te queda un folleto del banco y la esperanza.');
             g.set('carp'); g.give('arras');
             g.say('Sacas el contrato de arras que firmasteis la semana pasada. Lo traes sudado de tanto apretarlo.');
           } },
-        { id: 'cuadro', x: 67, y: 29.73, emoji: '🖼️', s: 8.39, label: 'Cuadro',
+        { id: 'cuadro', x: 67, y: 28.19, emoji: '🖼️', s: 10.12, label: 'Cuadro',
           look(g) { g.say('Óleo de un notario del siglo XIX dando fe de algo. Tiene cara de no fiarse del pintor.'); } },
       ],
       hints: [
