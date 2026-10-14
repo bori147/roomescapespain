@@ -1267,12 +1267,13 @@
       carry: ['credencial', 'actaCopia'],
       decor: [
         { kind: 'pedestal', id: 'aparador', l: 1.5, t: 52.16, w: 15.5, h: 19.84, color: '#7a5c3e' },
-        { kind: 'pedestal', id: 'mesaEspera', l: 19, t: 58.9, w: 31.5, h: 17.1, color: '#8a6a4c' },
-        { emoji: '📑', x: 24, y: 55.79, s: 3.5, on: 'mesaEspera' },
-        { emoji: '📑', x: 36, y: 55.79, s: 3.5, on: 'mesaEspera' },
+        { kind: 'pedestal', id: 'mesaEspera', l: 19, t: 58.9, w: 31.5, h: 17.1, color: '#9a7a58' },
+        { emoji: '📑', x: 28, y: 55.79, s: 3.5, on: 'mesaEspera' },
+        { emoji: '📑', x: 40, y: 55.79, s: 3.5, on: 'mesaEspera' },
         { kind: 'flag', l: 45, t: 14.9, w: 9, h: 10.7 },
+        { emoji: '👨‍💼', x: 63.5, y: 45.2, s: 10, behind: 'mostrador' },
         { kind: 'counter', id: 'mostrador', l: 52.5, t: 48.85, w: 22, h: 23.15 },
-        { kind: 'desk', id: 'mesaSede', l: 76.5, t: 55.47, w: 9.5, h: 16.53 },
+        { kind: 'desk', id: 'mesaSede', l: 76, t: 55.47, w: 11, h: 16.53 },
         { kind: 'pedestal', id: 'mueble', l: 88, t: 59.87, w: 10.5, h: 12.13, color: '#8a8f96' },
         { emoji: '🪴', x: 87.5, y: 82.33, s: 12 },
       ],
@@ -1303,7 +1304,7 @@
           } },
         { id: 'reloj', x: 31, y: 18.9, emoji: '🕐', s: 5, label: 'Reloj',
           look(g) { g.say('13:20. El Registro cierra a las 14:00, pero el plazo no se acaba hoy. Eso sí: hay que saber cuándo se acaba.'); } },
-        { id: 'registro', x: 63.5, y: 27, sign: 'REGISTRO', sub: '👨‍💼', w: 12, label: 'Registro de entrada',
+        { id: 'registro', x: 63.5, y: 31.3, sign: 'REGISTRO', sub: '👨‍💼', w: 12, label: 'Registro de entrada',
           look(g) {
             const falta = [!g.flag('acred') ? 'acreditar que es usted el presidente/a de la mesa' : '', !g.flag('adjunta') ? 'aportar copia del acta impugnada' : ''].filter(Boolean);
             if (falta.length) return g.say(`—¿Alegaciones como presidente/a de mesa? Antes de darle el impreso tiene que ${falta.join(' y ')}. Artículo 110. No me mire así: la ley no la he escrito yo. Yo solo la aplico con entusiasmo.`, 'Registro');
@@ -1323,7 +1324,7 @@
           } },
         { id: 'justicia', x: 4, y: 47.71, emoji: '⚖️', s: 5, on: 'aparador', label: 'Balanza de la Justicia',
           look(g) { g.say('Una balanza dorada. Uno de los platillos está calzado con un BOVA doblado. Nadie se atreve a quitarlo.'); } },
-        { id: 'sede', x: 81.25, y: 49.96, emoji: '🖥️', s: 6.2, on: 'mesaSede', label: 'Terminal de la Sede',
+        { id: 'sede', x: 81.5, y: 49.96, emoji: '🖥️', s: 6.2, on: 'mesaSede', label: 'Terminal de la Sede',
           look(g) {
             if (g.flag('leido')) return g.doc('📄 Recurso (texto íntegro)', L8_RECURSO);
             g.input({
