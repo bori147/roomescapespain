@@ -727,16 +727,16 @@
       scene: { wall: '#e6e0d2', floor: '#8b8f94', floorH: 38, pattern: 'tiles' },
       carry: ['dni', 'apto'],
       decor: [
-        { kind: 'board', id: 'tablon', l: 21, t: 19, w: 13, h: 16.5 },
+        { kind: 'board', id: 'tablon', l: 23.5, t: 19, w: 15, h: 16.5 },
         { kind: 'desk', id: 'conserjeria', l: 21.5, t: 56.32, w: 11, h: 15.68 },
-        { kind: 'counter', id: 'mostradorCAU', l: 34, t: 49.21, w: 12.5, h: 21.79 },
-        { kind: 'desk', id: 'mesaSubse', l: 48, t: 56.32, w: 14, h: 15.68 },
-        { kind: 'desk', id: 'mesaPuesto', l: 71.5, t: 56.32, w: 20, h: 15.68 },
+        { kind: 'counter', id: 'mostradorCAU', l: 34, t: 49.21, w: 14.5, h: 21.79 },
+        { kind: 'desk', id: 'mesaSubse', l: 50, t: 56.32, w: 12, h: 15.68 },
+        { kind: 'desk', id: 'mesaPuesto', l: 72, t: 56.32, w: 19.5, h: 15.68 },
         { kind: 'vitrine', id: 'maquinaFrente', l: 93, t: 28.8, w: 7, h: 15.6, color: '#6b1f2a' },
         { kind: 'pedestal', id: 'maquina', l: 93, t: 44.4, w: 7, h: 18.6, color: '#6b1f2a' },
       ],
       hotspots: [
-        { id: 'boe', x: 29, y: 27.3, sign: 'BOE', sub: '📰', w: 11, z: 250, label: 'BOE en el tablón',
+        { id: 'boe', x: 31, y: 27.3, sign: 'BOE', sub: '📰', w: 11, z: 250, label: 'BOE en el tablón',
           look(g) {
             g.doc('📰 BOLETÍN OFICIAL DEL ESTADO', `<p class="small">Núm. 210 · Sección II.A · Nombramientos</p>
               <p><b>Orden APE/317/2032, por la que se nombra funcionarios de carrera del Cuerpo Superior de Tramitadores del Estado.</b></p>
@@ -752,7 +752,7 @@
             if (!g.flag('mal')) { g.set('mal'); g.say('En el maletín: una foto de la toma de posesión que aún no ha ocurrido (optimismo), una foto de Michi y un táper de porras que te ha puesto la tía Remedios: «Para el primer día. De Porras del Trámite, que se note de dónde vienes».'); return; }
             g.say('Queda el táper de porras. Frías, pero con dignidad. Lo reservas para el microondas de la planta 3, que tiene una cola de 40 minutos.');
           } },
-        { id: 'terminal', x: 48, y: 43.88, emoji: '🖥️', s: 6, on: 'mostradorCAU', label: 'Terminal de autoservicio del CAU',
+        { id: 'terminal', x: 37, y: 43.88, emoji: '🖥️', s: 6, on: 'mostradorCAU', label: 'Terminal de autoservicio del CAU',
           look(g) {
             if (g.flag('tk')) return g.say('«Su incidencia INC-3906 ya está registrada. Tiempo estimado de resolución: entre 5 minutos y la jubilación.»', 'Terminal del CAU');
             g.input({
@@ -762,7 +762,7 @@
               ok: () => { g.set('tk'); g.say('Bip. «Incidencia INC-3906 registrada.» La impresora escupe un ticket. Recójalo en el mostrador del CAU.', 'Terminal del CAU'); g.give('ticket'); },
             });
           } },
-        { id: 'tecnico', x: 41.5, y: 44.88, emoji: '🧑‍💻', s: 10.5, behind: 'mostradorCAU', label: 'Técnico del CAU',
+        { id: 'tecnico', x: 42.7, y: 44.88, emoji: '🧑‍💻', s: 10.5, behind: 'mostradorCAU', label: 'Técnico del CAU',
           look(g) {
             if (g.flag('pcGiven')) return g.say('—Si no enciende, apáguelo y vuélvalo a encender. Si tampoco, abra otra incidencia.', 'Técnico del CAU');
             g.say('—Sin ticket, la incidencia no existe. Y si no existe, no le puedo dar un ordenador. Saque ticket en el terminal con su NRP.', 'Técnico del CAU');
@@ -771,7 +771,7 @@
             ticket(g) { g.take('ticket'); g.set('pcGiven'); g.say('—INC-3906... Aquí tiene: un portátil de 2014. Batería al 0 %. El cargador está en el almacén. ¿Dónde está la llave del almacén? Pregunte al conserje. ¿Qué quiere el conserje? Nadie lo sabe.', 'Técnico del CAU'); g.give('portatil'); },
             portatil(g) { g.say('—El cargador, en el almacén. Ya se lo he dicho. Abra otra incidencia si quiere que se lo repita.', 'Técnico del CAU'); },
           } },
-        { id: 'conserje', x: 31, y: 50.93, emoji: '👷', s: 10, behind: 'conserjeria', label: 'Conserje',
+        { id: 'conserje', x: 28, y: 50.93, emoji: '👷', s: 10, behind: 'conserjeria', label: 'Conserje',
           look(g) {
             if (g.flag('keyGiven')) return g.say('—Ya le he dado la llave. Devuélvamela antes de 2040.', 'Conserje');
             g.say('—¿La llave del almacén? Se la dejo... si me trae una grapadora. Desde que Informática se llevó la mía en 2019, no grapo. Un conserje que no grapa no es nada.', 'Conserje');
@@ -796,7 +796,7 @@
           use: {
             llave(g) { g.take('llave'); g.set('alm'); g.say('La llave gira con un quejido. Dentro: cuatro sillas, mil cables y, sobre una caja, un cargador de portátil con una etiqueta: «Para el que venga». Te lo llevas.'); g.give('cargador'); },
           } },
-        { id: 'despacho', x: 82.5, y: 27.3, sign: 'DESPACHO 3.17', sub: '🚪', w: 14, label: 'Puerta del despacho 3.17',
+        { id: 'despacho', x: 82.5, y: 27.3, sign: 'DESPACHO 3.17', sub: '🚪', w: 14, label: 'Rótulo del despacho 3.17',
           look(g) {
             g.doc('📋 Inventario de bienes muebles — Despacho 3.17', `<table class="tbl">
               <tr><td>Mesa de oficina (PAT-0317-M)</td><td>Presente</td></tr>
@@ -812,13 +812,13 @@
             g.doc('📜 Fórmula de juramento o promesa', `<p>«¿Juráis o prometéis por vuestra conciencia y honor cumplir fielmente las obligaciones del cargo con lealtad al Rey, y guardar y hacer guardar la Constitución como norma fundamental del Estado?»</p>
               <p class="small">El interesado responderá <b>«Juro»</b> o <b>«Prometo»</b>, seguido de la fórmula. Ambas opciones son igualmente válidas. Las improvisaciones, no.</p>`);
           } },
-        { id: 'pantalla', x: 77.5, y: 50.99, emoji: '🖥️', s: 6, on: 'mesaPuesto', label: 'Pantalla del compañero (de vacaciones)',
+        { id: 'pantalla', x: 78, y: 50.99, emoji: '🖥️', s: 6, on: 'mesaPuesto', label: 'Pantalla del compañero (de vacaciones)',
           look(g) {
             g.doc('🖥️ Correo — Respuesta automática', `<p><b>Asunto:</b> Fuera de la oficina</p>
               <p>Estaré fuera de la oficina hasta el <b>viernes 17 de septiembre, inclusive</b>. Me reincorporaré el <b>primer día laborable siguiente</b>. Para cualquier urgencia, no hay urgencias.</p>
               <div class="paper-note">Pósit en el monitor: «Clave del cajón = día y mes en que vuelvo (DDMM). ¡Que no se me olvide!»</div>`);
           } },
-        { id: 'cajon', x: 68, y: 60.78, emoji: '🗄️', s: 11.5, label: 'Cajonera del compañero (candado de 4 cifras)',
+        { id: 'cajon', x: 67, y: 60.78, emoji: '🗄️', s: 11.5, label: 'Cajonera del compañero (candado de 4 cifras)',
           look(g) {
             if (g.flag('drawer')) return g.say('Solo quedan sobres de azúcar de seis cafeterías distintas y un manual de «Cómo desconectar en vacaciones», sin abrir.');
             g.input({
@@ -828,7 +828,7 @@
               ok: () => { g.set('drawer'); g.say('Clic. Dentro, entre sobres de azúcar: una grapadora metálica de 1992. Un tesoro.'); g.give('grapadora'); },
             });
           } },
-        { id: 'mesa', x: 85.8, y: 52.08, emoji: (g) => (g.flag('sentado') ? (g.flag('pc') ? '💺💻' : '💺') : (g.flag('pc') ? '💻' : '🗃️')), s: 7, behind: 'mesaPuesto',
+        { id: 'mesa', x: 85.5, y: 52.08, emoji: (g) => (g.flag('pc') ? '💻' : '🗃️'), s: 7, behind: 'mesaPuesto',
           label: (g) => `Tu mesa${g.flag('sentado') ? ' (con silla' : ''}${g.flag('pc') ? (g.flag('sentado') ? ' y portátil)' : ' (con portátil)') : (g.flag('sentado') ? ')' : ' (vacía)')}`,
           look(g) {
             if (g.flag('sentado') && g.flag('pc')) return g.say('Tu puesto de trabajo, completo: silla que cojea, portátil que se actualiza. Ya puedes presentarte ante la Subsecretaria.');
@@ -839,7 +839,9 @@
             portatilOk(g) { g.take('portatilOk'); g.set('pc'); g.say('Enchufas el portátil. Arranca. Pide actualizar. Actualiza. Pide reiniciar. Reinicia. Funciona. Milagro.'); },
             portatil(g) { g.say('Sin batería no arranca, y un ordenador que no arranca no cuenta como «operativo». Busca el cargador.'); },
           } },
-        { id: 'subse', x: 57.5, y: 50.66, emoji: '👩‍💼', s: 10.3, behind: 'mesaSubse', label: 'Subsecretaria',
+        { id: 'sillaMesa', x: 79, y: 69.55, emoji: '🪑', s: 11.8, show: (g) => !!g.flag('sentado'), label: 'Tu silla (PAT-0317-B)',
+          look(g) { g.say('La silla PAT-0317-B, frente a tu mesa. Gira. Cojea. Es tuya.'); } },
+        { id: 'subse', x: 56, y: 50.66, emoji: '👩‍💼', s: 10.3, behind: 'mesaSubse', label: 'Subsecretaria',
           look(g) {
             if (!(g.flag('sentado') && g.flag('pc'))) return g.say(`—Solo doy posesión a quien está efectivamente en su puesto: sentado en SU silla, ante SU mesa y con un ordenador operativo.${g.flag('acred') ? '' : ' Y antes, acredítese: entrégueme el certificado de APTO del tribunal, que aquí se ha colado más de uno.'}`, 'Subsecretaria');
             if (!g.flag('acred')) return g.say('—Muy bien el puesto. Ahora acredítese: entrégueme su certificado de APTO. Sin él, usted es una persona sentada en una silla del Estado. Eso tiene otro nombre.', 'Subsecretaria');
@@ -861,7 +863,7 @@
             },
             dni(g) { g.say('—Sí, sí, ya veo que es usted. Pero el DNI no dice que haya aprobado nada. Quiero el certificado de APTO.', 'Subsecretaria'); },
           } },
-        { id: 'cafetera', x: 96.5, y: 41.64, emoji: '☕', s: 3.1, on: 'maquina', label: 'Máquina de café de la planta',
+        { id: 'cafetera', x: 96.5, y: 39.96, emoji: '🥤', s: 5, on: 'maquina', label: 'Máquina de café de la planta',
           look(g) { g.say('Un cartel: «Fuera de servicio desde la última reorganización». Debajo, otro: «Se ha creado un grupo de trabajo para estudiar su reparación».'); } },
         { id: 'planta', x: 6, y: 81.55, emoji: '🪴', s: 9.5, label: 'Planta',
           look(g) { g.say('Una planta con etiqueta de inventario: PAT-0001. Es el bien mueble más antiguo del Ministerio. Y el único que no ha pedido traslado.'); } },
