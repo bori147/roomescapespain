@@ -619,7 +619,7 @@
         { kind: 'counter', id: 'mesaBorja', l: 33, t: 50.43, w: 24, h: 23.57 },
         { kind: 'counter', id: 'mesaCasero', l: 63, t: 58.87, w: 14, h: 17.13, color: '#8a6f52' },
         { kind: 'pedestal', id: 'aparador', l: 83, t: 52.68, w: 15, h: 17.32, color: '#7a5b3e' },
-        { emoji: '🧍‍♀️', x: 62, y: 57.51, s: 24.17 },
+        { emoji: '🧍‍♀️', x: 59.8, y: 57.51, s: 24.17 },
       ],
       hotspots: [
         { id: 'tablon', x: 10.5, y: 29, sign: 'PISOS EN ALQUILER', sub: '🏘️', w: 17, z: 250, label: 'Tablón de anuncios', look: pisosDoc },
@@ -686,7 +686,7 @@
             if (g.has('solicitudAlq')) return g.say('La solicitud ya está impresa. Entrégasela al casero.');
             ordenadorL1(g);
           } },
-        { id: 'casero', x: 70, y: 49.55, emoji: '🕴️', s: 27.5, behind: 'mesaCasero', label: 'Don Ulpiano, el casero',
+        { id: 'casero', x: 71, y: 51.8, emoji: '🕴️', s: 27.5, behind: 'mesaCasero', label: 'Don Ulpiano, el casero',
           look(g) {
             g.say(rand([
               '—Yo solo alquilo a gente seria. Sin niños, sin perros, sin fiestas y, a ser posible, sin vida.',
