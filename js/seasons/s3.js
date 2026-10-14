@@ -970,19 +970,19 @@
       decor: [
         { kind: 'door', id: 'puerta', l: 1.5, t: 24.06, w: 10.5, h: 45.94, color: '#6b4a32' },
         { kind: 'window', id: 'ventana', l: 43, t: 19.69, w: 11, h: 30.63 },
-        { kind: 'board', id: 'corcho', l: 84, t: 26.25, w: 11, h: 13.13 },
+        { kind: 'board', id: 'corcho', l: 84, t: 24.05, w: 11, h: 13.13 },
         { kind: 'counter', id: 'recepcionMueble', l: 23, t: 49.34, w: 14, h: 23.66 },
         { kind: 'table', id: 'mesaFirmas', l: 39, t: 56.1, w: 40, h: 16.9 },
         { kind: 'desk', id: 'mesaOficial', l: 81, t: 56.1, w: 17, h: 16.9 },
-        { kind: 'sofa', id: 'silla1', l: 41.52, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
-        { kind: 'sofa', id: 'silla2', l: 48.96, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
-        { kind: 'sofa', id: 'silla3', l: 56.4, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
-        { kind: 'sofa', id: 'silla4', l: 63.84, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
-        { kind: 'sofa', id: 'silla5', l: 71.28, t: 59.84, w: 6.4, h: 25.16, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla1', l: 41.52, t: 62.36, w: 6.4, h: 22.64, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla2', l: 48.96, t: 62.36, w: 6.4, h: 22.64, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla3', l: 56.4, t: 62.36, w: 6.4, h: 22.64, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla4', l: 63.84, t: 62.36, w: 6.4, h: 22.64, color: '#2f4a3a' },
+        { kind: 'sofa', id: 'silla5', l: 71.28, t: 62.36, w: 6.4, h: 22.64, color: '#2f4a3a' },
         { emoji: '📑', x: 48.44, y: 53.17, s: 3.3, on: 'mesaFirmas' },
       ],
       hotspots: [
-        { id: 'notaria', x: 67, y: 50, emoji: '👩‍⚖️', s: 9, behind: 'mesaFirmas', label: 'Doña Leocadia, notaria',
+        { id: 'notaria', x: 66, y: 50, emoji: '👩‍⚖️', s: 9, behind: 'mesaFirmas', label: 'Doña Leocadia, notaria',
           look(g) {
             if (!g.flag('docsOK')) return g.say('—No firmamos nada hasta que mi oficial tenga toda la documentación. Y yo firmo la última, como siempre. Es lo único que me gusta de este oficio.', 'Notaria');
             if (!g.flag('chequeOK')) return g.say('—Falta el cheque al vendedor. Calcúlelo bien: aquí todo el mundo cuenta, y el señor Anselmo, dos veces.', 'Notaria');
@@ -1010,26 +1010,26 @@
             if (d.length === 5) { g.set('docsOK'); g.sfx('stamp'); g.say('—¡Completo! Ahora extienda el cheque al vendedor en el talonario. Lea bien la forma de pago del borrador... y su nota simple, que para eso la trae.', 'Oficial'); }
             else g.say(`—Recibido. Van ${d.length} de 5.`, 'Oficial');
           }])) },
-        { id: 'b1', x: 59.6, y: 54.73, emoji: '🧔', s: 6.2, behind: 'silla3', label: 'Apoderado del banco del vendedor',
+        { id: 'b1', x: 44.72, y: 57.75, emoji: '🧔', s: 5.5, behind: 'silla1', label: 'Apoderado del banco del vendedor',
           look(g) {
             if (!g.flag('saldoT')) { g.set('saldoT'); g.give('certSaldo'); g.say('—Traigo el certificado de saldo pendiente: 61.420 €. Tome, para el oficial.', 'Apoderado (banco del vendedor)'); }
             g.say('—Yo firmo <b>antes que el vendedor</b>. Nadie vende mi garantía sin que yo la cancele primero. Antes, ¿eh? Inmediatamente o no, me da igual, pero antes.', 'Apoderado (banco del vendedor)');
           } },
-        { id: 'vendedor', x: 52.16, y: 54.73, emoji: '👴', s: 6.2, behind: 'silla2', label: 'Don Anselmo, el vendedor',
+        { id: 'vendedor', x: 52.16, y: 57.75, emoji: '👴', s: 5.5, behind: 'silla2', label: 'Don Anselmo, el vendedor',
           look(g) {
             g.say('—¿El recibo del IBI? Eso lo lleva mi mujer, que es la que manda. Y otra cosa: <b>mi mujer firma antes que el comprador</b>, que si no, luego el comprador se arrepiente y ella se enfada.', 'Don Anselmo');
           } },
-        { id: 'conyuge', x: 44.72, y: 54.73, emoji: '👵', s: 6.2, behind: 'silla1', label: 'Doña Visitación, cónyuge del vendedor',
+        { id: 'conyuge', x: 59.6, y: 57.75, emoji: '👵', s: 5.5, behind: 'silla3', label: 'Doña Visitación, cónyuge del vendedor',
           look(g) {
             if (!g.flag('ibiT')) { g.set('ibiT'); g.give('reciboIBI'); g.say('—El recibo del IBI, aquí lo tengo, en el bolso. Pagado, que en esta casa se paga todo... salvo la comunidad y Hacienda.', 'Doña Visitación'); }
             g.say('—Yo firmo <b>pegadita a mi marido: justo antes o justo después</b>. Y <b>nunca justo después de un banco</b>, que me da alergia.', 'Doña Visitación');
           } },
-        { id: 'b2', x: 74.48, y: 56.6, emoji: '👩‍💼', s: 10.4, behind: 'silla5', label: 'Apoderada de tu banco',
+        { id: 'b2', x: 74.48, y: 59, emoji: '👩‍💼', s: 10.4, behind: 'silla5', label: 'Apoderada de tu banco',
           look(g) { g.say('—Yo firmo la hipoteca <b>justo después del comprador</b>. Ni antes, ni dos puestos después: justo después. Es lo que dice el protocolo, y el protocolo soy yo. ¿La oferta vinculante? Désela al oficial: la notaria tiene que levantar el acta de transparencia. Se llama así, pero es opaca.', 'Apoderada (tu banco)'); },
           use: { ofertaVinc(g) { g.say('—A mí no, al oficial. Yo solo firmo. Y cobro.', 'Apoderada (tu banco)'); } } },
-        { id: 'agente', x: 12.1, y: 55.54, emoji: '🧍', s: 24.14, label: 'Agente inmobiliaria',
+        { id: 'agente', x: 14.6, y: 55.54, emoji: '🧍', s: 24.14, label: 'Agente inmobiliaria',
           look(g) { g.say('—Yo también firmo, ¿eh? Por si acaso. Para que quede claro que esta venta es mía y que mi factura del 3 % + IVA también.', 'Agente inmobiliaria'); } },
-        { id: 'tarjetas', x: 89.5, y: 32.93, emoji: '🗒️', s: 5, label: 'Corcho con tarjetas',
+        { id: 'tarjetas', x: 89.5, y: 30.73, emoji: '📇', s: 5, label: 'Corcho con tarjetas',
           look(g) { g.say('Entre tarjetas de cerrajeros y de un tarotista, una dice: «Fincas Morosas S.L. — Administración de comunidades. Tel. <b>555 01 47</b>».'); } },
         { id: 'telefono', x: 95, y: 51.66, emoji: '☎️', s: 5, on: 'mesaOficial', label: 'Teléfono de la notaría',
           look(g) {
@@ -1052,14 +1052,14 @@
               ok: () => { g.set('chequeOK'); g.say('—134.830 €. Correcto. El vendedor recibe el cheque con lágrimas en los ojos: «Es lo más bonito que me ha pasado desde mi boda». Su mujer le mira. «...Igual de bonito».', 'Oficial'); },
             });
           } },
-        { id: 'carpeta', x: 67, y: 83.94, emoji: '💼', s: 5.69, label: 'Tu cartera de documentos',
+        { id: 'carpeta', x: 70.6, y: 83.94, emoji: '💼', s: 5.69, label: 'Tu cartera de documentos',
           look(g) {
             if (g.flag('carp')) return g.say('Solo te queda un folleto del banco y la esperanza.');
             g.set('carp'); g.give('arras');
             g.say('Sacas el contrato de arras que firmasteis la semana pasada. Lo traes sudado de tanto apretarlo.');
           } },
         { id: 'cuadro', x: 67, y: 28.19, emoji: '🖼️', s: 10.12, label: 'Cuadro',
-          look(g) { g.say('Óleo de un notario del siglo XIX dando fe de algo. Tiene cara de no fiarse del pintor.'); } },
+          look(g) { g.say('Óleo del siglo XIX: un paisaje con un sol de justicia. La placa dice que lo pintaron para que un notario diese fe de algo. Tiene cara de no fiarse del pintor.'); } },
       ],
       hints: [
         'Pide el borrador en recepción y saca las arras de tu cartera. El oficial necesita cinco documentos: dos los traes tú (certificación de cargas y oferta vinculante), el apoderado del banco del vendedor tiene otro, Doña Visitación otro, y el del administrador se pide por teléfono (el número está en el corcho).',
