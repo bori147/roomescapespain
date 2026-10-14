@@ -993,10 +993,9 @@
         { kind: 'lectern', id: 'atrZig', l: 53.5, t: 43.59, w: 5.5, h: 25.41, color: '#c9cfdc' },
         { kind: 'pedestal', id: 'control', l: 60.5, t: 48.39, w: 20, h: 22.61, color: '#4a5263' },
         { emoji: '🖥️', x: 63.3, y: 43.5, s: 5.5, on: 'control' },
-        { emoji: '🎧', x: 79, y: 45.72, s: 3, on: 'control' },
         { kind: 'table', id: 'tocador', l: 82, t: 53.99, w: 13, h: 16.01 },
-        { emoji: '💄', x: 93, y: 51.59, s: 2.7, on: 'tocador' },
-        { kind: 'pedestal', id: 'pieCam', l: 3.6, t: 62.41, w: 3, h: 27.09, color: '#4a5263' },
+        { emoji: '🗒️', x: 88.9, y: 36.8, s: 2.6, z: 135 },
+        { kind: 'pedestal', id: 'pieCam', l: 2.6, t: 62.41, w: 5, h: 27.09, color: '#3b4251' },
       ],
       hotspots: [
         { id: 'cartel', x: 42.25, y: 18, sign: 'NIDAC', sub: '«Ni sí, ni no, sino todo lo contrario»', w: 22, label: 'Cartel de NIDAC (tras tu atril)',
@@ -1019,7 +1018,7 @@
           look(g) { g.say('—Me quejo de la iluminación, del atril, del orden de intervención y de que no me hayan dejado quejarme antes.', 'Maripaz Queja'); } },
         { id: 'r_tic', x: 49.25, y: 38.74, emoji: '🧑‍💻', s: 7.4, z: 113, tag: 'TIC', label: 'Borja Disruptivo (TIC)',
           look(g) { g.say('—Voy a disrumpir el debate con una presentación de 84 diapositivas. Sin contenido, pero con transiciones.', 'Borja Disruptivo'); } },
-        { id: 'r_zig', x: 56.25, y: 40.59, emoji: '📄', s: 5, on: 'atrZig', z: 113, tag: 'ZIGZAG', label: 'Atril vacío de ZIGZAG',
+        { id: 'r_zig', x: 56.25, y: 40.59, emoji: '📋', s: 5, on: 'atrZig', z: 113, tag: 'ZIGZAG', label: 'Atril vacío de ZIGZAG',
           look(g) { g.say('Atril de ZIGZAG. Confirmaron que venían, luego que no, luego que sí. Al final mandaron un comunicado diciendo que habían ganado el debate.'); } },
         { id: 'manual', x: 85, y: 49.55, emoji: '📘', s: 5, on: 'tocador', label: 'Manual del asesor (camerino)',
           look(g) {
@@ -1030,7 +1029,7 @@
               <li>Nunca pronuncies el nombre de otro candidato. Para eso existe la palabra «<b>otros</b>».</li></ol>
               <p class="small">Hay más normas, pero son secretas. Hasta para el manual.</p>`);
           } },
-        { id: 'espejo', x: 88.25, y: 41.36, emoji: '🪞', s: 8, label: 'Espejo de maquillaje (con un pósit)',
+        { id: 'espejo', x: 88.25, y: 38.2, emoji: '🪞', s: 8, label: 'Espejo de maquillaje (con un pósit)',
           look(g) { g.doc('🪞 Pósit en el espejo', '<div class="paper-note"><p>Si te preguntan por <b>CORRUPCIÓN</b>: habla del <b>tiempo</b>. Del meteorológico. Solo del tiempo.</p><p>— El asesor</p></div>'); } },
         { id: 'maquillaje', x: 91.5, y: 49.55, emoji: '🧴', s: 5, on: 'tocador', label: 'Mesa de maquillaje',
           look(g) {
@@ -1038,7 +1037,7 @@
             g.set('maq');
             g.say('La maquilladora te empolva la nariz y te peina con el flequillo de Paz Equidistante. —Ahora, el pinganillo. Lo tiene el asesor en el control, y no lo suelta sin datos. Es muy de datos. De los suyos.', 'Maquilladora');
           } },
-        { id: 'asesor', x: 69, y: 42.34, emoji: '👨‍💼', s: 8.5, behind: 'control', label: 'Asesor de NIDAC (en el control)',
+        { id: 'asesor', x: 69, y: 41.8, emoji: '👨‍💼', s: 9.1, behind: 'control', label: 'Asesor de NIDAC (en el control)',
           look(g) {
             if (g.flag('ping')) return g.say('—Escucha el pinganillo, cúmplelo todo y no improvises. La improvisación es para los que tienen ideas.', 'Asesor de NIDAC');
             g.say('—¿Tú eres la doble? Antes de darte el pinganillo necesito saber cómo vamos DE VERDAD. Lo de la tele está cocinado. ¿Traes el barómetro bueno?', 'Asesor de NIDAC');
@@ -1052,7 +1051,7 @@
           } },
         { id: 'camara', x: 5.1, y: 55.02, emoji: '🎥', s: 8.31, on: 'pieCam', label: 'Cámara 2',
           look(g) { g.say('Cámara 2. El cámara te susurra: —Si dudas, mira a la cámara con cara de estadista. Funciona hasta cuando no dices nada. Sobre todo cuando no dices nada.', 'Cámara'); } },
-        { id: 'regidor', x: 77, y: 41.28, emoji: '🙋‍♂️', s: 9.7, behind: 'control', label: 'Regidor',
+        { id: 'regidor', x: 75.8, y: 42.08, emoji: '🙋‍♂️', s: 8.8, behind: 'control', label: 'Regidor',
           look(g) { g.say('—Una respuesta fuera del manual y corto a publicidad. Y repetimos desde la primera pregunta: en la tele autonómica no se nota. Hemos repetido debates enteros y la audiencia ha subido.', 'Regidor'); } },
       ],
       hints: [
