@@ -1524,31 +1524,31 @@
       carry: ['escritura', 'cedula'],
       scene: { wall: '#c9b79a', floor: '#6a6560', floorH: 42, pattern: 'tiles' },
       decor: [
-        { kind: 'board', l: 21.5, t: 21.75, w: 22, h: 14.5 },
-        { kind: 'cabinet', id: 'casetaObra', l: 73.5, t: 14.5, w: 12.5, h: 43.5, color: '#c9cdd1' },
-        { kind: 'door', l: 76.25, t: 21.75, w: 7, h: 36.25, color: '#8a9399' },
-        { kind: 'window', l: 88.5, t: 16.3, w: 10, h: 25.4 },
-        { kind: 'desk', id: 'mesaTecnico', l: 20, t: 64.27, w: 17, h: 15.73 },
+        { kind: 'board', l: 22, t: 21.25, w: 19.5, h: 13.5 },
+        { kind: 'cabinet', id: 'casetaObra', l: 75, t: 18, w: 12.5, h: 40, color: '#c9cdd1' },
+        { kind: 'door', l: 77.75, t: 24, w: 7, h: 34, color: '#8a9399' },
+        { kind: 'window', l: 90, t: 16.3, w: 9, h: 25.4 },
+        { kind: 'desk', id: 'mesaTecnico', l: 23, t: 64.27, w: 16, h: 15.73 },
         { kind: 'desk', id: 'mesaAdmin', l: 58, t: 67.88, w: 16, h: 16.12 },
-        { kind: 'box', id: 'pale', l: 84, t: 62.5, w: 12, h: 21.5, color: '#a0563a' },
-        { emoji: '🥪', x: 26, y: 61.6, s: 3, on: 'mesaTecnico' },
-        { emoji: '🧱', x: 94.3, y: 59.48, s: 3.4, on: 'pale' },
-        { emoji: '🚧', x: 8, y: 76.44, s: 13 },
+        { kind: 'box', id: 'pale', l: 80, t: 62.5, w: 13, h: 21.5, color: '#8f7a5c' },
+        { emoji: '🥪', x: 29, y: 61.6, s: 3, on: 'mesaTecnico' },
+        { emoji: '🧱', x: 90, y: 59.48, s: 3.4, on: 'pale' },
+        { emoji: '🚧', x: 8, y: 76.44, s: 16 },
       ],
       hotspots: [
-        { id: 'informes', x: 29.5, y: 28, z: 250, sign: 'INFORMES ITE', sub: '📌', w: 12, label: 'Tablón con los informes de ITE', look: informesDoc },
-        { id: 'estatutos', x: 71.5, y: 63.44, emoji: '📘', s: 5, on: 'mesaAdmin', label: 'Estatutos (reparto de gastos)',
+        { id: 'informes', x: 29.5, y: 28, z: 250, sign: 'INFORMES ITE', sub: '📌', w: 10, label: 'Tablón con los informes de ITE', look: informesDoc },
+        { id: 'estatutos', x: 71.5, y: 63.44, emoji: '📘', s: 3.8, on: 'mesaAdmin', label: 'Estatutos (reparto de gastos)',
           look(g) {
             g.doc('📘 Estatutos — Reparto de gastos extraordinarios', `<ul>
               <li><b>Fachada:</b> se reparte entre <b>todos</b> los propietarios según su coeficiente.</li>
               <li><b>Cubierta y ascensor:</b> se reparten <b>solo entre las viviendas</b>, en proporción a sus coeficientes. Los <b>locales comerciales están exentos</b> «porque no usan el tejado» (lo usan, pero el bar tiene buen abogado).</li>
               <li>Las cantidades se redondean al euro, aunque aquí siempre salen exactas, porque Dios es administrador de fincas.</li></ul>`);
           } },
-        { id: 'coef', x: 40.5, y: 28.5, emoji: '📊', s: 5, z: 250, label: 'Cuadro de coeficientes',
+        { id: 'coef', x: 38.3, y: 28.5, emoji: '📊', s: 5, z: 250, label: 'Cuadro de coeficientes',
           look(g) {
             g.doc('📊 Coeficientes de participación', `<table class="tbl">${J_OWN.map((o) => `<tr><td>${o.name.replace(', presidente/a', '').replace(', delegado en Doña Engracia', '').replace(', por videollamada', '')}</td><td>${o.c} %</td></tr>`).join('')}<tr><td><b>Total</b></td><td><b>100 %</b></td></tr></table>`);
           } },
-        { id: 'precinto', x: 13, y: 33, z: 250, sign: 'PRECINTADO', sub: 'ITE desfavorable', w: 11, label: 'Cartel del Ayuntamiento',
+        { id: 'precinto', x: 13, y: 33, z: 250, sign: 'PRECINTADO', sub: 'ITE desfavorable', w: 9, label: 'Cartel del Ayuntamiento',
           look(g) { g.say('«EDIFICIO PRECINTADO POR ITE DESFAVORABLE. Prohibido el paso a toda persona, gato o expediente. Firmado: el técnico municipal (que está ahí al lado, comiéndose un bocadillo).»'); } },
         { id: 'puerta', x: 13, y: 36.61, emoji: '🚪', s: 24.4, label: 'Puerta del portal (precintada)',
           look(g) {
@@ -1562,7 +1562,7 @@
               g.win();
             },
           } },
-        { id: 'tecnico', x: 30, y: 57.27, emoji: '👨🏼‍💼', s: 10, behind: 'mesaTecnico', label: 'Técnico municipal',
+        { id: 'tecnico', x: 32, y: 57.27, emoji: '👨🏼‍💼', s: 10, behind: 'mesaTecnico', label: 'Técnico municipal',
           look(g) {
             if (g.flag('precOff')) return g.say('—Precinto levantado. Le doy cinco años antes de la próxima ITE. Disfrútelos.', 'Técnico municipal');
             const need = { certFachada: 'el certificado de reparación de la fachada', informeITE: 'el informe de ITE veraz, registrado', justDerrama: 'el justificante de pago de su parte de la derrama', escritura: 'la escritura (para devolverle las llaves, que demuestre que el piso es suyo)', cedula: 'la cédula de habitabilidad (no reabro un portal para que vuelvan a una vivienda inhabitable)' };
@@ -1586,19 +1586,19 @@
             fachadaModal(g);
           },
           use: { llaveAndamio(g) { g.take('llaveAndamio'); g.set('andamioOK'); g.say('Abres el candado y subes al andamio. Desde aquí ves la fachada: llena de grietas. Toca martillo.'); } } },
-        { id: 'albanil', x: 89.5, y: 54.67, emoji: '👷', s: 10.5, behind: 'pale', label: 'Tomás, el albañil',
+        { id: 'albanil', x: 85.5, y: 54.67, emoji: '👷', s: 10.5, behind: 'pale', label: 'Tomás, el albañil',
           look(g) {
             if (g.flag('llaveT')) return g.say('—Recuerda: cada martillazo arregla la pieza que golpeas si está agrietada (y la agrieta si está sana), y lo mismo hace con las de arriba, abajo, izquierda y derecha. Es el oficio.', 'Tomás (albañil)');
             g.say('—¿Quieres arreglar la fachada tú? Sin casco no te doy la llave del andamio, que luego el seguro me pregunta. Hay uno en la caseta de obra.', 'Tomás (albañil)');
           },
           use: { casco(g) { g.take('casco'); g.set('llaveT'); g.give('llaveAndamio'); g.say('—Con casco, ya eres de la profesión. Toma la llave del andamio. Ojo: cada martillazo afecta también a las piezas de arriba, abajo, izquierda y derecha.', 'Tomás (albañil)'); } } },
-        { id: 'caseta', x: 79.75, y: 26, z: 250, sign: 'CASETA', sub: 'de obra', w: 7, label: 'Caseta de obra',
+        { id: 'caseta', x: 81.25, y: 40, z: 250, sign: 'CASETA', sub: 'de obra', w: 7, label: 'Caseta de obra',
           look(g) {
             if (g.flag('cascoT')) return g.say('Dentro: un calendario de 1997, un transistor y un bocadillo de chorizo con fecha de caducidad en latín.');
             g.set('cascoT'); g.give('casco');
             g.say('En la caseta hay un casco de obra colgado. Te lo pones. Te queda grande, pero da autoridad.');
           } },
-        { id: 'registro', x: 22.5, y: 59.83, emoji: '🗃️', s: 5, on: 'mesaTecnico', label: 'Buzón del Registro municipal de ITE', look: registroITEModal },
+        { id: 'registro', x: 25.5, y: 59.83, emoji: '🗃️', s: 5, on: 'mesaTecnico', label: 'Buzón del Registro municipal de ITE', look: registroITEModal },
         { id: 'admin', x: 65, y: 61.01, emoji: '🧑‍💼', s: 9.9, behind: 'mesaAdmin', label: 'El administrador (cobrando la derrama)',
           look(g) {
             if (g.has('justDerrama') || (g.flag('dlv') || []).includes('justDerrama')) return g.say('—Pagado. Ya puede usted volver a quejarse del administrador como un vecino más.', 'Administrador');
@@ -1611,7 +1611,7 @@
               ok: () => { g.give('justDerrama'); g.say('—7.020 €: 4.320 de fachada y 2.700 de cubierta. Exacto. Aquí tiene el justificante. Y la factura de mis honorarios, que va aparte.', 'Administrador'); },
             });
           } },
-        { id: 'pura', x: 40.5, y: 58.58, emoji: '🧍‍♀️', s: 21.85, z: 99, label: 'Doña Pura, en la acera',
+        { id: 'pura', x: 45, y: 58.58, emoji: '🧍‍♀️', s: 21.85, z: 99, label: 'Doña Pura, en la acera',
           look(g) { g.say('—Yo voté que no a la ITE. Por principio. Ahora llevo dos días durmiendo en casa de mi hermana, que también vota que no a todo. Nos entendemos.', 'Doña Pura'); } },
       ],
       hints: [
