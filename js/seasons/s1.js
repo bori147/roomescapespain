@@ -705,23 +705,34 @@
       outro: 'Número de afiliación concedido. El funcionario del registro llora de emoción: nadie había acertado el orden a la primera desde la Transición. Siguiente paso: completar el trámite por internet. Desde casa. Qué fácil, ¿no?',
       scene: { wall: '#cfd9e3', floor: '#9aa3a8', floorH: 32, pattern: 'tiles' },
       decor: [
-        { kind: 'counter', l: 14, t: 55, w: 76, h: 8 },
-        { emoji: '🪑', x: 30, y: 82, s: 4, o: 0.8 }, { emoji: '🪑', x: 36, y: 82, s: 4, o: 0.8 }, { emoji: '🪑', x: 42, y: 82, s: 4, o: 0.8 },
+        { kind: 'shelf', id: 'soporte', l: 64.25, t: 11.5, w: 6.5, h: 1.4 },
+        { kind: 'counter', id: 'ventanillas', l: 25.5, t: 48.85, w: 69.5, h: 23.15 },
+        { emoji: '🧑‍💼', x: 30.5, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '💁‍♀️', x: 49.8, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '🧑‍💻', x: 66, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '👩‍💼', x: 79, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { emoji: '🙎‍♂️', x: 91, y: 43.6, s: 11.5, behind: 'ventanillas' },
+        { kind: 'pedestal', id: 'pieTurnos', l: 24.5, t: 56.2, w: 4.5, h: 29.8, color: '#5d6670' },
+        { emoji: '🧍', x: 40, y: 57.02, s: 24.7 },
+        { kind: 'bench', id: 'banco', l: 52, t: 65.72, w: 16.5, h: 21.28 },
+        { kind: 'table', id: 'mesaTurnos', l: 79, t: 62.27, w: 11, h: 17.73 },
+        { kind: 'counter', id: 'garita', l: 0.5, t: 64.67, w: 12, h: 27.33 },
+        { emoji: '👮', x: 6.75, y: 59.3, s: 12.3, behind: 'garita' },
       ],
       hotspots: [
-        { id: 'pantalla', x: 52, y: 11, emoji: '📺', s: 6, label: (g) => `Pantalla de turnos: A-${pad(g.flag('turno'), 3)}`,
+        { id: 'pantalla', x: 67.5, y: 6.6, emoji: '📺', s: 5.5, on: 'soporte', label: (g) => `Pantalla de turnos: A-${pad(g.flag('turno'), 3)}`,
           look(g) { g.say(`TURNO: A-${pad(g.flag('turno'), 3)}. ${g.flag('turno') === 12 ? 'Lleva así desde las 8:00. El encargado de los turnos está en un curso de «Gestión eficiente de turnos».' : '¡Ha cambiado!'}`); } },
-        { id: 'dispensador', x: 6, y: 56, emoji: '🎟️', s: 7, label: 'Dispensador de turnos',
+        { id: 'dispensador', x: 26.75, y: 51.53, emoji: '🎟️', s: 5.25, on: 'pieTurnos', label: 'Dispensador de turnos',
           look(g) {
             if (g.flag('ticketTaken')) return g.say('Ya tienes número. Coger otro sería ilegal. O peor: de mala educación.');
             g.set('ticketTaken'); g.say('Te toca el A-347. En pantalla van por el A-012. Haces cuentas y te entra frío.'); g.give('ticket');
           } },
-        { id: 'v_registro', x: 22, y: 38, sign: 'REGISTRO', sub: '🧑‍💼', w: 11, label: 'Ventanilla de Registro', look: (g) => ventanilla(g, 'registro') },
-        { id: 'v_info', x: 37, y: 38, sign: 'INFORMACIÓN', sub: '👩‍💼', w: 12, label: 'Ventanilla de Información', look: (g) => ventanilla(g, 'info') },
-        { id: 'v_caja', x: 52, y: 38, sign: 'CAJA', sub: '🧔', w: 11, label: 'Ventanilla de Caja', look: (g) => ventanilla(g, 'caja') },
-        { id: 'v_firma', x: 67, y: 38, sign: 'FIRMA', sub: '👩‍🦳', w: 11, label: 'Ventanilla de Firma', look: (g) => ventanilla(g, 'firma') },
-        { id: 'v_sellos', x: 82, y: 38, sign: 'SELLOS', sub: '👨‍🦲', w: 11, label: 'Ventanilla de Sellos', look: (g) => ventanilla(g, 'sellos') },
-        { id: 'folleto', x: 12, y: 80, emoji: '📑', s: 5, label: 'Folleto informativo',
+        { id: 'v_registro', x: 30.5, y: 24.5, sign: 'REGISTRO', sub: '🧑‍💼', w: 10, z: 250, label: 'Ventanilla de Registro', look: (g) => ventanilla(g, 'registro') },
+        { id: 'v_info', x: 49.8, y: 24.5, sign: 'INFORMACIÓN', sub: '💁‍♀️', w: 12, label: 'Ventanilla de Información', look: (g) => ventanilla(g, 'info') },
+        { id: 'v_caja', x: 66, y: 24.5, sign: 'CAJA', sub: '🧑‍💻', w: 9, label: 'Ventanilla de Caja', look: (g) => ventanilla(g, 'caja') },
+        { id: 'v_firma', x: 79, y: 24.5, sign: 'FIRMA', sub: '👩‍💼', w: 8, label: 'Ventanilla de Firma', look: (g) => ventanilla(g, 'firma') },
+        { id: 'v_sellos', x: 91.9, y: 24.5, sign: 'SELLOS', sub: '🙎‍♂️', w: 8, label: 'Ventanilla de Sellos', look: (g) => ventanilla(g, 'sellos') },
+        { id: 'folleto', x: 58.5, y: 44.4, emoji: '📑', s: 5, on: 'ventanillas', label: 'Folleto informativo',
           look(g) {
             g.doc('📑 Cómo obtener su número de afiliación', `<p>Estimado/a usuario/a: el procedimiento consta de <b>cinco ventanillas</b>, que deberá visitar en el orden reglamentario. Para no facilitar las cosas, lo describimos así:</p>
               <ol>
@@ -733,7 +744,7 @@
               </ol>
               <p class="small">Si se equivoca, deberá reiniciar el procedimiento desde la primera ventanilla. Gracias por su colaboración.</p>`);
           } },
-        { id: 'mando', x: 87, y: 78, emoji: '🎛️', s: 5, label: 'Mando olvidado en una mesa',
+        { id: 'mando', x: 84.5, y: 57.83, emoji: '🎛️', s: 5, on: 'mesaTurnos', label: 'Mando olvidado en una mesa',
           look(g) {
             g.input({
               title: '🎛️ Mando de la pantalla de turnos', text: 'Un mando olvidado sobre la mesa del encargado de turnos. ¿Qué número quieres llamar?',
@@ -745,7 +756,7 @@
               },
             });
           } },
-        { id: 'puerta', x: 95, y: 64, emoji: '🚪', s: 11, label: 'Salida',
+        { id: 'puerta', x: 14, y: 43.2, emoji: '🚪', s: 27.9, label: 'Salida',
           look(g) { g.say('—Sin número de afiliación no sale nadie. Ni entra. Bueno, entrar sí.', 'Vigilante'); },
           use: { numeroSS(g) { g.say('El vigilante mira tu número, lo compara con una lista, asiente y abre la puerta. Libertad (provisional).', 'Vigilante'); g.win(); } } },
       ],
