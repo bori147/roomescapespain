@@ -247,10 +247,10 @@
   //  NIVEL 6: votantes y acta
   // =========================================================
   const L6_VOTERS = [
-    { n: 'Remigia Ortega Ruiz', d: 'DNI 12.345.678-Z, caducado en 2023. Foto de 2013: mismo moño, idéntico, inconfundible.', q: '—Hijo/a, yo voto desde antes de que existieras.', ok: true },
+    { n: 'Remigia Ortega Ruiz', d: 'DNI 12.345.678-Q, caducado en 2023. Foto de 2013: mismo moño, idéntico, inconfundible.', q: '—Hijo/a, yo voto desde antes de que existieras.', ok: true },
     { n: 'Bartolomé Alcántara Gómez', d: 'DNI 30.551.902-H, en vigor.', q: '—Yo siempre he votado en este colegio. En esta silla. Con este boli.', ok: false },
     { n: 'Sergio Vidal Pons', d: 'Fotocopia del DNI, plastificada con mucho cariño.', q: '—El original lo tengo en casa, enmarcado. Es que salgo muy bien.', ok: false },
-    { n: 'Pilar Sanz Quintana', d: 'DNI 44.556.677-L, en vigor.', q: '—Pedí el voto por correo, pero al final me fío más de venir en persona.', ok: false },
+    { n: 'Pilar Sanz Quintana', d: 'DNI 44.556.677-K, en vigor.', q: '—Pedí el voto por correo, pero al final me fío más de venir en persona.', ok: false },
     { n: 'Ulises Romero Tey', d: 'Pasaporte en vigor + certificado censal específico expedido ayer por la Oficina del Censo Electoral.', q: '—Me empadroné hace poco y no salgo en su lista. Por eso traigo este papel con tantos sellos.', ok: true },
     { n: 'Tomás Pardo Sáez', d: 'DNI 33.112.009-B, en vigor.', q: '—Vengo a votar otra vez: esta mañana voté sin gafas y no sé a quién.', ok: false },
     { n: 'Ramón Ortiz Vela', d: 'Carné de conducir n.º 71.234.560-T, en vigor. Fecha de nacimiento: 2001.', q: '—Soy Ramón Ortiz Vela, como mi abuelo, que en paz descanse. Bueno, como el de su lista.', ok: false },
@@ -1108,11 +1108,11 @@
       hotspots: [
         { id: 'censo', x: 33, y: 31.3, z: 20, sign: 'LISTA DEL CENSO', sub: 'Mesa C · apellidos O–Z', w: 14, label: 'Lista del censo de la mesa',
           look(g) {
-            const rows = [['Olmedo Rius, Fausto', '10.203.040-A', 1958], ['Ordóñez Bel, Rosario', '11.908.112-C', 1962], ['Ortega Ruiz, Remigia', '12.345.678-Z', 1941], ['Ortiz Vela, Ramón', '22.876.543-K', 1932],
+            const rows = [['Olmedo Rius, Fausto', '10.203.040-A', 1958], ['Ordóñez Bel, Rosario', '11.908.112-C', 1962], ['Ortega Ruiz, Remigia', '12.345.678-Q', 1941], ['Ortiz Vela, Ramón', '22.876.543-K', 1932],
               ['Paciente Sufrido/a, Ciudadano/a', '12.345.181-X', 1993], ['Palomo Ruiz, Andrés', '14.765.001-D', 1971], ['Pardo Sáez, Tomás', '33.112.009-B', 1977], ['Prieto Gual, Inés', '16.220.318-F', 1988],
               ['Quesada Luna, Amparo', '17.441.090-G', 1966], ['Quiroga Mas, Elías', '18.003.774-J', 1993], ['Rubio Prats, Nerea', '19.512.650-N', 1999], ['Ruano Pi, Celia', '20.884.216-R', 1955],
-              ['Sanz Quintana, Pilar', '44.556.677-L', 1980], ['Segura Bas, Óscar', '23.190.007-S', 1983], ['Soler Vidal, Marina', '24.667.531-T', 1974], ['Toledano Mir, Eloy', '25.032.884-V', 1985],
-              ['Urrutia Gil, Jon', '26.410.973-W', 1968], ['Vega Ríos, Lucía', '27.775.140-X', 2002], ['Vidal Pons, Sergio', '55.443.322-M', 1990], ['Zapata Gil, Lorenzo', '28.119.006-Y', 1949]];
+              ['Sanz Quintana, Pilar', '44.556.677-K', 1980], ['Segura Bas, Óscar', '23.190.007-S', 1983], ['Soler Vidal, Marina', '24.667.531-T', 1974], ['Toledano Mir, Eloy', '25.032.884-V', 1985],
+              ['Urrutia Gil, Jon', '26.410.973-W', 1968], ['Vega Ríos, Lucía', '27.775.140-X', 2002], ['Vidal Pons, Sergio', '55.443.322-N', 1990], ['Zapata Gil, Lorenzo', '28.119.006-Y', 1949]];
             g.doc('📋 Censo — Distrito 03 · Sección 013 · Mesa C (O–Z)', `<table class="tbl"><tr><td><b>Elector/a</b></td><td><b>DNI · nacimiento</b></td></tr>${rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]} · ${r[2]}</td></tr>`).join('')}</table><p class="small">20 electores. Los apellidos de la A a la Ñ votan en las mesas A y B, en el aula de al lado.</p>`);
           } },
         { id: 'correoLista', x: 52, y: 31.3, z: 250, sign: 'VOTO POR CORREO', sub: '📮', w: 15, label: 'Lista de voto por correo',
