@@ -1,0 +1,30 @@
+# Vuelva usted mañana
+
+> Room escape satírico sobre la burocracia y la política española: 5 temporadas de 10 trámites, cada una más difícil que la anterior. Gratis, sin anuncios y sin registro, en el navegador del ordenador o del móvil.
+
+Tu DNI caduca mañana. Solo tienes que renovarlo. ¿Qué podría salir mal? Las cinco temporadas cuentan la vida del mismo protagonista, de 2026 a 2036, y los documentos que consigues en un trámite viajan contigo al siguiente. Es una sátira: todos los personajes, partidos y organismos son ficticios.
+
+## Jugar
+
+- [Jugar a Vuelva usted mañana](https://bori147.github.io/roomescapespain/): el juego completo, sin instalar nada.
+
+## Temporadas
+
+- El DNI (iniciación): cita previa, fotocopias, padrón, sede electrónica, la renta, una investidura…
+- Hazte autónomo (emprendedor): modelo 036, cuota de autónomos, notaría, licencia de apertura, Verifactu, el 303, la inspección.
+- Mi casa es un expediente (propietario): alquiler, hipoteca, Registro de la Propiedad, impuestos, Catastro, junta de vecinos, la ITE.
+- Campaña electoral (político): mesa electoral, voto por correo, mitin, encuestas, debate, escrutinio D'Hondt, pactos, moción de censura.
+- Las altas esferas (alto funcionario): oposiciones, presupuestos prorrogados, fondos europeos, Bruselas, Senado, Constitucional, Consejo de Ministros.
+
+## Cómo se juega
+
+- Toca objetos, carteles y personajes para examinarlos o hablar con ellos. Lo que recoges va a tu bandeja y se puede usar en la sala o combinar con otro objeto.
+- Si te atascas, la Ventanilla de Pistas da pistas cada vez más claras (la última es la solución, y avisa antes).
+- La partida se guarda sola en el navegador, y con el código de expediente se sigue en otro dispositivo.
+
+## Legal
+
+- [Aviso legal](https://bori147.github.io/roomescapespain/legal/aviso-legal.html)
+- [Privacidad](https://bori147.github.io/roomescapespain/legal/privacidad.html)
+- [Cookies](https://bori147.github.io/roomescapespain/legal/cookies.html)
+- [Descargo](https://bori147.github.io/roomescapespain/legal/descargo.html)
