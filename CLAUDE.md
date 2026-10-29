@@ -39,6 +39,7 @@ npx serve .                     # jugar en local
 - Antes del push, las dos pruebas (`npm test` y `node tests/shots.js shots`) tienen que salir bien.
 
 ## Estado (octubre de 2026)
+- `llms.txt` (raíz, en línea desde el 29/10/2026): resumen del juego para asistentes de IA, escrito a mano. Actualízalo si cambian las temporadas, la forma de jugar o la URL.
 - Publicado y completo: 5 temporadas. Rediseño «Ventanilla Única» y repaso de realismo (50 salas a escala real) publicados, versión `?v=9`.
 - Pendiente del propietario (`docs/LEGAL.md`): correo de contacto, comprobar nombres de partidos y la marca en la OEPM, consultar los donativos con su gestor.
 - Opcional (`docs/PUBLICAR.md`): dominio propio; Cloudflare Pages si el tráfico se acerca al límite de GitHub Pages.
